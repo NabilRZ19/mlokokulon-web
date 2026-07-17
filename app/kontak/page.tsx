@@ -11,8 +11,8 @@ export default function KontakPage() {
   return (
     <div className="mx-auto max-w-3xl space-y-6 px-4 py-8">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Kontak</h1>
-        <p className="text-slate-600">
+        <h1 className="text-2xl font-bold text-foreground">Kontak</h1>
+        <p className="text-muted-foreground">
           Kontak perangkat Kelurahan Mlokomanis Kulon per jabatan. Tidak ada sistem pengajuan
           surat online — murni informasi kontak.
         </p>
@@ -25,13 +25,13 @@ export default function KontakPage() {
         {kontakPerangkatData.map((k) => (
           <Card key={k.jabatan} className="flex items-center justify-between">
             <div>
-              <p className="font-semibold text-slate-900">{k.jabatan}</p>
-              <p className="text-sm text-slate-600">{k.nama}</p>
-              <p className="text-xs text-slate-500">{k.jamLayanan}</p>
+              <p className="font-semibold text-foreground">{k.jabatan}</p>
+              <p className="text-sm text-muted-foreground">{k.nama}</p>
+              <p className="text-xs text-muted-foreground">{k.jamLayanan}</p>
             </div>
             <a
               href={`https://wa.me/${k.whatsapp.replace(/\D/g, "")}`}
-              className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
+              className="rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-white hover:bg-primary/90"
             >
               WhatsApp
             </a>

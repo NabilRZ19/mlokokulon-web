@@ -15,7 +15,7 @@ const afterDropdownLinks = [
 ];
 
 const kampungKbClass =
-  "rounded-full bg-emerald-100 px-3 py-1 text-emerald-800 hover:bg-emerald-200";
+  "rounded-full bg-accent px-3 py-1 text-accent-foreground hover:bg-accent/90";
 
 // Struktur navbar sesuai preferensi user (lihat plan navbar update): Profil Desa jadi item
 // top-level sendiri, Wilayah Administratif pindah ke dropdown Pemerintahan, urutan
@@ -26,19 +26,19 @@ export function Navbar() {
   const [pemerintahanOpen, setPemerintahanOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white">
+    <header className="sticky top-0 z-50 border-b border-border bg-card">
       <nav className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-        <Link href="/" className="font-semibold text-slate-900">
+        <Link href="/" className="font-heading font-semibold text-primary">
           Mlokomanis Kulon
         </Link>
 
         {/* Desktop nav */}
         <div className="hidden items-center gap-4 text-sm md:flex">
-          <Link href="/" className="text-slate-700 hover:text-slate-900">
+          <Link href="/" className="text-foreground hover:text-primary">
             Beranda
           </Link>
 
-          <Link href="/profil" className="text-slate-700 hover:text-slate-900">
+          <Link href="/profil" className="text-foreground hover:text-primary">
             Profil Desa
           </Link>
 
@@ -47,17 +47,17 @@ export function Navbar() {
               type="button"
               onClick={() => setPemerintahanOpen((v) => !v)}
               onBlur={() => setTimeout(() => setPemerintahanOpen(false), 100)}
-              className="text-slate-700 hover:text-slate-900"
+              className="text-foreground hover:text-primary"
             >
               Pemerintahan ▾
             </button>
             {pemerintahanOpen && (
-              <div className="absolute left-0 mt-2 w-52 rounded-md border border-slate-200 bg-white py-1 shadow-md">
+              <div className="absolute left-0 mt-2 w-52 rounded-md border border-border bg-card py-1 shadow-md">
                 {pemerintahanLinks.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="block px-3 py-2 text-slate-700 hover:bg-slate-50"
+                    className="block px-3 py-2 text-foreground hover:bg-muted"
                   >
                     {link.label}
                   </Link>
@@ -66,7 +66,7 @@ export function Navbar() {
             )}
           </div>
 
-          <Link href="/layanan" className="text-slate-700 hover:text-slate-900">
+          <Link href="/layanan" className="text-foreground hover:text-primary">
             Layanan
           </Link>
 
@@ -75,7 +75,7 @@ export function Navbar() {
           </Link>
 
           {afterDropdownLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="text-slate-700 hover:text-slate-900">
+            <Link key={link.href} href={link.href} className="text-foreground hover:text-primary">
               {link.label}
             </Link>
           ))}
@@ -85,7 +85,7 @@ export function Navbar() {
         <button
           type="button"
           onClick={() => setMobileOpen((v) => !v)}
-          className="rounded-md border border-slate-300 px-3 py-1.5 text-sm md:hidden"
+          className="rounded-md border border-border px-3 py-1.5 text-sm text-foreground md:hidden"
           aria-label="Buka menu"
         >
           {mobileOpen ? "Tutup" : "Menu"}
@@ -94,22 +94,22 @@ export function Navbar() {
 
       {/* Mobile accordion menu */}
       {mobileOpen && (
-        <div className="border-t border-slate-200 px-4 py-2 text-sm md:hidden">
-          <Link href="/" className="block py-2 text-slate-700">
+        <div className="border-t border-border px-4 py-2 text-sm md:hidden">
+          <Link href="/" className="block py-2 text-foreground">
             Beranda
           </Link>
-          <Link href="/profil" className="block py-2 text-slate-700">
+          <Link href="/profil" className="block py-2 text-foreground">
             Profil Desa
           </Link>
 
-          <div className="py-1 text-slate-500">Pemerintahan</div>
+          <div className="py-1 text-muted-foreground">Pemerintahan</div>
           {pemerintahanLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="block py-2 pl-4 text-slate-700">
+            <Link key={link.href} href={link.href} className="block py-2 pl-4 text-foreground">
               {link.label}
             </Link>
           ))}
 
-          <Link href="/layanan" className="block py-2 text-slate-700">
+          <Link href="/layanan" className="block py-2 text-foreground">
             Layanan
           </Link>
 
@@ -118,7 +118,7 @@ export function Navbar() {
           </Link>
 
           {afterDropdownLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="block py-2 text-slate-700">
+            <Link key={link.href} href={link.href} className="block py-2 text-foreground">
               {link.label}
             </Link>
           ))}

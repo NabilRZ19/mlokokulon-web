@@ -1,26 +1,35 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Token final — lihat docs/DESIGN.md ("Token final"), dipilih dari kandidat skill
+   ui-ux-pro-max: palet "Government Portal / Civic Services" + font pairing "Corporate Trust". */
+@theme {
+  --color-primary: #1e40af;
+  --color-secondary: #3b82f6;
+  --color-accent: #16a34a;
+  --color-accent-foreground: #ffffff;
+  --color-background: #eff6ff;
+  --color-foreground: #1e3a8a;
+  --color-card: #ffffff;
+  --color-muted: #e9eff5;
+  --color-muted-foreground: #64748b;
+  --color-border: #bfdbfe;
+  --color-destructive: #dc2626;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-source-sans);
+  --font-heading: var(--font-lexend);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading), var(--font-sans), sans-serif;
 }
