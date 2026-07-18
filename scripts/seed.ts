@@ -14,7 +14,7 @@ async function main() {
   }
 
   const { adminDb } = await import("../lib/firebase-admin");
-  const { strukturKelurahanSeed, rwSeed, kampungKbSeed, beritaSeed, galeriSeed, umkmSeed } =
+  const { strukturKelurahanSeed, rwSeed, beritaSeed, galeriSeed, umkmSeed } =
     await import("../lib/seed-data");
 
   async function resetAndSeed(collectionName: string, docs: { id: string }[]) {
@@ -38,7 +38,9 @@ async function main() {
 
   await resetAndSeed("struktur_kelurahan", strukturKelurahanSeed);
   await resetAndSeed("rw", rwSeed);
-  await resetAndSeed("kampung_kb", [kampungKbSeed]);
+  // Kampung KB sekarang hardcode (lihat lib/seed-data.ts kampungKbData), bukan lagi koleksi
+  // Firestore — baris ini cuma bersih-bersih dokumen lama dari seed sebelumnya, tidak menulis apa pun.
+  await resetAndSeed("kampung_kb", []);
   await resetAndSeed("berita", beritaSeed);
   await resetAndSeed("galeri", galeriSeed);
   await resetAndSeed("umkm", umkmSeed);

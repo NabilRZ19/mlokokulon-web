@@ -1,65 +1,91 @@
-import Image from "next/image";
+import Link from "next/link";
+import { Stat } from "@/components/ui/Stat";
+import { kelurahanProfileData as p } from "@/lib/seed-data";
 
+const quickLinks = [
+  {
+    href: "/profil",
+    title: "Profil Desa",
+    description: "Sejarah, visi-misi, letak geografis, dan batas wilayah kelurahan.",
+  },
+  {
+    href: "/struktur",
+    title: "Struktur Kelurahan",
+    description: "Susunan organisasi pemerintahan tingkat kelurahan.",
+  },
+  {
+    href: "/layanan",
+    title: "Layanan",
+    description: "Informasi layanan yang bisa diurus di kelurahan.",
+  },
+  {
+    href: "/kontak",
+    title: "Kontak",
+    description: "Hubungi perangkat kelurahan sesuai jabatan.",
+  },
+];
+
+// Placeholder Fase 1 — beranda penuh (teaser Kampung KB, Berita terbaru, Galeri carousel,
+// peta fixed) menyusul di Fase 2 sesuai PRD Bagian 6.1, menunggu halaman-halaman dinamis publik.
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div>
+      {/* Hero */}
+      <section className="border-b border-border bg-primary">
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:py-28">
+          <p className="font-heading text-sm font-semibold uppercase tracking-wide text-white/70">
+            Website Resmi
           </p>
+          <h1 className="mt-2 max-w-2xl font-heading text-4xl font-bold text-white sm:text-5xl">
+            Kelurahan {p.nama}
+          </h1>
+          <p className="mt-4 max-w-xl text-white/85">
+            Kecamatan {p.kecamatan}, Kabupaten {p.kabupaten}, {p.provinsi}. Media informasi resmi
+            dan terpusat untuk warga, wisatawan, maupun pihak dinas terkait.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href="/profil"
+              className="rounded-md bg-white px-5 py-2.5 text-sm font-semibold text-primary hover:bg-white/90"
+            >
+              Lihat Profil
+            </Link>
+            <Link
+              href="/kontak"
+              className="rounded-md border border-white/40 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10"
+            >
+              Hubungi Kami
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Statistik singkat */}
+      <section className="border-b border-border bg-card">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 py-10 sm:grid-cols-4">
+          <Stat label="Penduduk" value={`${p.demografi.totalJiwa.toLocaleString("id-ID")} jiwa`} />
+          <Stat label="Kepala Keluarga" value={p.administratif.jumlahKk.toLocaleString("id-ID")} />
+          <Stat label="RW" value={`${p.administratif.jumlahRw}`} />
+          <Stat label="RT" value={`${p.administratif.jumlahRt}`} />
         </div>
-      </main>
+      </section>
+
+      {/* Quick links */}
+      <section className="mx-auto max-w-6xl px-4 py-14">
+        <h2 className="font-heading text-2xl font-bold text-foreground">Jelajahi Website</h2>
+        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {quickLinks.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="block rounded-lg border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md"
+            >
+              <h3 className="font-heading font-semibold text-foreground">{item.title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

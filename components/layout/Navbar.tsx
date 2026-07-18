@@ -15,7 +15,11 @@ const afterDropdownLinks = [
 ];
 
 const kampungKbClass =
-  "rounded-full bg-accent px-3 py-1 text-accent-foreground hover:bg-accent/90";
+  "rounded-md bg-accent px-3 py-1.5 text-accent-foreground transition-colors hover:bg-accent/90";
+
+// Link nav biasa: hover ganti background (bukan cuma warna teks) supaya area klik jelas.
+const navLinkClass =
+  "rounded-md px-3 py-2 text-foreground transition-colors hover:bg-muted hover:text-primary";
 
 // Struktur navbar sesuai preferensi user (lihat plan navbar update): Profil Desa jadi item
 // top-level sendiri, Wilayah Administratif pindah ke dropdown Pemerintahan, urutan
@@ -26,33 +30,41 @@ export function Navbar() {
   const [pemerintahanOpen, setPemerintahanOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-card">
-      <nav className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-        <Link href="/" className="font-heading font-semibold text-primary">
-          Mlokomanis Kulon
+    <header className="sticky top-0 z-50 border-b border-border bg-card shadow-sm">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+        <Link href="/" className="flex items-center gap-2.5">
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary font-heading text-sm font-bold text-white">
+            MK
+          </span>
+          <span className="font-heading font-semibold text-foreground">Mlokomanis Kulon</span>
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden items-center gap-4 text-sm md:flex">
-          <Link href="/" className="text-foreground hover:text-primary">
+        <div className="hidden items-center gap-1 text-sm md:flex">
+          <Link href="/" className={navLinkClass}>
             Beranda
           </Link>
 
-          <Link href="/profil" className="text-foreground hover:text-primary">
+          <Link href="/profil" className={navLinkClass}>
             Profil Desa
           </Link>
 
-          <div className="relative">
+          {/* Buka dropdown saat hover (desktop) atau klik/fokus (sentuh & keyboard) */}
+          <div
+            className="relative"
+            onMouseEnter={() => setPemerintahanOpen(true)}
+            onMouseLeave={() => setPemerintahanOpen(false)}
+          >
             <button
               type="button"
               onClick={() => setPemerintahanOpen((v) => !v)}
               onBlur={() => setTimeout(() => setPemerintahanOpen(false), 100)}
-              className="text-foreground hover:text-primary"
+              className={navLinkClass}
             >
               Pemerintahan ▾
             </button>
             {pemerintahanOpen && (
-              <div className="absolute left-0 mt-2 w-52 rounded-md border border-border bg-card py-1 shadow-md">
+              <div className="absolute left-0 top-full w-52 rounded-md border border-border bg-card py-1 shadow-lg">
                 {pemerintahanLinks.map((link) => (
                   <Link
                     key={link.href}
@@ -66,7 +78,7 @@ export function Navbar() {
             )}
           </div>
 
-          <Link href="/layanan" className="text-foreground hover:text-primary">
+          <Link href="/layanan" className={navLinkClass}>
             Layanan
           </Link>
 
@@ -75,10 +87,18 @@ export function Navbar() {
           </Link>
 
           {afterDropdownLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="text-foreground hover:text-primary">
+            <Link key={link.href} href={link.href} className={navLinkClass}>
               {link.label}
             </Link>
           ))}
+
+          {/* Terpisah dari menu publik — bukan bagian navigasi utama, cuma pintu masuk admin */}
+          <Link
+            href="/admin/login"
+            className="ml-2 rounded-md border border-border px-3 py-1.5 text-foreground transition-colors hover:bg-muted"
+          >
+            Login Admin
+          </Link>
         </div>
 
         {/* Mobile hamburger */}
@@ -122,6 +142,13 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
+
+          <Link
+            href="/admin/login"
+            className="mt-2 block border-t border-border py-3 text-foreground"
+          >
+            Login Admin
+          </Link>
         </div>
       )}
     </header>

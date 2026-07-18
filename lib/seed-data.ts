@@ -1,8 +1,12 @@
 import type { Berita, Galeri, KampungKb, Rw, StrukturKelurahan, Umkm } from "./types";
 
 // ============================================================
-// Data hardcode untuk halaman non-CMS (Profil Desa, Layanan, Kontak)
+// Data hardcode untuk halaman non-CMS (Profil Desa, Layanan, Kontak, Kampung KB)
 // Sesuai PRD: kelurahan_profile, layanan, kontak_perangkat TIDAK ada di Firestore.
+// Kampung KB awalnya didesain CMS/Firestore (PRD Bagian 5 & 10), tapi diubah ke hardcode
+// atas keputusan user — konten programnya jarang berubah dan masih [DATA MENYUSUL] semua,
+// jadi disamakan pola dengan 3 halaman hardcode lain. rw_ref tetap fetch live ke Firestore
+// (koleksi `rw` tidak berubah), cuma konten program Kampung KB sendiri yang hardcode.
 // ============================================================
 
 export interface KelurahanProfileData {
@@ -166,6 +170,16 @@ export const kontakPerangkatData: KontakPerangkatItem[] = [
   },
 ];
 
+// rw_ref merujuk id dokumen di koleksi Firestore `rw` (masih live-fetch via getRwById),
+// RW 5 (Pencil) = Kampung KB, dikonfirmasi user.
+export const kampungKbData: KampungKb = {
+  rw_ref: "rw-05",
+  deskripsi_program:
+    "[DATA MENYUSUL] — penjelasan program Kampung KB menunggu konfirmasi Pak RW 05 (Pencil).",
+  kegiatan_unggulan: ["[DATA MENYUSUL]"],
+  foto_highlight_url: "/images/placeholder-photo.svg",
+};
+
 // ============================================================
 // Seed data untuk Firestore (koleksi CMS: struktur_kelurahan, rw, kampung_kb,
 // berita, galeri, umkm). ID dokumen deterministik supaya npm run db:seed idempotent.
@@ -213,15 +227,6 @@ export const rwSeed: Rw[] = dusunList.map((nama, i) => ({
   },
   potensi: "[DATA MENYUSUL] — potensi spesifik RW ini belum dikonfirmasi.",
 }));
-
-export const kampungKbSeed: KampungKb & { id: string } = {
-  id: "kampung-kb-01",
-  rw_ref: "rw-05",
-  deskripsi_program:
-    "[DATA MENYUSUL] — penjelasan program Kampung KB menunggu konfirmasi Pak RW 05 (Pencil).",
-  kegiatan_unggulan: ["[DATA MENYUSUL]"],
-  foto_highlight_url: "/images/placeholder-photo.svg",
-};
 
 export const beritaSeed: Berita[] = [
   {
