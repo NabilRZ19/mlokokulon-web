@@ -63,6 +63,8 @@ export interface Galeri {
   tipe: GaleriTipe;
   url_media: string;
   kategori?: string;
+  // Diisi kalau foto ini di-link dari form Berita (bukan upload manual langsung ke Galeri).
+  sumber_berita_id?: string;
 }
 
 export interface Umkm {

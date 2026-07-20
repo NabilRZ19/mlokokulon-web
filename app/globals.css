@@ -20,7 +20,10 @@
 }
 
 body {
-  background: var(--color-background);
+  /* Putih, bukan var(--color-background) (biru muda) — token itu sengaja dibiarkan dipakai
+     eksplisit di halaman admin (bg-background) via Tailwind class, tidak lewat body ini,
+     supaya ganti warna publik tidak ikut mengubah tampilan admin. */
+  background: #ffffff;
   color: var(--color-foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }

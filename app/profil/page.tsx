@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { PlaceholderNotice } from "@/components/ui/PlaceholderNotice";
+import { SementaraTag } from "@/components/ui/SementaraTag";
 import { Stat } from "@/components/ui/Stat";
 import {
   BookIcon,
@@ -69,6 +70,7 @@ export default function ProfilPage() {
           <Card>
             <h2 className="flex items-center gap-2 font-heading text-lg font-semibold text-foreground">
               <SproutIcon className="h-5 w-5 text-primary" /> Potensi Desa
+              <SementaraTag />
             </h2>
             <p className="mt-2 text-sm text-foreground">{p.potensi.catatanEkonomi}</p>
 
@@ -107,6 +109,7 @@ export default function ProfilPage() {
           <Card>
             <h2 className="flex items-center gap-2 font-heading text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               <UsersIcon className="h-4 w-4" /> Data Cepat
+              <SementaraTag />
             </h2>
             <div className="mt-4 grid grid-cols-2 gap-4">
               <Stat label="Penduduk" value={p.demografi.totalJiwa.toLocaleString("id-ID")} />
@@ -132,6 +135,7 @@ export default function ProfilPage() {
           <Card>
             <h2 className="flex items-center gap-2 font-heading text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               <MapPinIcon className="h-4 w-4" /> Letak Geografis
+              <SementaraTag />
             </h2>
             <dl className="mt-3 space-y-2 text-sm text-foreground">
               <div className="flex justify-between gap-2">
@@ -162,6 +166,7 @@ export default function ProfilPage() {
           <Card>
             <h2 className="flex items-center gap-2 font-heading text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               <CompassIcon className="h-4 w-4" /> Batas Wilayah
+              <SementaraTag />
             </h2>
             <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-foreground">
               <dt className="text-muted-foreground">Utara</dt>

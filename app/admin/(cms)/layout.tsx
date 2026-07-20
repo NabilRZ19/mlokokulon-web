@@ -1,23 +1,16 @@
+import { redirect } from "next/navigation";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { getSession } from "@/lib/session";
 
-// Belum ada guard tier/auth beneran — siapa pun yang buka /admin/dashboard dst langsung bisa
-// lihat shell ini. Menyusul saat Firebase Auth & guard tier diimplementasikan.
-export default function CmsLayout({ children }: { children: React.ReactNode }) {
+// Guard tier PRD Bagian 11.1 — kalau belum login, tendang ke /admin/login.
+export default async function CmsLayout({ children }: { children: React.ReactNode }) {
+  const session = await getSession();
+  if (!session) redirect("/admin/login");
+
   return (
     <div className="flex min-h-screen bg-background">
-      <AdminSidebar />
-      <div className="flex-1">
-        <header className="flex items-center justify-between border-b border-border bg-card px-6 py-3">
-          <div />
-          <div className="flex items-center gap-3 text-sm">
-            <span className="text-foreground">(Nama Admin — Dummy)</span>
-            <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
-              Tier 1 — Super Admin
-            </span>
-          </div>
-        </header>
-        <main className="p-6">{children}</main>
-      </div>
+      <AdminSidebar session={session} />
+      <main className="flex-1 p-6">{children}</main>
     </div>
   );
 }

@@ -12,4 +12,4 @@ Buka [http://localhost:3000](http://localhost:3000) di browser.
 
 ## Stack
 
-Next.js (App Router) + TypeScript + Tailwind CSS, hosting Vercel, backend Firebase (Firestore, Auth, Storage).
+Next.js (App Router) + TypeScript + Tailwind CSS, hosting Vercel, backend MySQL (VPS) via Drizzle ORM + MinIO (S3-compatible storage).

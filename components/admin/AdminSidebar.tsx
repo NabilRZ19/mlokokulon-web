@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { MapPinIcon } from "@/components/ui/icons";
+import type { SessionPayload } from "@/lib/auth";
 import {
   DashboardIcon,
   ImageIcon,
@@ -23,10 +24,28 @@ const navItems = [
   { href: "/admin/users", label: "Kelola Admin", icon: UserCogIcon },
 ];
 
+const TIER_LABEL: Record<number, string> = {
+  1: "Tier 1 — Super Admin",
+  2: "Tier 2 — Admin Kelurahan",
+  3: "Tier 3 — Admin RW",
+};
+
+function getInitials(nama: string): string {
+  const parts = nama.trim().split(/\s+/);
+  return ((parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "")).toUpperCase();
+}
+
 // Belum ada show/hide per-tier (nav tampil semua ke siapa pun) — itu bagian "fungsi", menyusul
-// bareng guard tier & Firebase Auth beneran.
-export function AdminSidebar() {
+// bareng wiring CRUD per tier.
+export function AdminSidebar({ session }: { session: SessionPayload }) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  async function handleLogout() {
+    await fetch("/api/admin/logout", { method: "POST" });
+    router.push("/admin/login");
+    router.refresh();
+  }
 
   return (
     <aside className="flex h-screen w-60 shrink-0 flex-col border-r border-border bg-card">
@@ -59,13 +78,26 @@ export function AdminSidebar() {
         })}
       </nav>
 
-      <button
-        type="button"
-        className="m-3 flex items-center gap-3 rounded-md px-3 py-2 text-sm text-destructive hover:bg-muted"
-      >
-        <LogOutIcon className="h-4 w-4" />
-        Logout
-      </button>
+      <div className="border-t border-border p-3">
+        <div className="flex items-center gap-3 rounded-md px-2 py-2">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 font-heading text-xs font-bold text-primary">
+            {getInitials(session.nama)}
+          </span>
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium text-foreground">{session.nama}</p>
+            <p className="truncate text-xs text-muted-foreground">{TIER_LABEL[session.tier]}</p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="mt-1 flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-destructive hover:bg-muted"
+        >
+          <LogOutIcon className="h-4 w-4" />
+          Logout
+        </button>
+      </div>
     </aside>
   );
 }

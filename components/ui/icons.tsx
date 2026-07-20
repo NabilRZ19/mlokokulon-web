@@ -9,6 +9,33 @@ const base = {
   strokeLinejoin: "round" as const,
 };
 
+export function StarIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M12 2.5l2.9 6.26 6.87.86-5.06 4.76 1.42 6.8L12 17.9l-6.13 3.28 1.42-6.8L2.23 9.62l6.87-.86L12 2.5Z" />
+    </svg>
+  );
+}
+
+export function GalleryIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <rect x="3.5" y="4.5" width="17" height="15" rx="1.5" />
+      <circle cx="8.5" cy="9.5" r="1.5" />
+      <path d="m5 17 4.5-5 3 3.5L16 11l4 5" />
+    </svg>
+  );
+}
+
+export function LockIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <rect x="4.5" y="10.5" width="15" height="10" rx="1.5" />
+      <path d="M7.5 10.5V7a4.5 4.5 0 0 1 9 0v3.5" />
+    </svg>
+  );
+}
+
 export function BookIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base} {...props}>

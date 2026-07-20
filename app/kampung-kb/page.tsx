@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { PlaceholderNotice } from "@/components/ui/PlaceholderNotice";
-import { getRwById } from "@/lib/queries";
+import { getGaleriList, getRwById } from "@/lib/queries";
 import { kampungKbData as kb } from "@/lib/seed-data";
 
 export const metadata: Metadata = {
@@ -16,7 +16,10 @@ export const metadata: Metadata = {
 export const revalidate = 3600;
 
 export default async function KampungKbPage() {
-  const rw = await getRwById(kb.rw_ref);
+  const [rw, galeriList] = await Promise.all([getRwById(kb.rw_ref), getGaleriList()]);
+  // PRD Bagian 6.5: "Galeri/dokumentasi kegiatan Kampung KB (opsional, bisa reuse galeri umum
+  // dengan filter kategori)" — reuse koleksi galeri yang sama, filter kategori "kampung-kb".
+  const galeriKampungKb = galeriList.filter((g) => g.kategori === "kampung-kb");
 
   return (
     <div>
@@ -56,6 +59,26 @@ export default async function KampungKbPage() {
             </PlaceholderNotice>
           </div>
         </Card>
+
+        {galeriKampungKb.length > 0 && (
+          <Card>
+            <h2 className="font-heading text-lg font-semibold text-foreground">
+              Galeri Kegiatan
+            </h2>
+            <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {galeriKampungKb.map((g) => (
+                <div key={g.id} className="overflow-hidden rounded-lg border border-border">
+                  {g.tipe === "video" ? (
+                    <video src={g.url_media} controls className="h-40 w-full bg-black object-cover" />
+                  ) : (
+                    <img src={g.url_media} alt={g.judul} className="h-40 w-full object-cover" />
+                  )}
+                  <p className="p-3 text-sm text-foreground">{g.judul}</p>
+                </div>
+              ))}
+            </div>
+          </Card>
+        )}
 
         {rw && (
           <Link

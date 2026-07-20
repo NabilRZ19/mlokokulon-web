@@ -43,31 +43,15 @@ export default async function StrukturPage() {
         {struktur.length === 0 ? (
           <p className="text-sm text-muted-foreground">Data belum tersedia.</p>
         ) : (
-          <div className="flex flex-col items-center overflow-x-auto pb-4">
-            {/* Kepala */}
+          <div className="flex flex-col items-center gap-10">
             <OrgCard person={kepala} isHead />
 
             {staff.length > 0 && (
-              <>
-                {/* Trunk dari kepala */}
-                <div className="h-8 w-px bg-border" />
-
-                {/* Cabang ke staff */}
-                {staff.length > 1 ? (
-                  <div className="mx-auto w-fit border-t border-border">
-                    <div className="flex gap-x-8 sm:gap-x-12">
-                      {staff.map((s) => (
-                        <div key={s.id} className="flex flex-col items-center">
-                          <div className="h-8 w-px bg-border" />
-                          <OrgCard person={s} />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <OrgCard person={staff[0]} />
-                )}
-              </>
+              <div className="flex flex-wrap justify-center gap-6">
+                {staff.map((s) => (
+                  <OrgCard key={s.id} person={s} />
+                ))}
+              </div>
             )}
           </div>
         )}

@@ -1,5 +1,8 @@
 import Link from "next/link";
+import { MapPlaceholder } from "@/components/ui/MapPlaceholder";
+import { SectionPlaceholder } from "@/components/ui/SectionPlaceholder";
 import { Stat } from "@/components/ui/Stat";
+import { BookIcon, GalleryIcon, StarIcon } from "@/components/ui/icons";
 import { kelurahanProfileData as p } from "@/lib/seed-data";
 
 const quickLinks = [
@@ -25,8 +28,10 @@ const quickLinks = [
   },
 ];
 
-// Placeholder Fase 1 — beranda penuh (teaser Kampung KB, Berita terbaru, Galeri carousel,
-// peta fixed) menyusul di Fase 2 sesuai PRD Bagian 6.1, menunggu halaman-halaman dinamis publik.
+// Urutan section sesuai PRD Bagian 6.1: Hero → Statistik+Potensi → Teaser Kampung KB →
+// Berita Terbaru → Galeri (Carousel) → Peta (Fixed) → Footer. 4 section terakhir masih
+// placeholder — konten aslinya nunggu halaman-halaman terkait (Berita/Galeri sudah ada
+// datanya, tapi carousel-nya sendiri belum dirakit) & data GeoJSON peta.
 export default function Home() {
   return (
     <div>
@@ -67,6 +72,46 @@ export default function Home() {
           <Stat label="Kepala Keluarga" value={p.administratif.jumlahKk.toLocaleString("id-ID")} />
           <Stat label="RW" value={`${p.administratif.jumlahRw}`} />
           <Stat label="RT" value={`${p.administratif.jumlahRt}`} />
+        </div>
+      </section>
+
+      {/* Teaser Kampung KB — placeholder */}
+      <section className="mx-auto max-w-6xl px-4 py-14">
+        <SectionPlaceholder
+          icon={StarIcon}
+          variant="accent"
+          title="Teaser Kampung KB"
+          label="Highlight program unggulan Kampung Keluarga Berkualitas akan tampil di sini."
+        />
+      </section>
+
+      {/* Berita Terbaru — placeholder */}
+      <section className="border-t border-border bg-card">
+        <div className="mx-auto max-w-6xl px-4 py-14">
+          <SectionPlaceholder
+            icon={BookIcon}
+            title="Berita Terbaru"
+            label="3-4 kartu berita terbaru akan tampil di sini, dengan tombol “Lihat Semua Berita”."
+          />
+        </div>
+      </section>
+
+      {/* Galeri (Carousel) — placeholder */}
+      <section className="mx-auto max-w-6xl px-4 py-14">
+        <SectionPlaceholder
+          icon={GalleryIcon}
+          title="Galeri"
+          label="Carousel foto/video singkat akan tampil di sini, dengan tombol “Lihat Galeri Lengkap”."
+        />
+      </section>
+
+      {/* Peta (Fixed) — placeholder */}
+      <section className="border-t border-border bg-card">
+        <div className="mx-auto max-w-6xl px-4 py-14">
+          <MapPlaceholder
+            title="Peta Kelurahan"
+            label="Gambar/embed ringan seluruh wilayah kelurahan akan tampil di sini — menunggu data GeoJSON."
+          />
         </div>
       </section>
 

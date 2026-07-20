@@ -1,15 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-// Belum ada Firebase Auth beneran — form controlled biar keliatan hidup, tapi tombol "Masuk"
-// belum punya onSubmit. Menyusul saat guard tier & login diimplementasikan.
 export default function AdminLoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    const res = await fetch("/api/admin/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    setLoading(false);
+
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      setError(data.error ?? "Login gagal");
+      return;
+    }
+
+    router.push("/admin/dashboard");
+    router.refresh();
+  }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background px-4">
+      <Link
+        href="/"
+        className="text-sm text-muted-foreground transition-colors hover:text-primary"
+      >
+        ← Kembali ke Beranda
+      </Link>
+
       <div className="w-full max-w-sm rounded-lg border border-border bg-card p-8 shadow-sm">
         <div className="flex flex-col items-center gap-2 text-center">
           <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary font-heading text-lg font-bold text-white">
@@ -19,7 +52,7 @@ export default function AdminLoginPage() {
           <p className="text-sm text-muted-foreground">Panel CMS Kelurahan Mlokomanis Kulon</p>
         </div>
 
-        <form className="mt-6 space-y-4">
+        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <div>
             <label htmlFor="email" className="text-sm font-medium text-foreground">
               Email
@@ -27,6 +60,7 @@ export default function AdminLoginPage() {
             <input
               id="email"
               type="email"
+              required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="admin@mlokokulon-ngadirojo.com"
@@ -41,6 +75,7 @@ export default function AdminLoginPage() {
             <input
               id="password"
               type="password"
+              required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
@@ -48,11 +83,14 @@ export default function AdminLoginPage() {
             />
           </div>
 
+          {error && <p className="text-sm text-destructive">{error}</p>}
+
           <button
-            type="button"
-            className="w-full rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary/90"
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90 disabled:opacity-60"
           >
-            Masuk
+            {loading ? "Memproses..." : "Masuk"}
           </button>
         </form>
       </div>

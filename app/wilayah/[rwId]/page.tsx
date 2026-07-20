@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
+import { KampungKbTag } from "@/components/ui/KampungKbTag";
 import { MapPlaceholder } from "@/components/ui/MapPlaceholder";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { PlaceholderNotice } from "@/components/ui/PlaceholderNotice";
@@ -40,7 +40,7 @@ export default async function RwDetailPage({ params }: { params: Promise<{ rwId:
       >
         {rw.is_kampung_kb && (
           <div className="mt-4 flex flex-wrap items-center gap-3">
-            <Badge variant="accent">★ Kampung KB</Badge>
+            <KampungKbTag />
             <Link
               href="/kampung-kb"
               className="text-sm font-medium text-white underline underline-offset-2 hover:text-white/80"
