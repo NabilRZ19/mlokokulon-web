@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
+import { Carousel } from "@/components/ui/Carousel";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { PlaceholderNotice } from "@/components/ui/PlaceholderNotice";
 import { getGaleriList, getRwById } from "@/lib/queries";
 import { kampungKbData as kb } from "@/lib/seed-data";
 
@@ -39,26 +39,44 @@ export default async function KampungKbPage() {
           <div className="p-6">
             {rw && <p className="text-sm font-semibold text-accent">Lokasi: {rw.nama_rw}</p>}
             <h2 className="mt-1 font-heading text-lg font-semibold text-foreground">
-              Tentang Program
+              {kb.nama_program}
             </h2>
-            <div className="mt-2">
-              <PlaceholderNotice>{kb.deskripsi_program}</PlaceholderNotice>
-            </div>
+            <p className="text-sm text-muted-foreground">Ketua: {kb.ketua}</p>
+            <p className="mt-3 text-sm text-foreground">{kb.deskripsi_program}</p>
           </div>
         </Card>
 
-        <Card>
-          <h2 className="font-heading text-lg font-semibold text-foreground">Kegiatan Unggulan</h2>
+        <div className="rounded-xl border border-accent/20 bg-accent/5 p-6">
+          <h2 className="font-heading text-lg font-semibold text-foreground">
+            Program Kerja per Pokja
+          </h2>
           <div className="mt-3">
-            <PlaceholderNotice>
-              <ul className="list-inside list-disc">
-                {kb.kegiatan_unggulan.map((k, i) => (
-                  <li key={i}>{k}</li>
-                ))}
-              </ul>
-            </PlaceholderNotice>
+            <Carousel
+              itemsPerSlide={3}
+              items={kb.pokja.map((p, index) => (
+                <Card key={p.nama} className="flex h-full flex-col">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent font-heading text-sm font-bold text-white">
+                      {index + 1}
+                    </span>
+                    <div>
+                      <h3 className="font-heading font-semibold text-foreground">{p.nama}</h3>
+                      <p className="text-xs text-muted-foreground">{p.program.length} program</p>
+                    </div>
+                  </div>
+                  <ul className="mt-4 space-y-2 border-t border-border pt-4 text-sm">
+                    {p.program.map((item, i) => (
+                      <li key={i} className="flex gap-2">
+                        <span className="mt-0.5 shrink-0 text-accent">•</span>
+                        <span className="text-foreground">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </Card>
+              ))}
+            />
           </div>
-        </Card>
+        </div>
 
         {galeriKampungKb.length > 0 && (
           <Card>

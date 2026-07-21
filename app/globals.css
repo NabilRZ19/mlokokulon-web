@@ -36,3 +36,12 @@ h5,
 h6 {
   font-family: var(--font-heading), var(--font-sans), sans-serif;
 }
+
+/* Sembunyikan scrollbar bawaan browser di area scroll horizontal (mis. Carousel) — Tailwind v4
+   tidak punya utility ini built-in. Scroll tetap berfungsi normal, cuma bar-nya yang disembunyikan. */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

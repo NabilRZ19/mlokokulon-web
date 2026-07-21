@@ -170,13 +170,104 @@ export const kontakPerangkatData: KontakPerangkatItem[] = [
   },
 ];
 
-// rw_ref merujuk id dokumen di koleksi Firestore `rw` (masih live-fetch via getRwById),
-// RW 5 (Pencil) = Kampung KB, dikonfirmasi user.
+// rw_ref merujuk id dokumen di koleksi `rw` (masih live-fetch via getRwById), RW 5 (Pencil) =
+// Kampung KB. Data program riil dari dokumen resmi RW (ditandatangani Ketua, 24 Mei 2025) —
+// bukan lagi [DATA MENYUSUL]. Catatan: item "Pendataan BPJS" di Pokja Perlindungan tertulis
+// "BBJS" di dokumen asli, kemungkinan typo — perlu dikonfirmasi ulang ke RW.
 export const kampungKbData: KampungKb = {
   rw_ref: "rw-05",
+  nama_program: "Guyup Hanyawiji",
+  ketua: "Mujiono, S.Pd.I., M.Pd.I.",
   deskripsi_program:
-    "[DATA MENYUSUL] — penjelasan program Kampung KB menunggu konfirmasi Pak RW 05 (Pencil).",
-  kegiatan_unggulan: ["[DATA MENYUSUL]"],
+    "Program Kampung KB \"Guyup Hanyawiji\" di RW 05 (Pencil), diketuai oleh Mujiono, S.Pd.I., " +
+    "M.Pd.I., dibentuk tahun 2025 dengan 8 kelompok kerja (Pokja) yang mencakup bidang " +
+    "keagamaan, pendidikan, reproduksi, ekonomi, perlindungan, kasih sayang, sosial budaya, " +
+    "dan pembinaan lingkungan.",
+  pokja: [
+    {
+      nama: "Pokja Keagamaan",
+      program: [
+        "Pengajian 2 mingguan",
+        "TPQ 3 kali 1 minggu",
+        "Pengajian hari besar Islam",
+        "Program sholat berjamaah di masjid",
+        "Pengajian remaja",
+        "Mengaji tadarus seminggu sekali",
+        "Renovasi masjid",
+      ],
+    },
+    {
+      nama: "Pokja Pendidikan",
+      program: [
+        "Kampung literasi 1x seminggu",
+        "Penyuluhan orang tua pentingnya literasi",
+        "Les mata pelajaran",
+        "Jalan sehat 1 bulan sekali",
+      ],
+    },
+    {
+      nama: "Pokja Reproduksi",
+      program: [
+        "Posyandu balita",
+        "Posyandu lansia",
+        "Posyandu remaja",
+        "Penyuluhan KB PUS",
+        "Penyuluhan reproduksi remaja",
+      ],
+    },
+    {
+      nama: "Pokja Ekonomi",
+      program: [
+        "Bimbingan produk unggulan",
+        "Penanaman bibit sayuran",
+        "Budi daya panili",
+        "Pengembangan budi daya kakao/coklat",
+        "Car Free Day",
+        "Kelompencapir",
+        "Pembuatan ecoprint",
+      ],
+    },
+    {
+      nama: "Pokja Perlindungan",
+      program: [
+        "Penyuluhan bahaya narkoba",
+        "Perizinan orang punya hajat",
+        "Penyuluhan KDRT",
+        "Pendataan BPJS",
+        "Pelayanan administrasi kependudukan",
+      ],
+    },
+    {
+      nama: "Pokja Kasih Sayang",
+      program: [
+        "Iuran kematian",
+        "Dana sosial orang sakit",
+        "Dasolin",
+        "Pemberian makan tambahan lansia",
+        "Pemberian makan tambahan balita",
+      ],
+    },
+    {
+      nama: "Pokja Sosial Budaya",
+      program: [
+        "Membentuk kelompok seni terbang",
+        "Kelompok rebana ibu-ibu",
+        "Menyelenggarakan lomba-lomba budaya",
+      ],
+    },
+    {
+      nama: "Pokja Pembinaan Lingkungan",
+      program: [
+        "Kerja bakti 2 minggu sekali",
+        "Perapian pagar",
+        "Penerangan jalan",
+        "Penunjuk arah",
+        "Penamaan gang jalan",
+        "Pemanfaatan pekarangan",
+        "Pembuatan jemplongan pekarangan",
+      ],
+    },
+  ],
   foto_highlight_url: "/images/placeholder-photo.svg",
 };
 

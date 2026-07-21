@@ -29,10 +29,17 @@ export interface Rw {
   cakupan_wilayah_geojson?: string;
 }
 
+export interface KampungKbPokja {
+  nama: string;
+  program: string[];
+}
+
 export interface KampungKb {
   rw_ref: string;
+  nama_program: string;
+  ketua: string;
   deskripsi_program: string;
-  kegiatan_unggulan: string[];
+  pokja: KampungKbPokja[];
   foto_highlight_url: string;
 }
 
