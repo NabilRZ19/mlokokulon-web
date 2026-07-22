@@ -2,28 +2,21 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Badge } from "@/components/ui/Badge";
+import { BeritaBadge, KATEGORI_LABEL } from "@/components/berita/BeritaBadge";
 import { Card } from "@/components/ui/Card";
 import type { Berita, Rw } from "@/lib/types";
 
-const KATEGORI_LABEL: Record<Berita["kategori"], string> = {
-  pengumuman: "Pengumuman",
-  kegiatan: "Kegiatan",
-  pembangunan: "Pembangunan",
-};
-
 const KATEGORI_OPTIONS: Array<Berita["kategori"] | "semua"> = [
   "semua",
+  "berita",
   "pengumuman",
   "kegiatan",
   "pembangunan",
 ];
 
-// Filter murni client-side atas data yang sudah di-fetch server (SSG/ISR) — tidak ada
-// fetch Firestore tambahan dari browser, sesuai aturan kritikal PRD Bagian 7 poin 2.
 export function BeritaList({ berita, rwList }: { berita: Berita[]; rwList: Rw[] }) {
   const [kategori, setKategori] = useState<(typeof KATEGORI_OPTIONS)[number]>("semua");
-  const [cakupan, setCakupan] = useState<string>("semua"); // "semua" | "kelurahan" | rw id
+  const [cakupan, setCakupan] = useState<string>("semua");
 
   const filtered = useMemo(() => {
     return berita.filter((b) => {
@@ -49,7 +42,7 @@ export function BeritaList({ berita, rwList }: { berita: Berita[]; rwList: Rw[] 
                   : "border-border bg-card text-foreground hover:bg-muted"
               }`}
             >
-              {k === "semua" ? "Semua Kategori" : KATEGORI_LABEL[k]}
+              {k === "semua" ? "Semua Kategori" : KATEGORI_LABEL[k] ?? k}
             </button>
           ))}
         </div>
@@ -75,11 +68,11 @@ export function BeritaList({ berita, rwList }: { berita: Berita[]; rwList: Rw[] 
         <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((b) => (
             <Link key={b.id} href={`/berita/${b.slug}`}>
-              <Card padded={false} className="h-full overflow-hidden transition-all duration-300 hover:border-primary hover:ring-2 hover:ring-primary/20">
+              <Card padded={false} className="h-full overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md">
                 <img src={b.gambar_cover_url} alt={b.judul} className="h-40 w-full object-cover" />
                 <div className="p-4">
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <Badge>{KATEGORI_LABEL[b.kategori]}</Badge>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1.5">
+                    <BeritaBadge kategori={b.kategori} />
                     <span>
                       {new Date(b.tanggal).toLocaleDateString("id-ID", {
                         day: "numeric",
@@ -88,8 +81,8 @@ export function BeritaList({ berita, rwList }: { berita: Berita[]; rwList: Rw[] 
                       })}
                     </span>
                   </div>
-                  <h2 className="mt-2 font-heading font-semibold text-foreground">{b.judul}</h2>
-                  <p className="mt-1 text-sm text-muted-foreground">
+                  <h2 className="mt-2 font-heading font-semibold text-foreground line-clamp-2">{b.judul}</h2>
+                  <p className="mt-1 text-xs text-muted-foreground">
                     {b.cakupan === "kelurahan" ? "Kelurahan" : b.rw_nama}
                   </p>
                 </div>

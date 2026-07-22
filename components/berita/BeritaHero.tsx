@@ -66,32 +66,6 @@ export function BeritaHero() {
             Pusat informasi publik resmi Kelurahan Mlokomanis Kulon. Temukan warta kegiatan, berita pembangunan, dan pengumuman publik dari setiap RW.
           </p>
 
-          {/* Feature Highlights Strip */}
-          <div className="pt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <div className="flex items-center gap-3 rounded-xl border border-white/15 bg-white/10 p-3.5 backdrop-blur-md shadow-sm transition-colors hover:border-white/25">
-              <IconZap />
-              <div>
-                <p className="font-heading text-xs font-bold text-white">Terupdate</p>
-                <p className="font-sans text-[11px] text-blue-200/80">Kabar kegiatan berkala</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 rounded-xl border border-white/15 bg-white/10 p-3.5 backdrop-blur-md shadow-sm transition-colors hover:border-white/25">
-              <IconBuilding />
-              <div>
-                <p className="font-heading text-xs font-bold text-white">Sumber Resmi</p>
-                <p className="font-sans text-[11px] text-blue-200/80">Perangkat desa &amp; RW</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 rounded-xl border border-white/15 bg-white/10 p-3.5 backdrop-blur-md shadow-sm transition-colors hover:border-white/25">
-              <IconShieldCheck />
-              <div>
-                <p className="font-heading text-xs font-bold text-white">Transparan</p>
-                <p className="font-sans text-[11px] text-blue-200/80">Akses publik terbuka</p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

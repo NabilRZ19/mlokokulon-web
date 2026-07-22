@@ -6,7 +6,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { layananData } from "@/lib/seed-data";
 
 export const metadata: Metadata = {
-  title: "Layanan 3 in 1 & Kependudukan — Kelurahan Mlokomanis Kulon",
+  title: "Pelayanan Publik — Kelurahan Mlokomanis Kulon",
 };
 
 function IconFileText() {
@@ -46,48 +46,77 @@ function IconCheckCircle() {
   );
 }
 
+function IconInfo() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-5 w-5 text-primary shrink-0"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="16" x2="12" y2="12" />
+      <line x1="12" y1="8" x2="12.01" y2="8" />
+    </svg>
+  );
+}
+
 export default function LayananPage() {
   return (
     <div className="min-h-screen bg-background pb-12">
       <PageHeader
-        badge="Administrasi Kependudukan Disdukcapil"
-        title="Layanan 3 in 1 &amp; Akta Pencatatan Sipil"
-        description="Panduan lengkap syarat pengurusan paket dokumen 3 in 1 (Akta Kelahiran, Akta Kematian, Akta Perkawinan, KK, KTP-el &amp; KIA) di Kelurahan Mlokomanis Kulon."
+        badge="Pusat Pelayanan Publik Desa"
+        title="Layanan Publik Kelurahan"
+        description="Informasi resmi panduan dan persyaratan pengurusan administrasi kependudukan, pencatatan sipil, serta surat pengantar di Kantor Kelurahan Mlokomanis Kulon."
       />
 
       <div className="mx-auto max-w-6xl px-4 py-10 space-y-8">
-        {/* ── Banner Informasi Pelayanan 3 in 1 Gratis ────────────────────── */}
+        {/* ── Banner Gambaran Umum Pelayanan Kelurahan ───────────────────── */}
         <div className="overflow-hidden rounded-xl border border-primary/20 bg-gradient-to-r from-primary/10 via-primary/5 to-background p-6 shadow-sm sm:p-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-1.5">
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center rounded-full bg-emerald-600 px-2.5 py-0.5 text-xs font-bold text-white">
-                  100% GRATIS
+                <span className="inline-flex items-center rounded-full bg-primary px-2.5 py-0.5 text-xs font-bold text-white">
+                  Pelayanan Terpadu
                 </span>
                 <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Disdukcapil Kab. Wonogiri
+                  Kantor Kelurahan Mlokomanis Kulon
                 </span>
               </div>
               <h2 className="font-heading text-xl font-extrabold text-foreground sm:text-2xl">
-                Pelayanan Paket &ldquo;3 in 1&rdquo; Akta Pencatatan Sipil
+                Layanan Administrasi &amp; Kependudukan Warga
               </h2>
               <p className="text-sm text-muted-foreground leading-relaxed max-w-3xl">
-                Urus 1 dokumen akta, otomatis terbit 3 dokumen kependudukan sekaligus (Akta, Kartu Keluarga baru, dan KTP-el / Kartu Identitas Anak).
+                Kantor Kelurahan Mlokomanis Kulon memfasilitasi pengurusan berbagai dokumen kependudukan, pengantar surat resmi, serta pelayanan integrasi 3 in 1 pencatatan sipil bekerja sama dengan Disdukcapil Kabupaten Wonogiri.
               </p>
             </div>
             <Link
               href="/kontak"
               className="shrink-0 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary/90 hover:shadow"
             >
-              Konsultasi Layanan →
+              Hubungi Petugas Layanan →
             </Link>
+          </div>
+        </div>
+
+        {/* ── Notice Tahap Pengumpulan Data ─────────────────────────────── */}
+        <div className="flex items-start gap-3 rounded-xl border border-blue-200/80 bg-blue-50/60 p-4 text-sm text-blue-900 shadow-xs">
+          <IconInfo />
+          <div>
+            <p className="font-heading font-bold text-blue-950">Catatan Pembaruan Layanan:</p>
+            <p className="mt-0.5 text-xs text-blue-800 leading-relaxed">
+              Daftar rincian persyaratan di bawah ini memuat data pelayanan resmi paket 3 in 1 dan kependudukan Disdukcapil Wonogiri yang telah terverifikasi. Rincian syarat untuk layanan pengantar surat desa lainnya saat ini masih dalam <strong>tahap pengumpulan data [DATA MENYUSUL]</strong> dan akan terus diperbarui secara bertahap.
+            </p>
           </div>
         </div>
 
         {/* ── Grid Daftar Layanan Resmi ───────────────────────────────────── */}
         <div className="grid gap-6 md:grid-cols-2">
           {layananData.map((item) => (
-            <Card key={item.id} className="flex flex-col justify-between p-6 sm:p-7">
+            <Card key={item.id} className="flex flex-col justify-between p-6 sm:p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md">
               <div className="space-y-4">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
@@ -101,7 +130,7 @@ export default function LayananPage() {
                       <p className="text-xs font-medium text-primary">Disdukcapil Wonogiri</p>
                     </div>
                   </div>
-                  <Badge variant="accent">3 in 1</Badge>
+                  <Badge variant="accent">Pelayanan Resmi</Badge>
                 </div>
 
                 <p className="text-sm leading-relaxed text-foreground">{item.deskripsi}</p>

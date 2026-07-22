@@ -66,32 +66,6 @@ export function UmkmHero() {
             Temukan produk kerajinan, kuliner olahan, dan beragam jasa usaha lokal karya warga Kelurahan Mlokomanis Kulon. Mari dukung perekonomian desa kita!
           </p>
 
-          {/* Feature Highlights Strip */}
-          <div className="pt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <div className="flex items-center gap-3 rounded-xl border border-white/15 bg-white/10 p-3.5 backdrop-blur-md shadow-sm transition-colors hover:border-emerald-400/30">
-              <IconHandshake />
-              <div>
-                <p className="font-heading text-xs font-bold text-white">Dukung Usaha Lokal</p>
-                <p className="font-sans text-[11px] text-emerald-200/80">Langsung dari produsen</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 rounded-xl border border-white/15 bg-white/10 p-3.5 backdrop-blur-md shadow-sm transition-colors hover:border-emerald-400/30">
-              <IconMessageCircle />
-              <div>
-                <p className="font-heading text-xs font-bold text-white">Direct WhatsApp</p>
-                <p className="font-sans text-[11px] text-emerald-200/80">Pesan tanpa perantara</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 rounded-xl border border-white/15 bg-white/10 p-3.5 backdrop-blur-md shadow-sm transition-colors hover:border-emerald-400/30">
-              <IconMapPin />
-              <div>
-                <p className="font-heading text-xs font-bold text-white">Lokasi Terverifikasi</p>
-                <p className="font-sans text-[11px] text-emerald-200/80">Panduan Google Maps</p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

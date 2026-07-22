@@ -43,7 +43,7 @@ export interface KampungKb {
   foto_highlight_url: string;
 }
 
-export type BeritaKategori = "pengumuman" | "kegiatan" | "pembangunan";
+export type BeritaKategori = "pengumuman" | "kegiatan" | "pembangunan" | "berita";
 export type BeritaCakupan = "kelurahan" | "rw";
 
 export interface Berita {

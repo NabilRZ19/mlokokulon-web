@@ -49,7 +49,7 @@ export const berita = mysqlTable("berita", {
   isi: text("isi").notNull(),
   // mode "string" biar tipe TS tetap string, sama kayak Berita.tanggal sebelumnya
   tanggal: date("tanggal", { mode: "string" }).notNull(),
-  kategori: mysqlEnum("kategori", ["pengumuman", "kegiatan", "pembangunan"]).notNull(),
+  kategori: mysqlEnum("kategori", ["pengumuman", "kegiatan", "pembangunan", "berita"]).notNull(),
   cakupan: mysqlEnum("cakupan", ["kelurahan", "rw"]).notNull(),
   rwId: varchar("rw_id", { length: 64 }).references(() => rw.id),
   rwNama: varchar("rw_nama", { length: 255 }), // denormalisasi, PRD Bagian 7 poin 4

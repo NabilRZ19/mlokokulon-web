@@ -11,7 +11,7 @@ interface CardProps {
 export function Card({ children, className = "", padded = true }: CardProps) {
   return (
     <div
-      className={`rounded-lg border border-border bg-card shadow-sm transition-shadow hover:shadow-md ${
+      className={`rounded-lg border border-border bg-card shadow-sm transition-all duration-300 ${
         padded ? "p-5" : ""
       } ${className}`}
     >

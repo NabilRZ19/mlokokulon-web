@@ -101,7 +101,7 @@ export function UmkmList({ umkm }: { umkm: Umkm[] }) {
               <Link key={u.id} href={`/umkm/${u.slug}`} className="group">
                 <Card
                   padded={false}
-                  className="h-full overflow-hidden transition-all duration-300 hover:border-primary hover:shadow-md hover:ring-2 hover:ring-primary/20 flex flex-col"
+                  className="h-full overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md flex flex-col"
                 >
                   {/* Image Container with Badges */}
                   <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">

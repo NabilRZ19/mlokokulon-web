@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BeritaBadge } from "@/components/berita/BeritaBadge";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { MapPlaceholder } from "@/components/ui/MapPlaceholder";
@@ -162,23 +163,23 @@ export default async function Home() {
       </section>
 
       {/* ── 2. Gambaran Umum Kelurahan (Statistik Demografi Improved) ─────── */}
-      <section className="border-b border-border bg-card py-12 shadow-xs">
+      <section className="border-b border-border bg-card py-16 shadow-xs">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="mb-8 text-center space-y-1">
+          <div className="mb-10 text-center space-y-2">
             <span className="text-xs font-bold uppercase tracking-widest text-primary">
               Data Demografi &amp; Wilayah
             </span>
-            <h2 className="font-heading text-2xl font-extrabold text-foreground sm:text-3xl">
+            <h2 className="font-heading text-2xl font-extrabold text-foreground sm:text-3xl mt-1">
               Gambaran Umum Kelurahan
             </h2>
-            <p className="text-sm text-muted-foreground max-w-xl mx-auto">
+            <p className="text-sm text-muted-foreground max-w-xl mx-auto mt-2 leading-relaxed">
               Ringkasan statistik kependudukan dan pembagian wilayah administratif di Kelurahan Mlokomanis Kulon.
             </p>
           </div>
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {/* Kartu 1: Total Penduduk */}
-            <Card className="flex items-center gap-4 p-5 transition-all duration-300 hover:border-primary/40 hover:shadow-md">
+            <Card className="flex items-center gap-4 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
                 <IconUsers />
               </div>
@@ -194,7 +195,7 @@ export default async function Home() {
             </Card>
 
             {/* Kartu 2: Kepala Keluarga */}
-            <Card className="flex items-center gap-4 p-5 transition-all duration-300 hover:border-primary/40 hover:shadow-md">
+            <Card className="flex items-center gap-4 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
                 <IconHome />
               </div>
@@ -210,7 +211,7 @@ export default async function Home() {
             </Card>
 
             {/* Kartu 3: Rukun Warga (RW) */}
-            <Card className="flex items-center gap-4 p-5 transition-all duration-300 hover:border-primary/40 hover:shadow-md">
+            <Card className="flex items-center gap-4 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
                 <IconBuilding />
               </div>
@@ -226,7 +227,7 @@ export default async function Home() {
             </Card>
 
             {/* Kartu 4: Rukun Tetangga (RT) */}
-            <Card className="flex items-center gap-4 p-5 transition-all duration-300 hover:border-primary/40 hover:shadow-md">
+            <Card className="flex items-center gap-4 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10">
                 <IconMapPin />
               </div>
@@ -252,31 +253,57 @@ export default async function Home() {
 
         <div className="relative mx-auto max-w-6xl px-4 space-y-8">
           {/* Section Header */}
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div className="space-y-1.5">
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-300 backdrop-blur-md">
-                <SproutIcon className="h-4 w-4 text-emerald-300" />
-                <span>Program Unggulan Kelurahan</span>
-              </div>
-              <h2 className="font-heading text-2xl font-extrabold text-white sm:text-3xl lg:text-4xl">
-                Kampung KB &ldquo;{kb.nama_program}&rdquo;
-              </h2>
-              <p className="max-w-2xl text-sm leading-relaxed text-emerald-100/90">
-                Program unggulan pembinaan keluarga berkualitas di RW 05 Dusun Pencil untuk memajukan potensi, kesehatan, dan kesejahteraan warga desa.
-              </p>
+          <div className="space-y-2.5">
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-300 backdrop-blur-md">
+              <SproutIcon className="h-4 w-4 text-emerald-300" />
+              <span>Program Unggulan Kelurahan</span>
+            </div>
+            <h2 className="font-heading text-2xl font-extrabold text-white sm:text-3xl lg:text-4xl mt-1">
+              Kampung KB &ldquo;{kb.nama_program}&rdquo;
+            </h2>
+            <p className="max-w-2xl text-sm leading-relaxed text-emerald-100/90 mt-2">
+              Program unggulan pembinaan keluarga berkualitas di RW 05 Dusun Pencil untuk memajukan potensi, kesehatan, dan kesejahteraan warga desa.
+            </p>
+          </div>
+
+          {/* Headline Photo Placeholder */}
+          <div className="group relative overflow-hidden rounded-xl border border-emerald-200/30 bg-card/95 shadow-lg">
+            <img
+              src={kb.foto_highlight_url}
+              alt={`Kampung KB ${kb.nama_program}`}
+              className="h-56 w-full object-cover sm:h-72 lg:h-80 transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            <p className="absolute bottom-0 left-0 right-0 p-4 text-xs font-semibold text-white translate-y-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 drop-shadow-md">
+              Dokumentasi kegiatan program unggulan Kampung KB &ldquo;{kb.nama_program}&rdquo;
+            </p>
+          </div>
+
+          {/* Judul List Pokja & Tombol CTA */}
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between pt-2">
+            <div className="space-y-1">
+              <span className="text-[11px] font-bold uppercase tracking-widest text-emerald-300">
+                Kelompok Kerja
+              </span>
+              <h3 className="font-heading text-lg font-extrabold text-white sm:text-xl">
+                Daftar Kelompok Kerja (Pokja)
+              </h3>
             </div>
             <Link
               href="/kampung-kb"
-              className="shrink-0 self-start rounded-lg bg-emerald-500 px-5 py-2.5 text-sm font-bold text-white shadow-md transition-all hover:bg-emerald-400 hover:shadow-lg sm:self-auto"
+              className="inline-flex items-center gap-1.5 self-start rounded-full border border-emerald-400/40 bg-emerald-500/20 px-4 py-2 text-xs font-bold text-emerald-200 backdrop-blur-md shadow-xs transition-all duration-300 hover:bg-emerald-500 hover:text-white hover:border-emerald-400 hover:shadow-md hover:-translate-y-0.5 sm:self-auto"
             >
-              Lihat Program Lengkap →
+              Lihat Pokja Lainnya →
             </Link>
           </div>
 
           {/* Pokja Grid Teaser Cards */}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {pokjaTeaser.map((pokja, idx) => (
-              <Card key={pokja.nama} className="flex flex-col justify-between gap-3 p-5 bg-card/95 backdrop-blur-md border-emerald-200/20 shadow-md">
+              <Card
+                key={pokja.nama}
+                className="flex flex-col justify-between gap-3 p-5 bg-card/95 backdrop-blur-md border-emerald-200/20 shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md"
+              >
                 <div>
                   <div className="flex items-center gap-3">
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent/15 font-heading text-sm font-bold text-accent">
@@ -301,11 +328,6 @@ export default async function Home() {
               </Card>
             ))}
           </div>
-
-          {/* Total Pokja Footer Note */}
-          <p className="text-center text-xs text-emerald-200/80">
-            Program mencakup <strong>{kb.pokja.length} Kelompok Kerja (Pokja)</strong> aktif di RW 05 Dusun Pencil.
-          </p>
         </div>
       </section>
 
@@ -317,36 +339,36 @@ export default async function Home() {
 
         <div className="relative mx-auto max-w-6xl px-4">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div className="space-y-1">
+            <div className="space-y-2">
               <span className="text-xs font-bold uppercase tracking-widest text-blue-200">
                 Informasi &amp; Warta
               </span>
-              <h2 className="font-heading text-2xl font-extrabold text-white sm:text-3xl">
-                Berita Terbaru
+              <h2 className="font-heading text-2xl font-extrabold text-white sm:text-3xl mt-1">
+                Berita dan Pengumuman
               </h2>
-              <p className="text-sm text-blue-100/80 max-w-xl">
+              <p className="text-sm text-blue-100/80 max-w-xl mt-2 leading-relaxed">
                 Informasi terkini, pengumuman resmi, dan kabar warta kegiatan pembangunan di lingkungan Kelurahan Mlokomanis Kulon.
               </p>
             </div>
             <Link
               href="/berita"
-              className="text-sm font-semibold text-blue-200 hover:text-white transition-colors hover:underline shrink-0"
+              className="inline-flex items-center gap-1.5 self-start rounded-full border border-white/25 bg-white/10 px-4 py-2 text-xs font-bold text-white backdrop-blur-md shadow-xs transition-all duration-300 hover:bg-white hover:text-primary hover:border-white hover:shadow-md hover:-translate-y-0.5 sm:self-auto shrink-0"
             >
               Lihat Semua Berita →
             </Link>
           </div>
 
           {beritaTerbaru.length === 0 ? (
-            <p className="mt-8 text-sm text-blue-100/80">
+            <p className="mt-10 text-sm text-blue-100/80">
               Belum ada berita. Konten akan segera hadir.
             </p>
           ) : (
-            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {beritaTerbaru.map((b) => (
                 <Link key={b.id} href={`/berita/${b.slug}`}>
                   <Card
                     padded={false}
-                    className="h-full overflow-hidden border-white/20 bg-card text-foreground transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:ring-2 hover:ring-white/40"
+                    className="h-full overflow-hidden border-white/20 bg-card text-foreground transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md"
                   >
                     <img
                       src={b.gambar_cover_url}
@@ -355,7 +377,7 @@ export default async function Home() {
                     />
                     <div className="p-5">
                       <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <Badge>{KATEGORI_LABEL[b.kategori] ?? b.kategori}</Badge>
+                        <BeritaBadge kategori={b.kategori} />
                         <span>
                           {new Date(b.tanggal).toLocaleDateString("id-ID", {
                             day: "numeric",
@@ -381,28 +403,28 @@ export default async function Home() {
 
       {/* ── 5. Galeri Kegiatan ───────────────────────────────────────────── */}
       {galeritTampil.length > 0 && (
-        <section className="mx-auto max-w-6xl px-4 py-14">
+        <section className="mx-auto max-w-6xl px-4 py-16">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div className="space-y-1">
+            <div className="space-y-2">
               <span className="text-xs font-bold uppercase tracking-widest text-primary">
                 Dokumentasi Media
               </span>
-              <h2 className="font-heading text-2xl font-bold text-foreground sm:text-3xl">
+              <h2 className="font-heading text-2xl font-bold text-foreground sm:text-3xl mt-1">
                 Galeri Kegiatan
               </h2>
-              <p className="text-sm text-muted-foreground max-w-xl">
+              <p className="text-sm text-muted-foreground max-w-xl mt-2 leading-relaxed">
                 Dokumentasi visual rangkaian acara, kegiatan kemasyarakatan, dan program kerja kelurahan.
               </p>
             </div>
             <Link
               href="/galeri"
-              className="text-sm font-semibold text-primary hover:underline shrink-0"
+              className="inline-flex items-center gap-1.5 self-start rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-xs font-bold text-primary shadow-xs transition-all duration-300 hover:bg-primary hover:text-white hover:border-primary hover:shadow-md hover:-translate-y-0.5 sm:self-auto shrink-0"
             >
               Lihat Galeri Lengkap →
             </Link>
           </div>
 
-          <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-3">
+          <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-3">
             {galeritTampil.map((g) => (
               <Link
                 key={g.id}
@@ -429,14 +451,14 @@ export default async function Home() {
         <div className="pointer-events-none absolute -left-20 -bottom-20 h-80 w-80 rounded-full bg-secondary/20 blur-3xl" />
 
         <div className="relative mx-auto max-w-6xl px-4 space-y-4">
-          <div className="space-y-1">
+          <div className="space-y-2">
             <span className="text-xs font-bold uppercase tracking-widest text-blue-200">
               Lokasi &amp; Geografis
             </span>
-            <h2 className="font-heading text-2xl font-extrabold text-white sm:text-3xl">
+            <h2 className="font-heading text-2xl font-extrabold text-white sm:text-3xl mt-1">
               Peta Wilayah Kelurahan
             </h2>
-            <p className="text-sm text-blue-100/80 max-w-xl">
+            <p className="text-sm text-blue-100/80 max-w-xl mt-2 leading-relaxed">
               Visualisasi dan pemetaan cakupan batas wilayah administratif Kelurahan Mlokomanis Kulon.
             </p>
           </div>
@@ -450,14 +472,14 @@ export default async function Home() {
 
       {/* ── 7. Quick Links ────────────────────────────────────────────────── */}
       <section className="mx-auto max-w-6xl px-4 py-16">
-        <div className="space-y-1">
+        <div className="space-y-2 mb-10">
           <span className="text-xs font-bold uppercase tracking-widest text-primary">
             Navigasi Cepat
           </span>
-          <h2 className="font-heading text-2xl font-bold text-foreground sm:text-3xl">
+          <h2 className="font-heading text-2xl font-bold text-foreground sm:text-3xl mt-1">
             Jelajahi Website
           </h2>
-          <p className="text-sm text-muted-foreground max-w-xl">
+          <p className="text-sm text-muted-foreground max-w-xl mt-2 leading-relaxed">
             Pintasan navigasi langsung menuju halaman utama profil desa, struktur organisasi, layanan publik, dan informasi kontak.
           </p>
         </div>

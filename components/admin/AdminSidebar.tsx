@@ -48,7 +48,7 @@ export function AdminSidebar({ session }: { session: SessionPayload }) {
   }
 
   return (
-    <aside className="flex h-screen w-60 shrink-0 flex-col border-r border-border bg-card">
+    <aside className="sticky top-0 flex h-screen w-60 shrink-0 flex-col border-r border-border bg-card overflow-y-auto z-30">
       <Link
         href="/admin/dashboard"
         className="flex items-center gap-2.5 border-b border-border px-4 py-4"

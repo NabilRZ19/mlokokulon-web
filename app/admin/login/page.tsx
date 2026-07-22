@@ -38,7 +38,7 @@ export default function AdminLoginPage() {
     <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background px-4">
       <Link
         href="/"
-        className="text-sm text-muted-foreground transition-colors hover:text-primary"
+        className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-4 py-2 text-xs font-semibold text-foreground shadow-xs transition-all duration-300 hover:border-primary/50 hover:bg-primary/5 hover:text-primary hover:shadow-md hover:-translate-y-0.5"
       >
         ← Kembali ke Beranda
       </Link>

@@ -42,31 +42,65 @@ export default function ProfilPage() {
             </div>
           </Card>
 
-          <div className="grid gap-6 sm:grid-cols-2">
-            <Card>
-              <h2 className="flex items-center gap-2 font-heading text-lg font-semibold text-foreground">
-                <FlagIcon className="h-5 w-5 text-primary" /> Visi
-              </h2>
-              <div className="mt-3">
-                <PlaceholderNotice>{p.visi}</PlaceholderNotice>
+          {/* Visi & Misi Unified Section */}
+          <Card>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-3">
+                <div className="flex items-center gap-2">
+                  <TargetIcon className="h-5 w-5 text-primary" />
+                  <h2 className="font-heading text-lg font-bold text-foreground">
+                    Visi &amp; Misi
+                  </h2>
+                </div>
+                <span className="text-xs font-semibold text-muted-foreground">
+                  Kabupaten Wonogiri
+                </span>
               </div>
-            </Card>
 
-            <Card>
-              <h2 className="flex items-center gap-2 font-heading text-lg font-semibold text-foreground">
-                <TargetIcon className="h-5 w-5 text-primary" /> Misi
-              </h2>
-              <div className="mt-3">
-                <PlaceholderNotice>
-                  <ul className="list-inside list-disc">
+              {/* Statement Visi & Misi */}
+              <div className="space-y-4">
+                {/* Visi */}
+                <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
+                  <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                    Visi Pembangunan
+                  </span>
+                  <p className="mt-1 font-heading text-base font-bold text-foreground leading-relaxed">
+                    {p.visi}
+                  </p>
+                </div>
+
+                {/* Misi */}
+                <div className="space-y-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                    Misi Pembangunan
+                  </span>
+                  <ol className="space-y-2 text-sm text-foreground">
                     {p.misi.map((m, i) => (
-                      <li key={i}>{m}</li>
+                      <li
+                        key={i}
+                        className="flex items-start gap-2.5 rounded-md border border-border bg-card p-3"
+                      >
+                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                          {i + 1}
+                        </span>
+                        <span className="leading-relaxed">{m}</span>
+                      </li>
                     ))}
-                  </ul>
-                </PlaceholderNotice>
+                  </ol>
+                </div>
               </div>
-            </Card>
-          </div>
+
+              {/* Narasi Penyelarasan / Alignment */}
+              <div className="rounded-lg border border-border bg-muted/40 p-4 space-y-1.5">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
+                  Narasi Penyelarasan Kelurahan
+                </h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Pemerintah Kelurahan Mlokomanis Kulon sepenuhnya menginduk dan menyelaraskan seluruh arah kebijakan tata kelola pemerintahan, pembangunan wilayah, dan pelayanan publik secara terpadu mengikuti Visi dan Misi Kabupaten Wonogiri demi terwujudnya masyarakat yang sejahtera, berdaya saing, dan berkelanjutan.
+                </p>
+              </div>
+            </div>
+          </Card>
 
           <Card>
             <h2 className="flex items-center gap-2 font-heading text-lg font-semibold text-foreground">

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 import type { Umkm } from "@/lib/types";
 
-// ─── Inline Icons ────────────────────────────────────────────────────────────
 function IconClock() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}
@@ -95,7 +94,7 @@ export function UmkmDetailView({ umkm }: { umkm: Umkm }) {
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <Link
             href="/umkm"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}
               strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
@@ -106,13 +105,12 @@ export function UmkmDetailView({ umkm }: { umkm: Umkm }) {
           <Badge>{umkm.kategori}</Badge>
         </div>
 
-        {/* ── Grid Showcase (2 Kolom: Kiri Konten & Galeri, Kanan Sidebar Detail) ── */}
+        {/* ── Grid Showcase (2 Kolom: Kiri Foto & Deskripsi, Kanan Sticky Sidebar) ── */}
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-          {/* ── Kolom Kiri: Galeri & Detail Usaha (Col 7 / 12) ─────────────── */}
+          {/* ── Kolom Kiri: Galeri Foto, Deskripsi, & Produk Unggulan (Col 7 / 8) ─ */}
           <div className="space-y-6 lg:col-span-7 xl:col-span-8">
             {/* Gallery Card */}
             <div className="overflow-hidden rounded-xl border border-border bg-card p-4 shadow-sm">
-              {/* Main Image */}
               <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-muted">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -144,9 +142,9 @@ export function UmkmDetailView({ umkm }: { umkm: Umkm }) {
               )}
             </div>
 
-            {/* Tentang Usaha */}
+            {/* Card 1: Tentang Usaha */}
             <div className="rounded-xl border border-border bg-card p-6 shadow-sm sm:p-8">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 border-b border-border pb-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
                   <IconStore />
                 </div>
@@ -158,61 +156,52 @@ export function UmkmDetailView({ umkm }: { umkm: Umkm }) {
                 </div>
               </div>
 
-              <hr className="my-5 border-border" />
-
-              <div className="whitespace-pre-line text-sm leading-relaxed text-foreground">
+              <div className="mt-5 whitespace-pre-line text-sm leading-relaxed text-foreground">
                 {umkm.deskripsi}
               </div>
             </div>
 
-            {/* Produk Unggulan */}
+            {/* Card 2: Produk & Layanan Unggulan (Tampilan Bersih & Terpisah) */}
             {umkm.produk_unggulan.length > 0 && (
               <div className="rounded-xl border border-border bg-card p-6 shadow-sm sm:p-8">
                 <h3 className="font-heading text-base font-bold text-foreground">
                   Produk &amp; Layanan Unggulan
                 </h3>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  Daftar produk populer yang ditawarkan oleh {umkm.nama}
+                  Daftar produk dan layanan yang ditawarkan oleh {umkm.nama}
                 </p>
 
-                <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <ul className="mt-4 space-y-2.5 text-sm text-foreground">
                   {umkm.produk_unggulan.map((produk, idx) => (
-                    <div
+                    <li
                       key={idx}
-                      className="flex items-center gap-3 rounded-lg border border-border bg-muted/40 p-3.5 transition-colors hover:border-primary/40"
+                      className="flex items-center gap-3 rounded-lg border border-border/70 bg-muted/30 p-3 transition-colors hover:border-primary/40"
                     >
-                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent/15">
+                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/15">
                         <IconCheck />
                       </div>
-                      <span className="text-sm font-semibold text-foreground">{produk}</span>
-                    </div>
+                      <span className="font-semibold text-foreground">{produk}</span>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
             )}
           </div>
 
-          {/* ── Kolom Kanan: Sticky Information Card (Col 5 / 12) ───────────── */}
+          {/* ── Kolom Kanan: Sticky Information Card (Col 5 / 4) ───────────── */}
           <div className="lg:col-span-5 xl:col-span-4">
             <div className="sticky top-6 space-y-6">
-              <div className="overflow-hidden rounded-xl border border-border bg-card p-6 shadow-md">
+              <div className="overflow-hidden rounded-xl border border-border bg-card p-6 shadow-sm">
                 {/* Header Toko */}
-                <div className="border-b border-border pb-5">
-                  <div className="flex items-center justify-between">
-                    <Badge variant="accent">{umkm.kategori}</Badge>
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 border border-emerald-200">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                      Aktif / Melayani
-                    </span>
-                  </div>
-                  <h1 className="mt-3 font-heading text-2xl font-bold text-foreground">
+                <div className="border-b border-border pb-4">
+                  <Badge>{umkm.kategori}</Badge>
+                  <h1 className="mt-2.5 font-heading text-2xl font-bold text-foreground">
                     {umkm.nama}
                   </h1>
                 </div>
 
                 {/* Info List */}
                 <div className="space-y-4 py-5 text-sm">
-                  {/* Jam Operasional */}
                   <div className="flex items-start gap-3">
                     <IconClock />
                     <div>
@@ -221,16 +210,14 @@ export function UmkmDetailView({ umkm }: { umkm: Umkm }) {
                     </div>
                   </div>
 
-                  {/* Kontak / HP */}
                   <div className="flex items-start gap-3">
                     <IconPhone />
                     <div>
-                      <p className="text-xs font-medium text-muted-foreground">Nomor Telepon / WA</p>
+                      <p className="text-xs font-medium text-muted-foreground">Nomor Telepon / WhatsApp</p>
                       <p className="font-semibold text-foreground">{umkm.kontak}</p>
                     </div>
                   </div>
 
-                  {/* Lokasi */}
                   <div className="flex items-start gap-3">
                     <IconMapPin />
                     <div>
@@ -264,12 +251,6 @@ export function UmkmDetailView({ umkm }: { umkm: Umkm }) {
                     </a>
                   )}
                 </div>
-              </div>
-
-              {/* Box Himbauan Dukung UMKM */}
-              <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 text-xs text-foreground">
-                <p className="font-bold text-primary mb-1">💡 Dukung UMKM Lokal</p>
-                Beli dan gunakan produk buatan warga Kelurahan Mlokomanis Kulon untuk membantu pertumbuhan ekonomi desa.
               </div>
             </div>
           </div>
