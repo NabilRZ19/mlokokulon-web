@@ -24,6 +24,7 @@ export default async function KampungKbPage() {
   return (
     <div>
       <PageHeader
+        badge="Program Unggulan Desa"
         variant="accent"
         title="Kampung KB"
         description="Program unggulan Kampung Keluarga Berkualitas Kelurahan Mlokomanis Kulon."

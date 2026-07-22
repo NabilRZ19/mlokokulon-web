@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import { BeritaHero } from "@/components/berita/BeritaHero";
 import { BeritaList } from "@/components/berita/BeritaList";
-import { PageHeader } from "@/components/ui/PageHeader";
 import { getBeritaList, getRwList } from "@/lib/queries";
 
 export const metadata: Metadata = {
@@ -14,10 +14,7 @@ export default async function BeritaPage() {
 
   return (
     <div>
-      <PageHeader
-        title="Berita & Pengumuman"
-        description="Kabar terbaru dari Kelurahan Mlokomanis Kulon dan RW-RW di dalamnya."
-      />
+      <BeritaHero />
 
       <div className="mx-auto max-w-6xl px-4 py-12">
         <BeritaList berita={berita} rwList={rwList} />

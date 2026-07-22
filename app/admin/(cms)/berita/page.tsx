@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { RefreshButton } from "@/components/admin/RefreshButton";
 import { Badge } from "@/components/ui/Badge";
@@ -17,12 +18,12 @@ export default function AdminBeritaPage() {
         actions={
           <>
             <RefreshButton />
-            <button
-              type="button"
+            <Link
+              href="/admin/berita/tambah"
               className="rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-white hover:bg-primary/90"
             >
               + Tambah Berita
-            </button>
+            </Link>
           </>
         }
       />

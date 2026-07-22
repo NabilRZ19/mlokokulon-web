@@ -25,6 +25,7 @@ export default function ProfilPage() {
   return (
     <div>
       <PageHeader
+        badge="Profil & Geografis Desa"
         title="Profil Desa"
         description={`Kelurahan ${p.nama}, Kecamatan ${p.kecamatan}, Kabupaten ${p.kabupaten}, ${p.provinsi}`}
       />

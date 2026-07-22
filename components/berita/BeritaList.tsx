@@ -75,7 +75,7 @@ export function BeritaList({ berita, rwList }: { berita: Berita[]; rwList: Rw[] 
         <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((b) => (
             <Link key={b.id} href={`/berita/${b.slug}`}>
-              <Card padded={false} className="h-full overflow-hidden">
+              <Card padded={false} className="h-full overflow-hidden transition-all duration-300 hover:border-primary hover:ring-2 hover:ring-primary/20">
                 <img src={b.gambar_cover_url} alt={b.judul} className="h-40 w-full object-cover" />
                 <div className="p-4">
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">

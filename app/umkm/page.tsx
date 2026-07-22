@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import { UmkmHero } from "@/components/umkm/UmkmHero";
 import { UmkmList } from "@/components/umkm/UmkmList";
-import { PageHeader } from "@/components/ui/PageHeader";
 import { getUmkmList } from "@/lib/queries";
 
 export const metadata: Metadata = {
@@ -14,10 +14,7 @@ export default async function UmkmPage() {
 
   return (
     <div>
-      <PageHeader
-        title="UMKM & Potensi"
-        description="Katalog usaha, kerajinan, dan potensi lain di Kelurahan Mlokomanis Kulon."
-      />
+      <UmkmHero />
 
       <div className="mx-auto max-w-6xl px-4 py-12">
         <UmkmList umkm={umkm} />

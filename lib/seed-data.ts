@@ -116,28 +116,68 @@ export interface LayananItem {
   kontakJabatan: string; // rujukan ke kontakPerangkatData
 }
 
-// [DATA MENYUSUL] — daftar layanan spesifik belum fixed, ini contoh struktur/dummy.
+// Data resmi dari Banner Disdukcapil Kabupaten Wonogiri — Pelayanan 3 in 1 Akta Pencatatan Sipil & Kependudukan Gratis.
 export const layananData: LayananItem[] = [
   {
-    id: "surat-pengantar-ktp",
-    nama: "Surat Pengantar KTP/KK",
-    deskripsi: "Pengantar untuk pembuatan atau perubahan data KTP dan Kartu Keluarga.",
-    syarat: ["Fotokopi KK", "Fotokopi KTP lama (jika ada)", "Surat pengantar RT/RW"],
-    kontakJabatan: "Staff Kelurahan",
+    id: "akta-kelahiran-3in1",
+    nama: "Akta Kelahiran, KK, dan KIA (Pelayanan 3 in 1)",
+    deskripsi: "Pengurusan penerbitan Kutipan Akta Kelahiran sekaligus pembaruan Kartu Keluarga (KK) dan penerbitan Kartu Identitas Anak (KIA) baru.",
+    syarat: [
+      "Surat Keterangan Kelahiran dari Kelurahan/Desa dan Surat Kelahiran dari Dokter/Bidan Penolong.",
+      "Foto copy Surat Nikah / Akta Perkawinan Orang Tua.",
+      "Asli Kartu Keluarga (KK) Orang Tua (yang akan dicantumkan nama anak).",
+      "Foto copy KTP Orang Tua.",
+      "Foto copy KTP 2 (dua) orang Saksi.",
+    ],
+    kontakJabatan: "Kantor Kelurahan / Hotline",
   },
   {
-    id: "surat-domisili",
-    nama: "Surat Keterangan Domisili",
-    deskripsi: "Keterangan tempat tinggal untuk keperluan administrasi lain.",
-    syarat: ["Fotokopi KTP", "Surat pengantar RT/RW"],
-    kontakJabatan: "Staff Kelurahan",
+    id: "akta-kematian-3in1",
+    nama: "Akta Kematian, KK, dan KTP-el (Pelayanan 3 in 1)",
+    deskripsi: "Pengurusan Akta Kematian sekaligus pembaruan status anggota keluarga pada Kartu Keluarga (KK) dan penyesuaian status KTP-el.",
+    syarat: [
+      "Surat Keterangan Kematian dari Rumah Sakit.",
+      "Surat Kematian dari Desa/Kelurahan.",
+      "Asli Kartu Keluarga (KK) dan KTP yang meninggal dunia.",
+      "Kutipan Akta Kelahiran yang bersangkutan.",
+      "Foto copy KTP 2 (dua) orang Saksi (berusia 21 tahun ke atas).",
+      "Bagi Warga Keturunan: Melampirkan Surat Bukti Kewarganegaraan RI & Surat Bukti Ganti Nama (bila ada).",
+      "Bagi WNA: Melampirkan foto copy Pasport / Dokumen Imigrasi & STMD dari POLRI.",
+    ],
+    kontakJabatan: "Kantor Kelurahan / Hotline",
   },
   {
-    id: "surat-tidak-mampu",
-    nama: "Surat Keterangan Tidak Mampu (SKTM)",
-    deskripsi: "Keterangan untuk keperluan bantuan sosial, pendidikan, atau kesehatan.",
-    syarat: ["Fotokopi KK & KTP", "Surat pengantar RT/RW"],
-    kontakJabatan: "Sekretaris Kelurahan",
+    id: "akta-perkawinan-3in1",
+    nama: "Akta Perkawinan, KK, dan KTP-el (Pelayanan 3 in 1)",
+    deskripsi: "Pengurusan Akta Perkawinan (Non-Muslim) sekaligus pembaruan status Kartu Keluarga (KK) dan perubahan status perkawinan pada KTP-el.",
+    syarat: [
+      "Surat Keterangan dari Desa/Kelurahan diketahui Camat.",
+      "Bukti Pemberkatan / Pengesahan Perkawinan dari Pemuka Agama masing-masing.",
+      "Kutipan Akta Kelahiran Calon Mempelai.",
+      "Asli KTP calon mempelai dan Kartu Keluarga (KK).",
+      "Akta Perceraian / Akta Kematian bagi calon suami/istri yang pernah kawin.",
+      "Izin Orang Tua bagi calon mempelai berumur kurang dari 21 tahun.",
+      "Izin Pengadilan Negeri bagi calon mempelai pria < 19 tahun atau wanita < 16 tahun.",
+      "Pas foto berdampingan ukuran 4 x 6 cm (berwarna) sebanyak 4 lembar.",
+      "Surat Izin dari Komandan/Kepala bagi anggota TNI/POLRI.",
+      "Surat Dispensasi dari Camat jika mendaftar kurang dari 10 hari kerja.",
+      "Dua orang saksi yang memenuhi persyaratan.",
+    ],
+    kontakJabatan: "Kantor Kelurahan / Hotline",
+  },
+  {
+    id: "pelayanan-akta-online",
+    nama: "Pelayanan Akta & Administrasi Kependudukan Online",
+    deskripsi: "Panduan pengurusan dokumen kependudukan secara mandiri via portal resmi Disdukcapil Kabupaten Wonogiri.",
+    syarat: [
+      "Akses website resmi Disdukcapil Wonogiri (dukcapil.wonogirikab.go.id/layananonline).",
+      "Buat akun pendaftaran dengan nomor HP, NIK, password, dan captcha.",
+      "Verifikasi akun melalui kode aktivasi SMS.",
+      "Pilih jenis permohonan layanan (misal: Akta Kelahiran / Kematian / KK).",
+      "Unggah (upload) dokumen persyaratan & Surat Tanggung Jawab Mutlak (SPTJM).",
+      "Cek status pendaftaran online dan unduh/ambil dokumen setelah selesai diproses.",
+    ],
+    kontakJabatan: "Disdukcapil Wonogiri / Online",
   },
 ];
 

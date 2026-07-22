@@ -35,6 +35,7 @@ export default async function StrukturPage() {
   return (
     <div>
       <PageHeader
+        badge="Pemerintahan Kelurahan"
         title="Struktur Kelurahan"
         description="Struktur organisasi pemerintahan tingkat Kelurahan Mlokomanis Kulon."
       />

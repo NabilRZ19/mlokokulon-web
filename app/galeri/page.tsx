@@ -15,6 +15,7 @@ export default async function GaleriPage() {
   return (
     <div>
       <PageHeader
+        badge="Dokumentasi & Media Publik"
         title="Galeri"
         description="Dokumentasi foto dan video kegiatan Kelurahan Mlokomanis Kulon."
       />

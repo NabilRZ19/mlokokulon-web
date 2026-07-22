@@ -5,14 +5,30 @@ import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
 import * as schema from "./schema";
 
-// Config object (host/port/user/password terpisah), BUKAN connection-string URL — karakter "%"
-// di DB_PASSWORD tidak perlu di-escape manual kayak kalau dipaksa jadi format mysql://...
-const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  user: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
-});
+// Pattern Global Singleton untuk Next.js (terutama saat Development / Hot Reload):
+// Mencegah Next.js membuat pool MySQL baru di setiap re-evaluate module/reload,
+// yang dapat menyebabkan error "Too many connections" pada server MySQL VPS.
+const globalForDb = globalThis as unknown as {
+  pool: mysql.Pool | undefined;
+};
+
+const pool =
+  globalForDb.pool ??
+  mysql.createPool({
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
+    user: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    waitForConnections: true,
+    connectionLimit: 5,
+    maxIdle: 2,
+    idleTimeout: 30000,
+    queueLimit: 0,
+    enableKeepAlive: true,
+    keepAliveInitialDelay: 10000,
+  });
+
+if (process.env.NODE_ENV !== "production") globalForDb.pool = pool;
 
 export const db = drizzle(pool, { schema, mode: "default" });
