@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { ImageLightboxModal } from "@/components/ui/ImageLightboxModal";
+import { getPublicImageUrl } from "@/lib/image-url";
 import type { Rw, StrukturKelurahan } from "@/lib/types";
 
 function OrgCard({
@@ -14,10 +15,11 @@ function OrgCard({
   isHead?: boolean;
   onImageClick: (url: string, title: string) => void;
 }) {
+  const fotoUrl = getPublicImageUrl(person.foto_url);
   return (
     <div className="flex w-48 flex-col items-center rounded-xl border border-border bg-card px-4 py-5 text-center sm:w-56 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md">
       <div
-        onClick={() => onImageClick(person.foto_url, `${person.nama} — ${person.jabatan}`)}
+        onClick={() => onImageClick(fotoUrl, `${person.nama} — ${person.jabatan}`)}
         className={`relative flex items-center justify-center overflow-hidden rounded-xl border border-border bg-muted/30 p-1.5 cursor-pointer transition-transform hover:scale-105 ${
           isHead ? "h-32 w-32 sm:h-36 sm:w-36" : "h-28 w-28 sm:h-32 sm:w-32"
         }`}
@@ -25,7 +27,7 @@ function OrgCard({
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={person.foto_url}
+          src={fotoUrl}
           alt={person.nama}
           loading="lazy"
           decoding="async"

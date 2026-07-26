@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { RefreshButton } from "@/components/admin/RefreshButton";
+import { getPublicImageUrl } from "@/lib/image-url";
 import type { Galeri } from "@/lib/types";
 
 export default function AdminGaleriPage() {
@@ -101,7 +102,7 @@ export default function AdminGaleriPage() {
                     {g.tipe === "foto" ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
-                        src={g.url_media}
+                        src={getPublicImageUrl(g.url_media)}
                         alt={g.judul}
                         className="h-12 w-12 rounded-lg object-cover border border-border"
                       />

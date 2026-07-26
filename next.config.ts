@@ -29,7 +29,7 @@ const ContentSecurityPolicy = [
   "style-src 'self' 'unsafe-inline' " + GOOGLE_FONTS,
   "font-src 'self' " + GOOGLE_FONTS,
   // img dari MinIO storage (bisa HTTP di dev, tambah https di production)
-  `img-src 'self' data: http://${MINIO_HOSTNAME}${MINIO_PORT} https://${MINIO_HOSTNAME}`,
+  `img-src 'self' data: blob: http://${MINIO_HOSTNAME}${MINIO_PORT} https://${MINIO_HOSTNAME}${MINIO_PORT} https://${MINIO_HOSTNAME} https://images.unsplash.com`,
   // fetch ke server sendiri + MinIO (untuk upload dari browser jika ada)
   `connect-src 'self' http://${MINIO_HOSTNAME}${MINIO_PORT} https://${MINIO_HOSTNAME}`,
   // Larang embed halaman ini di frame orang lain (anti-clickjacking di level CSP)

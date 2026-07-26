@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { MapPlaceholder } from "@/components/ui/MapPlaceholder";
 import { SproutIcon } from "@/components/ui/icons";
+import { getPublicImageUrl } from "@/lib/image-url";
 import { getBeritaList, getGaleriList } from "@/lib/queries";
 import { kampungKbData as kb, kelurahanProfileData as p } from "@/lib/seed-data";
 
@@ -371,7 +372,7 @@ export default async function Home() {
                     className="h-full overflow-hidden border-white/20 bg-card text-foreground transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md"
                   >
                     <img
-                      src={b.gambar_cover_url}
+                      src={getPublicImageUrl(b.gambar_cover_url)}
                       alt={b.judul}
                       loading="lazy"
                       decoding="async"
@@ -434,7 +435,7 @@ export default async function Home() {
                 className="group relative overflow-hidden rounded-xl border border-border bg-card shadow-sm"
               >
                 <img
-                  src={g.url_media}
+                  src={getPublicImageUrl(g.url_media)}
                   alt={g.judul}
                   loading="lazy"
                   decoding="async"

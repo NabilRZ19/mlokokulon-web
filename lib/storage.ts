@@ -24,5 +24,5 @@ export async function uploadToStorage(
       ContentType: contentType,
     }),
   );
-  return `${process.env.S3_ENDPOINT}/${process.env.S3_BUCKET}/${key}`;
+  return `/api/media/${process.env.S3_BUCKET || "mlokokulon"}/${key}`;
 }

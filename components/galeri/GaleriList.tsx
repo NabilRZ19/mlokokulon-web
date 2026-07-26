@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { ImageLightboxModal } from "@/components/ui/ImageLightboxModal";
 import { Pagination } from "@/components/ui/Pagination";
+import { getPublicImageUrl } from "@/lib/image-url";
 import type { Galeri } from "@/lib/types";
 
 const PER_PAGE = 9;
@@ -56,34 +57,37 @@ export function GaleriList({ galeri }: { galeri: Galeri[] }) {
         <p className="mt-8 text-sm text-muted-foreground">Belum ada foto/video untuk kategori ini.</p>
       ) : (
         <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {pageItems.map((g) => (
-            <Card key={g.id} padded={false} className="group overflow-hidden">
-              {g.tipe === "video" ? (
-                <video src={g.url_media} controls className="h-44 w-full bg-black object-cover" />
-              ) : (
-                <div
-                  onClick={() => setActiveImage({ url: g.url_media, title: g.judul })}
-                  className="relative cursor-pointer overflow-hidden bg-black/5"
-                  title="Klik untuk melihat foto ukuran asli"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={g.url_media}
-                    alt={g.judul}
-                    loading="lazy"
-                    decoding="async"
-                    className="h-44 w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity group-hover:opacity-100">
-                    <span className="rounded-full bg-black/75 px-3 py-1 text-xs font-bold text-white backdrop-blur-xs">
-                      🔍 Lihat Foto Utuh
-                    </span>
+          {pageItems.map((g) => {
+            const mediaUrl = getPublicImageUrl(g.url_media);
+            return (
+              <Card key={g.id} padded={false} className="group overflow-hidden">
+                {g.tipe === "video" ? (
+                  <video src={mediaUrl} controls className="h-44 w-full bg-black object-cover" />
+                ) : (
+                  <div
+                    onClick={() => setActiveImage({ url: mediaUrl, title: g.judul })}
+                    className="relative cursor-pointer overflow-hidden bg-black/5"
+                    title="Klik untuk melihat foto ukuran asli"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={mediaUrl}
+                      alt={g.judul}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-44 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity group-hover:opacity-100">
+                      <span className="rounded-full bg-black/75 px-3 py-1 text-xs font-bold text-white backdrop-blur-xs">
+                        🔍 Lihat Foto Utuh
+                      </span>
+                    </div>
                   </div>
-                </div>
-              )}
-              <p className="p-3.5 text-sm font-medium text-foreground">{g.judul}</p>
-            </Card>
-          ))}
+                )}
+                <p className="p-3.5 text-sm font-medium text-foreground">{g.judul}</p>
+              </Card>
+            );
+          })}
         </div>
       )}
 

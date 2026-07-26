@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Pagination } from "@/components/ui/Pagination";
+import { getPublicImageUrl } from "@/lib/image-url";
 import type { Umkm } from "@/lib/types";
 
 const PER_PAGE = 6;
@@ -94,7 +95,7 @@ export function UmkmList({ umkm }: { umkm: Umkm[] }) {
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {pageItems.map((u) => {
-            const cover = u.foto_urls[0] || "/images/placeholder.jpg";
+            const cover = getPublicImageUrl(u.foto_urls[0] || "/images/placeholder.jpg");
             const photoCount = u.foto_urls.length;
 
             return (

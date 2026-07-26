@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { RefreshButton } from "@/components/admin/RefreshButton";
+import { getPublicImageUrl } from "@/lib/image-url";
 import type { StrukturKelurahan } from "@/lib/types";
 
 export default function AdminPengaturanPage() {
@@ -103,7 +104,7 @@ export default function AdminPengaturanPage() {
                   <td className="px-4 py-3">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={s.foto_url}
+                      src={getPublicImageUrl(s.foto_url)}
                       alt={s.nama}
                       className="h-10 w-10 rounded-full object-cover border border-border"
                     />

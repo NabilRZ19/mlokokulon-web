@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 import { BeritaBadge } from "@/components/berita/BeritaBadge";
 import { ImageLightboxModal } from "@/components/ui/ImageLightboxModal";
+import { getPublicImageUrl } from "@/lib/image-url";
 import type { Berita } from "@/lib/types";
 
 function IconCalendar() {
@@ -59,13 +60,13 @@ export function BeritaDetailClientView({
       <article className="mx-auto max-w-3xl overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
         {/* Cover Image dengan Lightbox Click */}
         <div
-          onClick={() => setActiveImage({ url: berita.gambar_cover_url, title: berita.judul })}
+          onClick={() => setActiveImage({ url: getPublicImageUrl(berita.gambar_cover_url), title: berita.judul })}
           className="relative aspect-video w-full overflow-hidden bg-muted cursor-pointer group"
           title="Klik untuk melihat foto ukuran utuh"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={berita.gambar_cover_url}
+            src={getPublicImageUrl(berita.gambar_cover_url)}
             alt={berita.judul}
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-102"
             style={{ maxHeight: "460px" }}
@@ -123,26 +124,29 @@ export function BeritaDetailClientView({
                 Dokumentasi Kegiatan
               </h2>
               <div className="grid grid-cols-2 gap-4">
-                {fotoTambahan.map((url, i) => (
-                  <div
-                    key={i}
-                    onClick={() => setActiveImage({ url, title: `Dokumentasi ${i + 1} — ${berita.judul}` })}
-                    className="relative cursor-pointer overflow-hidden rounded-xl border border-border bg-black/5 group"
-                    title="Klik untuk melihat foto ukuran utuh"
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={url}
-                      alt={`Dokumentasi ${i + 1}`}
-                      className="aspect-video w-full object-cover transition-all duration-300 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity group-hover:opacity-100">
-                      <span className="rounded-full bg-black/75 px-2.5 py-1 text-[11px] font-bold text-white backdrop-blur-xs">
-                        🔍 Lihat Foto
-                      </span>
+                {fotoTambahan.map((rawUrl, i) => {
+                  const url = getPublicImageUrl(rawUrl);
+                  return (
+                    <div
+                      key={i}
+                      onClick={() => setActiveImage({ url, title: `Dokumentasi ${i + 1} — ${berita.judul}` })}
+                      className="relative cursor-pointer overflow-hidden rounded-xl border border-border bg-black/5 group"
+                      title="Klik untuk melihat foto ukuran utuh"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={url}
+                        alt={`Dokumentasi ${i + 1}`}
+                        className="aspect-video w-full object-cover transition-all duration-300 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity group-hover:opacity-100">
+                        <span className="rounded-full bg-black/75 px-2.5 py-1 text-[11px] font-bold text-white backdrop-blur-xs">
+                          🔍 Lihat Foto
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}

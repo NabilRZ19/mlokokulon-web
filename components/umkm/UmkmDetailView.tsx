@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 import { ImageLightboxModal } from "@/components/ui/ImageLightboxModal";
+import { getPublicImageUrl } from "@/lib/image-url";
 import type { Umkm } from "@/lib/types";
 
 function IconClock() {
@@ -79,7 +80,7 @@ export function UmkmDetailView({ umkm }: { umkm: Umkm }) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  const images = umkm.foto_urls.length > 0 ? umkm.foto_urls : ["/images/placeholder.jpg"];
+  const images = (umkm.foto_urls.length > 0 ? umkm.foto_urls : ["/images/placeholder.jpg"]).map(getPublicImageUrl);
   const currentImage = images[activeImageIndex] || images[0];
 
   const cleanPhone = umkm.kontak.replace(/\D/g, "");

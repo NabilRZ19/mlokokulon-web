@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { Carousel } from "@/components/ui/Carousel";
+import { getPublicImageUrl } from "@/lib/image-url";
 import { getGaleriList, getRwById } from "@/lib/queries";
 import { kampungKbData as kb } from "@/lib/seed-data";
 
@@ -122,16 +123,19 @@ export default async function KampungKbPage() {
               Galeri Kegiatan
             </h2>
             <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {galeriKampungKb.map((g) => (
-                <div key={g.id} className="overflow-hidden rounded-lg border border-border">
-                  {g.tipe === "video" ? (
-                    <video src={g.url_media} controls className="h-40 w-full bg-black object-cover" />
-                  ) : (
-                    <img src={g.url_media} alt={g.judul} className="h-40 w-full object-cover" />
-                  )}
-                  <p className="p-3 text-sm text-foreground">{g.judul}</p>
-                </div>
-              ))}
+              {galeriKampungKb.map((g) => {
+                const mediaUrl = getPublicImageUrl(g.url_media);
+                return (
+                  <div key={g.id} className="overflow-hidden rounded-lg border border-border">
+                    {g.tipe === "video" ? (
+                      <video src={mediaUrl} controls className="h-40 w-full bg-black object-cover" />
+                    ) : (
+                      <img src={mediaUrl} alt={g.judul} className="h-40 w-full object-cover" />
+                    )}
+                    <p className="p-3 text-sm text-foreground">{g.judul}</p>
+                  </div>
+                );
+              })}
             </div>
           </Card>
         )}
