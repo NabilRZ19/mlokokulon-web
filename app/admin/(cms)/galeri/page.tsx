@@ -70,7 +70,54 @@ export default function AdminGaleriPage() {
         </div>
       )}
 
-      <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-xs">
+      {/* Mobile Card Grid (< md) */}
+      <div className="space-y-3 md:hidden">
+        {loading ? (
+          <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+            Memuat galeri…
+          </div>
+        ) : items.length === 0 ? (
+          <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+            Belum ada item galeri.
+          </div>
+        ) : (
+          items.map((g) => (
+            <div key={g.id} className="flex items-center gap-3 rounded-xl border border-border bg-card p-3 shadow-xs">
+              {g.tipe === "foto" ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={getPublicImageUrl(g.url_media)}
+                  alt={g.judul}
+                  className="h-16 w-16 rounded-lg object-contain bg-muted border border-border shrink-0"
+                />
+              ) : (
+                <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-muted border border-border text-xs font-bold text-primary shrink-0">
+                  ▶ Video
+                </div>
+              )}
+              <div className="min-w-0 flex-1 space-y-1">
+                <h3 className="font-heading text-sm font-bold text-foreground truncate">{g.judul}</h3>
+                <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                  <span className="capitalize font-semibold text-primary">{g.tipe}</span>
+                  <span>•</span>
+                  <span>{g.kategori || "Umum"}</span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => handleDelete(g.id, g.judul)}
+                disabled={deletingId === g.id}
+                className="rounded-lg bg-destructive/10 px-3 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 disabled:opacity-50 shrink-0"
+              >
+                {deletingId === g.id ? "…" : "Hapus"}
+              </button>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Desktop Table View (>= md) */}
+      <div className="hidden md:block overflow-x-auto rounded-xl border border-border bg-card shadow-xs">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-border bg-muted/50 text-muted-foreground">
             <tr>

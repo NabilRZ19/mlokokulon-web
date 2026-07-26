@@ -74,7 +74,52 @@ export default function AdminPengaturanPage() {
         </div>
       )}
 
-      <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-xs">
+      {/* Mobile Card List (< md) */}
+      <div className="space-y-3 md:hidden">
+        {loading ? (
+          <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+            Memuat struktur kelurahan…
+          </div>
+        ) : strukturList.length === 0 ? (
+          <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+            Belum ada data perangkat kelurahan.
+          </div>
+        ) : (
+          strukturList.map((s) => (
+            <div key={s.id} className="rounded-xl border border-border bg-card p-4 space-y-3 shadow-xs">
+              <div className="flex items-center gap-3">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={getPublicImageUrl(s.foto_url)}
+                  alt={s.nama}
+                  className="h-12 w-12 rounded-xl object-contain bg-muted border border-border shrink-0"
+                />
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-heading text-sm font-bold text-foreground truncate">{s.nama}</h3>
+                  <p className="text-xs font-semibold text-primary mt-0.5">{s.jabatan}</p>
+                </div>
+                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-bold text-primary">
+                  Urutan #{s.urutan}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-end pt-2 border-t border-border/50">
+                <button
+                  type="button"
+                  onClick={() => handleDelete(s.id, s.nama)}
+                  disabled={deletingId === s.id}
+                  className="rounded-lg bg-destructive/10 px-3 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 disabled:opacity-50"
+                >
+                  {deletingId === s.id ? "Hapus…" : "Hapus Jabatan"}
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Desktop Table View (>= md) */}
+      <div className="hidden md:block overflow-x-auto rounded-xl border border-border bg-card shadow-xs">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-border bg-muted/50 text-muted-foreground">
             <tr>

@@ -92,7 +92,46 @@ export default function AdminUsersPage() {
         </div>
       )}
 
-      <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-xs">
+      {/* Mobile Card List (< md) */}
+      <div className="space-y-3 md:hidden">
+        {loading ? (
+          <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+            Memuat akun admin…
+          </div>
+        ) : users.length === 0 ? (
+          <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+            Belum ada akun terdaftar.
+          </div>
+        ) : (
+          users.map((u) => (
+            <div key={u.id} className="rounded-xl border border-border bg-card p-4 space-y-3 shadow-xs">
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <h3 className="font-heading text-sm font-bold text-foreground">{u.nama}</h3>
+                  <p className="text-xs font-mono text-muted-foreground mt-0.5">{u.email}</p>
+                </div>
+                <Badge variant={u.tier === 1 ? "accent" : "default"}>
+                  {TIER_LABEL[u.tier] || `Tier ${u.tier}`}
+                </Badge>
+              </div>
+
+              <div className="flex items-center justify-end pt-2 border-t border-border/50">
+                <button
+                  type="button"
+                  onClick={() => handleDelete(u.id, u.nama)}
+                  disabled={deletingId === u.id}
+                  className="rounded-lg bg-destructive/10 px-3 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 disabled:opacity-50"
+                >
+                  {deletingId === u.id ? "Hapus…" : "Hapus Akun"}
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Desktop Table View (>= md) */}
+      <div className="hidden md:block overflow-x-auto rounded-xl border border-border bg-card shadow-xs">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-border bg-muted/50 text-muted-foreground">
             <tr>

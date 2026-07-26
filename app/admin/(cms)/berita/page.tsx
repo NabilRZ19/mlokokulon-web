@@ -84,7 +84,61 @@ export default function AdminBeritaPage() {
         </div>
       )}
 
-      <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-xs">
+      {/* Mobile Card List (< md) */}
+      <div className="space-y-3 md:hidden">
+        {loading ? (
+          <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+            Memuat data berita…
+          </div>
+        ) : beritaList.length === 0 ? (
+          <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+            Belum ada berita yang diterbitkan.
+          </div>
+        ) : (
+          beritaList.map((b) => (
+            <div key={b.id} className="rounded-xl border border-border bg-card p-4 space-y-3 shadow-xs">
+              <div className="flex items-start justify-between gap-2">
+                <h3 className="font-heading text-sm font-bold text-foreground line-clamp-2">
+                  {b.judul}
+                </h3>
+                <Badge>{KATEGORI_LABEL[b.kategori] || b.kategori}</Badge>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-between text-xs text-muted-foreground pt-1 border-t border-border/50">
+                <span>Cakupan: <strong className="text-foreground">{b.cakupan === "kelurahan" ? "Kelurahan" : b.rw_nama || "RW"}</strong></span>
+                <span>
+                  {new Date(b.tanggal).toLocaleDateString("id-ID", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-1">
+                <Link
+                  href={`/berita/${b.slug}`}
+                  target="_blank"
+                  className="rounded-lg border border-border px-3 py-1.5 text-xs font-bold text-foreground hover:bg-muted"
+                >
+                  Lihat Publik ↗
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => handleDelete(b.id, b.judul)}
+                  disabled={deletingId === b.id}
+                  className="rounded-lg bg-destructive/10 px-3 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 disabled:opacity-50"
+                >
+                  {deletingId === b.id ? "Hapus…" : "Hapus"}
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Desktop Table View (>= md) */}
+      <div className="hidden md:block overflow-x-auto rounded-xl border border-border bg-card shadow-xs">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-border bg-muted/50 text-muted-foreground">
             <tr>

@@ -8,9 +8,9 @@ export default async function CmsLayout({ children }: { children: React.ReactNod
   if (!session) redirect("/admin/login");
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex min-h-screen flex-col md:flex-row bg-background">
       <AdminSidebar session={session} />
-      <main className="flex-1 p-6">{children}</main>
+      <main className="flex-1 p-4 sm:p-6 min-w-0 overflow-x-hidden">{children}</main>
     </div>
   );
 }

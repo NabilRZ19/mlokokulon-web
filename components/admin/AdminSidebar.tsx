@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { MapPinIcon } from "@/components/ui/icons";
@@ -35,11 +36,15 @@ function getInitials(nama: string): string {
   return ((parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "")).toUpperCase();
 }
 
-// Belum ada show/hide per-tier (nav tampil semua ke siapa pun) — itu bagian "fungsi", menyusul
-// bareng wiring CRUD per tier.
 export function AdminSidebar({ session }: { session: SessionPayload }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Otomatis tutup drawer saat pindah halaman di mobile
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
 
   async function handleLogout() {
     await fetch("/api/admin/logout", { method: "POST" });
@@ -47,19 +52,27 @@ export function AdminSidebar({ session }: { session: SessionPayload }) {
     router.refresh();
   }
 
-  return (
-    <aside className="sticky top-0 flex h-screen w-60 shrink-0 flex-col border-r border-border bg-card overflow-y-auto z-30">
-      <Link
-        href="/admin/dashboard"
-        className="flex items-center gap-2.5 border-b border-border px-4 py-4"
-      >
-        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary font-heading text-xs font-bold text-white">
-          MK
-        </span>
-        <span className="font-heading text-sm font-semibold text-foreground">Admin Panel</span>
-      </Link>
+  const sidebarContent = (
+    <div className="flex h-full w-full flex-col bg-card">
+      <div className="flex items-center justify-between border-b border-border px-4 py-4">
+        <Link href="/admin/dashboard" className="flex items-center gap-2.5">
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary font-heading text-xs font-bold text-white">
+            MK
+          </span>
+          <span className="font-heading text-sm font-semibold text-foreground">Admin Panel</span>
+        </Link>
+        {/* Tombol Tutup di Mobile */}
+        <button
+          type="button"
+          onClick={() => setMobileOpen(false)}
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-foreground hover:bg-muted md:hidden font-bold"
+          aria-label="Tutup Menu"
+        >
+          ✕
+        </button>
+      </div>
 
-      <nav className="flex-1 space-y-1 p-3 text-sm">
+      <nav className="flex-1 space-y-1 p-3 text-sm overflow-y-auto">
         {navItems.map((item) => {
           const active = pathname?.startsWith(item.href);
           const Icon = item.icon;
@@ -68,7 +81,7 @@ export function AdminSidebar({ session }: { session: SessionPayload }) {
               key={item.href}
               href={item.href}
               className={`flex items-center gap-3 rounded-md px-3 py-2 transition-colors ${
-                active ? "bg-primary text-white" : "text-foreground hover:bg-muted"
+                active ? "bg-primary text-white font-semibold" : "text-foreground hover:bg-muted"
               }`}
             >
               <Icon className="h-4 w-4" />
@@ -92,12 +105,61 @@ export function AdminSidebar({ session }: { session: SessionPayload }) {
         <button
           type="button"
           onClick={handleLogout}
-          className="mt-1 flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-destructive hover:bg-muted"
+          className="mt-1 flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-destructive hover:bg-muted font-semibold"
         >
           <LogOutIcon className="h-4 w-4" />
           Logout
         </button>
       </div>
-    </aside>
+    </div>
+  );
+
+  return (
+    <>
+      {/* ── Top Mobile Bar (Hanya Tampil di Layar < md) ── */}
+      <header className="sticky top-0 z-40 flex items-center justify-between border-b border-border bg-card px-4 py-3 md:hidden">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setMobileOpen(true)}
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background text-foreground hover:bg-muted"
+            aria-label="Buka Menu Sidebar"
+          >
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+          <Link href="/admin/dashboard" className="flex items-center gap-2">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary font-heading text-xs font-bold text-white">
+              MK
+            </span>
+            <span className="font-heading text-sm font-bold text-foreground">CMS Mlokomanis</span>
+          </Link>
+        </div>
+        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 font-heading text-xs font-bold text-primary">
+          {getInitials(session.nama)}
+        </div>
+      </header>
+
+      {/* ── Mobile Drawer Overlay (Slide-out dari Kiri) ── */}
+      {mobileOpen && (
+        <div
+          onClick={() => setMobileOpen(false)}
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs md:hidden animate-in fade-in duration-200"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="h-full w-72 bg-card shadow-2xl animate-in slide-in-from-left duration-200"
+          >
+            {sidebarContent}
+          </div>
+        </div>
+      )}
+
+      {/* ── Desktop Sidebar (Tampil di Layar >= md) ── */}
+      <aside className="hidden sticky top-0 md:flex h-screen w-60 shrink-0 flex-col border-r border-border bg-card overflow-y-auto z-30">
+        {sidebarContent}
+      </aside>
+    </>
   );
 }

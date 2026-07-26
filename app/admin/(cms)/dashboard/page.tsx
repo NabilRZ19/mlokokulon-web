@@ -87,10 +87,10 @@ export default async function AdminDashboardPage() {
         <h2 className="font-heading text-sm font-semibold uppercase tracking-wide text-muted-foreground">
           Ringkasan Database Live
         </h2>
-        <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((s) => (
-            <Card key={s.label} className="flex items-center gap-4">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <Card key={s.label} className="flex items-center gap-3.5 p-4">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
                 <s.icon className="h-5 w-5" />
               </span>
               <Stat label={s.label} value={`${s.value}`} />

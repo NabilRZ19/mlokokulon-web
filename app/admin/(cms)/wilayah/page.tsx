@@ -45,7 +45,51 @@ export default function AdminWilayahPage() {
         </div>
       )}
 
-      <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-xs">
+      {/* Mobile Card List (< md) */}
+      <div className="space-y-3 md:hidden">
+        {loading ? (
+          <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+            Memuat data RW…
+          </div>
+        ) : rwList.length === 0 ? (
+          <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+            Belum ada data RW terdaftar.
+          </div>
+        ) : (
+          rwList.map((rw) => (
+            <div key={rw.id} className="rounded-xl border border-border bg-card p-4 space-y-3 shadow-xs">
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <h3 className="font-heading text-sm font-bold text-foreground">{rw.nama_rw}</h3>
+                  <p className="text-xs text-muted-foreground mt-0.5">Dusun {rw.cakupan_dusun}</p>
+                </div>
+                {rw.is_kampung_kb ? (
+                  <Badge variant="accent">★ Kampung KB</Badge>
+                ) : (
+                  <span className="text-[11px] font-semibold text-muted-foreground">Reguler</span>
+                )}
+              </div>
+
+              <div className="flex flex-wrap items-center justify-between text-xs text-muted-foreground border-t border-border/50 pt-2">
+                <span>Total: <strong className="text-foreground">{rw.jumlah_rt} RT</strong></span>
+                <span>Statistik: <strong className="text-foreground">{rw.statistik.jumlah_kk} KK / {rw.statistik.jumlah_jiwa} Jiwa</strong></span>
+              </div>
+
+              <div className="flex items-center justify-end pt-1">
+                <Link
+                  href={`/admin/wilayah/${rw.id}/edit`}
+                  className="rounded-lg bg-primary px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-primary/90 transition-colors"
+                >
+                  Edit Data RW
+                </Link>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Desktop Table View (>= md) */}
+      <div className="hidden md:block overflow-x-auto rounded-xl border border-border bg-card shadow-xs">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-border bg-muted/50 text-muted-foreground">
             <tr>

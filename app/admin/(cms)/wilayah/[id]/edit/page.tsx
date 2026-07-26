@@ -234,9 +234,9 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
               </button>
             </div>
 
-            {/* Label Tag Header Kolom */}
+            {/* Label Tag Header Kolom (Desktop Only) */}
             {pengurusList.length > 0 && (
-              <div className="flex gap-2 text-xs font-extrabold uppercase tracking-wider text-primary px-1 pt-1">
+              <div className="hidden sm:flex gap-2 text-xs font-extrabold uppercase tracking-wider text-primary px-1 pt-1">
                 <span className="w-7 shrink-0 text-center">No</span>
                 <span className="flex-1">Nama Lengkap Pengurus</span>
                 <span className="w-2/5">Jabatan di RW</span>
@@ -244,11 +244,23 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
               </div>
             )}
 
-            <div className="space-y-2.5">
+            <div className="space-y-3 sm:space-y-2.5">
               {pengurusList.map((p, idx) => (
-                <div key={idx} className="flex gap-2 items-center">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary shrink-0">
-                    {idx + 1}
+                <div key={idx} className="flex flex-col sm:flex-row gap-2 sm:items-center rounded-lg border border-border/60 sm:border-transparent p-3 sm:p-0 bg-card sm:bg-transparent">
+                  <div className="flex items-center justify-between sm:justify-start gap-2">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary shrink-0">
+                      {idx + 1}
+                    </div>
+                    <span className="text-xs font-bold text-muted-foreground sm:hidden">
+                      Pengurus #{idx + 1}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemovePengurus(idx)}
+                      className="px-2 py-1 text-xs font-bold text-destructive bg-destructive/10 sm:bg-transparent rounded-lg sm:hidden"
+                    >
+                      Hapus
+                    </button>
                   </div>
                   <input
                     type="text"
@@ -262,12 +274,12 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
                     value={p.jabatan}
                     onChange={(e) => handlePengurusChange(idx, "jabatan", e.target.value)}
                     placeholder="Jabatan (Ketua RW / Sekretaris / Bendahara)"
-                    className="w-2/5 rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 font-semibold"
+                    className="w-full sm:w-2/5 rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 font-semibold"
                   />
                   <button
                     type="button"
                     onClick={() => handleRemovePengurus(idx)}
-                    className="px-3 py-2 text-xs font-bold text-destructive hover:bg-destructive/10 rounded-lg shrink-0"
+                    className="hidden sm:block px-3 py-2 text-xs font-bold text-destructive hover:bg-destructive/10 rounded-lg shrink-0"
                   >
                     Hapus
                   </button>
