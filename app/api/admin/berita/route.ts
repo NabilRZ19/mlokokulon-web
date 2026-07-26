@@ -2,12 +2,14 @@ import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db/client";
 import { berita as beritaTable, beritaFotoTambahan, galeri as galeriTable } from "@/lib/db/schema";
+import { getBeritaList } from "@/lib/queries";
 import { getSession } from "@/lib/session";
+import { isValidDateStr, isValidEnum, isValidString, isValidUrl } from "@/lib/validate";
+import { handleApiError } from "@/lib/api-error";
 
 // Sesuai aturan bisnis: 1 berita = maks 1 foto headline + maks 4 foto tambahan
 const MAX_FOTO_TAMBAHAN = 4;
 
-// Buat slug dari judul: lowercase, replace spasi & karakter non-alfanumerik jadi dash
 function makeSlug(judul: string): string {
   return judul
     .toLowerCase()
@@ -17,74 +19,95 @@ function makeSlug(judul: string): string {
     .replace(/-+/g, "-");
 }
 
+export async function GET() {
+  const session = await getSession();
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const items = await getBeritaList();
+  return NextResponse.json(items);
+}
+
 export async function POST(request: Request) {
   const session = await getSession();
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = await request.json();
-  const {
-    judul,
-    isi,
-    tanggal,
-    kategori,
-    cakupan,
-    rw_id,
-    rw_nama,
-    gambar_cover_url,
-    penulis,
-    foto_tambahan = [],
-    galeri_foto = [], // array: { url, judul, masukGaleri: true }
-  } = body;
+  try {
+    const body = await request.json();
+    const {
+      judul,
+      isi,
+      tanggal,
+      kategori,
+      cakupan,
+      rw_id,
+      rw_nama,
+      gambar_cover_url,
+      penulis,
+      foto_tambahan = [],
+      galeri_foto = [],
+    } = body;
 
-  // Validasi field wajib
-  if (!judul || !isi || !tanggal || !kategori || !cakupan || !gambar_cover_url || !penulis) {
-    return NextResponse.json({ error: "Field wajib tidak lengkap" }, { status: 400 });
+    if (
+      !isValidString(judul, 3, 255) ||
+      !isValidString(isi, 10, 50000) ||
+      !isValidDateStr(tanggal) ||
+      !isValidEnum(kategori, ["pengumuman", "kegiatan", "pembangunan", "berita"] as const) ||
+      !isValidEnum(cakupan, ["kelurahan", "rw"] as const) ||
+      !isValidUrl(gambar_cover_url) ||
+      !isValidString(penulis, 1, 100)
+    ) {
+      return NextResponse.json({ error: "Input tidak valid atau field wajib belum diisi dengan benar" }, { status: 400 });
+    }
+
+    const id = `berita-${randomUUID().slice(0, 8)}`;
+    const slug = `${makeSlug(judul)}-${id.slice(-6)}`;
+
+    // Sanitasi rwId & rwNama — pastikan string kosong "" diubah ke null untuk menghindari MySQL foreign key failure
+    const sanitizedRwId = cakupan === "rw" && typeof rw_id === "string" && rw_id.trim().length > 0 ? rw_id.trim() : null;
+    const sanitizedRwNama = cakupan === "rw" && typeof rw_nama === "string" && rw_nama.trim().length > 0 ? rw_nama.trim() : null;
+
+    await db.insert(beritaTable).values({
+      id,
+      judul,
+      slug,
+      isi,
+      tanggal,
+      kategori,
+      cakupan,
+      rwId: sanitizedRwId,
+      rwNama: sanitizedRwNama,
+      gambarCoverUrl: gambar_cover_url,
+      penulis,
+      createdBy: String(session.id),
+    });
+
+    const fotoTambahanLimited: string[] = (foto_tambahan as string[]).slice(0, MAX_FOTO_TAMBAHAN);
+    if (fotoTambahanLimited.length > 0) {
+      await db.insert(beritaFotoTambahan).values(
+        fotoTambahanLimited.map((url) => ({ beritaId: id, url }))
+      );
+    }
+
+    const galeriInserts = galeri_foto.filter((f: { masukGaleri: boolean }) => f.masukGaleri);
+    if (galeriInserts.length > 0) {
+      await db.insert(galeriTable).values(
+        galeriInserts.map((f: { url: string; judul: string }) => ({
+          id: `galeri-${randomUUID().slice(0, 8)}`,
+          judul: f.judul || judul,
+          tipe: "foto" as const,
+          urlMedia: f.url,
+          kategori: kategori,
+          sumberBeritaId: id,
+        }))
+      );
+    }
+
+    return NextResponse.json({ id, slug }, { status: 201 });
+  } catch (err) {
+    return handleApiError("api/admin/berita POST", err, "Gagal menyimpan berita baru");
   }
-
-  const id = `berita-${randomUUID().slice(0, 8)}`;
-  const slug = `${makeSlug(judul)}-${id.slice(-6)}`;
-
-  // Insert berita utama
-  await db.insert(beritaTable).values({
-    id,
-    judul,
-    slug,
-    isi,
-    tanggal,
-    kategori,
-    cakupan,
-    rwId: cakupan === "rw" ? (rw_id ?? null) : null,
-    rwNama: cakupan === "rw" ? (rw_nama ?? null) : null,
-    gambarCoverUrl: gambar_cover_url,
-    penulis,
-    createdBy: String(session.id),
-  });
-
-  // Insert foto tambahan (child table) — dibatasi maks MAX_FOTO_TAMBAHAN di sisi server
-  const fotoTambahanLimited: string[] = (foto_tambahan as string[]).slice(0, MAX_FOTO_TAMBAHAN);
-  if (fotoTambahanLimited.length > 0) {
-    await db.insert(beritaFotoTambahan).values(
-      fotoTambahanLimited.map((url) => ({ beritaId: id, url })),
-    );
-  }
-
-  // Foto yang di-checklist "tampilkan di Galeri" → insert ke tabel galeri
-  // (PRD: semi-otomatis lewat checkbox, sumberBeritaId diisi agar bisa dilacak asal-usulnya)
-  const galeriInserts = galeri_foto.filter((f: { masukGaleri: boolean }) => f.masukGaleri);
-  if (galeriInserts.length > 0) {
-    await db.insert(galeriTable).values(
-      galeriInserts.map((f: { url: string; judul: string }) => ({
-        id: `galeri-${randomUUID().slice(0, 8)}`,
-        judul: f.judul || judul,
-        tipe: "foto" as const,
-        urlMedia: f.url,
-        kategori: kategori,
-        sumberBeritaId: id,
-      })),
-    );
-  }
-
-  return NextResponse.json({ id, slug }, { status: 201 });
 }

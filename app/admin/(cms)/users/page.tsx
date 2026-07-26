@@ -1,14 +1,17 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { RefreshButton } from "@/components/admin/RefreshButton";
+import { Badge } from "@/components/ui/Badge";
 
-// Belum ada koleksi admin_users beneran di Firestore — baris di bawah dummy/placeholder murni
-// untuk tampilan, bukan data asli. Email Tier 1 pertama yang disepakati:
-// superadmin@mlokokulon-ngadirojo.com (dipakai nanti saat bootstrap script dibuat).
-const dummyUsers = [
-  { nama: "(Tim Dev KKN — Dummy)", email: "superadmin@mlokokulon-ngadirojo.com", tier: 1 },
-  { nama: "(Admin Kelurahan — Dummy)", email: "admin.kelurahan@mlokokulon-ngadirojo.com", tier: 2 },
-  { nama: "(Admin RW 05 — Dummy)", email: "admin.rw05@mlokokulon-ngadirojo.com", tier: 3 },
-];
+interface AdminUser {
+  id: number;
+  nama: string;
+  email: string;
+  tier: 1 | 2 | 3;
+}
 
 const TIER_LABEL: Record<number, string> = {
   1: "Tier 1 — Super Admin",
@@ -17,48 +20,124 @@ const TIER_LABEL: Record<number, string> = {
 };
 
 export default function AdminUsersPage() {
+  const [users, setUsers] = useState<AdminUser[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  async function fetchUsers() {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/admin/users");
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Gagal memuat daftar admin.");
+      }
+      const data = await res.json();
+      setUsers(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Terjadi kesalahan.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  async function handleDelete(id: number, nama: string) {
+    if (!confirm(`Hapus akun admin untuk "${nama}"?`)) return;
+
+    setDeletingId(id);
+    try {
+      const res = await fetch(`/api/admin/users/${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Gagal menghapus admin.");
+      }
+      setUsers((prev) => prev.filter((u) => u.id !== id));
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Terjadi kesalahan.");
+    } finally {
+      setDeletingId(null);
+    }
+  }
+
   return (
     <div>
       <AdminPageHeader
-        title="Kelola Admin"
+        title="Kelola Akun Admin"
         actions={
           <>
-            <RefreshButton />
-            <button
-              type="button"
-              className="rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-white hover:bg-primary/90"
+            <RefreshButton onClick={fetchUsers} />
+            <Link
+              href="/admin/users/tambah"
+              className="rounded-md bg-primary px-3.5 py-2 text-sm font-medium text-white shadow-xs hover:bg-primary/90 transition-colors"
             >
               + Tambah Admin
-            </button>
+            </Link>
           </>
         }
       />
 
-      <p className="mb-4 text-sm text-muted-foreground">Tier 1 saja.</p>
+      <p className="mb-4 text-xs text-muted-foreground font-medium">
+        Halaman khusus Tier 1 (Super Admin). Pengelolaan hak akses 3-tier kelurahan.
+      </p>
 
-      <div className="overflow-x-auto rounded-lg border border-border bg-card">
+      {error && (
+        <div className="mb-4 rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive font-medium">
+          {error}
+        </div>
+      )}
+
+      <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-xs">
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-border text-muted-foreground">
+          <thead className="border-b border-border bg-muted/50 text-muted-foreground">
             <tr>
-              <th className="px-4 py-3 font-medium">Nama</th>
-              <th className="px-4 py-3 font-medium">Email</th>
-              <th className="px-4 py-3 font-medium">Tier</th>
-              <th className="px-4 py-3 font-medium">Aksi</th>
+              <th className="px-4 py-3 font-semibold">Nama Admin</th>
+              <th className="px-4 py-3 font-semibold">Email</th>
+              <th className="px-4 py-3 font-semibold">Akses Tier</th>
+              <th className="px-4 py-3 font-semibold text-right">Aksi</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
-            {dummyUsers.map((u) => (
-              <tr key={u.email}>
-                <td className="px-4 py-3 text-foreground">{u.nama}</td>
-                <td className="px-4 py-3 text-muted-foreground">{u.email}</td>
-                <td className="px-4 py-3 text-muted-foreground">{TIER_LABEL[u.tier]}</td>
-                <td className="px-4 py-3">
-                  <button type="button" className="text-destructive hover:underline">
-                    Hapus
-                  </button>
+            {loading ? (
+              <tr>
+                <td colSpan={4} className="px-4 py-8 text-center text-muted-foreground">
+                  Memuat akun admin…
                 </td>
               </tr>
-            ))}
+            ) : users.length === 0 ? (
+              <tr>
+                <td colSpan={4} className="px-4 py-8 text-center text-muted-foreground">
+                  Belum ada akun terdaftar.
+                </td>
+              </tr>
+            ) : (
+              users.map((u) => (
+                <tr key={u.id} className="hover:bg-muted/30 transition-colors">
+                  <td className="px-4 py-3 font-medium text-foreground">{u.nama}</td>
+                  <td className="px-4 py-3 text-muted-foreground font-mono text-xs">{u.email}</td>
+                  <td className="px-4 py-3">
+                    <Badge variant={u.tier === 1 ? "accent" : "default"}>
+                      {TIER_LABEL[u.tier] || `Tier ${u.tier}`}
+                    </Badge>
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(u.id, u.nama)}
+                      disabled={deletingId === u.id}
+                      className="text-xs font-semibold text-destructive hover:underline disabled:opacity-50"
+                    >
+                      {deletingId === u.id ? "Hapus…" : "Hapus"}
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

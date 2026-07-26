@@ -187,6 +187,7 @@ function ImageUploadZone({
   fieldError,
   file,
   onPickClick,
+  onRemovePreview,
 }: {
   id: string;
   preview: string | null;
@@ -197,29 +198,43 @@ function ImageUploadZone({
   file: File | null;
   inputRef: React.RefObject<HTMLInputElement | null>;
   onPickClick: () => void;
+  onRemovePreview: () => void;
 }) {
   return (
     <div>
       <div
-        onClick={onPickClick}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => e.key === "Enter" && onPickClick()}
-        className={`relative flex min-h-[200px] cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed transition-all ${
+        className={`relative flex min-h-[220px] overflow-hidden flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed transition-all ${
           fieldError && !error
             ? "border-destructive/60 bg-destructive/5"
             : "border-border hover:border-primary/50 hover:bg-primary/5"
         }`}
       >
         {preview ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={preview}
-            alt="Preview Headline"
-            className="max-h-72 w-full rounded-lg object-contain p-2"
-          />
+          <div className="relative w-full p-2 flex flex-col items-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={preview}
+              alt="Preview Headline"
+              className="max-h-80 w-full rounded-lg object-contain bg-black/5"
+            />
+            {uploading && (
+              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-center gap-2 rounded-lg bg-black/75 px-4 py-2.5 text-xs font-semibold text-white backdrop-blur-md shadow-md animate-pulse">
+                <svg className="h-4 w-4 animate-spin text-white" viewBox="0 0 24 24" fill="none">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+                <span>Mengompres &amp; mengupload foto headline…</span>
+              </div>
+            )}
+          </div>
         ) : (
-          <>
+          <div
+            onClick={onPickClick}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === "Enter" && onPickClick()}
+            className="flex w-full cursor-pointer flex-col items-center justify-center gap-3 p-8"
+          >
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}
                 strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
@@ -234,11 +249,6 @@ function ImageUploadZone({
                 JPG, PNG, WebP — Dikompres otomatis (maks 500 KB)
               </p>
             </div>
-          </>
-        )}
-        {uploading && (
-          <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-white/80 backdrop-blur-xs">
-            <span className="text-sm font-bold text-primary">Mengompres &amp; mengupload foto…</span>
           </div>
         )}
       </div>
@@ -250,20 +260,30 @@ function ImageUploadZone({
         </div>
       )}
       {uploadedUrl && !uploading && (
-        <p className="mt-1 text-xs font-bold text-accent">✓ Foto headline berhasil diupload</p>
+        <p className="mt-1 text-xs font-bold text-emerald-600">✓ Foto headline berhasil diupload ke server</p>
       )}
-      {error && <p className="mt-1 text-xs text-destructive font-medium">{error}</p>}
+      {error && <p className="mt-1 text-xs text-destructive font-semibold">{error}</p>}
       {fieldError && !error && (
-        <p className="mt-1 text-xs text-destructive font-medium">{fieldError}</p>
+        <p className="mt-1 text-xs text-destructive font-semibold">{fieldError}</p>
       )}
       {preview && (
-        <button
-          type="button"
-          onClick={onPickClick}
-          className="mt-2 text-xs font-bold text-primary hover:underline"
-        >
-          Ganti Foto Headline
-        </button>
+        <div className="mt-2 flex items-center gap-3">
+          <button
+            type="button"
+            onClick={onPickClick}
+            className="text-xs font-bold text-primary hover:underline"
+          >
+            Ganti Foto Headline
+          </button>
+          <span className="text-muted-foreground">•</span>
+          <button
+            type="button"
+            onClick={onRemovePreview}
+            className="text-xs font-bold text-destructive hover:underline"
+          >
+            Hapus Foto
+          </button>
+        </div>
       )}
     </div>
   );
@@ -306,6 +326,14 @@ export default function TambahBeritaPage() {
     return data.url as string;
   }
 
+  function handleRemoveCover() {
+    setCoverFile(null);
+    setCoverPreview(null);
+    setCoverUrl(null);
+    setCoverError(null);
+    if (coverInputRef.current) coverInputRef.current.value = "";
+  }
+
   async function handleCoverChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -317,8 +345,9 @@ export default function TambahBeritaPage() {
     try {
       const url = await uploadFile(file);
       setCoverUrl(url);
-    } catch {
-      setCoverError("Upload foto headline gagal. Coba lagi.");
+    } catch (err) {
+      console.error("[berita/tambah] Cover upload error:", err);
+      setCoverError("Upload foto headline gagal. Pastikan file berupa gambar valid.");
     } finally {
       setCoverUploading(false);
     }
@@ -654,6 +683,7 @@ export default function TambahBeritaPage() {
             file={coverFile}
             inputRef={coverInputRef}
             onPickClick={() => coverInputRef.current?.click()}
+            onRemovePreview={handleRemoveCover}
           />
         </section>
 

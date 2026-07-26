@@ -109,6 +109,8 @@ export function UmkmList({ umkm }: { umkm: Umkm[] }) {
                     <img
                       src={cover}
                       alt={u.nama}
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     {/* Category Badge overlay */}

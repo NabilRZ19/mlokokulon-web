@@ -1,0 +1,52 @@
+import { randomUUID } from "crypto";
+import { NextResponse } from "next/server";
+import { db } from "@/lib/db/client";
+import { galeri as galeriTable } from "@/lib/db/schema";
+import { getGaleriList } from "@/lib/queries";
+import { getSession } from "@/lib/session";
+import { isValidEnum, isValidString, isValidUrl } from "@/lib/validate";
+
+export async function GET() {
+  const session = await getSession();
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const items = await getGaleriList();
+  return NextResponse.json(items);
+}
+
+export async function POST(request: Request) {
+  const session = await getSession();
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    const body = await request.json();
+    const { judul, tipe, url_media, kategori } = body;
+
+    if (
+      !isValidString(judul, 3, 255) ||
+      !isValidEnum(tipe, ["foto", "video"] as const) ||
+      !isValidUrl(url_media)
+    ) {
+      return NextResponse.json({ error: "Input tidak valid (judul, tipe foto/video, dan URL media wajib diisi)" }, { status: 400 });
+    }
+
+    const id = `galeri-${randomUUID().slice(0, 8)}`;
+
+    await db.insert(galeriTable).values({
+      id,
+      judul,
+      tipe,
+      urlMedia: url_media,
+      kategori: kategori || null,
+    });
+
+    return NextResponse.json({ id }, { status: 201 });
+  } catch (err) {
+    console.error("[api/admin/galeri] POST error:", err);
+    return NextResponse.json({ error: "Gagal menambah data galeri" }, { status: 500 });
+  }
+}

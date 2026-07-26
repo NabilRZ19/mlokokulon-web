@@ -373,6 +373,8 @@ export default async function Home() {
                     <img
                       src={b.gambar_cover_url}
                       alt={b.judul}
+                      loading="lazy"
+                      decoding="async"
                       className="h-44 w-full object-cover"
                     />
                     <div className="p-5">
@@ -434,6 +436,8 @@ export default async function Home() {
                 <img
                   src={g.url_media}
                   alt={g.judul}
+                  loading="lazy"
+                  decoding="async"
                   className="h-44 w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />

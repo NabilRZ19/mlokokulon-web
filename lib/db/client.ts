@@ -27,8 +27,12 @@ const pool =
     queueLimit: 0,
     enableKeepAlive: true,
     keepAliveInitialDelay: 10000,
+    // Batas waktu koneksi — cegah hanging request jika DB tidak reachable
+    connectTimeout: 10000,
   });
 
-if (process.env.NODE_ENV !== "production") globalForDb.pool = pool;
+// Simpan singleton di semua environment (bukan hanya dev) untuk mencegah
+// pool baru terbuat jika module dievaluasi ulang di production.
+globalForDb.pool = globalForDb.pool ?? pool;
 
 export const db = drizzle(pool, { schema, mode: "default" });

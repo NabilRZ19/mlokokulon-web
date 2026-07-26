@@ -10,21 +10,14 @@ import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Stat } from "@/components/ui/Stat";
 import { MapPinIcon } from "@/components/ui/icons";
+import { getBeritaList, getGaleriList, getRwList, getUmkmList } from "@/lib/queries";
 import { getSession } from "@/lib/session";
-import { beritaSeed, galeriSeed, rwSeed, umkmSeed } from "@/lib/seed-data";
 
 const TIER_LABEL: Record<number, string> = {
   1: "Tier 1 — Super Admin",
   2: "Tier 2 — Admin Kelurahan",
   3: "Tier 3 — Admin RW",
 };
-
-const stats = [
-  { label: "Berita", value: beritaSeed.length, icon: NewspaperIcon },
-  { label: "UMKM", value: umkmSeed.length, icon: StoreIcon },
-  { label: "Galeri", value: galeriSeed.length, icon: ImageIcon },
-  { label: "RW", value: rwSeed.length, icon: MapPinIcon },
-];
 
 const shortcuts = [
   {
@@ -61,8 +54,21 @@ const shortcuts = [
 ];
 
 export default async function AdminDashboardPage() {
-  // Guard sudah dijalankan di layout — session di sini dijamin ada, tapi tetap fallback jaga-jaga.
   const session = await getSession();
+
+  const [beritaList, umkmList, galeriList, rwList] = await Promise.all([
+    getBeritaList(),
+    getUmkmList(),
+    getGaleriList(),
+    getRwList(),
+  ]);
+
+  const stats = [
+    { label: "Berita", value: beritaList.length, icon: NewspaperIcon },
+    { label: "UMKM", value: umkmList.length, icon: StoreIcon },
+    { label: "Galeri", value: galeriList.length, icon: ImageIcon },
+    { label: "RW", value: rwList.length, icon: MapPinIcon },
+  ];
 
   return (
     <div className="space-y-8">
@@ -79,7 +85,7 @@ export default async function AdminDashboardPage() {
 
       <div>
         <h2 className="font-heading text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-          Ringkasan
+          Ringkasan Database Live
         </h2>
         <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4">
           {stats.map((s) => (

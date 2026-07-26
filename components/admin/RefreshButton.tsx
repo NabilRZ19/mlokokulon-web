@@ -1,14 +1,19 @@
 "use client";
 
-// Pengganti realtime listener (dilarang di panel admin, aturan kritikal PRD Bagian 7 poin 1) —
-// onClick masih kosong, nanti diisi re-fetch data beneran (getDocs fetch-once).
-export function RefreshButton() {
+interface RefreshButtonProps {
+  onClick?: () => void | Promise<void>;
+  loading?: boolean;
+}
+
+export function RefreshButton({ onClick, loading }: RefreshButtonProps) {
   return (
     <button
       type="button"
-      className="rounded-md border border-border bg-card px-3 py-1.5 text-sm text-foreground transition-colors hover:bg-muted"
+      onClick={onClick}
+      disabled={loading}
+      className="rounded-md border border-border bg-card px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-50"
     >
-      ↻ Muat Ulang Data
+      {loading ? "↻ Memuat…" : "↻ Muat Ulang Data"}
     </button>
   );
 }

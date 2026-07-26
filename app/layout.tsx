@@ -6,11 +6,13 @@ import "./globals.css";
 const lexend = Lexend({
   variable: "--font-lexend",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const sourceSans = Source_Sans_3({
   variable: "--font-source-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -28,6 +30,10 @@ export default function RootLayout({
       lang="id"
       className={`${lexend.variable} ${sourceSans.variable} h-full antialiased`}
     >
+      <head>
+        <link rel="preconnect" href="http://76.13.191.42:9000" />
+        <link rel="dns-prefetch" href="http://76.13.191.42:9000" />
+      </head>
       <body className="min-h-full flex flex-col">
         <SiteChrome>{children}</SiteChrome>
       </body>

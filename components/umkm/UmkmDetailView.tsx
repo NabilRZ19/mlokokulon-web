@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
+import { ImageLightboxModal } from "@/components/ui/ImageLightboxModal";
 import type { Umkm } from "@/lib/types";
 
 function IconClock() {
@@ -76,6 +77,7 @@ function IconStore() {
 
 export function UmkmDetailView({ umkm }: { umkm: Umkm }) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const images = umkm.foto_urls.length > 0 ? umkm.foto_urls : ["/images/placeholder.jpg"];
   const currentImage = images[activeImageIndex] || images[0];
@@ -111,13 +113,22 @@ export function UmkmDetailView({ umkm }: { umkm: Umkm }) {
           <div className="space-y-6 lg:col-span-7 xl:col-span-8">
             {/* Gallery Card */}
             <div className="overflow-hidden rounded-xl border border-border bg-card p-4 shadow-sm">
-              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-muted">
+              <div
+                onClick={() => setLightboxOpen(true)}
+                className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-muted cursor-pointer group"
+                title="Klik untuk melihat foto ukuran utuh"
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={currentImage}
                   alt={umkm.nama}
-                  className="h-full w-full object-cover transition-all duration-300"
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-contain bg-black/5 transition-all duration-300 group-hover:scale-102"
                 />
+                <div className="absolute right-3 bottom-3 rounded-full bg-black/75 px-3 py-1 text-xs font-bold text-white opacity-0 transition-opacity group-hover:opacity-100 backdrop-blur-xs">
+                  🔍 Lihat Foto Utuh
+                </div>
               </div>
 
               {/* Thumbnails */}
@@ -135,7 +146,7 @@ export function UmkmDetailView({ umkm }: { umkm: Umkm }) {
                       }`}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={url} alt="" className="h-full w-full object-cover" />
+                      <img src={url} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
                     </button>
                   ))}
                 </div>
@@ -256,6 +267,14 @@ export function UmkmDetailView({ umkm }: { umkm: Umkm }) {
           </div>
         </div>
       </div>
+
+      {/* Lightbox Popup Modal */}
+      <ImageLightboxModal
+        isOpen={lightboxOpen}
+        src={currentImage}
+        title={`${umkm.nama} — Foto Produk`}
+        onClose={() => setLightboxOpen(false)}
+      />
     </div>
   );
 }

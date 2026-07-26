@@ -69,7 +69,7 @@ export function BeritaList({ berita, rwList }: { berita: Berita[]; rwList: Rw[] 
           {filtered.map((b) => (
             <Link key={b.id} href={`/berita/${b.slug}`}>
               <Card padded={false} className="h-full overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md">
-                <img src={b.gambar_cover_url} alt={b.judul} className="h-40 w-full object-cover" />
+                <img src={b.gambar_cover_url} alt={b.judul} loading="lazy" decoding="async" className="h-40 w-full object-cover" />
                 <div className="p-4">
                   <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1.5">
                     <BeritaBadge kategori={b.kategori} />
