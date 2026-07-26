@@ -91,9 +91,9 @@ export default function AdminGaleriPage() {
                   className="h-16 w-16 rounded-lg object-contain bg-muted border border-border shrink-0"
                 />
               ) : (
-                <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-muted border border-border text-xs font-bold text-primary shrink-0">
-                  ▶ Video
-                </div>
+                      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 border border-border text-xs font-bold text-primary">
+                        Video
+                      </div>
               )}
               <div className="min-w-0 flex-1 space-y-1">
                 <h3 className="font-heading text-sm font-bold text-foreground truncate">{g.judul}</h3>
@@ -154,8 +154,8 @@ export default function AdminGaleriPage() {
                         className="h-12 w-12 rounded-lg object-cover border border-border"
                       />
                     ) : (
-                      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-muted border border-border text-xs font-bold text-primary">
-                        ▶ Video
+                      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 border border-border text-xs font-bold text-primary">
+                        Video
                       </div>
                     )}
                   </td>

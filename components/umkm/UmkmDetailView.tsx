@@ -117,7 +117,7 @@ export function UmkmDetailView({ umkm }: { umkm: Umkm }) {
               <div
                 onClick={() => setLightboxOpen(true)}
                 className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-muted cursor-pointer group"
-                title="Klik untuk melihat foto ukuran utuh"
+                title="Klik untuk memperbesar foto"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -127,8 +127,12 @@ export function UmkmDetailView({ umkm }: { umkm: Umkm }) {
                   decoding="async"
                   className="h-full w-full object-contain bg-black/5 transition-all duration-300 group-hover:scale-102"
                 />
-                <div className="absolute right-3 bottom-3 rounded-full bg-black/75 px-3 py-1 text-xs font-bold text-white opacity-0 transition-opacity group-hover:opacity-100 backdrop-blur-xs">
-                  🔍 Lihat Foto Utuh
+                <div className="absolute inset-0 flex items-center justify-center bg-black/25 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-xs shadow-md transition-transform duration-200 group-hover:scale-110">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-5 w-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
+                    </svg>
+                  </div>
                 </div>
               </div>
 

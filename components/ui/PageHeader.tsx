@@ -4,7 +4,9 @@ interface PageHeaderProps {
   title: string;
   description?: string;
   // "badge" opsional untuk label kategorial/eyebrow tag di atas judul utama
-  badge?: string;
+  badge?: ReactNode;
+  // "icon" opsional untuk ikon visual di sebelah badge
+  icon?: ReactNode;
   // "accent" dipakai khusus halaman Kampung KB — wajib menonjol/beda warna (PRD Bagian 6.4 & 8).
   variant?: "primary" | "accent";
   children?: ReactNode;
@@ -14,6 +16,7 @@ export function PageHeader({
   title,
   description,
   badge,
+  icon,
   variant = "primary",
   children,
 }: PageHeaderProps) {
@@ -34,10 +37,14 @@ export function PageHeader({
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <div className="max-w-3xl space-y-3">
-          {/* Eyebrow Badge Pill */}
+          {/* Eyebrow Badge Pill dengan Ikon SVG */}
           {badge && (
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1 text-xs font-medium tracking-wide text-white backdrop-blur-md shadow-sm">
-              <span className={`h-2 w-2 rounded-full ${isAccent ? "bg-emerald-400" : "bg-secondary"} animate-pulse`} />
+              {icon ? (
+                <span className="shrink-0">{icon}</span>
+              ) : (
+                <span className={`h-2 w-2 rounded-full ${isAccent ? "bg-emerald-400" : "bg-secondary"} animate-pulse`} />
+              )}
               <span>{badge}</span>
             </div>
           )}

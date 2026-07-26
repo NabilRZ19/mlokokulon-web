@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
+import { ImageCropperModal } from "@/components/admin/ImageCropperModal";
 import { compressImage } from "@/lib/image-compression";
 
 export default function TambahStrukturPage() {
@@ -23,7 +24,9 @@ export default function TambahStrukturPage() {
     }
   }
 
-  const [file, setFile] = useState<File | null>(null);
+  const [rawImage, setRawImage] = useState<string | null>(null);
+  const [cropperOpen, setCropperOpen] = useState(false);
+
   const [preview, setPreview] = useState<string | null>(null);
   const [fotoUrl, setFotoUrl] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -34,18 +37,25 @@ export default function TambahStrukturPage() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const selected = e.target.files?.[0];
     if (!selected) return;
 
-    setFile(selected);
-    setPreview(URL.createObjectURL(selected));
+    const rawUrl = URL.createObjectURL(selected);
+    setRawImage(rawUrl);
+    setCropperOpen(true);
+    if (e.target) e.target.value = "";
+  }
+
+  async function handleCropComplete(croppedBlob: Blob, previewUrl: string) {
+    setPreview(previewUrl);
     setFotoUrl(null);
     setUploadError(null);
     setUploading(true);
 
     try {
-      const compressed = await compressImage(selected);
+      const croppedFile = new File([croppedBlob], "pejabat-crop.webp", { type: "image/webp" });
+      const compressed = await compressImage(croppedFile);
       const fd = new FormData();
       fd.append("file", compressed, compressed.name);
 
@@ -171,7 +181,7 @@ export default function TambahStrukturPage() {
               </div>
             )}
             <p className="text-xs text-primary font-semibold">
-              ✓ Posisi dalam bagan struktur otomatis disesuaikan berdasarkan tingkat hirarki yang dipilih.
+              Posisi dalam bagan struktur otomatis disesuaikan berdasarkan tingkat hirarki yang dipilih.
             </p>
           </div>
 
@@ -204,7 +214,21 @@ export default function TambahStrukturPage() {
                         fitMode === "cover" ? "object-cover" : "object-contain"
                       } ${objectPosition === "top" ? "object-top" : "object-center"}`}
                     />
-                    <span className="text-[11px] font-bold text-primary hover:underline">Klik untuk ganti foto</span>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-[11px] font-bold text-primary hover:underline">Ganti Foto</span>
+                      {rawImage && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCropperOpen(true);
+                          }}
+                          className="rounded-md bg-primary/10 px-2 py-0.5 text-[11px] font-bold text-primary hover:bg-primary hover:text-white"
+                        >
+                          Crop Ulang
+                        </button>
+                      )}
+                    </div>
                   </div>
                 ) : (
                   <div className="text-center">
@@ -223,59 +247,59 @@ export default function TambahStrukturPage() {
                 <p className="text-xs font-bold text-foreground uppercase tracking-wider">
                   Pengaturan Tampilan Foto
                 </p>
-                <div>
-                  <label className="mb-1 block text-xs font-semibold text-muted-foreground">
-                    Mode Pemotongan (Crop / Fit):
-                  </label>
+                <div className="space-y-2">
+                  <span className="text-xs font-medium text-muted-foreground block">
+                    Metode Fit Gambar:
+                  </span>
                   <div className="flex gap-2">
                     <button
                       type="button"
                       onClick={() => setFitMode("cover")}
-                      className={`flex-1 rounded-lg border px-2.5 py-1.5 text-xs font-bold transition-all ${
+                      className={`flex-1 rounded-md px-2.5 py-1.5 text-xs font-semibold border transition-colors ${
                         fitMode === "cover"
-                          ? "border-primary bg-primary text-white"
-                          : "border-border bg-card text-foreground"
+                          ? "bg-primary text-white border-primary"
+                          : "bg-card text-foreground border-border hover:bg-muted"
                       }`}
                     >
-                      Penuh (Cover)
+                      Penuhi Bingkai (Cover)
                     </button>
                     <button
                       type="button"
                       onClick={() => setFitMode("contain")}
-                      className={`flex-1 rounded-lg border px-2.5 py-1.5 text-xs font-bold transition-all ${
+                      className={`flex-1 rounded-md px-2.5 py-1.5 text-xs font-semibold border transition-colors ${
                         fitMode === "contain"
-                          ? "border-primary bg-primary text-white"
-                          : "border-border bg-card text-foreground"
+                          ? "bg-primary text-white border-primary"
+                          : "bg-card text-foreground border-border hover:bg-muted"
                       }`}
                     >
-                      Utuh (Fit)
+                      Utuh Pasfoto (Contain)
                     </button>
                   </div>
                 </div>
 
-                <div>
-                  <label className="mb-1 block text-xs font-semibold text-muted-foreground">
-                    Fokus Wajah:
-                  </label>
+                <div className="space-y-2">
+                  <span className="text-xs font-medium text-muted-foreground block">
+                    Fokus Posisi Foto:
+                  </span>
                   <div className="flex gap-2">
                     <button
                       type="button"
                       onClick={() => setObjectPosition("top")}
-                      className={`flex-1 rounded-lg border px-2.5 py-1.5 text-xs font-bold transition-all ${
+                      className={`flex-1 rounded-md px-2.5 py-1.5 text-xs font-semibold border transition-colors ${
                         objectPosition === "top"
-                          ? "border-primary bg-primary text-white"
-                          : "border-border bg-card text-foreground"
+                          ? "bg-primary text-white border-primary"
+                          : "bg-card text-foreground border-border hover:bg-muted"
                       }`}
                     >
-                      Fokus Atas (Wajah)
+                      Atas Wajah (Top)
                     </button>
                     <button
                       type="button"
                       onClick={() => setObjectPosition("center")}
-                      className={`flex-1 rounded-lg border px-2.5 py-1.5 text-xs font-bold transition-all ${
+                      className={`flex-1 rounded-md px-2.5 py-1.5 text-xs font-semibold border transition-colors ${
                         objectPosition === "center"
-                          ? "border-primary bg-primary text-white"
-                          : "border-border bg-card text-foreground"
+                          ? "bg-primary text-white border-primary"
+                          : "bg-card text-foreground border-border hover:bg-muted"
                       }`}
                     >
                       Tengah (Center)
@@ -286,7 +310,7 @@ export default function TambahStrukturPage() {
             </div>
 
             {fotoUrl && (
-              <p className="mt-1 text-xs font-bold text-emerald-600">✓ Foto berhasil diupload ke MinIO</p>
+              <p className="mt-1 text-xs font-bold text-emerald-600">Foto berhasil diupload ke MinIO</p>
             )}
             {uploadError && <p className="mt-1 text-xs font-semibold text-destructive">{uploadError}</p>}
           </div>
@@ -315,6 +339,14 @@ export default function TambahStrukturPage() {
           </button>
         </div>
       </form>
+
+      {/* Interactive Crop Modal */}
+      <ImageCropperModal
+        isOpen={cropperOpen}
+        imageSrc={rawImage}
+        onClose={() => setCropperOpen(false)}
+        onCropComplete={handleCropComplete}
+      />
     </div>
   );
 }

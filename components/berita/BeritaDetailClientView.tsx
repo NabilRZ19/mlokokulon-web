@@ -62,7 +62,7 @@ export function BeritaDetailClientView({
         <div
           onClick={() => setActiveImage({ url: getPublicImageUrl(berita.gambar_cover_url), title: berita.judul })}
           className="relative aspect-video w-full overflow-hidden bg-muted cursor-pointer group"
-          title="Klik untuk melihat foto ukuran utuh"
+          title="Klik untuk memperbesar foto"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -71,8 +71,13 @@ export function BeritaDetailClientView({
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-102"
             style={{ maxHeight: "460px" }}
           />
-          <div className="absolute right-3 bottom-3 rounded-full bg-black/75 px-3 py-1 text-xs font-bold text-white opacity-0 transition-opacity group-hover:opacity-100 backdrop-blur-xs">
-            🔍 Lihat Foto Utuh
+          {/* Sleek Minimalist Hover Overlay */}
+          <div className="absolute inset-0 flex items-center justify-center bg-black/25 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-xs shadow-md transition-transform duration-200 group-hover:scale-110">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-5 w-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
+              </svg>
+            </div>
           </div>
         </div>
 
@@ -131,7 +136,7 @@ export function BeritaDetailClientView({
                       key={i}
                       onClick={() => setActiveImage({ url, title: `Dokumentasi ${i + 1} — ${berita.judul}` })}
                       className="relative cursor-pointer overflow-hidden rounded-xl border border-border bg-black/5 group"
-                      title="Klik untuk melihat foto ukuran utuh"
+                      title="Klik untuk memperbesar foto"
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
@@ -139,10 +144,12 @@ export function BeritaDetailClientView({
                         alt={`Dokumentasi ${i + 1}`}
                         className="aspect-video w-full object-cover transition-all duration-300 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity group-hover:opacity-100">
-                        <span className="rounded-full bg-black/75 px-2.5 py-1 text-[11px] font-bold text-white backdrop-blur-xs">
-                          🔍 Lihat Foto
-                        </span>
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/25 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-xs shadow-md">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
+                          </svg>
+                        </div>
                       </div>
                     </div>
                   );

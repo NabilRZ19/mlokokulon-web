@@ -47,8 +47,12 @@ const pemerintahanLinks = [
   { href: "/wilayah", label: "Wilayah Administratif" },
 ];
 
+const beritaMediaLinks = [
+  { href: "/berita", label: "Berita & Pengumuman" },
+  { href: "/galeri", label: "Galeri Dokumentasi" },
+];
+
 const afterDropdownLinks = [
-  { href: "/berita", label: "Berita" },
   { href: "/umkm", label: "UMKM & Potensi" },
   { href: "/kontak", label: "Kontak" },
 ];
@@ -57,9 +61,11 @@ export function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [pemerintahanOpen, setPemerintahanOpen] = useState(false);
+  const [beritaMediaOpen, setBeritaMediaOpen] = useState(false);
 
   const isKampungKbActive = pathname === "/kampung-kb";
   const isPemerintahanActive = pemerintahanLinks.some((l) => pathname === l.href);
+  const isBeritaMediaActive = beritaMediaLinks.some((l) => pathname.startsWith(l.href));
 
   // Class penanda khusus Kampung KB — beraksen warna hijau (#16a34a), berbentuk pill badge
   const kampungKbClass = `inline-flex items-center gap-1.5 rounded-full bg-accent px-3.5 py-1.5 font-heading text-xs font-bold text-white shadow-sm transition-all duration-200 hover:bg-emerald-700 hover:shadow-md hover:scale-[1.02] active:scale-[0.98] ${
@@ -103,6 +109,10 @@ export function Navbar() {
               Profil
             </Link>
 
+            <Link href="/layanan" className={getNavLinkClass("/layanan")}>
+              Layanan
+            </Link>
+
             {/* Dropdown Pemerintahan */}
             <div
               className="relative"
@@ -140,15 +150,48 @@ export function Navbar() {
               )}
             </div>
 
-            <Link href="/layanan" className={getNavLinkClass("/layanan")}>
-              Layanan
-            </Link>
-
-            {/* Tombol Kampung KB (Menonjol beraksen Hijau / Accent dengan Ikon Tunas) */}
+            {/* Tombol Kampung KB (Aksen Hijau Menonjol) */}
             <Link href="/kampung-kb" className={kampungKbClass}>
               <IconSprout />
               <span>Kampung KB</span>
             </Link>
+
+            {/* Dropdown Berita & Media */}
+            <div
+              className="relative"
+              onMouseEnter={() => setBeritaMediaOpen(true)}
+              onMouseLeave={() => setBeritaMediaOpen(false)}
+            >
+              <button
+                type="button"
+                onClick={() => setBeritaMediaOpen((v) => !v)}
+                onBlur={() => setTimeout(() => setBeritaMediaOpen(false), 100)}
+                className={`rounded-md px-3 py-2 text-sm transition-colors ${
+                  isBeritaMediaActive
+                    ? "bg-primary/10 font-semibold text-primary"
+                    : "text-foreground hover:bg-muted hover:text-primary"
+                }`}
+              >
+                Berita &amp; Galeri ▾
+              </button>
+              {beritaMediaOpen && (
+                <div className="absolute left-0 top-full w-52 rounded-md border border-border bg-card py-1 shadow-lg">
+                  {beritaMediaLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className={`block px-3 py-2 text-sm transition-colors ${
+                        pathname.startsWith(link.href)
+                          ? "bg-primary/10 font-semibold text-primary"
+                          : "text-foreground hover:bg-muted"
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
 
             {afterDropdownLinks.map((link) => (
               <Link key={link.href} href={link.href} className={getNavLinkClass(link.href)}>
@@ -199,6 +242,14 @@ export function Navbar() {
             Profil
           </Link>
 
+          <Link
+            href="/layanan"
+            onClick={() => setMobileOpen(false)}
+            className={`block py-2 ${pathname === "/layanan" ? "font-bold text-primary" : "text-foreground"}`}
+          >
+            Layanan
+          </Link>
+
           <div className="py-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             Pemerintahan
           </div>
@@ -213,14 +264,6 @@ export function Navbar() {
             </Link>
           ))}
 
-          <Link
-            href="/layanan"
-            onClick={() => setMobileOpen(false)}
-            className={`block py-2 ${pathname === "/layanan" ? "font-bold text-primary" : "text-foreground"}`}
-          >
-            Layanan
-          </Link>
-
           {/* Kampung KB di Mobile Menu */}
           <div className="py-2">
             <Link
@@ -233,12 +276,15 @@ export function Navbar() {
             </Link>
           </div>
 
-          {afterDropdownLinks.map((link) => (
+          <div className="py-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Berita &amp; Galeri
+          </div>
+          {beritaMediaLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               onClick={() => setMobileOpen(false)}
-              className={`block py-2 ${pathname.startsWith(link.href) ? "font-bold text-primary" : "text-foreground"}`}
+              className={`block py-2 pl-4 ${pathname.startsWith(link.href) ? "font-bold text-primary" : "text-foreground"}`}
             >
               {link.label}
             </Link>
