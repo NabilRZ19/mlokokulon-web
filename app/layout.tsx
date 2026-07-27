@@ -30,10 +30,7 @@ export default function RootLayout({
       lang="id"
       className={`${lexend.variable} ${sourceSans.variable} h-full antialiased`}
     >
-      <head>
-        <link rel="preconnect" href="http://76.13.191.42:9000" />
-        <link rel="dns-prefetch" href="http://76.13.191.42:9000" />
-      </head>
+
       <body className="min-h-full flex flex-col">
         <SiteChrome>{children}</SiteChrome>
       </body>

@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
 
-// S3/MinIO endpoint hostname — diizinkan sebagai img-src di CSP.
-// Next.js tidak bisa baca env var di sini saat build (hanya bisa NEXT_PUBLIC_*),
-// jadi hostname MinIO di-hardcode dari .env.local.example pattern.
-// Ganti dengan domain production bila MinIO sudah pakai custom domain/HTTPS.
+// S3/MinIO endpoint hostname — dipakai di images.remotePatterns agar Next.js
+// Image Optimization bisa memproses gambar dari MinIO server-side.
+// Catatan: browser TIDAK pernah mengakses MinIO langsung; semua request gambar
+// diproxy via /api/media (lib/image-url.ts), sehingga CSP tidak perlu izin ke IP MinIO.
 const MINIO_HOSTNAME = process.env.S3_ENDPOINT
   ? new URL(process.env.S3_ENDPOINT).hostname
   : "76.13.191.42";
@@ -19,28 +19,12 @@ const MINIO_PORT = process.env.S3_ENDPOINT
     })()
   : ":9000";
 
-// CDN/font sources — Google Fonts dipakai di app/layout.tsx
-const GOOGLE_FONTS = "https://fonts.googleapis.com https://fonts.gstatic.com";
-
-const ContentSecurityPolicy = [
-  "default-src 'self'",
-  // Next.js App Router memerlukan 'unsafe-inline' untuk inline scripts/styles (Turbopack/React)
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
-  "style-src 'self' 'unsafe-inline' " + GOOGLE_FONTS,
-  "font-src 'self' " + GOOGLE_FONTS,
-  // img dari MinIO storage (bisa HTTP di dev, tambah https di production)
-  `img-src 'self' data: blob: http://${MINIO_HOSTNAME}${MINIO_PORT} https://${MINIO_HOSTNAME}${MINIO_PORT} https://${MINIO_HOSTNAME} https://images.unsplash.com`,
-  // fetch ke server sendiri + MinIO (untuk upload dari browser jika ada)
-  `connect-src 'self' http://${MINIO_HOSTNAME}${MINIO_PORT} https://${MINIO_HOSTNAME}`,
-  // Larang embed halaman ini di frame orang lain (anti-clickjacking di level CSP)
-  "frame-ancestors 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-  "object-src 'none'",
-].join("; ");
-
+// ---------------------------------------------------------------------------
+// Security Headers (CSP tidak disertakan di sini — dihandle per-request
+// oleh proxy.ts agar bisa menggunakan nonce yang unik tiap request)
+// ---------------------------------------------------------------------------
 const securityHeaders = [
-  // Anti-clickjacking (redundan dengan frame-ancestors di CSP, tapi tetap tambahkan
+  // Anti-clickjacking (redundan dengan frame-ancestors di CSP, tetapi berguna
   // untuk browser lama yang belum support CSP frame-ancestors)
   {
     key: "X-Frame-Options",
@@ -62,7 +46,7 @@ const securityHeaders = [
     value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
   },
   // HSTS — hanya di production (hindari masalah saat dev pakai HTTP)
-  // max-age 2 tahun + includeSubDomains + preload (sesuaikan domain setelah production)
+  // max-age 2 tahun + includeSubDomains + preload
   ...(process.env.NODE_ENV === "production"
     ? [
         {
@@ -71,40 +55,54 @@ const securityHeaders = [
         },
       ]
     : []),
-  // Content Security Policy
-  {
-    key: "Content-Security-Policy",
-    value: ContentSecurityPolicy,
-  },
 ];
 
 const nextConfig: NextConfig = {
+  // Experimental: Subresource Integrity (SRI) untuk build-time script integrity.
+  // Next.js akan menambahkan atribut `integrity` (sha256 hash) ke <script> tags
+  // yang di-generate saat build, sehingga browser bisa memverifikasi file
+  // tidak dimodifikasi saat transit — tanpa perlu nonce pada bundled scripts.
+  experimental: {
+    sri: {
+      algorithm: "sha256",
+    },
+  },
+
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
+      // HTTP (dev only) — dipertahankan agar Next.js Image Optimization bisa
+      // memproses gambar dari MinIO server-side dalam environment development.
+      // Browser tetap tidak pernah mengakses http:// langsung; semua via /api/media.
+      ...(process.env.NODE_ENV === "development"
+        ? [
+            {
+              protocol: "http" as const,
+              hostname: MINIO_HOSTNAME,
+              port: MINIO_PORT.replace(":", ""),
+              pathname: "/**",
+            },
+          ]
+        : []),
       {
-        protocol: "http",
+        protocol: "https" as const,
         hostname: MINIO_HOSTNAME,
-        port: MINIO_PORT.replace(":", ""),
         pathname: "/**",
       },
       {
-        protocol: "https",
-        hostname: MINIO_HOSTNAME,
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
+        protocol: "https" as const,
         hostname: "images.unsplash.com",
         pathname: "/**",
       },
     ],
     minimumCacheTTL: 86400,
   },
+
   async headers() {
     return [
       {
-        // Terapkan security headers ke semua route
+        // Terapkan security headers ke semua route.
+        // CSP dikecualikan dari sini dan dihandle di proxy.ts (nonce-based).
         source: "/(.*)",
         headers: securityHeaders,
       },
