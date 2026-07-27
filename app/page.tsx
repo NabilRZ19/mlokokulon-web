@@ -2,7 +2,7 @@ import Link from "next/link";
 import { BeritaBadge } from "@/components/berita/BeritaBadge";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
-import { MapPlaceholder } from "@/components/ui/MapPlaceholder";
+import { MapWilayah } from "@/components/ui/MapWilayah";
 import { SproutIcon } from "@/components/ui/icons";
 import { getPublicImageUrl } from "@/lib/image-url";
 import { getBeritaList, getGaleriList } from "@/lib/queries";
@@ -468,10 +468,7 @@ export default async function Home() {
             </p>
           </div>
 
-          <MapPlaceholder
-            title="Peta Kelurahan"
-            label="Gambar/embed ringan seluruh wilayah kelurahan akan tampil di sini — menunggu data GeoJSON."
-          />
+          <MapWilayah height="500px" />
         </div>
       </section>
 

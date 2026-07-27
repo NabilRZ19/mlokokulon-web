@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { MapPlaceholder } from "@/components/ui/MapPlaceholder";
+import { MapWilayah } from "@/components/ui/MapWilayah";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { WilayahList } from "@/components/wilayah/WilayahList";
 import { getRwList } from "@/lib/queries";
@@ -27,11 +27,14 @@ export default async function WilayahPage() {
       />
 
       <div className="mx-auto max-w-6xl space-y-10 px-4 py-12">
-        {/* Peta Wilayah Interaktif */}
-        <MapPlaceholder
-          title="Peta Wilayah Kelurahan"
-          label="Peta interaktif seluruh wilayah kelurahan segera hadir — menunggu data GeoJSON."
-        />
+        {/* Peta Wilayah Interaktif WebGIS */}
+        <div>
+          <div className="mb-4">
+            <h2 className="font-heading text-xl font-bold text-foreground">Peta Wilayah &amp; WebGIS Kelurahan</h2>
+            <p className="text-sm text-muted-foreground mt-1">Visualisasi peta interaktif seluruh RW, batas wilayah, dan titik sarana kelurahan.</p>
+          </div>
+          <MapWilayah height="600px" showDesaLainByDefault={true} showRwByDefault={false} />
+        </div>
 
         {/* Direktori RW Interaktif dengan Search, Filter & Stat Bar */}
         <WilayahList rwList={rwList} />

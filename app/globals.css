@@ -42,3 +42,95 @@ h6 {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* ── Leaflet tile fix ────────────────────────────────────────────────────────
+   Tailwind v4 menerapkan `img { max-width: 100%; height: auto; }` secara global.
+   Ini merusak tile peta Leaflet (setiap tile adalah <img> 256×256px) karena
+   max-width memampatkan lebarnya dan height: auto mengikuti sehingga tile menjadi
+   sangat kecil / tidak kelihatan. Override di sini bersifat global dan permanen
+   sehingga tidak bisa tertimpa oleh cascade dari bundler. */
+.leaflet-container img,
+.leaflet-tile,
+.leaflet-tile-pane img,
+.leaflet-layer img {
+  max-width: none !important;
+  max-height: none !important;
+  width: auto;
+  height: auto;
+}
+
+/* ── Leaflet Sarana Badge, Tooltips & Legend Controls ──────────────────────── */
+.sarana-badge {
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1.5px solid #ffffff !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+  box-sizing: border-box !important;
+  vertical-align: middle !important;
+  flex-shrink: 0 !important;
+}
+
+.sarana-badge svg {
+  fill: #ffffff !important;
+  display: block !important;
+}
+
+/* Compact Pill Badge for RW Labels on Map */
+.labelrw {
+  background: rgba(13, 71, 161, 0.88) !important;
+  border: 1.5px solid #ffffff !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+  color: #ffffff !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  padding: 2px 8px !important;
+  white-space: nowrap !important;
+  text-shadow: none !important;
+  pointer-events: none !important;
+}
+
+.leaflet-tooltip-left.labelrw::before,
+.leaflet-tooltip-right.labelrw::before,
+.leaflet-tooltip-top.labelrw::before,
+.leaflet-tooltip-bottom.labelrw::before {
+  display: none !important;
+}
+
+.leaflet-control-layers-overlays label {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  margin-bottom: 5px !important;
+  cursor: pointer !important;
+}
+
+.legend-row {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  vertical-align: middle !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: #1e293b !important;
+}
+
+/* ── Custom Vector Icon for Collapsed Leaflet Filter Button ────────────────── */
+.leaflet-control-layers-toggle {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.8' stroke='%231e293b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M6.429 9.75L2.25 12l4.179 2.25m0-4.5l4.179 2.25m-4.179-2.25l4.179-2.25m4.179 6.75l4.179-2.25m-4.179 2.25l-4.179-2.25m4.179 2.25l4.179 2.25M6.429 14.25L2.25 16.5l9.75 5.25 9.75-5.25-4.179-2.25M6.429 14.25l4.179 2.25m0 0l4.179-2.25' /%3E%3C/svg%3E") !important;
+  background-size: 22px 22px !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-color: #ffffff !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 10px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+}
+
+.leaflet-control-layers-toggle:hover {
+  background-color: #f1f5f9 !important;
+}
