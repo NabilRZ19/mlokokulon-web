@@ -3,15 +3,21 @@ import type { NextRequest } from "next/server";
 import { SESSION_COOKIE_NAME, verifySessionToken } from "@/lib/auth";
 
 // ---------------------------------------------------------------------------
-// CSP Nonce Generation
+// Content-Security-Policy
 // ---------------------------------------------------------------------------
-// Nonce di-generate per-request sehingga setiap halaman mendapatkan nilai
-// unik yang tidak bisa ditebak oleh attacker. Pendekatan ini menggantikan
-// 'unsafe-inline' dan 'unsafe-eval' (production) di script-src & style-src.
+// Situs ini 100% SSG/ISR untuk halaman publik (Aturan Kritikal #2, CLAUDE.md) —
+// tidak ada per-request dynamic rendering. Nonce-based CSP ('strict-dynamic')
+// butuh setiap halaman di-render dinamis per request supaya nonce di header
+// bisa ditempelkan ke tag <script>/<style> yang di-render (lihat referensi di
+// bawah) — itu bertentangan dengan arsitektur statis situs ini, jadi dipakai
+// pola domain-allowlist + 'unsafe-inline' sebagai gantinya. Build-time
+// <script> yang di-load dari /_next/static tetap dilindungi lewat SRI
+// (experimental.sri di next.config.ts), jadi integritas script tetap terjaga
+// meski tanpa nonce.
 // Referensi: node_modules/next/dist/docs/01-app/02-guides/content-security-policy.md
 // ---------------------------------------------------------------------------
 
-function buildCsp(nonce: string): string {
+function buildCsp(): string {
   const isDev = process.env.NODE_ENV === "development";
 
   // Catatan img-src & connect-src:
@@ -20,8 +26,8 @@ function buildCsp(nonce: string): string {
   //   Unsplash diakses langsung via https, sehingga tetap perlu di img-src.
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""};
-    style-src 'self' 'unsafe-inline' 'nonce-${nonce}';
+    script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""};
+    style-src 'self' 'unsafe-inline';
     font-src 'self';
     img-src 'self' data: blob: https://images.unsplash.com
       https://mt0.google.com https://mt1.google.com https://mt2.google.com https://mt3.google.com
@@ -46,15 +52,11 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // ------------------------------------------------------------------
-  // 1. Generate nonce & tambahkan CSP header untuk setiap page request
+  // 1. Tambahkan CSP header untuk setiap page request
   // ------------------------------------------------------------------
-  const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
-  const cspValue = buildCsp(nonce);
+  const cspValue = buildCsp();
 
-  // Teruskan nonce via request header agar Server Components bisa baca
-  // dengan `(await headers()).get('x-nonce')` bila diperlukan.
   const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-nonce", nonce);
   requestHeaders.set("Content-Security-Policy", cspValue);
 
   // ------------------------------------------------------------------

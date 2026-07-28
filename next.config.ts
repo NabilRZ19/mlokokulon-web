@@ -20,8 +20,8 @@ const MINIO_PORT = process.env.S3_ENDPOINT
   : ":9000";
 
 // ---------------------------------------------------------------------------
-// Security Headers (CSP tidak disertakan di sini — dihandle per-request
-// oleh proxy.ts agar bisa menggunakan nonce yang unik tiap request)
+// Security Headers (CSP tidak disertakan di sini — tetap dihandle di
+// proxy.ts, domain-allowlist based, lihat komentar buildCsp() di sana)
 // ---------------------------------------------------------------------------
 const securityHeaders = [
   // Anti-clickjacking (redundan dengan frame-ancestors di CSP, tetapi berguna
