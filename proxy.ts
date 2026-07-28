@@ -21,16 +21,16 @@ function buildCsp(nonce: string): string {
   const cspHeader = `
     default-src 'self';
     script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""};
-    style-src 'self' 'nonce-${nonce}'${isDev ? " 'unsafe-inline'" : ""};
+    style-src 'self' 'unsafe-inline' 'nonce-${nonce}';
     font-src 'self';
     img-src 'self' data: blob: https://images.unsplash.com
       https://mt0.google.com https://mt1.google.com https://mt2.google.com https://mt3.google.com
       https://services.arcgisonline.com https://server.arcgisonline.com
-      https://*.tile.openstreetmap.org;
+      https://*.tile.openstreetmap.org https://tile.openstreetmap.org;
     connect-src 'self'
       https://mt0.google.com https://mt1.google.com https://mt2.google.com https://mt3.google.com
       https://services.arcgisonline.com https://server.arcgisonline.com
-      https://*.tile.openstreetmap.org;
+      https://*.tile.openstreetmap.org https://tile.openstreetmap.org;
     frame-ancestors 'none';
     base-uri 'self';
     form-action 'self';

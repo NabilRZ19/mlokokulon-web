@@ -272,12 +272,20 @@ export default function LeafletMapInner({
     const labelDesaLain = { permanent: true, direction: "center" as const, className: "labeldesalain" };
     const labelKecamatan = { permanent: true, direction: "center" as const, className: "labelkec" };
 
-    // Fetch All GeoJSON Data
+    // Fetch All GeoJSON Data with response validation
+    const fetchGeoJSON = async (url: string) => {
+      const res = await fetch(url);
+      if (!res.ok) {
+        throw new Error(`Gagal memuat ${url} (HTTP ${res.status})`);
+      }
+      return res.json();
+    };
+
     Promise.all([
-      fetch("/data/DesaNgadirojo.geojson").then((r) => r.json()),
-      fetch("/data/MlokoFIX.geojson").then((r) => r.json()),
-      fetch("/data/WonogiriWADMKC.geojson").then((r) => r.json()),
-      fetch("/data/TitikSarana.geojson").then((r) => r.json()),
+      fetchGeoJSON("/data/DesaNgadirojo.geojson"),
+      fetchGeoJSON("/data/MlokoFIX.geojson"),
+      fetchGeoJSON("/data/WonogiriWADMKC.geojson"),
+      fetchGeoJSON("/data/TitikSarana.geojson"),
     ])
       .then(([desaData, rwData, kecamatanData, saranaGeojson]) => {
         if (!isSubscribed || !mapRef.current) return;

@@ -38,5 +38,10 @@ export function getPublicImageUrl(url: string | null | undefined): string {
   }
 
   // Untuk URL HTTPS eksternal (seperti Unsplash), kembalikan langsung
-  return trimmed;
+  if (trimmed.startsWith("https://")) {
+    return trimmed;
+  }
+
+  // Kunci path relatif tanpa slash di depan (misal "media/xyz.jpg" atau "mlokokulon/media/xyz.jpg")
+  return `/api/media/${trimmed}`;
 }

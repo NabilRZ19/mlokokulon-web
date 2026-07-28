@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LockIcon } from "@/components/ui/icons";
 
 // ─── Inline Icons ─────────────────────────────────────────────────────────────
@@ -62,10 +62,23 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [pemerintahanOpen, setPemerintahanOpen] = useState(false);
   const [beritaMediaOpen, setBeritaMediaOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
 
   const isKampungKbActive = pathname === "/kampung-kb";
   const isPemerintahanActive = pemerintahanLinks.some((l) => pathname === l.href);
   const isBeritaMediaActive = beritaMediaLinks.some((l) => pathname.startsWith(l.href));
+
+  // Tutup dropdown jika user meng-klik di luar area header / navbar
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        setPemerintahanOpen(false);
+        setBeritaMediaOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   // Class penanda khusus Kampung KB — beraksen warna hijau (#16a34a), berbentuk pill badge
   const kampungKbClass = `inline-flex items-center gap-1.5 rounded-full bg-accent px-3.5 py-1.5 font-heading text-xs font-bold text-white shadow-sm transition-all duration-200 hover:bg-emerald-700 hover:shadow-md hover:scale-[1.02] active:scale-[0.98] ${
@@ -83,7 +96,7 @@ export function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-card shadow-sm">
+    <header ref={headerRef} className="sticky top-0 z-50 border-b border-border bg-card shadow-sm">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2.5">
@@ -121,8 +134,10 @@ export function Navbar() {
             >
               <button
                 type="button"
-                onClick={() => setPemerintahanOpen((v) => !v)}
-                onBlur={() => setTimeout(() => setPemerintahanOpen(false), 100)}
+                onClick={() => {
+                  setPemerintahanOpen((v) => !v);
+                  setBeritaMediaOpen(false);
+                }}
                 className={`rounded-md px-3 py-2 text-sm transition-colors ${
                   isPemerintahanActive
                     ? "bg-primary/10 font-semibold text-primary"
@@ -132,11 +147,12 @@ export function Navbar() {
                 Pemerintahan ▾
               </button>
               {pemerintahanOpen && (
-                <div className="absolute left-0 top-full w-52 rounded-md border border-border bg-card py-1 shadow-lg">
+                <div className="absolute left-0 top-full w-52 rounded-md border border-border bg-card py-1 shadow-lg z-50">
                   {pemerintahanLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
+                      onClick={() => setPemerintahanOpen(false)}
                       className={`block px-3 py-2 text-sm transition-colors ${
                         pathname === link.href
                           ? "bg-primary/10 font-semibold text-primary"
@@ -164,8 +180,10 @@ export function Navbar() {
             >
               <button
                 type="button"
-                onClick={() => setBeritaMediaOpen((v) => !v)}
-                onBlur={() => setTimeout(() => setBeritaMediaOpen(false), 100)}
+                onClick={() => {
+                  setBeritaMediaOpen((v) => !v);
+                  setPemerintahanOpen(false);
+                }}
                 className={`rounded-md px-3 py-2 text-sm transition-colors ${
                   isBeritaMediaActive
                     ? "bg-primary/10 font-semibold text-primary"
@@ -175,11 +193,12 @@ export function Navbar() {
                 Berita &amp; Galeri ▾
               </button>
               {beritaMediaOpen && (
-                <div className="absolute left-0 top-full w-52 rounded-md border border-border bg-card py-1 shadow-lg">
+                <div className="absolute left-0 top-full w-52 rounded-md border border-border bg-card py-1 shadow-lg z-50">
                   {beritaMediaLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
+                      onClick={() => setBeritaMediaOpen(false)}
                       className={`block px-3 py-2 text-sm transition-colors ${
                         pathname.startsWith(link.href)
                           ? "bg-primary/10 font-semibold text-primary"
@@ -204,10 +223,10 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <Link
             href="/admin/login"
-            className="hidden items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-primary hover:text-primary md:inline-flex"
+            className="hidden items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:text-primary md:inline-flex"
           >
             <LockIcon className="h-3.5 w-3.5" />
-            Admin
+            Login
           </Link>
 
           {/* Mobile hamburger */}
@@ -296,7 +315,7 @@ export function Navbar() {
             className="mt-3 flex items-center gap-1.5 border-t border-border pt-3 text-muted-foreground hover:text-primary"
           >
             <LockIcon className="h-3.5 w-3.5" />
-            Login Admin
+            Login
           </Link>
         </div>
       )}
