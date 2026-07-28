@@ -58,15 +58,12 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  // Experimental: Subresource Integrity (SRI) untuk build-time script integrity.
-  // Next.js akan menambahkan atribut `integrity` (sha256 hash) ke <script> tags
-  // yang di-generate saat build, sehingga browser bisa memverifikasi file
-  // tidak dimodifikasi saat transit — tanpa perlu nonce pada bundled scripts.
-  experimental: {
-    sri: {
-      algorithm: "sha256",
-    },
-  },
+  // Catatan: experimental.sri (Subresource Integrity untuk build-time <script>)
+  // sempat dicoba tapi DIMATIKAN — hash `integrity` yang ditulis saat build
+  // tidak cocok dengan file yang benar-benar disajikan di Vercel (Turbopack
+  // chunk hash mismatch), sehingga browser memblokir SEMUA script di production.
+  // Fitur ini masih experimental di Next.js 16, jangan diaktifkan lagi sampai
+  // terverifikasi stabil dengan Turbopack build di Vercel.
 
   images: {
     formats: ["image/avif", "image/webp"],

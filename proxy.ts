@@ -10,10 +10,11 @@ import { SESSION_COOKIE_NAME, verifySessionToken } from "@/lib/auth";
 // butuh setiap halaman di-render dinamis per request supaya nonce di header
 // bisa ditempelkan ke tag <script>/<style> yang di-render (lihat referensi di
 // bawah) — itu bertentangan dengan arsitektur statis situs ini, jadi dipakai
-// pola domain-allowlist + 'unsafe-inline' sebagai gantinya. Build-time
-// <script> yang di-load dari /_next/static tetap dilindungi lewat SRI
-// (experimental.sri di next.config.ts), jadi integritas script tetap terjaga
-// meski tanpa nonce.
+// pola domain-allowlist + 'unsafe-inline' sebagai gantinya. (Sempat dicoba
+// menambah experimental.sri di next.config.ts sebagai lapisan integritas
+// tambahan untuk build-time <script>, tapi dimatikan lagi karena hash
+// integrity-nya mismatch dengan file yang disajikan Vercel dan memblokir
+// semua script — lihat komentar di next.config.ts.)
 // Referensi: node_modules/next/dist/docs/01-app/02-guides/content-security-policy.md
 // ---------------------------------------------------------------------------
 
