@@ -150,39 +150,42 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
           <div className="grid grid-cols-3 gap-4">
             <div>
               <label htmlFor="jumlahRt" className="mb-1 block text-sm font-bold text-foreground">
-                Jumlah RT
+                Jumlah RT <span className="font-normal text-muted-foreground">(Rukun Tetangga)</span>
               </label>
               <input
                 id="jumlahRt"
                 type="number"
                 value={jumlahRt}
                 onChange={(e) => setJumlahRt(Number(e.target.value))}
+                placeholder="Contoh: 5"
                 className="w-full rounded-lg border border-border bg-card px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
               />
             </div>
 
             <div>
               <label htmlFor="jumlahKk" className="mb-1 block text-sm font-bold text-foreground">
-                Jumlah KK
+                Jumlah KK <span className="font-normal text-muted-foreground">(Kepala Keluarga)</span>
               </label>
               <input
                 id="jumlahKk"
                 type="number"
                 value={jumlahKk}
                 onChange={(e) => setJumlahKk(Number(e.target.value))}
+                placeholder="Contoh: 250"
                 className="w-full rounded-lg border border-border bg-card px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
               />
             </div>
 
             <div>
               <label htmlFor="jumlahJiwa" className="mb-1 block text-sm font-bold text-foreground">
-                Jumlah Jiwa
+                Jumlah Jiwa <span className="font-normal text-muted-foreground">(total penduduk)</span>
               </label>
               <input
                 id="jumlahJiwa"
                 type="number"
                 value={jumlahJiwa}
                 onChange={(e) => setJumlahJiwa(Number(e.target.value))}
+                placeholder="Contoh: 850"
                 className="w-full rounded-lg border border-border bg-card px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
               />
             </div>

@@ -3,6 +3,7 @@ export const KATEGORI_LABEL: Record<string, string> = {
   pengumuman: "Pengumuman",
   kegiatan: "Kegiatan",
   pembangunan: "Pembangunan",
+  "kampung-kb": "Kampung KB",
 };
 
 export function BeritaBadge({ kategori }: { kategori: string }) {
@@ -29,6 +30,14 @@ export function BeritaBadge({ kategori }: { kategori: string }) {
     return (
       <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-100 px-3 py-0.5 text-xs font-bold text-blue-700 border border-blue-200">
         Kegiatan
+      </span>
+    );
+  }
+
+  if (kat === "kampung-kb") {
+    return (
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-violet-100 px-3 py-0.5 text-xs font-bold text-violet-700 border border-violet-200">
+        Kampung KB
       </span>
     );
   }

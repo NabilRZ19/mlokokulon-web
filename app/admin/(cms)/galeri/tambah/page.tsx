@@ -146,6 +146,9 @@ export default function TambahGaleriPage() {
                 <option value="pembangunan">Pembangunan</option>
                 <option value="umkm">Potensi / UMKM</option>
               </select>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Kampung KB = program Keluarga Berencana unggulan kelurahan.
+              </p>
             </div>
           </div>
 
@@ -158,7 +161,7 @@ export default function TambahGaleriPage() {
               <input
                 ref={fileInputRef}
                 type="file"
-                accept="image/*"
+                accept="image/*,.heic,.heif"
                 className="hidden"
                 onChange={handleFileChange}
               />

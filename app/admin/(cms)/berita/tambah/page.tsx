@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { compressImage } from "@/lib/image-compression";
 
-type Kategori = "pengumuman" | "kegiatan" | "pembangunan" | "berita";
+type Kategori = "pengumuman" | "kegiatan" | "pembangunan" | "berita" | "kampung-kb";
 type Cakupan = "kelurahan" | "rw";
 
 interface FotoItem {
@@ -57,6 +57,12 @@ const KATEGORI_CONFIG: Record<
     label: "Pembangunan",
     bgClass: "bg-emerald-50 text-emerald-700 border-emerald-200",
     activeClass: "bg-emerald-600 text-white border-emerald-600 shadow-sm",
+  },
+  "kampung-kb": {
+    label: "Kampung KB",
+    bgClass: "bg-violet-50 text-violet-700 border-violet-200",
+    activeClass: "bg-violet-600 text-white border-violet-600 shadow-sm",
+    dotColor: "bg-violet-400",
   },
 };
 
@@ -555,6 +561,11 @@ export default function TambahBeritaPage() {
                   );
                 })}
               </div>
+              {kategori === "kampung-kb" && (
+                <p className="mt-1.5 text-xs text-muted-foreground">
+                  Kampung KB = program Keluarga Berencana unggulan kelurahan.
+                </p>
+              )}
             </div>
 
             {/* Tanggal Terbit, Penulis & Cakupan Wilayah */}
@@ -582,7 +593,7 @@ export default function TambahBeritaPage() {
                   type="text"
                   value={penulis}
                   onChange={(e) => setPenulis(e.target.value)}
-                  placeholder="Nama penulis…"
+                  placeholder="Contoh: Sekretaris Kelurahan / Ketua RW 03"
                   className={inputClass(!!errors.penulis)}
                 />
                 {errors.penulis && <p className="mt-1 text-xs text-destructive font-semibold">{errors.penulis}</p>}
@@ -667,7 +678,7 @@ export default function TambahBeritaPage() {
           <input
             ref={coverInputRef}
             type="file"
-            accept="image/*"
+            accept="image/*,.heic,.heif"
             className="hidden"
             id="cover-input"
             onChange={handleCoverChange}
@@ -750,7 +761,7 @@ export default function TambahBeritaPage() {
           <input
             ref={fotoInputRef}
             type="file"
-            accept="image/*"
+            accept="image/*,.heic,.heif"
             multiple
             className="hidden"
             id="foto-tambahan-input"

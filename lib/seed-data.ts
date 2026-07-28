@@ -418,9 +418,13 @@ export const umkmSeed: Umkm[] = [
     deskripsi: "Contoh data UMKM dummy untuk keperluan pengembangan.",
     link_gmaps: "",
     kontak: "0800-0000-1001",
-    produk_unggulan: ["Keripik Singkong Original", "Keripik Singkong Balado"],
+    produk_unggulan: [
+      { produk: "Keripik Singkong Original", foto_url: null },
+      { produk: "Keripik Singkong Balado", foto_url: null },
+    ],
     jam_operasional: "08.00–16.00",
     foto_urls: ["/images/placeholder-photo.svg"],
+    foto_utama_url: "/images/placeholder-photo.svg",
   },
   {
     id: "umkm-02",
@@ -430,8 +434,12 @@ export const umkmSeed: Umkm[] = [
     deskripsi: "Contoh data UMKM dummy untuk keperluan pengembangan.",
     link_gmaps: "",
     kontak: "0800-0000-1002",
-    produk_unggulan: ["Tampah", "Besek"],
+    produk_unggulan: [
+      { produk: "Tampah", foto_url: null },
+      { produk: "Besek", foto_url: null },
+    ],
     jam_operasional: "07.00–15.00",
     foto_urls: ["/images/placeholder-photo.svg"],
+    foto_utama_url: "/images/placeholder-photo.svg",
   },
 ];

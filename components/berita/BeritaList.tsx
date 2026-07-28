@@ -13,6 +13,7 @@ const KATEGORI_OPTIONS: Array<Berita["kategori"] | "semua"> = [
   "pengumuman",
   "kegiatan",
   "pembangunan",
+  "kampung-kb",
 ];
 
 export function BeritaList({ berita, rwList }: { berita: Berita[]; rwList: Rw[] }) {

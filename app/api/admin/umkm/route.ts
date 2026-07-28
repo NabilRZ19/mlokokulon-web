@@ -42,6 +42,7 @@ export async function POST(request: Request) {
       jam_operasional,
       produk_unggulan = [],
       foto_urls = [],
+      foto_utama_url = null,
     } = body;
 
     if (
@@ -67,15 +68,17 @@ export async function POST(request: Request) {
       linkGmaps: link_gmaps,
       kontak,
       jamOperasional: jam_operasional,
+      fotoUtamaUrl: foto_utama_url || null,
     });
 
     if (Array.isArray(produk_unggulan) && produk_unggulan.length > 0) {
       await db.insert(umkmProdukUnggulan).values(
         produk_unggulan
-          .filter((p: string) => p.trim().length > 0)
-          .map((produk: string) => ({
+          .filter((p: { produk: string }) => p.produk.trim().length > 0)
+          .map((p: { produk: string; foto_url: string | null }) => ({
             umkmId: id,
-            produk: produk.trim(),
+            produk: p.produk.trim(),
+            fotoUrl: p.foto_url || null,
           }))
       );
     }

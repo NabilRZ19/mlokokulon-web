@@ -19,17 +19,24 @@ export default function TambahUmkmPage() {
 
   const computedJamOperasional = `${hariOperasional !== "Setiap Hari" ? `${hariOperasional}, ` : ""}${jamBuka} - ${jamTutup} WIB`;
 
-  const [produkList, setProdukList] = useState<string[]>([""]);
+  const [produkList, setProdukList] = useState<
+    { produk: string; fotoUrl: string | null; uploading?: boolean }[]
+  >([{ produk: "", fotoUrl: null }]);
   const [fotoList, setFotoList] = useState<{ url: string; file?: File; uploading?: boolean }[]>([]);
+  const [fotoUtama, setFotoUtama] = useState<{ url: string } | null>(null);
+  const [fotoUtamaUploading, setFotoUtamaUploading] = useState(false);
 
   const [uploadingGlobal, setUploadingGlobal] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const fotoInputRef = useRef<HTMLInputElement>(null);
+  const fotoUtamaInputRef = useRef<HTMLInputElement>(null);
+  const produkFotoInputRef = useRef<HTMLInputElement>(null);
+  const [produkFotoTargetIndex, setProdukFotoTargetIndex] = useState<number | null>(null);
 
   function handleAddProduk() {
-    setProdukList((prev) => [...prev, ""]);
+    setProdukList((prev) => [...prev, { produk: "", fotoUrl: null }]);
   }
 
   function handleRemoveProduk(index: number) {
@@ -37,7 +44,62 @@ export default function TambahUmkmPage() {
   }
 
   function handleProdukChange(index: number, val: string) {
-    setProdukList((prev) => prev.map((p, i) => (i === index ? val : p)));
+    setProdukList((prev) => prev.map((p, i) => (i === index ? { ...p, produk: val } : p)));
+  }
+
+  async function uploadOneFile(file: File): Promise<string> {
+    const compressed = await compressImage(file);
+    const fd = new FormData();
+    fd.append("file", compressed, compressed.name);
+    const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+    if (!res.ok) throw new Error("Upload gagal");
+    const data = await res.json();
+    return data.url as string;
+  }
+
+  async function handleFotoUtamaChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setFotoUtamaUploading(true);
+    try {
+      const url = await uploadOneFile(file);
+      setFotoUtama({ url });
+    } catch {
+      setError("Gagal mengupload foto utama.");
+    } finally {
+      setFotoUtamaUploading(false);
+      if (e.target) e.target.value = "";
+    }
+  }
+
+  function handleProdukFotoClick(index: number) {
+    setProdukFotoTargetIndex(index);
+    produkFotoInputRef.current?.click();
+  }
+
+  async function handleProdukFotoChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    const index = produkFotoTargetIndex;
+    if (!file || index === null) return;
+
+    setProdukList((prev) => prev.map((p, i) => (i === index ? { ...p, uploading: true } : p)));
+    try {
+      const url = await uploadOneFile(file);
+      setProdukList((prev) =>
+        prev.map((p, i) => (i === index ? { ...p, fotoUrl: url, uploading: false } : p))
+      );
+    } catch {
+      setError("Gagal mengupload foto produk.");
+      setProdukList((prev) => prev.map((p, i) => (i === index ? { ...p, uploading: false } : p)));
+    } finally {
+      if (e.target) e.target.value = "";
+      setProdukFotoTargetIndex(null);
+    }
+  }
+
+  function handleRemoveProdukFoto(index: number) {
+    setProdukList((prev) => prev.map((p, i) => (i === index ? { ...p, fotoUrl: null } : p)));
   }
 
   async function handleFotoAdd(e: React.ChangeEvent<HTMLInputElement>) {
@@ -89,8 +151,11 @@ export default function TambahUmkmPage() {
         link_gmaps: linkGmaps,
         kontak,
         jam_operasional: computedJamOperasional,
-        produk_unggulan: produkList.filter((p) => p.trim().length > 0),
+        produk_unggulan: produkList
+          .filter((p) => p.produk.trim().length > 0)
+          .map((p) => ({ produk: p.produk.trim(), foto_url: p.fotoUrl })),
         foto_urls: fotoList.map((f) => f.url),
+        foto_utama_url: fotoUtama?.url ?? null,
       };
 
       const res = await fetch("/api/admin/umkm", {
@@ -268,12 +333,40 @@ export default function TambahUmkmPage() {
               </button>
             </div>
 
+            <p className="mb-2 text-xs text-muted-foreground">
+              Foto per produk bersifat opsional — kosongkan kalau tidak perlu.
+            </p>
+
             <div className="space-y-2">
               {produkList.map((prod, idx) => (
-                <div key={idx} className="flex gap-2">
+                <div key={idx} className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleProdukFotoClick(idx)}
+                    className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-dashed border-border bg-muted text-muted-foreground hover:border-primary/50"
+                    title="Upload foto produk (opsional)"
+                  >
+                    {prod.uploading ? (
+                      <span className="text-[10px]">…</span>
+                    ) : prod.fotoUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={prod.fotoUrl} alt="" className="h-full w-full object-cover" />
+                    ) : (
+                      <span className="text-lg leading-none">+</span>
+                    )}
+                  </button>
+                  {prod.fotoUrl && !prod.uploading && (
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveProdukFoto(idx)}
+                      className="shrink-0 text-[10px] font-bold text-destructive hover:underline"
+                    >
+                      Hapus Foto
+                    </button>
+                  )}
                   <input
                     type="text"
-                    value={prod}
+                    value={prod.produk}
                     onChange={(e) => handleProdukChange(idx, e.target.value)}
                     placeholder={`Nama Produk ${idx + 1}`}
                     className="flex-1 rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
@@ -290,6 +383,55 @@ export default function TambahUmkmPage() {
                 </div>
               ))}
             </div>
+
+            <input
+              ref={produkFotoInputRef}
+              type="file"
+              accept="image/*,.heic,.heif"
+              className="hidden"
+              onChange={handleProdukFotoChange}
+            />
+          </div>
+
+          {/* Foto Utama (Highlight) */}
+          <div>
+            <label className="mb-1 block text-sm font-bold text-foreground">
+              Foto Utama (Highlight)
+            </label>
+            <p className="mb-2 text-xs text-muted-foreground">
+              Foto ini yang tampil sebagai sampul UMKM di halaman daftar UMKM.
+            </p>
+
+            <input
+              ref={fotoUtamaInputRef}
+              type="file"
+              accept="image/*,.heic,.heif"
+              className="hidden"
+              onChange={handleFotoUtamaChange}
+            />
+
+            {fotoUtama ? (
+              <div className="relative aspect-video w-full max-w-xs overflow-hidden rounded-lg border border-border">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={fotoUtama.url} alt="Foto utama UMKM" className="h-full w-full object-cover" />
+                <button
+                  type="button"
+                  onClick={() => setFotoUtama(null)}
+                  className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-destructive text-white text-xs font-bold shadow-xs hover:bg-destructive/90"
+                >
+                  ×
+                </button>
+              </div>
+            ) : (
+              <div
+                onClick={() => !fotoUtamaUploading && fotoUtamaInputRef.current?.click()}
+                className="flex max-w-xs cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-border py-6 hover:border-primary/50 hover:bg-primary/5 transition-colors"
+              >
+                <p className="text-xs font-semibold text-muted-foreground">
+                  {fotoUtamaUploading ? "Mengupload…" : "Klik di sini untuk upload foto utama"}
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Foto produk UMKM */}
@@ -309,7 +451,7 @@ export default function TambahUmkmPage() {
             <input
               ref={fotoInputRef}
               type="file"
-              accept="image/*"
+              accept="image/*,.heic,.heif"
               multiple
               className="hidden"
               onChange={handleFotoAdd}

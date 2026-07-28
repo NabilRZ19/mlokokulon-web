@@ -12,7 +12,7 @@ import {
   umkmFoto,
   umkmProdukUnggulan,
 } from "./db/schema";
-import type { Berita, Galeri, Rw, StrukturKelurahan, Umkm } from "./types";
+import type { Berita, Galeri, Rw, StrukturKelurahan, Umkm, UmkmProdukUnggulan } from "./types";
 
 // Fetch server-side (Drizzle + MySQL VPS) untuk halaman publik SSG/ISR — halaman publik tidak
 // boleh fetch DB langsung dari client browser. Shape return tetap sama persis dengan lib/types.ts
@@ -211,9 +211,10 @@ async function assembleUmkmSingle(row: typeof umkmTable.$inferSelect): Promise<U
     deskripsi: row.deskripsi,
     link_gmaps: row.linkGmaps,
     kontak: row.kontak,
-    produk_unggulan: produk.map((p) => p.produk),
+    produk_unggulan: produk.map((p) => ({ produk: p.produk, foto_url: p.fotoUrl })),
     jam_operasional: row.jamOperasional,
     foto_urls: foto.map((f) => f.url),
+    foto_utama_url: row.fotoUtamaUrl,
   };
 }
 
@@ -235,10 +236,10 @@ export async function getUmkmList(): Promise<Umkm[]> {
       console.error("[queries] Error batch fetch umkm child tables:", err);
     }
 
-    const produkMap = new Map<string, string[]>();
+    const produkMap = new Map<string, UmkmProdukUnggulan[]>();
     for (const p of allProduk) {
       const list = produkMap.get(p.umkmId) ?? [];
-      list.push(p.produk);
+      list.push({ produk: p.produk, foto_url: p.fotoUrl });
       produkMap.set(p.umkmId, list);
     }
 
@@ -260,6 +261,7 @@ export async function getUmkmList(): Promise<Umkm[]> {
       produk_unggulan: produkMap.get(row.id) ?? [],
       jam_operasional: row.jamOperasional,
       foto_urls: fotoMap.get(row.id) ?? [],
+      foto_utama_url: row.fotoUtamaUrl,
     }));
   } catch (err) {
     console.error("[queries] Error getUmkmList:", err);

@@ -95,7 +95,7 @@ export function UmkmList({ umkm }: { umkm: Umkm[] }) {
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {pageItems.map((u) => {
-            const cover = getPublicImageUrl(u.foto_urls[0] || "/images/placeholder.jpg");
+            const cover = getPublicImageUrl(u.foto_utama_url || u.foto_urls[0] || "/images/placeholder.jpg");
             const photoCount = u.foto_urls.length;
 
             return (
@@ -154,7 +154,7 @@ export function UmkmList({ umkm }: { umkm: Umkm[] }) {
                               key={idx}
                               className="rounded-md bg-muted px-2 py-0.5 text-[11px] font-medium text-foreground border border-border/50"
                             >
-                              {p}
+                              {p.produk}
                             </span>
                           ))}
                           {u.produk_unggulan.length > 3 && (

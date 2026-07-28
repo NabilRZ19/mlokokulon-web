@@ -43,7 +43,7 @@ export interface KampungKb {
   foto_highlight_url: string;
 }
 
-export type BeritaKategori = "pengumuman" | "kegiatan" | "pembangunan" | "berita";
+export type BeritaKategori = "pengumuman" | "kegiatan" | "pembangunan" | "berita" | "kampung-kb";
 export type BeritaCakupan = "kelurahan" | "rw";
 
 export interface Berita {
@@ -74,6 +74,11 @@ export interface Galeri {
   sumber_berita_id?: string;
 }
 
+export interface UmkmProdukUnggulan {
+  produk: string;
+  foto_url: string | null;
+}
+
 export interface Umkm {
   id: string;
   nama: string;
@@ -82,9 +87,10 @@ export interface Umkm {
   deskripsi: string;
   link_gmaps: string;
   kontak: string;
-  produk_unggulan: string[];
+  produk_unggulan: UmkmProdukUnggulan[];
   jam_operasional: string;
   foto_urls: string[];
+  foto_utama_url: string | null;
 }
 
 export type AdminTier = 1 | 2 | 3;

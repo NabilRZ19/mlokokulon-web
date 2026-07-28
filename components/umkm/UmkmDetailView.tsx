@@ -80,7 +80,10 @@ export function UmkmDetailView({ umkm }: { umkm: Umkm }) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  const images = (umkm.foto_urls.length > 0 ? umkm.foto_urls : ["/images/placeholder.jpg"]).map(getPublicImageUrl);
+  const rawImages = umkm.foto_utama_url
+    ? [umkm.foto_utama_url, ...umkm.foto_urls.filter((u) => u !== umkm.foto_utama_url)]
+    : umkm.foto_urls;
+  const images = (rawImages.length > 0 ? rawImages : ["/images/placeholder.jpg"]).map(getPublicImageUrl);
   const currentImage = images[activeImageIndex] || images[0];
 
   const cleanPhone = umkm.kontak.replace(/\D/g, "");
@@ -193,10 +196,21 @@ export function UmkmDetailView({ umkm }: { umkm: Umkm }) {
                       key={idx}
                       className="flex items-center gap-3 rounded-lg border border-border/70 bg-muted/30 p-3 transition-colors hover:border-primary/40"
                     >
-                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/15">
-                        <IconCheck />
-                      </div>
-                      <span className="font-semibold text-foreground">{produk}</span>
+                      {produk.foto_url ? (
+                        <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-border">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={getPublicImageUrl(produk.foto_url)}
+                            alt={produk.produk}
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+                      ) : (
+                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/15">
+                          <IconCheck />
+                        </div>
+                      )}
+                      <span className="font-semibold text-foreground">{produk.produk}</span>
                     </li>
                   ))}
                 </ul>

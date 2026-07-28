@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { KampungKbClientView } from "@/components/kampung-kb/KampungKbClientView";
-import { getGaleriList, getRwById } from "@/lib/queries";
+import { getBeritaList, getGaleriList, getRwById } from "@/lib/queries";
 import { kampungKbData as kb } from "@/lib/seed-data";
 
 export const metadata: Metadata = {
@@ -30,8 +30,13 @@ function IconSprout() {
 }
 
 export default async function KampungKbPage() {
-  const [rw, galeriList] = await Promise.all([getRwById(kb.rw_ref), getGaleriList()]);
+  const [rw, galeriList, beritaList] = await Promise.all([
+    getRwById(kb.rw_ref),
+    getGaleriList(),
+    getBeritaList(),
+  ]);
   const galeriKampungKb = galeriList.filter((g) => g.kategori === "kampung-kb");
+  const beritaKampungKb = beritaList.filter((b) => b.kategori === "kampung-kb");
 
   return (
     <div>
@@ -63,7 +68,7 @@ export default async function KampungKbPage() {
       </div>
 
       {/* ── Konten Utama ───────────────────────────────────────── */}
-      <KampungKbClientView rw={rw} galeriKampungKb={galeriKampungKb} />
+      <KampungKbClientView rw={rw} galeriKampungKb={galeriKampungKb} beritaKampungKb={beritaKampungKb} />
     </div>
   );
 }

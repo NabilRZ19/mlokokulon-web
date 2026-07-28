@@ -115,10 +115,11 @@ async function main() {
       linkGmaps: u.link_gmaps,
       kontak: u.kontak,
       jamOperasional: u.jam_operasional,
+      fotoUtamaUrl: u.foto_utama_url ?? null,
     })),
   );
   const umkmProdukRows = umkmSeed.flatMap((u) =>
-    u.produk_unggulan.map((produk) => ({ umkmId: u.id, produk })),
+    u.produk_unggulan.map((p) => ({ umkmId: u.id, produk: p.produk, fotoUrl: p.foto_url })),
   );
   if (umkmProdukRows.length > 0) await db.insert(umkmProdukUnggulan).values(umkmProdukRows);
   const umkmFotoRows = umkmSeed.flatMap((u) => u.foto_urls.map((url) => ({ umkmId: u.id, url })));

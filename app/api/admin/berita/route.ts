@@ -55,7 +55,7 @@ export async function POST(request: Request) {
       !isValidString(judul, 3, 255) ||
       !isValidString(isi, 10, 50000) ||
       !isValidDateStr(tanggal) ||
-      !isValidEnum(kategori, ["pengumuman", "kegiatan", "pembangunan", "berita"] as const) ||
+      !isValidEnum(kategori, ["pengumuman", "kegiatan", "pembangunan", "berita", "kampung-kb"] as const) ||
       !isValidEnum(cakupan, ["kelurahan", "rw"] as const) ||
       !isValidUrl(gambar_cover_url) ||
       !isValidString(penulis, 1, 100)

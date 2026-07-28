@@ -194,7 +194,7 @@ export default function TambahStrukturPage() {
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/*"
+              accept="image/*,.heic,.heif"
               className="hidden"
               onChange={handleFileChange}
             />

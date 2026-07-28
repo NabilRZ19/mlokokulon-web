@@ -2,19 +2,22 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { BeritaBadge } from "@/components/berita/BeritaBadge";
 import { Card } from "@/components/ui/Card";
 import { Carousel } from "@/components/ui/Carousel";
 import { ImageLightboxModal } from "@/components/ui/ImageLightboxModal";
 import { getPublicImageUrl } from "@/lib/image-url";
-import type { Galeri, Rw } from "@/lib/types";
+import type { Berita, Galeri, Rw } from "@/lib/types";
 import { kampungKbData as kb } from "@/lib/seed-data";
 
 export function KampungKbClientView({
   rw,
   galeriKampungKb,
+  beritaKampungKb,
 }: {
   rw: Rw | null;
   galeriKampungKb: Galeri[];
+  beritaKampungKb: Berita[];
 }) {
   const [activeImage, setActiveImage] = useState<{ url: string; title: string } | null>(null);
 
@@ -83,6 +86,44 @@ export function KampungKbClientView({
           />
         </div>
       </div>
+
+      {/* Berita Kampung KB (jika ada) */}
+      {beritaKampungKb.length > 0 && (
+        <Card>
+          <h2 className="font-heading text-lg font-semibold text-foreground">Berita Kampung KB</h2>
+          <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {beritaKampungKb.map((b) => (
+              <Link key={b.id} href={`/berita/${b.slug}`}>
+                <div className="h-full overflow-hidden rounded-lg border border-border transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={getPublicImageUrl(b.gambar_cover_url)}
+                    alt={b.judul}
+                    loading="lazy"
+                    decoding="async"
+                    className="h-40 w-full object-cover"
+                  />
+                  <div className="p-4">
+                    <div className="mb-1.5 flex items-center gap-2 text-xs text-muted-foreground">
+                      <BeritaBadge kategori={b.kategori} />
+                      <span>
+                        {new Date(b.tanggal).toLocaleDateString("id-ID", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        })}
+                      </span>
+                    </div>
+                    <h3 className="mt-2 line-clamp-2 font-heading font-semibold text-foreground">
+                      {b.judul}
+                    </h3>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </Card>
+      )}
 
       {/* Galeri Kegiatan Kampung KB (jika ada) */}
       {galeriKampungKb.length > 0 && (

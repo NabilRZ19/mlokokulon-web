@@ -49,7 +49,7 @@ export const berita = mysqlTable("berita", {
   isi: text("isi").notNull(),
   // mode "string" biar tipe TS tetap string, sama kayak Berita.tanggal sebelumnya
   tanggal: date("tanggal", { mode: "string" }).notNull(),
-  kategori: mysqlEnum("kategori", ["pengumuman", "kegiatan", "pembangunan", "berita"]).notNull(),
+  kategori: mysqlEnum("kategori", ["pengumuman", "kegiatan", "pembangunan", "berita", "kampung-kb"]).notNull(),
   cakupan: mysqlEnum("cakupan", ["kelurahan", "rw"]).notNull(),
   rwId: varchar("rw_id", { length: 64 }).references(() => rw.id),
   rwNama: varchar("rw_nama", { length: 255 }), // denormalisasi, PRD Bagian 7 poin 4
@@ -90,6 +90,7 @@ export const umkm = mysqlTable("umkm", {
   linkGmaps: varchar("link_gmaps", { length: 512 }).notNull().default(""),
   kontak: varchar("kontak", { length: 100 }).notNull(),
   jamOperasional: varchar("jam_operasional", { length: 100 }).notNull(),
+  fotoUtamaUrl: varchar("foto_utama_url", { length: 512 }),
 });
 
 // Child table — produk_unggulan[] di lib/types.ts
@@ -99,6 +100,7 @@ export const umkmProdukUnggulan = mysqlTable("umkm_produk_unggulan", {
     .notNull()
     .references(() => umkm.id, { onDelete: "cascade" }),
   produk: varchar("produk", { length: 255 }).notNull(),
+  fotoUrl: varchar("foto_url", { length: 512 }),
 });
 
 // Child table — foto_urls[] di lib/types.ts

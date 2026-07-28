@@ -309,6 +309,17 @@ export function Navbar() {
             </Link>
           ))}
 
+          {afterDropdownLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setMobileOpen(false)}
+              className={`block py-2 ${pathname === link.href ? "font-bold text-primary" : "text-foreground"}`}
+            >
+              {link.label}
+            </Link>
+          ))}
+
           <Link
             href="/admin/login"
             onClick={() => setMobileOpen(false)}
