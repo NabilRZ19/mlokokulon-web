@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Wilayah Administratif — Kelurahan Mlokomanis Kulon",
 };
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export default async function WilayahPage() {
   const rwList = await getRwList();

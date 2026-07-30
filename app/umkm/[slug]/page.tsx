@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { UmkmDetailView } from "@/components/umkm/UmkmDetailView";
 import { getUmkmBySlug, getUmkmList } from "@/lib/queries";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export async function generateStaticParams() {
   const umkm = await getUmkmList();

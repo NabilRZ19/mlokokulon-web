@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: "Berita & Pengumuman — Kelurahan Mlokomanis Kulon",
 };
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export default async function BeritaPage() {
   const [berita, rwList] = await Promise.all([getBeritaList(), getRwList()]);

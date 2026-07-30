@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Kampung KB — Kelurahan Mlokomanis Kulon",
 };
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 function IconSprout() {
   return (

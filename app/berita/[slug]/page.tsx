@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { BeritaDetailClientView } from "@/components/berita/BeritaDetailClientView";
 import { getBeritaBySlug, getBeritaList } from "@/lib/queries";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export async function generateStaticParams() {
   const berita = await getBeritaList();

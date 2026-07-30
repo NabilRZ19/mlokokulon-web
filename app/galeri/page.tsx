@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: "Galeri — Kelurahan Mlokomanis Kulon",
 };
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export default async function GaleriPage() {
   const galeri = await getGaleriList();

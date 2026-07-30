@@ -11,7 +11,7 @@ import { UsersIcon } from "@/components/ui/icons";
 import { RwPengurusSection } from "@/components/wilayah/RwPengurusSection";
 import { getRwById, getRwList } from "@/lib/queries";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export async function generateStaticParams() {
   const rwList = await getRwList();

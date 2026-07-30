@@ -10,7 +10,7 @@ import { getPublicImageUrl } from "@/lib/image-url";
 import { getBeritaList, getGaleriList } from "@/lib/queries";
 import { kampungKbData as kb, kelurahanProfileData as p } from "@/lib/seed-data";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 const KATEGORI_LABEL: Record<string, string> = {
   pengumuman: "Pengumuman",

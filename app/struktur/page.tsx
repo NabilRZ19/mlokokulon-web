@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: "Struktur Organisasi & Kelembagaan — Kelurahan Mlokomanis Kulon",
 };
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export default async function StrukturPage() {
   const [struktur, rwList] = await Promise.all([
