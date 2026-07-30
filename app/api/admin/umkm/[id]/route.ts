@@ -4,6 +4,56 @@ import { db } from "@/lib/db/client";
 import { umkm as umkmTable, umkmFoto, umkmProdukUnggulan } from "@/lib/db/schema";
 import { getSession } from "@/lib/session";
 
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const session = await getSession();
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = await params;
+  if (!id) {
+    return NextResponse.json({ error: "ID UMKM tidak valid" }, { status: 400 });
+  }
+
+  try {
+    const rows = await db
+      .select()
+      .from(umkmTable)
+      .where(eq(umkmTable.id, id))
+      .limit(1);
+
+    if (rows.length === 0) {
+      return NextResponse.json({ error: "UMKM tidak ditemukan" }, { status: 404 });
+    }
+
+    const row = rows[0];
+    const [produk, foto] = await Promise.all([
+      db.select().from(umkmProdukUnggulan).where(eq(umkmProdukUnggulan.umkmId, id)),
+      db.select().from(umkmFoto).where(eq(umkmFoto.umkmId, id)),
+    ]);
+
+    return NextResponse.json({
+      id: row.id,
+      nama: row.nama,
+      slug: row.slug,
+      kategori: row.kategori,
+      deskripsi: row.deskripsi,
+      link_gmaps: row.linkGmaps,
+      kontak: row.kontak,
+      jam_operasional: row.jamOperasional,
+      foto_utama_url: row.fotoUtamaUrl ?? null,
+      produk_unggulan: produk.map((p) => ({ produk: p.produk, foto_url: p.fotoUrl ?? null })),
+      foto_urls: foto.map((f) => f.url),
+    });
+  } catch (err) {
+    console.error("[api/admin/umkm/id] GET error:", err);
+    return NextResponse.json({ error: "Gagal mengambil data UMKM" }, { status: 500 });
+  }
+}
+
 export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }

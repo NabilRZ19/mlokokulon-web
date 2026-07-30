@@ -51,7 +51,7 @@ export const berita = mysqlTable("berita", {
   tanggal: date("tanggal", { mode: "string" }).notNull(),
   kategori: mysqlEnum("kategori", ["pengumuman", "kegiatan", "pembangunan", "berita", "kampung-kb"]).notNull(),
   cakupan: mysqlEnum("cakupan", ["kelurahan", "rw"]).notNull(),
-  rwId: varchar("rw_id", { length: 64 }).references(() => rw.id),
+  rwId: varchar("rw_id", { length: 64 }).references(() => rw.id, { onDelete: "set null" }),
   rwNama: varchar("rw_nama", { length: 255 }), // denormalisasi, PRD Bagian 7 poin 4
   gambarCoverUrl: varchar("gambar_cover_url", { length: 512 }).notNull(),
   penulis: varchar("penulis", { length: 255 }).notNull(),

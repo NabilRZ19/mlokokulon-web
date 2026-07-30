@@ -103,14 +103,22 @@ export default function AdminGaleriPage() {
                   <span>{g.kategori || "Umum"}</span>
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={() => handleDelete(g.id, g.judul)}
-                disabled={deletingId === g.id}
-                className="rounded-lg bg-destructive/10 px-3 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 disabled:opacity-50 shrink-0"
-              >
-                {deletingId === g.id ? "…" : "Hapus"}
-              </button>
+              <div className="flex items-center gap-2">
+                <Link
+                  href={`/admin/galeri/${g.id}/edit`}
+                  className="rounded-lg bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors shrink-0"
+                >
+                  Edit
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => handleDelete(g.id, g.judul)}
+                  disabled={deletingId === g.id}
+                  className="rounded-lg bg-destructive/10 px-3 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 disabled:opacity-50 shrink-0"
+                >
+                  {deletingId === g.id ? "…" : "Hapus"}
+                </button>
+              </div>
             </div>
           ))
         )}
@@ -172,14 +180,22 @@ export default function AdminGaleriPage() {
                     {g.sumber_berita_id ? "Ditantang dari Berita" : "Upload Manual"}
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(g.id, g.judul)}
-                      disabled={deletingId === g.id}
-                      className="text-xs font-semibold text-destructive hover:underline disabled:opacity-50"
-                    >
-                      {deletingId === g.id ? "Hapus…" : "Hapus"}
-                    </button>
+                    <div className="flex justify-end gap-3">
+                      <Link
+                        href={`/admin/galeri/${g.id}/edit`}
+                        className="text-xs font-semibold text-primary hover:underline"
+                      >
+                        Edit
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(g.id, g.judul)}
+                        disabled={deletingId === g.id}
+                        className="text-xs font-semibold text-destructive hover:underline disabled:opacity-50"
+                      >
+                        {deletingId === g.id ? "Hapus…" : "Hapus"}
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))

@@ -88,3 +88,29 @@ export async function PUT(
     return NextResponse.json({ error: "Gagal memperbarui data RW" }, { status: 500 });
   }
 }
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const session = await getSession();
+  const deny = requireTier(session, canManageWilayah, [1, 3]);
+  if (deny) return deny;
+
+  const { id } = await params;
+  if (!id) {
+    return NextResponse.json({ error: "ID RW tidak valid" }, { status: 400 });
+  }
+
+  try {
+    // rwPengurus sudah cascade di schema — hapus eksplisit untuk konsistensi
+    await db.delete(rwPengurus).where(eq(rwPengurus.rwId, id));
+    // Hapus RW — berita.rw_id akan jadi NULL otomatis (ON DELETE SET NULL di schema)
+    await db.delete(rwTable).where(eq(rwTable.id, id));
+
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error("[api/admin/wilayah/id] DELETE error:", err);
+    return NextResponse.json({ error: "Gagal menghapus RW" }, { status: 500 });
+  }
+}

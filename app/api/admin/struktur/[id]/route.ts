@@ -5,6 +5,45 @@ import { strukturKelurahan } from "@/lib/db/schema";
 import { getSession } from "@/lib/session";
 import { canManageStruktur, requireTier } from "@/lib/auth-policy";
 
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const session = await getSession();
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = await params;
+  if (!id) {
+    return NextResponse.json({ error: "ID tidak valid" }, { status: 400 });
+  }
+
+  try {
+    const rows = await db
+      .select()
+      .from(strukturKelurahan)
+      .where(eq(strukturKelurahan.id, id))
+      .limit(1);
+
+    if (rows.length === 0) {
+      return NextResponse.json({ error: "Data tidak ditemukan" }, { status: 404 });
+    }
+
+    const row = rows[0];
+    return NextResponse.json({
+      id: row.id,
+      nama: row.nama,
+      jabatan: row.jabatan,
+      foto_url: row.fotoUrl,
+      urutan: row.urutan,
+    });
+  } catch (err) {
+    console.error("[api/admin/struktur/id] GET error:", err);
+    return NextResponse.json({ error: "Gagal mengambil data struktur" }, { status: 500 });
+  }
+}
+
 export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }

@@ -121,7 +121,13 @@ export default function AdminBeritaPage() {
                   target="_blank"
                   className="rounded-lg border border-border px-3 py-1.5 text-xs font-bold text-foreground hover:bg-muted"
                 >
-                  Lihat Publik ↗
+                  Lihat ↗
+                </Link>
+                <Link
+                  href={`/admin/berita/${b.id}/edit`}
+                  className="rounded-lg bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors"
+                >
+                  Edit
                 </Link>
                 <button
                   type="button"
@@ -189,6 +195,12 @@ export default function AdminBeritaPage() {
                         className="text-xs font-semibold text-muted-foreground hover:text-foreground"
                       >
                         Lihat
+                      </Link>
+                      <Link
+                        href={`/admin/berita/${b.id}/edit`}
+                        className="text-xs font-semibold text-primary hover:underline"
+                      >
+                        Edit
                       </Link>
                       <button
                         type="button"

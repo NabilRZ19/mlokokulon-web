@@ -10,6 +10,7 @@ import type { Rw } from "@/lib/types";
 export default function AdminWilayahPage() {
   const [rwList, setRwList] = useState<Rw[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   async function fetchWilayah() {
@@ -30,6 +31,24 @@ export default function AdminWilayahPage() {
   useEffect(() => {
     fetchWilayah();
   }, []);
+
+  async function handleDelete(id: string, namaRw: string) {
+    if (!confirm(`Hapus "${namaRw}" dari database? Berita terkait RW ini tetap ada (rw_id akan jadi kosong).`)) return;
+
+    setDeletingId(id);
+    try {
+      const res = await fetch(`/api/admin/wilayah/${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Gagal menghapus RW.");
+      }
+      setRwList((prev) => prev.filter((r) => r.id !== id));
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Terjadi kesalahan saat menghapus.");
+    } finally {
+      setDeletingId(null);
+    }
+  }
 
   return (
     <div>
@@ -75,13 +94,21 @@ export default function AdminWilayahPage() {
                 <span>Statistik: <strong className="text-foreground">{rw.statistik.jumlah_kk} KK / {rw.statistik.jumlah_jiwa} Jiwa</strong></span>
               </div>
 
-              <div className="flex items-center justify-end pt-1">
+              <div className="flex items-center justify-end gap-3 pt-1">
                 <Link
                   href={`/admin/wilayah/${rw.id}/edit`}
                   className="rounded-lg bg-primary px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-primary/90 transition-colors"
                 >
-                  Edit Data RW
+                  Edit
                 </Link>
+                <button
+                  type="button"
+                  onClick={() => handleDelete(rw.id, rw.nama_rw)}
+                  disabled={deletingId === rw.id}
+                  className="rounded-lg bg-destructive/10 px-3.5 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 disabled:opacity-50"
+                >
+                  {deletingId === rw.id ? "Hapus…" : "Hapus"}
+                </button>
               </div>
             </div>
           ))
@@ -131,12 +158,22 @@ export default function AdminWilayahPage() {
                     )}
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <Link
-                      href={`/admin/wilayah/${rw.id}/edit`}
-                      className="rounded bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors"
-                    >
-                      Edit Data
-                    </Link>
+                    <div className="flex justify-end gap-3">
+                      <Link
+                        href={`/admin/wilayah/${rw.id}/edit`}
+                        className="text-xs font-semibold text-primary hover:underline"
+                      >
+                        Edit
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(rw.id, rw.nama_rw)}
+                        disabled={deletingId === rw.id}
+                        className="text-xs font-semibold text-destructive hover:underline disabled:opacity-50"
+                      >
+                        {deletingId === rw.id ? "Hapus…" : "Hapus"}
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))

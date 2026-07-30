@@ -103,7 +103,13 @@ export default function AdminPengaturanPage() {
                 </span>
               </div>
 
-              <div className="flex items-center justify-end pt-2 border-t border-border/50">
+              <div className="flex items-center justify-end gap-3 pt-2 border-t border-border/50">
+                <Link
+                  href={`/admin/pengaturan/${s.id}/edit`}
+                  className="rounded-lg bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors"
+                >
+                  Edit
+                </Link>
                 <button
                   type="button"
                   onClick={() => handleDelete(s.id, s.nama)}
@@ -158,14 +164,22 @@ export default function AdminPengaturanPage() {
                   <td className="px-4 py-3 text-muted-foreground">{s.jabatan}</td>
                   <td className="px-4 py-3 text-muted-foreground font-semibold">{s.urutan}</td>
                   <td className="px-4 py-3 text-right">
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(s.id, s.nama)}
-                      disabled={deletingId === s.id}
-                      className="text-xs font-semibold text-destructive hover:underline disabled:opacity-50"
-                    >
-                      {deletingId === s.id ? "Hapus…" : "Hapus"}
-                    </button>
+                    <div className="flex justify-end gap-3">
+                      <Link
+                        href={`/admin/pengaturan/${s.id}/edit`}
+                        className="text-xs font-semibold text-primary hover:underline"
+                      >
+                        Edit
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(s.id, s.nama)}
+                        disabled={deletingId === s.id}
+                        className="text-xs font-semibold text-destructive hover:underline disabled:opacity-50"
+                      >
+                        {deletingId === s.id ? "Hapus…" : "Hapus"}
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
