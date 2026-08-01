@@ -64,8 +64,18 @@ export async function proxy(request: NextRequest) {
   // 2. Auth guard untuk rute /admin dan /api/admin
   // ------------------------------------------------------------------
 
-  // Bebaskan route login
+  // Route login
   if (pathname === "/admin/login" || pathname === "/api/admin/login") {
+    // Jika user yang sudah terautentikasi mencoba membuka /admin/login, langsung redirect ke /admin/dashboard
+    if (pathname === "/admin/login") {
+      const token = request.cookies.get(SESSION_COOKIE_NAME)?.value;
+      const session = token ? await verifySessionToken(token) : null;
+      if (session) {
+        const dashboardUrl = new URL("/admin/dashboard", request.url);
+        return NextResponse.redirect(dashboardUrl);
+      }
+    }
+
     const response = NextResponse.next({ request: { headers: requestHeaders } });
     response.headers.set("Content-Security-Policy", cspValue);
     return response;

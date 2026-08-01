@@ -3,9 +3,16 @@ import Link from "next/link";
 import { KampungKbClientView } from "@/components/kampung-kb/KampungKbClientView";
 import { getBeritaList, getGaleriList, getRwById } from "@/lib/queries";
 import { kampungKbData as kb } from "@/lib/seed-data";
+import { pageOpenGraph } from "@/lib/seo";
+
+const description =
+  "Program unggulan Kampung KB Kelurahan Mlokomanis Kulon: kegiatan 8 Pokja dan RW pelaksana program Keluarga Berencana.";
 
 export const metadata: Metadata = {
-  title: "Kampung KB — Kelurahan Mlokomanis Kulon",
+  title: "Kampung KB",
+  description,
+  alternates: { canonical: "/kampung-kb" },
+  openGraph: pageOpenGraph({ title: "Kampung KB", description, url: "/kampung-kb" }),
 };
 
 export const dynamic = "force-dynamic";

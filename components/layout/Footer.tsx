@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { kelurahanProfileData as p } from "@/lib/seed-data";
 
 const navigasiCepat = [
@@ -17,10 +18,22 @@ export function Footer() {
     <footer className="mt-auto bg-foreground text-white">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-3">
         {/* Kolom 1: Profil & Alamat Kantor Kelurahan */}
-        <div className="space-y-2">
-          <p className="font-heading text-lg font-bold text-white">
-            Kelurahan {p.nama}
-          </p>
+        <div className="space-y-3">
+          <div className="flex items-center gap-3">
+            <Image
+              src="/images/logo-wonogiri.png"
+              alt="Logo Kabupaten Wonogiri"
+              width={40}
+              height={40}
+              className="h-10 w-auto object-contain"
+            />
+            <div>
+              <p className="font-heading text-lg font-bold text-white leading-tight">
+                Kelurahan {p.nama}
+              </p>
+              <p className="text-xs text-white/70">Kabupaten Wonogiri</p>
+            </div>
+          </div>
           <p className="text-sm text-white/80 leading-relaxed">
             Kantor Kelurahan Mlokomanis Kulon, Kecamatan {p.kecamatan}, Kabupaten {p.kabupaten}, {p.provinsi} {p.kodePos}
           </p>

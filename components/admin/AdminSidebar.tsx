@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { MapPinIcon } from "@/components/ui/icons";
 import type { SessionPayload } from "@/lib/auth";
@@ -56,9 +57,13 @@ export function AdminSidebar({ session }: { session: SessionPayload }) {
     <div className="flex h-full w-full flex-col bg-card">
       <div className="flex items-center justify-between border-b border-border px-4 py-4">
         <Link href="/admin/dashboard" className="flex items-center gap-2.5">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary font-heading text-xs font-bold text-white">
-            MK
-          </span>
+          <Image
+            src="/images/logo-wonogiri.png"
+            alt="Logo Kabupaten Wonogiri"
+            width={32}
+            height={32}
+            className="h-8 w-auto object-contain"
+          />
           <span className="font-heading text-sm font-semibold text-foreground">Admin Panel</span>
         </Link>
         {/* Tombol Tutup di Mobile */}
@@ -73,6 +78,26 @@ export function AdminSidebar({ session }: { session: SessionPayload }) {
       </div>
 
       <nav className="flex-1 space-y-1 p-3 text-sm overflow-y-auto">
+        {/* Tombol Home untuk kembali ke Beranda Utama Publik */}
+        <Link
+          href="/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-between rounded-md border border-primary/20 bg-primary/5 px-3 py-2 text-primary font-semibold transition-colors hover:bg-primary/10 mb-3"
+          title="Buka Situs Publik Mlokomanis Kulon"
+        >
+          <div className="flex items-center gap-2.5">
+            <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+
+            <span>Lihat Situs Publik</span>
+          </div>
+          <svg className="h-3.5 w-3.5 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+        </Link>
+
         {navItems.map((item) => {
           const active = pathname?.startsWith(item.href);
           const Icon = item.icon;
@@ -130,14 +155,31 @@ export function AdminSidebar({ session }: { session: SessionPayload }) {
             </svg>
           </button>
           <Link href="/admin/dashboard" className="flex items-center gap-2">
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary font-heading text-xs font-bold text-white">
-              MK
-            </span>
+            <Image
+              src="/images/logo-wonogiri.png"
+              alt="Logo Kabupaten Wonogiri"
+              width={28}
+              height={28}
+              className="h-7 w-auto object-contain"
+            />
             <span className="font-heading text-sm font-bold text-foreground">CMS Mlokomanis</span>
           </Link>
         </div>
-        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 font-heading text-xs font-bold text-primary">
-          {getInitials(session.nama)}
+        <div className="flex items-center gap-2">
+          <Link
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-background text-primary hover:bg-muted"
+            title="Lihat Beranda Publik"
+          >
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+          </Link>
+          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 font-heading text-xs font-bold text-primary">
+            {getInitials(session.nama)}
+          </div>
         </div>
       </header>
 

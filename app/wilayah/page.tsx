@@ -4,9 +4,16 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { Reveal } from "@/components/ui/Reveal";
 import { WilayahList } from "@/components/wilayah/WilayahList";
 import { getRwList } from "@/lib/queries";
+import { pageOpenGraph } from "@/lib/seo";
+
+const description =
+  "Peta dan daftar wilayah administratif Kelurahan Mlokomanis Kulon — profil, statistik, dan potensi tiap RW.";
 
 export const metadata: Metadata = {
-  title: "Wilayah Administratif — Kelurahan Mlokomanis Kulon",
+  title: "Wilayah Administratif",
+  description,
+  alternates: { canonical: "/wilayah" },
+  openGraph: pageOpenGraph({ title: "Wilayah Administratif", description, url: "/wilayah" }),
 };
 
 export const dynamic = "force-dynamic";

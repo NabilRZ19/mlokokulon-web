@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { LockIcon } from "@/components/ui/icons";
@@ -100,9 +101,14 @@ export function Navbar() {
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary font-heading text-sm font-bold text-white shadow-sm">
-              MK
-            </span>
+            <Image
+              src="/images/logo-wonogiri.png"
+              alt="Logo Kabupaten Wonogiri"
+              width={36}
+              height={36}
+              className="h-9 w-auto object-contain"
+              priority
+            />
             <span className="font-heading font-semibold text-foreground">Mlokomanis Kulon</span>
           </Link>
 

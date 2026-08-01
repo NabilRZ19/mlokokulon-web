@@ -2,9 +2,20 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { StrukturClientView } from "@/components/struktur/StrukturClientView";
 import { getRwList, getStrukturKelurahan } from "@/lib/queries";
+import { pageOpenGraph } from "@/lib/seo";
+
+const description =
+  "Struktur organisasi dan kelembagaan Kelurahan Mlokomanis Kulon: jajaran perangkat kelurahan dan lembaga kemasyarakatan.";
 
 export const metadata: Metadata = {
-  title: "Struktur Organisasi & Kelembagaan — Kelurahan Mlokomanis Kulon",
+  title: "Struktur Organisasi & Kelembagaan",
+  description,
+  alternates: { canonical: "/struktur" },
+  openGraph: pageOpenGraph({
+    title: "Struktur Organisasi & Kelembagaan",
+    description,
+    url: "/struktur",
+  }),
 };
 
 export const dynamic = "force-dynamic";

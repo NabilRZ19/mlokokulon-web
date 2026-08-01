@@ -5,9 +5,16 @@ import { Card } from "@/components/ui/Card";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Reveal } from "@/components/ui/Reveal";
 import { layananData } from "@/lib/seed-data";
+import { pageOpenGraph } from "@/lib/seo";
+
+const description =
+  "Daftar layanan publik Kelurahan Mlokomanis Kulon: syarat, prosedur, dan kontak pengurusan dokumen kependudukan seperti akta kelahiran, KK, dan KIA.";
 
 export const metadata: Metadata = {
-  title: "Pelayanan Publik — Kelurahan Mlokomanis Kulon",
+  title: "Pelayanan Publik",
+  description,
+  alternates: { canonical: "/layanan" },
+  openGraph: pageOpenGraph({ title: "Pelayanan Publik", description, url: "/layanan" }),
 };
 
 function IconFileText() {

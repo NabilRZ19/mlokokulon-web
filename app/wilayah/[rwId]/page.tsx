@@ -10,6 +10,7 @@ import { Stat } from "@/components/ui/Stat";
 import { UsersIcon } from "@/components/ui/icons";
 import { RwPengurusSection } from "@/components/wilayah/RwPengurusSection";
 import { getRwById, getRwList } from "@/lib/queries";
+import { pageOpenGraph } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -25,7 +26,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { rwId } = await params;
   const rw = await getRwById(rwId);
-  return { title: rw ? `${rw.nama_rw} — Kelurahan Mlokomanis Kulon` : "RW tidak ditemukan" };
+  if (!rw) return { title: "RW tidak ditemukan" };
+  const description = `Profil ${rw.nama_rw}, Dusun ${rw.cakupan_dusun}, Kelurahan Mlokomanis Kulon — struktur pengurus, statistik warga, dan potensi wilayah.`;
+  return {
+    title: rw.nama_rw,
+    description,
+    alternates: { canonical: `/wilayah/${rwId}` },
+    openGraph: pageOpenGraph({ title: rw.nama_rw, description, url: `/wilayah/${rwId}` }),
+  };
 }
 
 export default async function RwDetailPage({ params }: { params: Promise<{ rwId: string }> }) {

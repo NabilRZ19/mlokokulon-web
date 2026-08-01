@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { BeritaBadge } from "@/components/berita/BeritaBadge";
 import { Badge } from "@/components/ui/Badge";
@@ -9,8 +10,18 @@ import { SproutIcon } from "@/components/ui/icons";
 import { getPublicImageUrl } from "@/lib/image-url";
 import { getBeritaList, getGaleriList } from "@/lib/queries";
 import { kampungKbData as kb, kelurahanProfileData as p } from "@/lib/seed-data";
+import { SITE_NAME, pageOpenGraph } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+
+const description =
+  "Website resmi Kelurahan Mlokomanis Kulon, Kecamatan Ngadirojo, Kabupaten Wonogiri — info layanan publik, berita terbaru, wilayah RW, UMKM, dan program Kampung KB.";
+
+export const metadata: Metadata = {
+  description,
+  alternates: { canonical: "/" },
+  openGraph: pageOpenGraph({ title: SITE_NAME, description, url: "/" }),
+};
 
 const KATEGORI_LABEL: Record<string, string> = {
   pengumuman: "Pengumuman",

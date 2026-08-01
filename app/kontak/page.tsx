@@ -4,9 +4,16 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { PlaceholderNotice } from "@/components/ui/PlaceholderNotice";
 import { Reveal } from "@/components/ui/Reveal";
 import { kelurahanProfileData as p } from "@/lib/seed-data";
+import { pageOpenGraph } from "@/lib/seo";
+
+const description =
+  "Alamat, jam operasional, dan kontak hotline resmi Kantor Kelurahan Mlokomanis Kulon, Kecamatan Ngadirojo, Kabupaten Wonogiri.";
 
 export const metadata: Metadata = {
-  title: "Kontak & Alamat Kantor — Kelurahan Mlokomanis Kulon",
+  title: "Kontak & Alamat Kantor",
+  description,
+  alternates: { canonical: "/kontak" },
+  openGraph: pageOpenGraph({ title: "Kontak & Alamat Kantor", description, url: "/kontak" }),
 };
 
 // ─── Inline SVG Icons ────────────────────────────────────────────────────────

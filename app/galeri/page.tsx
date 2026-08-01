@@ -2,9 +2,16 @@ import type { Metadata } from "next";
 import { GaleriList } from "@/components/galeri/GaleriList";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { getGaleriList } from "@/lib/queries";
+import { pageOpenGraph } from "@/lib/seo";
+
+const description =
+  "Galeri foto dan video kegiatan Kelurahan Mlokomanis Kulon, Kecamatan Ngadirojo, Kabupaten Wonogiri.";
 
 export const metadata: Metadata = {
-  title: "Galeri — Kelurahan Mlokomanis Kulon",
+  title: "Galeri",
+  description,
+  alternates: { canonical: "/galeri" },
+  openGraph: pageOpenGraph({ title: "Galeri", description, url: "/galeri" }),
 };
 
 export const dynamic = "force-dynamic";

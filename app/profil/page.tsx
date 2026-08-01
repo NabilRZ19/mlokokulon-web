@@ -16,9 +16,16 @@ import {
   UsersIcon,
 } from "@/components/ui/icons";
 import { kelurahanProfileData as p } from "@/lib/seed-data";
+import { pageOpenGraph } from "@/lib/seo";
+
+const description =
+  "Profil lengkap Kelurahan Mlokomanis Kulon: geografis, demografi, potensi pertanian & peternakan, serta batas wilayah di Kecamatan Ngadirojo, Kabupaten Wonogiri.";
 
 export const metadata: Metadata = {
-  title: "Profil Desa — Kelurahan Mlokomanis Kulon",
+  title: "Profil Desa",
+  description,
+  alternates: { canonical: "/profil" },
+  openGraph: pageOpenGraph({ title: "Profil Desa", description, url: "/profil" }),
 };
 
 // Konten halaman ini hardcode di kode (bukan CMS/Firestore), sesuai PRD Bagian 6.2.
