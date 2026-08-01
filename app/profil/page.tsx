@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { PlaceholderNotice } from "@/components/ui/PlaceholderNotice";
+import { Reveal } from "@/components/ui/Reveal";
 import { SementaraTag } from "@/components/ui/SementaraTag";
 import { Stat } from "@/components/ui/Stat";
 import {
@@ -38,110 +39,116 @@ export default function ProfilPage() {
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 lg:grid-cols-3">
         {/* Kolom utama */}
         <div className="space-y-6 lg:col-span-2">
-          <Card>
-            <h2 className="flex items-center gap-2 font-heading text-lg font-semibold text-foreground">
-              <BookIcon className="h-5 w-5 text-primary" /> Sejarah Desa
-            </h2>
-            <div className="mt-3">
-              <PlaceholderNotice>{p.sejarah}</PlaceholderNotice>
-            </div>
-          </Card>
+          <Reveal mode="scroll" duration={0.6}>
+            <Card>
+              <h2 className="flex items-center gap-2 font-heading text-lg font-semibold text-foreground">
+                <BookIcon className="h-5 w-5 text-primary" /> Sejarah Desa
+              </h2>
+              <div className="mt-3">
+                <PlaceholderNotice>{p.sejarah}</PlaceholderNotice>
+              </div>
+            </Card>
+          </Reveal>
 
           {/* Visi & Misi Unified Section */}
-          <Card>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-border pb-3">
-                <div className="flex items-center gap-2">
-                  <TargetIcon className="h-5 w-5 text-primary" />
-                  <h2 className="font-heading text-lg font-bold text-foreground">
-                    Visi &amp; Misi
-                  </h2>
-                </div>
-                <span className="text-xs font-semibold text-muted-foreground">
-                  Kabupaten Wonogiri
-                </span>
-              </div>
-
-              {/* Statement Visi & Misi */}
+          <Reveal mode="scroll" duration={0.6}>
+            <Card>
               <div className="space-y-4">
-                {/* Visi */}
-                <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
-                  <span className="text-xs font-bold uppercase tracking-wider text-primary">
-                    Visi Pembangunan
+                <div className="flex items-center justify-between border-b border-border pb-3">
+                  <div className="flex items-center gap-2">
+                    <TargetIcon className="h-5 w-5 text-primary" />
+                    <h2 className="font-heading text-lg font-bold text-foreground">
+                      Visi &amp; Misi
+                    </h2>
+                  </div>
+                  <span className="text-xs font-semibold text-muted-foreground">
+                    Kabupaten Wonogiri
                   </span>
-                  <p className="mt-1 font-heading text-base font-bold text-foreground leading-relaxed">
-                    {p.visi}
+                </div>
+
+                {/* Statement Visi & Misi */}
+                <div className="space-y-4">
+                  {/* Visi */}
+                  <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
+                    <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                      Visi Pembangunan
+                    </span>
+                    <p className="mt-1 font-heading text-base font-bold text-foreground leading-relaxed">
+                      {p.visi}
+                    </p>
+                  </div>
+
+                  {/* Misi */}
+                  <div className="space-y-2">
+                    <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                      Misi Pembangunan
+                    </span>
+                    <ol className="space-y-2 text-sm text-foreground">
+                      {p.misi.map((m, i) => (
+                        <li
+                          key={i}
+                          className="flex items-start gap-2.5 rounded-md border border-border bg-card p-3"
+                        >
+                          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                            {i + 1}
+                          </span>
+                          <span className="leading-relaxed">{m}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                </div>
+
+                {/* Narasi Penyelarasan / Alignment */}
+                <div className="rounded-lg border border-border bg-muted/40 p-4 space-y-1.5">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
+                    Narasi Penyelarasan Kelurahan
+                  </h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Pemerintah Kelurahan Mlokomanis Kulon sepenuhnya menginduk dan menyelaraskan seluruh arah kebijakan tata kelola pemerintahan, pembangunan wilayah, dan pelayanan publik secara terpadu mengikuti Visi dan Misi Kabupaten Wonogiri demi terwujudnya masyarakat yang sejahtera, berdaya saing, dan berkelanjutan.
                   </p>
                 </div>
+              </div>
+            </Card>
+          </Reveal>
 
-                {/* Misi */}
-                <div className="space-y-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                    Misi Pembangunan
-                  </span>
-                  <ol className="space-y-2 text-sm text-foreground">
-                    {p.misi.map((m, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-2.5 rounded-md border border-border bg-card p-3"
-                      >
-                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
-                          {i + 1}
+          <Reveal mode="scroll" duration={0.6}>
+            <Card>
+              <h2 className="flex items-center gap-2 font-heading text-lg font-semibold text-foreground">
+                <SproutIcon className="h-5 w-5 text-primary" /> Potensi Desa
+                <SementaraTag />
+              </h2>
+              <p className="mt-2 text-sm text-foreground">{p.potensi.catatanEkonomi}</p>
+
+              <div className="mt-4 grid gap-6 sm:grid-cols-2">
+                <div>
+                  <h3 className="text-sm font-semibold text-foreground">Pertanian</h3>
+                  <ul className="mt-1 divide-y divide-border text-sm">
+                    {p.potensi.pertanian.map((item) => (
+                      <li key={item.komoditas} className="flex items-center justify-between py-2">
+                        <span className="text-foreground">{item.komoditas}</span>
+                        <span className="text-right text-muted-foreground">
+                          {item.luasHektare} ha · {item.hasilTonPerHektare} ton/ha
                         </span>
-                        <span className="leading-relaxed">{m}</span>
                       </li>
                     ))}
-                  </ol>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="text-sm font-semibold text-foreground">Peternakan</h3>
+                  <ul className="mt-1 divide-y divide-border text-sm">
+                    {p.potensi.peternakan.map((item) => (
+                      <li key={item.jenis} className="flex items-center justify-between py-2">
+                        <span className="text-foreground">{item.jenis}</span>
+                        <span className="text-muted-foreground">{item.jumlah.toLocaleString("id-ID")} ekor</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
-
-              {/* Narasi Penyelarasan / Alignment */}
-              <div className="rounded-lg border border-border bg-muted/40 p-4 space-y-1.5">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
-                  Narasi Penyelarasan Kelurahan
-                </h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Pemerintah Kelurahan Mlokomanis Kulon sepenuhnya menginduk dan menyelaraskan seluruh arah kebijakan tata kelola pemerintahan, pembangunan wilayah, dan pelayanan publik secara terpadu mengikuti Visi dan Misi Kabupaten Wonogiri demi terwujudnya masyarakat yang sejahtera, berdaya saing, dan berkelanjutan.
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <Card>
-            <h2 className="flex items-center gap-2 font-heading text-lg font-semibold text-foreground">
-              <SproutIcon className="h-5 w-5 text-primary" /> Potensi Desa
-              <SementaraTag />
-            </h2>
-            <p className="mt-2 text-sm text-foreground">{p.potensi.catatanEkonomi}</p>
-
-            <div className="mt-4 grid gap-6 sm:grid-cols-2">
-              <div>
-                <h3 className="text-sm font-semibold text-foreground">Pertanian</h3>
-                <ul className="mt-1 divide-y divide-border text-sm">
-                  {p.potensi.pertanian.map((item) => (
-                    <li key={item.komoditas} className="flex items-center justify-between py-2">
-                      <span className="text-foreground">{item.komoditas}</span>
-                      <span className="text-right text-muted-foreground">
-                        {item.luasHektare} ha · {item.hasilTonPerHektare} ton/ha
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="text-sm font-semibold text-foreground">Peternakan</h3>
-                <ul className="mt-1 divide-y divide-border text-sm">
-                  {p.potensi.peternakan.map((item) => (
-                    <li key={item.jenis} className="flex items-center justify-between py-2">
-                      <span className="text-foreground">{item.jenis}</span>
-                      <span className="text-muted-foreground">{item.jumlah.toLocaleString("id-ID")} ekor</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </Card>
+            </Card>
+          </Reveal>
         </div>
 
         {/* Sidebar */}

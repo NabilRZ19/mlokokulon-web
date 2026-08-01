@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { BeritaBadge, KATEGORI_LABEL } from "@/components/berita/BeritaBadge";
 import { Card } from "@/components/ui/Card";
+import { Reveal } from "@/components/ui/Reveal";
 import { getPublicImageUrl } from "@/lib/image-url";
 import type { Berita, Rw } from "@/lib/types";
 
@@ -68,28 +69,30 @@ export function BeritaList({ berita, rwList }: { berita: Berita[]; rwList: Rw[] 
         <p className="mt-8 text-sm text-muted-foreground">Tidak ada berita untuk filter ini.</p>
       ) : (
         <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((b) => (
-            <Link key={b.id} href={`/berita/${b.slug}`}>
-              <Card padded={false} className="h-full overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md">
-                <img src={getPublicImageUrl(b.gambar_cover_url)} alt={b.judul} loading="lazy" decoding="async" className="h-40 w-full object-cover" />
-                <div className="p-4">
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1.5">
-                    <BeritaBadge kategori={b.kategori} />
-                    <span>
-                      {new Date(b.tanggal).toLocaleDateString("id-ID", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </span>
+          {filtered.map((b, i) => (
+            <Reveal key={b.id} mode="scroll" delay={(i % 6) * 0.06}>
+              <Link href={`/berita/${b.slug}`}>
+                <Card padded={false} className="h-full overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md">
+                  <img src={getPublicImageUrl(b.gambar_cover_url)} alt={b.judul} loading="lazy" decoding="async" className="h-40 w-full object-cover" />
+                  <div className="p-4">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1.5">
+                      <BeritaBadge kategori={b.kategori} />
+                      <span>
+                        {new Date(b.tanggal).toLocaleDateString("id-ID", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        })}
+                      </span>
+                    </div>
+                    <h2 className="mt-2 font-heading font-semibold text-foreground line-clamp-2">{b.judul}</h2>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {b.cakupan === "kelurahan" ? "Kelurahan" : b.rw_nama}
+                    </p>
                   </div>
-                  <h2 className="mt-2 font-heading font-semibold text-foreground line-clamp-2">{b.judul}</h2>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {b.cakupan === "kelurahan" ? "Kelurahan" : b.rw_nama}
-                  </p>
-                </div>
-              </Card>
-            </Link>
+                </Card>
+              </Link>
+            </Reveal>
           ))}
         </div>
       )}

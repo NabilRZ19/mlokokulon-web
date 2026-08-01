@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { Reveal } from "@/components/ui/Reveal";
 import { layananData } from "@/lib/seed-data";
 
 export const metadata: Metadata = {
@@ -80,90 +81,96 @@ export default function LayananPage() {
 
       <div className="mx-auto max-w-6xl px-4 py-10 space-y-8">
         {/* ── Banner Gambaran Umum Pelayanan Kelurahan ───────────────────── */}
-        <div className="overflow-hidden rounded-xl border border-primary/20 bg-gradient-to-r from-primary/10 via-primary/5 to-background p-6 shadow-sm sm:p-8">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-2">
-                <span className="inline-flex items-center rounded-full bg-primary px-2.5 py-0.5 text-xs font-bold text-white">
-                  Pelayanan Terpadu
-                </span>
-                <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Kantor Kelurahan Mlokomanis Kulon
-                </span>
+        <Reveal mode="scroll" duration={0.6}>
+          <div className="overflow-hidden rounded-xl border border-primary/20 bg-gradient-to-r from-primary/10 via-primary/5 to-background p-6 shadow-sm sm:p-8">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center rounded-full bg-primary px-2.5 py-0.5 text-xs font-bold text-white">
+                    Pelayanan Terpadu
+                  </span>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    Kantor Kelurahan Mlokomanis Kulon
+                  </span>
+                </div>
+                <h2 className="font-heading text-xl font-extrabold text-foreground sm:text-2xl">
+                  Layanan Administrasi &amp; Kependudukan Warga
+                </h2>
+                <p className="text-sm text-muted-foreground leading-relaxed max-w-3xl">
+                  Kantor Kelurahan Mlokomanis Kulon memfasilitasi pengurusan berbagai dokumen kependudukan, pengantar surat resmi, serta pelayanan integrasi 3 in 1 pencatatan sipil bekerja sama dengan Disdukcapil Kabupaten Wonogiri.
+                </p>
               </div>
-              <h2 className="font-heading text-xl font-extrabold text-foreground sm:text-2xl">
-                Layanan Administrasi &amp; Kependudukan Warga
-              </h2>
-              <p className="text-sm text-muted-foreground leading-relaxed max-w-3xl">
-                Kantor Kelurahan Mlokomanis Kulon memfasilitasi pengurusan berbagai dokumen kependudukan, pengantar surat resmi, serta pelayanan integrasi 3 in 1 pencatatan sipil bekerja sama dengan Disdukcapil Kabupaten Wonogiri.
-              </p>
+              <Link
+                href="/kontak"
+                className="shrink-0 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary/90 hover:shadow"
+              >
+                Hubungi Petugas Layanan →
+              </Link>
             </div>
-            <Link
-              href="/kontak"
-              className="shrink-0 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary/90 hover:shadow"
-            >
-              Hubungi Petugas Layanan →
-            </Link>
           </div>
-        </div>
+        </Reveal>
 
         {/* ── Notice Tahap Pengumpulan Data ─────────────────────────────── */}
-        <div className="flex items-start gap-3 rounded-xl border border-blue-200/80 bg-blue-50/60 p-4 text-sm text-blue-900 shadow-xs">
-          <IconInfo />
-          <div>
-            <p className="font-heading font-bold text-blue-950">Catatan Pembaruan Layanan:</p>
-            <p className="mt-0.5 text-xs text-blue-800 leading-relaxed">
-              Daftar rincian persyaratan di bawah ini memuat data pelayanan resmi paket 3 in 1 dan kependudukan Disdukcapil Wonogiri yang telah terverifikasi. Rincian syarat untuk layanan pengantar surat desa lainnya saat ini masih dalam <strong>tahap pengumpulan data [DATA MENYUSUL]</strong> dan akan terus diperbarui secara bertahap.
-            </p>
+        <Reveal mode="scroll" duration={0.6}>
+          <div className="flex items-start gap-3 rounded-xl border border-blue-200/80 bg-blue-50/60 p-4 text-sm text-blue-900 shadow-xs">
+            <IconInfo />
+            <div>
+              <p className="font-heading font-bold text-blue-950">Catatan Pembaruan Layanan:</p>
+              <p className="mt-0.5 text-xs text-blue-800 leading-relaxed">
+                Daftar rincian persyaratan di bawah ini memuat data pelayanan resmi paket 3 in 1 dan kependudukan Disdukcapil Wonogiri yang telah terverifikasi. Rincian syarat untuk layanan pengantar surat desa lainnya saat ini masih dalam <strong>tahap pengumpulan data [DATA MENYUSUL]</strong> dan akan terus diperbarui secara bertahap.
+              </p>
+            </div>
           </div>
-        </div>
+        </Reveal>
 
         {/* ── Grid Daftar Layanan Resmi ───────────────────────────────────── */}
         <div className="grid gap-6 md:grid-cols-2">
-          {layananData.map((item) => (
-            <Card key={item.id} className="flex flex-col justify-between p-6 sm:p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md">
-              <div className="space-y-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                      <IconFileText />
+          {layananData.map((item, i) => (
+            <Reveal key={item.id} mode="scroll" delay={(i % 4) * 0.08}>
+              <Card className="flex flex-col justify-between p-6 sm:p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md h-full">
+                <div className="space-y-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                        <IconFileText />
+                      </div>
+                      <div>
+                        <h3 className="font-heading text-lg font-bold text-foreground">
+                          {item.nama}
+                        </h3>
+                        <p className="text-xs font-medium text-primary">Disdukcapil Wonogiri</p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-heading text-lg font-bold text-foreground">
-                        {item.nama}
-                      </h3>
-                      <p className="text-xs font-medium text-primary">Disdukcapil Wonogiri</p>
-                    </div>
+                    <Badge variant="accent">Pelayanan Resmi</Badge>
                   </div>
-                  <Badge variant="accent">Pelayanan Resmi</Badge>
+
+                  <p className="text-sm leading-relaxed text-foreground">{item.deskripsi}</p>
+
+                  <hr className="border-border" />
+
+                  <div>
+                    <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2.5">
+                      Persyaratan Dokumen:
+                    </h4>
+                    <ul className="space-y-2 text-sm">
+                      {item.syarat.map((s, idx) => (
+                        <li key={idx} className="flex items-start gap-2.5 text-foreground leading-snug">
+                          <IconCheckCircle />
+                          <span>{s}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
 
-                <p className="text-sm leading-relaxed text-foreground">{item.deskripsi}</p>
-
-                <hr className="border-border" />
-
-                <div>
-                  <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2.5">
-                    Persyaratan Dokumen:
-                  </h4>
-                  <ul className="space-y-2 text-sm">
-                    {item.syarat.map((s, idx) => (
-                      <li key={idx} className="flex items-start gap-2.5 text-foreground leading-snug">
-                        <IconCheckCircle />
-                        <span>{s}</span>
-                      </li>
-                    ))}
-                  </ul>
+                <div className="mt-6 border-t border-border pt-4 flex items-center justify-between text-xs text-muted-foreground">
+                  <span>Tempat Pelayanan: <strong>{item.kontakJabatan}</strong></span>
+                  <Link href="/kontak" className="font-semibold text-primary hover:underline">
+                    Tanyakan Syarat →
+                  </Link>
                 </div>
-              </div>
-
-              <div className="mt-6 border-t border-border pt-4 flex items-center justify-between text-xs text-muted-foreground">
-                <span>Tempat Pelayanan: <strong>{item.kontakJabatan}</strong></span>
-                <Link href="/kontak" className="font-semibold text-primary hover:underline">
-                  Tanyakan Syarat →
-                </Link>
-              </div>
-            </Card>
+              </Card>
+            </Reveal>
           ))}
         </div>
       </div>

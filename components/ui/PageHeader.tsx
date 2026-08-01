@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Reveal } from "@/components/ui/Reveal";
 
 interface PageHeaderProps {
   title: string;
@@ -30,7 +31,8 @@ export function PageHeader({
   const glowColorRight = isAccent ? "bg-emerald-500/25" : "bg-accent/20";
 
   return (
-    <div className={`relative overflow-hidden border-b border-border ${gradientBg} py-12 sm:py-16 text-white`}>
+    <Reveal mode="load" duration={0.65} distance={24}>
+      <div className={`relative overflow-hidden border-b border-border ${gradientBg} py-12 sm:py-16 text-white`}>
       {/* Decorative ambient radial glows */}
       <div className={`pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full ${glowColorLeft} blur-3xl`} />
       <div className={`pointer-events-none absolute -right-20 -bottom-20 h-80 w-80 rounded-full ${glowColorRight} blur-3xl`} />
@@ -66,5 +68,6 @@ export function PageHeader({
         </div>
       </div>
     </div>
+    </Reveal>
   );
 }

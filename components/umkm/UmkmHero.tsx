@@ -1,3 +1,5 @@
+import { Reveal } from "@/components/ui/Reveal";
+
 // ─── Inline SVG Icons for UMKM Hero ───────────────────────────────────────────
 function IconShoppingBag() {
   return (
@@ -10,64 +12,35 @@ function IconShoppingBag() {
   );
 }
 
-function IconHandshake() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}
-      strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-emerald-300 shrink-0">
-      <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
-      <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v6" />
-      <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8" />
-      <path d="M18 8a2 2 0 0 1 2 2v4a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.8-5.6-2.4l-2-3a2 2 0 0 1 3.3-2.3l.7 1" />
-    </svg>
-  );
-}
-
-function IconMessageCircle() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}
-      strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-emerald-300 shrink-0">
-      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-    </svg>
-  );
-}
-
-function IconMapPin() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}
-      strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-emerald-300 shrink-0">
-      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-      <circle cx="12" cy="10" r="3" />
-    </svg>
-  );
-}
-
 export function UmkmHero() {
   return (
-    <div className="relative overflow-hidden border-b border-border bg-gradient-to-br from-[#0f172a] via-[#1e3a8a] to-[#064e3b] py-14 sm:py-20 text-white">
-      {/* Decorative background radial glows */}
-      <div className="pointer-events-none absolute -right-20 -top-20 h-80 w-80 rounded-full bg-emerald-500/20 blur-3xl" />
-      <div className="pointer-events-none absolute -left-20 -bottom-20 h-72 w-72 rounded-full bg-primary/30 blur-3xl" />
+    <Reveal mode="load" duration={0.65} distance={24}>
+      <div className="relative overflow-hidden border-b border-border bg-gradient-to-br from-[#0f172a] via-[#1e3a8a] to-[#064e3b] py-14 sm:py-20 text-white">
+        {/* Decorative background radial glows */}
+        <div className="pointer-events-none absolute -right-20 -top-20 h-80 w-80 rounded-full bg-emerald-500/20 blur-3xl" />
+        <div className="pointer-events-none absolute -left-20 -bottom-20 h-72 w-72 rounded-full bg-primary/30 blur-3xl" />
 
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="max-w-3xl space-y-4">
-          {/* Badge Tag */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/15 px-3.5 py-1 text-xs font-medium tracking-wide text-emerald-300 backdrop-blur-md shadow-sm">
-            <IconShoppingBag />
-            <span>Direktori Usaha &amp; Potensi Ekonomi Lokal</span>
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="max-w-3xl space-y-4">
+            {/* Badge Tag */}
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/15 px-3.5 py-1 text-xs font-medium tracking-wide text-emerald-300 backdrop-blur-md shadow-sm">
+              <IconShoppingBag />
+              <span>Direktori Usaha &amp; Potensi Ekonomi Lokal</span>
+            </div>
+
+            {/* Title */}
+            <h1 className="font-heading text-3xl font-extrabold tracking-tight text-white sm:text-5xl leading-tight sm:leading-tight">
+              Katalog UMKM &amp; Potensi Desa
+            </h1>
+
+            {/* Subtitle */}
+            <p className="font-sans text-base text-emerald-100/90 sm:text-lg leading-relaxed max-w-2xl">
+              Temukan produk kerajinan, kuliner olahan, dan beragam jasa usaha lokal karya warga Kelurahan Mlokomanis Kulon. Mari dukung perekonomian desa kita!
+            </p>
+
           </div>
-
-          {/* Title */}
-          <h1 className="font-heading text-3xl font-extrabold tracking-tight text-white sm:text-5xl leading-tight sm:leading-tight">
-            Katalog UMKM &amp; Potensi Desa
-          </h1>
-
-          {/* Subtitle */}
-          <p className="font-sans text-base text-emerald-100/90 sm:text-lg leading-relaxed max-w-2xl">
-            Temukan produk kerajinan, kuliner olahan, dan beragam jasa usaha lokal karya warga Kelurahan Mlokomanis Kulon. Mari dukung perekonomian desa kita!
-          </p>
-
         </div>
       </div>
-    </div>
+    </Reveal>
   );
 }

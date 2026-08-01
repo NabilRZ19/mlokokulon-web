@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Card } from "@/components/ui/Card";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { PlaceholderNotice } from "@/components/ui/PlaceholderNotice";
+import { Reveal } from "@/components/ui/Reveal";
 import { kelurahanProfileData as p } from "@/lib/seed-data";
 
 export const metadata: Metadata = {
@@ -103,105 +104,109 @@ export default function KontakPage() {
       <div className="mx-auto max-w-5xl px-4 py-12">
         <div className="grid gap-8 md:grid-cols-2">
           {/* ── 1. Kartu Hotline / Layanan Pelanggan ─────────────────────── */}
-          <Card className="flex flex-col justify-between p-6 sm:p-8">
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                  <IconHeadphones />
+          <Reveal mode="scroll" duration={0.6}>
+            <Card className="flex flex-col justify-between p-6 sm:p-8 h-full">
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+                    <IconHeadphones />
+                  </div>
+                  <div>
+                    <h2 className="font-heading text-xl font-bold text-foreground">
+                      Hotline &amp; Service Center
+                    </h2>
+                    <p className="text-xs text-muted-foreground">Pusat Layanan Kontak Resmi</p>
+                  </div>
                 </div>
-                <div>
-                  <h2 className="font-heading text-xl font-bold text-foreground">
-                    Hotline &amp; Service Center
-                  </h2>
-                  <p className="text-xs text-muted-foreground">Pusat Layanan Kontak Resmi</p>
-                </div>
-              </div>
 
-              <hr className="border-border" />
+                <hr className="border-border" />
 
-              <p className="text-sm leading-relaxed text-foreground">
-                Untuk pertanyaan, informasi publik, maupun bantuan layanan administrasi warga Kelurahan Mlokomanis Kulon, Anda dapat menghubungi nomor hotline resmi di bawah ini.
-              </p>
+                <p className="text-sm leading-relaxed text-foreground">
+                  Untuk pertanyaan, informasi publik, maupun bantuan layanan administrasi warga Kelurahan Mlokomanis Kulon, Anda dapat menghubungi nomor hotline resmi di bawah ini.
+                </p>
 
-              {/* Status Nomor Menyusul */}
-              <div className="rounded-lg border border-border bg-muted/40 p-4">
-                <PlaceholderNotice>
-                  [DATA MENYUSUL] — Nomor resmi hotline/WhatsApp kelurahan akan diperbarui setelah konfirmasi dari pihak kelurahan.
-                </PlaceholderNotice>
+                {/* Status Nomor Menyusul */}
+                <div className="rounded-lg border border-border bg-muted/40 p-4">
+                  <PlaceholderNotice>
+                    [DATA MENYUSUL] — Nomor resmi hotline/WhatsApp kelurahan akan diperbarui setelah konfirmasi dari pihak kelurahan.
+                  </PlaceholderNotice>
 
-                <div className="mt-4 space-y-2 text-sm text-foreground">
-                  <div className="flex items-start gap-2">
-                    <IconClock />
-                    <div>
-                      <p className="font-semibold text-foreground">Jam Layanan Hotline:</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">• Senin – Kamis: 07.00 – 15.30 WIB</p>
-                      <p className="text-xs text-muted-foreground">• Jumat: 07.00 – 11.00 WIB</p>
+                  <div className="mt-4 space-y-2 text-sm text-foreground">
+                    <div className="flex items-start gap-2">
+                      <IconClock />
+                      <div>
+                        <p className="font-semibold text-foreground">Jam Layanan Hotline:</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">• Senin – Kamis: 07.00 – 15.30 WIB</p>
+                        <p className="text-xs text-muted-foreground">• Jumat: 07.00 – 11.00 WIB</p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="mt-6 pt-4 border-t border-border">
-              <button
-                type="button"
-                disabled
-                className="flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-lg bg-emerald-600/60 px-4 py-3 text-sm font-semibold text-white opacity-80"
-              >
-                <IconWhatsapp />
-                Hubungi via WhatsApp (Menyusul)
-              </button>
-            </div>
-          </Card>
+              <div className="mt-6 pt-4 border-t border-border">
+                <button
+                  type="button"
+                  disabled
+                  className="flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-lg bg-emerald-600/60 px-4 py-3 text-sm font-semibold text-white opacity-80"
+                >
+                  <IconWhatsapp />
+                  Hubungi via WhatsApp (Menyusul)
+                </button>
+              </div>
+            </Card>
+          </Reveal>
 
           {/* ── 2. Kartu Alamat Kantor Kelurahan ───────────────────────── */}
-          <Card className="flex flex-col justify-between p-6 sm:p-8">
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                  <IconBuilding />
-                </div>
-                <div>
-                  <h2 className="font-heading text-xl font-bold text-foreground">
-                    Kantor Kelurahan
-                  </h2>
-                  <p className="text-xs text-muted-foreground">Alamat &amp; Pelayanan Tatap Muka</p>
-                </div>
-              </div>
-
-              <hr className="border-border" />
-
-              <div className="space-y-4 text-sm text-foreground">
-                <div className="flex items-start gap-3">
-                  <IconMapPin />
+          <Reveal mode="scroll" duration={0.6} delay={0.1}>
+            <Card className="flex flex-col justify-between p-6 sm:p-8 h-full">
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+                    <IconBuilding />
+                  </div>
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Alamat Kantor</p>
-                    <p className="mt-1 font-medium leading-relaxed">
-                      Kantor Kelurahan {p.nama}, Kecamatan {p.kecamatan}, Kabupaten {p.kabupaten}, {p.provinsi} {p.kodePos}
-                    </p>
+                    <h2 className="font-heading text-xl font-bold text-foreground">
+                      Kantor Kelurahan
+                    </h2>
+                    <p className="text-xs text-muted-foreground">Alamat &amp; Pelayanan Tatap Muka</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <IconClock />
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Jam Operasional Pelayanan</p>
-                    <div className="mt-1 space-y-0.5 font-medium">
-                      <p>• Senin – Kamis: 07.00 – 15.30 WIB</p>
-                      <p>• Jumat: 07.00 – 11.00 WIB</p>
+                <hr className="border-border" />
+
+                <div className="space-y-4 text-sm text-foreground">
+                  <div className="flex items-start gap-3">
+                    <IconMapPin />
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Alamat Kantor</p>
+                      <p className="mt-1 font-medium leading-relaxed">
+                        Kantor Kelurahan {p.nama}, Kecamatan {p.kecamatan}, Kabupaten {p.kabupaten}, {p.provinsi} {p.kodePos}
+                      </p>
                     </div>
-                    <p className="mt-1.5 text-xs text-muted-foreground">Sabtu, Minggu &amp; Hari Libur Nasional: Tutup</p>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <IconClock />
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Jam Operasional Pelayanan</p>
+                      <div className="mt-1 space-y-0.5 font-medium">
+                        <p>• Senin – Kamis: 07.00 – 15.30 WIB</p>
+                        <p>• Jumat: 07.00 – 11.00 WIB</p>
+                      </div>
+                      <p className="mt-1.5 text-xs text-muted-foreground">Sabtu, Minggu &amp; Hari Libur Nasional: Tutup</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="mt-6 pt-4 border-t border-border">
-              <div className="rounded-lg border border-border bg-muted/30 p-4 text-center text-xs text-muted-foreground">
-                📍 Peta petunjuk lokasi interaktif (Google Maps) segera hadir.
+              <div className="mt-6 pt-4 border-t border-border">
+                <div className="rounded-lg border border-border bg-muted/30 p-4 text-center text-xs text-muted-foreground">
+                  📍 Peta petunjuk lokasi interaktif (Google Maps) segera hadir.
+                </div>
               </div>
-            </div>
-          </Card>
+            </Card>
+          </Reveal>
         </div>
       </div>
     </div>

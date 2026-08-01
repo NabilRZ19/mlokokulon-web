@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { ImageLightboxModal } from "@/components/ui/ImageLightboxModal";
 import { Pagination } from "@/components/ui/Pagination";
+import { Reveal } from "@/components/ui/Reveal";
 import { getPublicImageUrl } from "@/lib/image-url";
 import type { Galeri } from "@/lib/types";
 
@@ -173,71 +174,72 @@ export function GaleriList({ galeri }: { galeri: Galeri[] }) {
         </div>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {pageItems.map((g) => {
+          {pageItems.map((g, i) => {
             const mediaUrl = getPublicImageUrl(g.url_media);
             const categoryLabel = g.kategori ? g.kategori.charAt(0).toUpperCase() + g.kategori.slice(1) : "Umum";
 
             return (
-              <Card
-                key={g.id}
-                padded={false}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md"
-              >
-                {/* Header Container Media */}
-                <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted">
-                  {/* Category & Type Badge (Clean Minimalist Glassmorphism Style) */}
-                  <div className="absolute left-3 top-3 z-10 flex items-center gap-1.5">
-                    <span className="rounded-md bg-black/60 px-2.5 py-0.5 text-[11px] font-semibold text-white backdrop-blur-xs border border-white/15 shadow-xs capitalize">
-                      {categoryLabel}
-                    </span>
-                    {g.tipe === "video" && (
-                      <span className="rounded-md bg-primary/90 px-2 py-0.5 text-[11px] font-semibold text-white shadow-xs">
-                        Video
+              <Reveal key={g.id} mode="scroll" delay={(i % 6) * 0.06}>
+                <Card
+                  padded={false}
+                  className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md h-full"
+                >
+                  {/* Header Container Media */}
+                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted">
+                    {/* Category & Type Badge (Clean Minimalist Glassmorphism Style) */}
+                    <div className="absolute left-3 top-3 z-10 flex items-center gap-1.5">
+                      <span className="rounded-md bg-black/60 px-2.5 py-0.5 text-[11px] font-semibold text-white backdrop-blur-xs border border-white/15 shadow-xs capitalize">
+                        {categoryLabel}
                       </span>
+                      {g.tipe === "video" && (
+                        <span className="rounded-md bg-primary/90 px-2 py-0.5 text-[11px] font-semibold text-white shadow-xs">
+                          Video
+                        </span>
+                      )}
+                    </div>
+
+                    {g.tipe === "video" ? (
+                      <video src={mediaUrl} controls className="h-full w-full bg-black object-cover" />
+                    ) : (
+                      <div
+                        onClick={() => setActiveImage({ url: mediaUrl, title: g.judul })}
+                        className="relative h-full w-full cursor-pointer overflow-hidden"
+                        title="Klik untuk memperbesar foto"
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={mediaUrl}
+                          alt={g.judul}
+                          loading="lazy"
+                          decoding="async"
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+
+                        {/* Minimalist Sleek Zoom Overlay */}
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/25 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-xs shadow-md transition-transform duration-200 group-hover:scale-110">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-5 w-5">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
                     )}
                   </div>
 
-                  {g.tipe === "video" ? (
-                    <video src={mediaUrl} controls className="h-full w-full bg-black object-cover" />
-                  ) : (
-                    <div
-                      onClick={() => setActiveImage({ url: mediaUrl, title: g.judul })}
-                      className="relative h-full w-full cursor-pointer overflow-hidden"
-                      title="Klik untuk memperbesar foto"
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={mediaUrl}
-                        alt={g.judul}
-                        loading="lazy"
-                        decoding="async"
-                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-
-                      {/* Minimalist Sleek Zoom Overlay */}
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/25 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-xs shadow-md transition-transform duration-200 group-hover:scale-110">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-5 w-5">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Footer Caption */}
-                <div className="flex flex-1 flex-col justify-between p-4">
-                  <p className="font-heading text-sm font-bold text-foreground line-clamp-2 leading-snug">
-                    {g.judul}
-                  </p>
-                  {g.sumber_berita_id && (
-                    <p className="mt-2 text-[11px] font-medium text-muted-foreground">
-                      Terhubung dari Berita
+                  {/* Footer Caption */}
+                  <div className="flex flex-1 flex-col justify-between p-4">
+                    <p className="font-heading text-sm font-bold text-foreground line-clamp-2 leading-snug">
+                      {g.judul}
                     </p>
-                  )}
-                </div>
-              </Card>
+                    {g.sumber_berita_id && (
+                      <p className="mt-2 text-[11px] font-medium text-muted-foreground">
+                        Terhubung dari Berita
+                      </p>
+                    )}
+                  </div>
+                </Card>
+              </Reveal>
             );
           })}
         </div>

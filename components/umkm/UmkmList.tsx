@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Pagination } from "@/components/ui/Pagination";
+import { Reveal } from "@/components/ui/Reveal";
 import { getPublicImageUrl } from "@/lib/image-url";
 import type { Umkm } from "@/lib/types";
 
@@ -94,86 +95,88 @@ export function UmkmList({ umkm }: { umkm: Umkm[] }) {
         </div>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {pageItems.map((u) => {
+          {pageItems.map((u, i) => {
             const cover = getPublicImageUrl(u.foto_utama_url || u.foto_urls[0] || "/images/placeholder.jpg");
             const photoCount = u.foto_urls.length;
 
             return (
-              <Link key={u.id} href={`/umkm/${u.slug}`} className="group">
-                <Card
-                  padded={false}
-                  className="h-full overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md flex flex-col"
-                >
-                  {/* Image Container with Badges */}
-                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={cover}
-                      alt={u.nama}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    {/* Category Badge overlay */}
-                    <div className="absolute left-3 top-3">
-                      <Badge>{u.kategori}</Badge>
-                    </div>
-                    {/* Photo count badge */}
-                    {photoCount > 1 && (
-                      <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
-                        <IconCamera />
-                        <span>{photoCount} Foto</span>
+              <Reveal key={u.id} mode="scroll" delay={(i % 6) * 0.06}>
+                <Link href={`/umkm/${u.slug}`} className="group">
+                  <Card
+                    padded={false}
+                    className="h-full overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md flex flex-col"
+                  >
+                    {/* Image Container with Badges */}
+                    <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={cover}
+                        alt={u.nama}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      {/* Category Badge overlay */}
+                      <div className="absolute left-3 top-3">
+                        <Badge>{u.kategori}</Badge>
                       </div>
-                    )}
-                  </div>
-
-                  {/* Card Content */}
-                  <div className="flex flex-1 flex-col justify-between p-5">
-                    <div>
-                      {/* Jam Operasional */}
-                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-2">
-                        <IconClock />
-                        <span>{u.jam_operasional}</span>
-                      </div>
-
-                      {/* Nama Usaha */}
-                      <h2 className="font-heading text-lg font-bold text-foreground group-hover:text-primary transition-colors">
-                        {u.nama}
-                      </h2>
-
-                      {/* Deskripsi */}
-                      <p className="mt-2 line-clamp-2 text-sm text-muted-foreground leading-relaxed">
-                        {u.deskripsi}
-                      </p>
-
-                      {/* Chips Produk Unggulan */}
-                      {u.produk_unggulan.length > 0 && (
-                        <div className="mt-4 flex flex-wrap gap-1.5">
-                          {u.produk_unggulan.slice(0, 3).map((p, idx) => (
-                            <span
-                              key={idx}
-                              className="rounded-md bg-muted px-2 py-0.5 text-[11px] font-medium text-foreground border border-border/50"
-                            >
-                              {p.produk}
-                            </span>
-                          ))}
-                          {u.produk_unggulan.length > 3 && (
-                            <span className="rounded-md bg-muted px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground">
-                              +{u.produk_unggulan.length - 3} lagi
-                            </span>
-                          )}
+                      {/* Photo count badge */}
+                      {photoCount > 1 && (
+                        <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
+                          <IconCamera />
+                          <span>{photoCount} Foto</span>
                         </div>
                       )}
                     </div>
 
-                    {/* Card Footer */}
-                    <div className="mt-5 flex items-center justify-between border-t border-border pt-3.5 text-xs font-semibold text-primary">
-                      <span>Lihat Detail Usaha</span>
-                      <IconArrowRight />
+                    {/* Card Content */}
+                    <div className="flex flex-1 flex-col justify-between p-5">
+                      <div>
+                        {/* Jam Operasional */}
+                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-2">
+                          <IconClock />
+                          <span>{u.jam_operasional}</span>
+                        </div>
+
+                        {/* Nama Usaha */}
+                        <h2 className="font-heading text-lg font-bold text-foreground group-hover:text-primary transition-colors">
+                          {u.nama}
+                        </h2>
+
+                        {/* Deskripsi */}
+                        <p className="mt-2 line-clamp-2 text-sm text-muted-foreground leading-relaxed">
+                          {u.deskripsi}
+                        </p>
+
+                        {/* Chips Produk Unggulan */}
+                        {u.produk_unggulan.length > 0 && (
+                          <div className="mt-4 flex flex-wrap gap-1.5">
+                            {u.produk_unggulan.slice(0, 3).map((p, idx) => (
+                              <span
+                                key={idx}
+                                className="rounded-md bg-muted px-2 py-0.5 text-[11px] font-medium text-foreground border border-border/50"
+                              >
+                                {p.produk}
+                              </span>
+                            ))}
+                            {u.produk_unggulan.length > 3 && (
+                              <span className="rounded-md bg-muted px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground">
+                                +{u.produk_unggulan.length - 3} lagi
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Card Footer */}
+                      <div className="mt-5 flex items-center justify-between border-t border-border pt-3.5 text-xs font-semibold text-primary">
+                        <span>Lihat Detail Usaha</span>
+                        <IconArrowRight />
+                      </div>
                     </div>
-                  </div>
-                </Card>
-              </Link>
+                  </Card>
+                </Link>
+              </Reveal>
             );
           })}
         </div>
