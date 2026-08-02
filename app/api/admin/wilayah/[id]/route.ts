@@ -46,6 +46,7 @@ export async function PUT(
       cakupan_dusun,
       jumlah_rt,
       is_kampung_kb,
+      deskripsi_singkat,
       potensi,
       statistik,
       struktur_pengurus = [],
@@ -62,6 +63,7 @@ export async function PUT(
         cakupanDusun: cakupan_dusun,
         jumlahRt: Number(jumlah_rt ?? 0),
         isKampungKb: Boolean(is_kampung_kb),
+        deskripsiSingkat: deskripsi_singkat ?? "",
         potensi: potensi ?? "",
         jumlahKk: Number(statistik?.jumlah_kk ?? 0),
         jumlahJiwa: Number(statistik?.jumlah_jiwa ?? 0),
@@ -74,10 +76,13 @@ export async function PUT(
       await db.insert(rwPengurus).values(
         struktur_pengurus
           .filter((p: { nama: string }) => p.nama.trim().length > 0)
-          .map((p: { nama: string; jabatan: string }) => ({
+          .map((p: { nama: string; jabatan: string; kategori?: string; organisasi?: string; icon?: string }) => ({
             rwId: id,
             nama: p.nama.trim(),
             jabatan: p.jabatan?.trim() || "Pengurus",
+            kategori: p.kategori || "rw",
+            organisasi: p.organisasi?.trim() || null,
+            icon: p.icon || "users",
           }))
       );
     }

@@ -55,8 +55,46 @@ export function KampungKbClientView({
           </h2>
           <p className="text-sm text-muted-foreground">Ketua: {kb.ketua}</p>
           <p className="mt-3 text-sm text-foreground">{kb.deskripsi_program}</p>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Dibentuk berdasarkan SK Kepala Kelurahan Mlokomanis Kulon Tahun {kb.sk_tahun}.
+          </p>
         </div>
       </Card>
+      </Reveal>
+
+      {/* Tujuan / Fungsi Program */}
+      <Reveal mode="scroll" duration={0.6}>
+        <Card>
+          <h2 className="font-heading text-lg font-semibold text-foreground">Tujuan Program</h2>
+          <ul className="mt-3 grid gap-3 sm:grid-cols-2">
+            {kb.fungsi.map((f, i) => (
+              <li key={i} className="flex gap-2.5 text-sm">
+                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent/15 text-[11px] font-bold text-accent">
+                  {i + 1}
+                </span>
+                <span className="text-foreground">{f}</span>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      </Reveal>
+
+      {/* Struktur Kepengurusan Inti */}
+      <Reveal mode="scroll" duration={0.6}>
+        <Card>
+          <h2 className="font-heading text-lg font-semibold text-foreground">Struktur Kepengurusan Inti</h2>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {kb.pengurus_inti.map((p) => (
+              <div
+                key={p.jabatan}
+                className="rounded-lg border border-border bg-card p-3 text-center transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-md"
+              >
+                <p className="text-[11px] font-bold uppercase tracking-wide text-accent">{p.jabatan}</p>
+                <p className="mt-1 text-sm font-semibold text-foreground">{p.nama}</p>
+              </div>
+            ))}
+          </div>
+        </Card>
       </Reveal>
 
       {/* Carousel Pokja */}
@@ -79,6 +117,10 @@ export function KampungKbClientView({
                       <p className="text-xs text-muted-foreground">{p.program.length} program</p>
                     </div>
                   </div>
+                  <p className="mt-3 text-xs text-muted-foreground">
+                    Ketua: <span className="font-medium text-foreground">{p.ketua}</span> · Anggota:{" "}
+                    <span className="font-medium text-foreground">{p.anggota}</span>
+                  </p>
                   <ul className="mt-4 space-y-2 border-t border-border pt-4 text-sm">
                     {p.program.map((item, i) => (
                       <li key={i} className="flex gap-2">

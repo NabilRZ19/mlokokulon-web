@@ -1,4 +1,4 @@
-import type { Berita, Galeri, KampungKb, Rw, StrukturKelurahan, Umkm } from "./types";
+import type { Berita, Galeri, KampungKb, Rw, RwPengurus, StrukturKelurahan, Umkm } from "./types";
 
 // ============================================================
 // Data hardcode untuk halaman non-CMS (Profil Desa, Layanan, Kontak, Kampung KB)
@@ -214,18 +214,43 @@ export const kontakPerangkatData: KontakPerangkatItem[] = [
 // Kampung KB. Data program riil dari dokumen resmi RW (ditandatangani Ketua, 24 Mei 2025) —
 // bukan lagi [DATA MENYUSUL]. Catatan: item "Pendataan BPJS" di Pokja Perlindungan tertulis
 // "BBJS" di dokumen asli, kemungkinan typo — perlu dikonfirmasi ulang ke RW.
+// Nama program, sk_tahun, fungsi, pengurus_inti, dan ketua/anggota tiap Pokja bersumber dari
+// SK Kepala Kelurahan Mlokomanis Kulon Nomor [belum diisi di dokumen] Tahun 2023 tentang
+// Pembentukan Kampung Keluarga Berkualitas "Guyub Hanyawiji" (Lampiran I & Diktum KEDUA).
 export const kampungKbData: KampungKb = {
   rw_ref: "rw-05",
-  nama_program: "Guyup Hanyawiji",
+  nama_program: "Guyub Hanyawiji",
   ketua: "Mujiono, S.Pd.I., M.Pd.I.",
   deskripsi_program:
-    "Program Kampung KB \"Guyup Hanyawiji\" di RW 05 (Pencil), diketuai oleh Mujiono, S.Pd.I., " +
+    "Program Kampung KB \"Guyub Hanyawiji\" di RW 05 (Pencil), diketuai oleh Mujiono, S.Pd.I., " +
     "M.Pd.I., dibentuk tahun 2025 dengan 8 kelompok kerja (Pokja) yang mencakup bidang " +
     "keagamaan, pendidikan, reproduksi, ekonomi, perlindungan, kasih sayang, sosial budaya, " +
     "dan pembinaan lingkungan.",
+  sk_tahun: "2023",
+  fungsi: [
+    "Peningkatan kualitas keagamaan dan aliran kepercayaan masyarakat",
+    "Peningkatan kualitas dan kuantitas pelayanan Keluarga Berencana bagi Pasangan Usia Subur (PUS)",
+    "Peningkatan kualitas pendidikan masyarakat",
+    "Peningkatan kualitas kesehatan reproduksi dan derajat kesehatan masyarakat secara menyeluruh",
+    "Peningkatan keberdayaan ekonomi bagi masyarakat Pra Sejahtera dan Keluarga Sejahtera Tahap I",
+    "Peningkatan kegiatan sosial budaya dan cinta kasih antar sesama warga masyarakat",
+    "Peningkatan program pelestarian lingkungan",
+  ],
+  pengurus_inti: [
+    { jabatan: "Penasehat", nama: "Sulasno, S.E." },
+    { jabatan: "Penanggung Jawab", nama: "Yulis Triyanto" },
+    { jabatan: "Ketua POKJA", nama: "Mujiono, S.Pd.I., M.Pd.I." },
+    { jabatan: "Wakil Ketua POKJA", nama: "Sutrisno" },
+    { jabatan: "Sekretaris 1", nama: "Kaswati" },
+    { jabatan: "Sekretaris 2", nama: "Yuliyanti, S.Pd." },
+    { jabatan: "Bendahara 1", nama: "Giyani" },
+    { jabatan: "Bendahara 2", nama: "Suhartini" },
+  ],
   pokja: [
     {
       nama: "Pokja Keagamaan",
+      ketua: "Sukasno",
+      anggota: "Suyamto",
       program: [
         "Pengajian 2 mingguan",
         "TPQ 3 kali 1 minggu",
@@ -238,6 +263,8 @@ export const kampungKbData: KampungKb = {
     },
     {
       nama: "Pokja Pendidikan",
+      ketua: "Nanang Adi Saputra, S.Pd",
+      anggota: "Indra Hermawan, S.Pd",
       program: [
         "Kampung literasi 1x seminggu",
         "Penyuluhan orang tua pentingnya literasi",
@@ -247,6 +274,8 @@ export const kampungKbData: KampungKb = {
     },
     {
       nama: "Pokja Reproduksi",
+      ketua: "Yuni Widayati",
+      anggota: "Tunggal Fitri",
       program: [
         "Posyandu balita",
         "Posyandu lansia",
@@ -257,6 +286,8 @@ export const kampungKbData: KampungKb = {
     },
     {
       nama: "Pokja Ekonomi",
+      ketua: "Indra Purwaningsih",
+      anggota: "Sri Utami",
       program: [
         "Bimbingan produk unggulan",
         "Penanaman bibit sayuran",
@@ -269,6 +300,8 @@ export const kampungKbData: KampungKb = {
     },
     {
       nama: "Pokja Perlindungan",
+      ketua: "Warsito",
+      anggota: "Suyanto",
       program: [
         "Penyuluhan bahaya narkoba",
         "Perizinan orang punya hajat",
@@ -279,6 +312,8 @@ export const kampungKbData: KampungKb = {
     },
     {
       nama: "Pokja Kasih Sayang",
+      ketua: "Putri Wijayanti",
+      anggota: "Sugiyanti",
       program: [
         "Iuran kematian",
         "Dana sosial orang sakit",
@@ -289,6 +324,8 @@ export const kampungKbData: KampungKb = {
     },
     {
       nama: "Pokja Sosial Budaya",
+      ketua: "Triyanto",
+      anggota: "Siswadi",
       program: [
         "Membentuk kelompok seni terbang",
         "Kelompok rebana ibu-ibu",
@@ -297,6 +334,8 @@ export const kampungKbData: KampungKb = {
     },
     {
       nama: "Pokja Pembinaan Lingkungan",
+      ketua: "Yatno",
+      anggota: "Marlan",
       program: [
         "Kerja bakti 2 minggu sekali",
         "Perapian pagar",
@@ -342,22 +381,124 @@ const kkPerRw = [121, 121, 121, 121, 121, 121, 121, 121, 122, 122]; // total 121
 const jiwaPerRw = [369, 369, 369, 369, 369, 369, 369, 369, 369, 368]; // total 3689
 const KAMPUNG_KB_INDEX = 4; // RW 5 = Pencil
 
-export const rwSeed: Rw[] = dusunList.map((nama, i) => ({
-  id: `rw-${String(i + 1).padStart(2, "0")}`,
-  nama_rw: `RW ${String(i + 1).padStart(2, "0")} — ${nama}`,
-  cakupan_dusun: nama,
-  jumlah_rt: rtPerRw[i],
-  is_kampung_kb: i === KAMPUNG_KB_INDEX,
-  struktur_pengurus: [
-    { nama: `(Ketua RW ${nama} — Dummy)`, jabatan: "Ketua RW" },
-    { nama: `(Sekretaris RW ${nama} — Dummy)`, jabatan: "Sekretaris" },
+const deskripsiRwMap: Record<string, string> = {
+  "rw-01": "Lingkungan Bulurejo merupakan wilayah administratif RW 1 di Kelurahan Mlokomanis Kulon. Wilayah ini didominasi oleh kawasan permukiman dan lahan pertanian yang menjadi bagian dari karakteristik penggunaan lahan di Kelurahan Mlokomanis Kulon. Secara administratif, Lingkungan Bulurejo berbatasan dengan Lingkungan Soko Lor di sebelah utara, Kelurahan Mlokomanis Wetan di sebelah timur, Lingkungan Soko Kidul di sebelah selatan, serta Lingkungan Pencil di sebelah barat.",
+  "rw-02": "Lingkungan Pocung merupakan wilayah administratif RW 2 di Kelurahan Mlokomanis Kulon. Wilayah ini didominasi oleh kawasan permukiman dan lahan pertanian yang menjadi bagian dari karakteristik penggunaan lahan di Kelurahan Mlokomanis Kulon. Secara administratif, Lingkungan Pocung berbatasan dengan Lingkungan Bon Agung di sebelah utara, Lingkungan Soko Kidul di sebelah timur, Kelurahan Ngadirojo Lor di sebelah selatan, serta Kelurahan Ngadirojo Lor di sebelah barat.",
+  "rw-03": "Lingkungan Bon Agung merupakan wilayah administratif RW 3 di Kelurahan Mlokomanis Kulon. Wilayah ini didominasi oleh kawasan permukiman dan lahan pertanian yang menjadi bagian dari karakteristik penggunaan lahan di Kelurahan Mlokomanis Kulon. Secara administratif, Lingkungan Bon Agung berbatasan dengan Lingkungan Tempuran di sebelah utara, Lingkungan Soko Kidul di sebelah timur, Lingkungan Pocung di sebelah selatan, serta Kelurahan Ngadirojo Lor di sebelah barat.",
+  "rw-04": "Lingkungan Tempuran merupakan wilayah administratif RW 4 di Kelurahan Mlokomanis Kulon. Wilayah ini didominasi oleh kawasan permukiman dan lahan pertanian yang menjadi bagian dari karakteristik penggunaan lahan di Kelurahan Mlokomanis Kulon. Secara administratif, Lingkungan Tempuran berbatasan dengan Lingkungan Pencil di sebelah utara, Lingkungan Bon Agung di sebelah selatan, Lingkungan Soko Kidul di sebelah timur, serta Kelurahan Ngadirojo Lor di sebelah barat.",
+  "rw-05": "Lingkungan Pencil merupakan wilayah administratif RW 5 di Kelurahan Mlokomanis Kulon. Wilayah ini didominasi oleh kawasan permukiman dan lahan pertanian yang menjadi bagian dari karakteristik penggunaan lahan di Kelurahan Mlokomanis Kulon. Selain menjadi kawasan permukiman masyarakat, Lingkungan Pencil juga merupakan lokasi Kantor Kelurahan Mlokomanis Kulon yang menjadi pusat penyelenggaraan pemerintahan dan pelayanan kepada masyarakat. Secara administratif, Lingkungan Pencil berbatasan dengan Lingkungan Jaten di sebelah utara, Lingkungan Soko Lor dan Lingkungan Bulurejo di sebelah timur, Lingkungan Tempuran di sebelah selatan, serta Kelurahan Ngadirojo Lor di sebelah barat.",
+  "rw-06": "Lingkungan Jaten merupakan wilayah administratif RW 6 di Kelurahan Mlokomanis Kulon. Wilayah ini didominasi oleh kawasan permukiman dan lahan pertanian yang menjadi bagian dari karakteristik penggunaan lahan di Kelurahan Mlokomanis Kulon. Secara administratif, Lingkungan Jaten berbatasan dengan Kelurahan Kasihan di sebelah utara, Lingkungan Pondok di sebelah timur, Lingkungan Pencil di sebelah selatan, serta Kelurahan Ngadirojo Lor di sebelah barat.",
+  "rw-07": "Lingkungan Pondok merupakan wilayah administratif RW 7 di Kelurahan Mlokomanis Kulon. Wilayah ini didominasi oleh kawasan permukiman dan lahan pertanian yang menjadi bagian dari karakteristik penggunaan lahan di Kelurahan Mlokomanis Kulon. Secara administratif, Lingkungan Pondok berbatasan dengan Kelurahan Kasihan di sebelah utara, Lingkungan Ngasinan di sebelah timur, Lingkungan Soko Lor di sebelah selatan, serta Lingkungan Jaten di sebelah barat.",
+  "rw-08": "Lingkungan Ngasinan merupakan wilayah administratif RW 8 di Kelurahan Mlokomanis Kulon. Wilayah ini didominasi oleh kawasan permukiman dan lahan pertanian yang menjadi bagian dari karakteristik penggunaan lahan di Kelurahan Mlokomanis Kulon. Secara administratif, Lingkungan Ngasinan berbatasan dengan Kelurahan Kasihan di sebelah utara, Kelurahan Mlokomanis Wetan di sebelah timur, Lingkungan Soko Lor di sebelah selatan, serta Lingkungan Pondok di sebelah barat.",
+  "rw-09": "Lingkungan Soko Lor merupakan wilayah administratif RW 9 di Kelurahan Mlokomanis Kulon. Wilayah ini didominasi oleh kawasan permukiman dan lahan pertanian yang menjadi bagian dari karakteristik penggunaan lahan di Kelurahan Mlokomanis Kulon. Secara administratif, Lingkungan Soko Lor berbatasan dengan Lingkungan Pondok di sebelah utara, Lingkungan Ngasinan di sebelah timur, Lingkungan Bulurejo di sebelah selatan, serta Lingkungan Pencil di sebelah barat.",
+  "rw-10": "Lingkungan Soko Kidul merupakan wilayah administratif RW 10 di Kelurahan Mlokomanis Kulon. Wilayah ini didominasi oleh kawasan permukiman dan lahan pertanian yang menjadi bagian dari karakteristik penggunaan lahan di Kelurahan Mlokomanis Kulon. Secara administratif, Lingkungan Soko Kidul berbatasan dengan Lingkungan Soko Lor dan Lingkungan Bulurejo di sebelah utara, Kelurahan Mlokomanis Wetan di sebelah timur, Kelurahan Ngadirojo Kidul di sebelah selatan, serta Lingkungan Bon Agung dan Lingkungan Tempuran di sebelah barat.",
+};
+
+const pengurusRwMap: Record<string, RwPengurus[]> = {
+  "rw-03": [
+    { nama: "Widodo", jabatan: "Ketua RW 03" },
+    { nama: "Narti", jabatan: "Sekretaris RW 03" },
+    { nama: "Drs. Sutarno", jabatan: "Bendahara RW 03" },
+    { nama: "Untung", jabatan: "Ketua RT 01" },
+    { nama: "Katinem", jabatan: "Sekretaris RT 01" },
+    { nama: "Warni", jabatan: "Bendahara RT 01" },
+    { nama: "Sunardi", jabatan: "Ketua RT 02" },
+    { nama: "Marsudi", jabatan: "Sekretaris RT 02" },
+    { nama: "Jalu Asmoro", jabatan: "Bendahara RT 02" },
+    { nama: "Usman Catur", jabatan: "Ketua Karang Taruna Bakti Remaja" },
+    { nama: "Marsudi", jabatan: "Sekretaris Karang Taruna Bakti Remaja" },
+    { nama: "Yekti Utami", jabatan: "Bendahara Karang Taruna Bakti Remaja" },
   ],
-  statistik: {
-    jumlah_kk: kkPerRw[i],
-    jumlah_jiwa: jiwaPerRw[i],
-  },
-  potensi: "[DATA MENYUSUL] — potensi spesifik RW ini belum dikonfirmasi.",
-}));
+  "rw-04": [
+    { nama: "Suwandi", jabatan: "Ketua RW 04" },
+    { nama: "Minut Sumarsih", jabatan: "Sekretaris RW 04" },
+    { nama: "Syukur Rahmadi", jabatan: "Bendahara RW 04" },
+    { nama: "Slamet", jabatan: "Ketua RT 01" },
+    { nama: "Syukur Rahmadi", jabatan: "Sekretaris RT 01" },
+    { nama: "Lilik Tri Kurniawan", jabatan: "Bendahara RT 01" },
+    { nama: "Katino", jabatan: "Ketua RT 02" },
+    { nama: "Puji Hastuti", jabatan: "Sekretaris RT 02" },
+    { nama: "Katino", jabatan: "Bendahara RT 02" },
+    { nama: "Suwandi", jabatan: "Ketua Kelompok Tani Pendowo" },
+    { nama: "Puji Hastuti", jabatan: "Sekretaris Kelompok Tani Pendowo" },
+    { nama: "Taman", jabatan: "Bendahara Kelompok Tani Pendowo" },
+    { nama: "Mustofa", jabatan: "Ketua Karang Taruna REDHOSIN" },
+    { nama: "Rudi", jabatan: "Wakil Karang Taruna REDHOSIN" },
+    { nama: "Putri Amilus & Dwi Waluyo", jabatan: "Sekretaris Karang Taruna REDHOSIN" },
+    { nama: "Erni", jabatan: "Bendahara Karang Taruna REDHOSIN" },
+  ],
+  "rw-05": [
+    { nama: "Mujiono, S.Pd.I., M.Pd.I.", jabatan: "Ketua RW 05" },
+    { nama: "Sri Mulato", jabatan: "Sekretaris RW 05" },
+    { nama: "Nanang Adi Saputro, S.Pd.", jabatan: "Bendahara RW 05" },
+    { nama: "Yatno", jabatan: "Ketua RT 01" },
+    { nama: "Marlan", jabatan: "Sekretaris RT 01" },
+    { nama: "Slamet", jabatan: "Bendahara RT 01" },
+    { nama: "Sutrisno", jabatan: "Ketua RT 02" },
+    { nama: "Wawan", jabatan: "Sekretaris RT 02" },
+    { nama: "Triyanto", jabatan: "Bendahara RT 02" },
+  ],
+  "rw-06": [
+    { nama: "Lissawitri", jabatan: "Ketua RW 06" },
+    { nama: "Kardi", jabatan: "Ketua RT 01" },
+    { nama: "Nur Diansyah", jabatan: "Ketua RT 02" },
+  ],
+  "rw-08": [
+    { nama: "Suman", jabatan: "Ketua RW Ngasinan" },
+    { nama: "Parmanto", jabatan: "Sekretaris RW Ngasinan" },
+    { nama: "Suparno", jabatan: "Bendahara RW Ngasinan" },
+  ],
+  "rw-09": [
+    { nama: "Sulardi", jabatan: "Ketua RW 09" },
+    { nama: "Tukiman", jabatan: "Ketua RT 01" },
+    { nama: "Aref Samsudin", jabatan: "Ketua RT 02" },
+    { nama: "Muhajir", jabatan: "Sekretaris RW 09" },
+    { nama: "Warijo", jabatan: "Bendahara RW 09" },
+  ],
+};
+
+const statistikKkMap: Record<string, number> = {
+  "rw-03": 130,
+  "rw-04": 90,
+  "rw-05": 105,
+  "rw-06": 90,
+  "rw-09": 108,
+};
+
+const statistikJiwaMap: Record<string, number> = {
+  "rw-03": 362,
+  "rw-04": 263,
+  "rw-05": 316,
+  "rw-06": 351,
+  "rw-08": 441,
+  "rw-09": 274,
+};
+
+const potensiMap: Record<string, string> = {
+  "rw-04": "Akademi Voli + Akademi Bola",
+  "rw-05": "Kampung KB",
+};
+
+export const rwSeed: Rw[] = dusunList.map((nama, i) => {
+  const id = `rw-${String(i + 1).padStart(2, "0")}`;
+  return {
+    id,
+    nama_rw: `RW ${String(i + 1).padStart(2, "0")} — ${nama}`,
+    cakupan_dusun: nama,
+    jumlah_rt: rtPerRw[i],
+    is_kampung_kb: i === KAMPUNG_KB_INDEX,
+    deskripsi_singkat: deskripsiRwMap[id],
+    struktur_pengurus: pengurusRwMap[id] || [
+      { nama: `(Ketua RW ${nama} — Dummy)`, jabatan: "Ketua RW" },
+      { nama: `(Sekretaris RW ${nama} — Dummy)`, jabatan: "Sekretaris" },
+    ],
+    statistik: {
+      jumlah_kk: statistikKkMap[id] ?? kkPerRw[i],
+      jumlah_jiwa: statistikJiwaMap[id] ?? jiwaPerRw[i],
+    },
+    potensi: potensiMap[id] ?? "[DATA MENYUSUL] — potensi spesifik RW ini belum dikonfirmasi.",
+  };
+});
 
 export const beritaSeed: Berita[] = [
   {

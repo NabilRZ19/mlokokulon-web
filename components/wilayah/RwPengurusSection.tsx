@@ -62,6 +62,85 @@ function IconUsersGroup() {
   );
 }
 
+function IconPkk() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-6 w-6 text-rose-600 shrink-0"
+    >
+      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+    </svg>
+  );
+}
+
+function IconShield() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-6 w-6 text-amber-600 shrink-0"
+    >
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    </svg>
+  );
+}
+
+function IconTrophy() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-6 w-6 text-purple-600 shrink-0"
+    >
+      <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+      <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+      <path d="M4 22h16" />
+      <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+      <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+      <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+    </svg>
+  );
+}
+
+function IconBuilding() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-6 w-6 text-cyan-600 shrink-0"
+    >
+      <rect x="4" y="2" width="16" height="20" rx="2" ry="2" />
+      <path d="M9 22v-4h6v4" />
+      <path d="M8 6h.01" />
+      <path d="M16 6h.01" />
+      <path d="M12 6h.01" />
+      <path d="M12 10h.01" />
+      <path d="M12 14h.01" />
+      <path d="M16 10h.01" />
+      <path d="M16 14h.01" />
+      <path d="M8 10h.01" />
+      <path d="M8 14h.01" />
+    </svg>
+  );
+}
+
 function IconBadgeCheck() {
   return (
     <svg
@@ -79,33 +158,75 @@ function IconBadgeCheck() {
   );
 }
 
+function renderOrgIcon(iconKey?: string) {
+  switch (iconKey) {
+    case "sprout":
+      return <IconSprout />;
+    case "pkk":
+      return <IconPkk />;
+    case "shield":
+      return <IconShield />;
+    case "trophy":
+      return <IconTrophy />;
+    case "building":
+      return <IconBuilding />;
+    case "users":
+    default:
+      return <IconUsersGroup />;
+  }
+}
+
 export function RwPengurusSection({ pengurusList }: RwPengurusSectionProps) {
   if (!pengurusList || pengurusList.length === 0) {
     return <p className="text-sm text-muted-foreground">Data pengurus belum tersedia.</p>;
   }
 
-  // 1. Kelompok Tani (misal: Pendowo)
-  const taniList = pengurusList.filter((p) =>
-    p.jabatan.toLowerCase().includes("tani")
+  // 1. Organisasi Tambahan (kategori === "organisasi" atau memiliki nama organisasi / kata kunci khusus)
+  const orgItems = pengurusList.filter(
+    (p) =>
+      p.kategori === "organisasi" ||
+      !!p.organisasi ||
+      p.jabatan.toLowerCase().includes("tani") ||
+      p.jabatan.toLowerCase().includes("karang taruna") ||
+      p.jabatan.toLowerCase().includes("redhosin") ||
+      p.jabatan.toLowerCase().includes("pkk")
   );
 
-  // 2. Karang Taruna (misal: REDHOSIN)
-  const tarunaList = pengurusList.filter((p) =>
-    p.jabatan.toLowerCase().includes("karang taruna") || p.jabatan.toLowerCase().includes("redhosin")
-  );
+  // Grouping Organisasi berdasarkan Nama Organisasi
+  const orgMap = new Map<string, { icon?: string; pengurus: RwPengurus[] }>();
+  orgItems.forEach((p) => {
+    let orgName = p.organisasi;
+    if (!orgName) {
+      if (p.jabatan.toLowerCase().includes("tani")) orgName = "Kelompok Tani";
+      else if (p.jabatan.toLowerCase().includes("karang taruna") || p.jabatan.toLowerCase().includes("redhosin"))
+        orgName = "Karang Taruna";
+      else if (p.jabatan.toLowerCase().includes("pkk")) orgName = "PKK";
+      else orgName = "Organisasi Warga";
+    }
 
-  // 3. Pengurus RT (misal: Ketua RT 01, Sekretaris RT 01, dll)
+    let iconKey = p.icon;
+    if (!iconKey) {
+      if (orgName.toLowerCase().includes("tani")) iconKey = "sprout";
+      else if (orgName.toLowerCase().includes("pkk") || orgName.toLowerCase().includes("posyandu")) iconKey = "pkk";
+      else if (orgName.toLowerCase().includes("linmas") || orgName.toLowerCase().includes("keamanan")) iconKey = "shield";
+      else iconKey = "users";
+    }
+
+    const current = orgMap.get(orgName) || { icon: iconKey, pengurus: [] };
+    current.pengurus.push(p);
+    orgMap.set(orgName, current);
+  });
+
+  // 2. Pengurus RT (kategori === "rt" atau jabatan mengandung "RT")
   const rtList = pengurusList.filter(
     (p) =>
-      p.jabatan.toLowerCase().includes("rt") &&
-      !taniList.includes(p) &&
-      !tarunaList.includes(p)
+      !orgItems.includes(p) &&
+      (p.kategori === "rt" || p.jabatan.toLowerCase().includes("rt"))
   );
 
-  // Grouping RT by RT number/identifier
+  // Grouping RT per RT identifier
   const rtMap = new Map<string, { ketua?: RwPengurus; others: RwPengurus[] }>();
   rtList.forEach((p) => {
-    // Extract RT name e.g., "RT 01" or "RT 02" or default "RT"
     const match = p.jabatan.match(/RT\s*\d+/i);
     const rtKey = match ? match[0].toUpperCase() : "RT";
 
@@ -118,28 +239,13 @@ export function RwPengurusSection({ pengurusList }: RwPengurusSectionProps) {
     rtMap.set(rtKey, current);
   });
 
-  // 4. Inti RW (Ketua RW, Sekretaris RW, Bendahara RW)
+  // 3. Inti RW (Ketua RW, Sekretaris RW, Bendahara RW)
   const rwCoreList = pengurusList.filter(
-    (p) =>
-      !taniList.includes(p) &&
-      !tarunaList.includes(p) &&
-      !rtList.includes(p)
+    (p) => !orgItems.includes(p) && !rtList.includes(p)
   );
 
   const ketuaRw = rwCoreList.find((p) => p.jabatan.toLowerCase().includes("ketua"));
   const otherRwCore = rwCoreList.filter((p) => p !== ketuaRw);
-
-  // Extract Nama Kelompok Tani (jika ada di jabatan)
-  const namaKelompokTani =
-    taniList.length > 0
-      ? taniList[0].jabatan.match(/Kelompok Tani\s+([\w\s]+)/i)?.[1] || "Kelompok Tani"
-      : "Kelompok Tani";
-
-  // Extract Nama Karang Taruna (jika ada di jabatan)
-  const namaKarangTaruna =
-    tarunaList.length > 0
-      ? tarunaList[0].jabatan.match(/Karang Taruna\s+([\w\s]+)/i)?.[1] || "Karang Taruna"
-      : "Karang Taruna";
 
   return (
     <div className="space-y-8">
@@ -250,129 +356,72 @@ export function RwPengurusSection({ pengurusList }: RwPengurusSectionProps) {
         </Card>
       )}
 
-      {/* ── 3. ORGANISASI UTAMA (Kelompok Tani & Karang Taruna) ───────────── */}
-      {(taniList.length > 0 || tarunaList.length > 0) && (
+      {/* ── 3. ORGANISASI KEMASYARAKATAN & POKJA RW ────────────────────── */}
+      {orgMap.size > 0 && (
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <h3 className="font-heading text-xl font-bold text-foreground">
-              Organisasi &amp; Kemasyarakatan Utama
+              Organisasi &amp; Pokja Kemasyarakatan RW
             </h3>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-2">
-            {/* ── Kelompok Tani ────────────────────────────────────────────── */}
-            {taniList.length > 0 && (
-              <Card className="flex flex-col justify-between border-emerald-200/80 bg-gradient-to-b from-emerald-50/40 via-card to-card p-6 shadow-sm">
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3 border-b border-emerald-100 pb-3.5">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-100/80">
-                      <IconSprout />
+          <div className="grid gap-6 md:grid-cols-2">
+            {Array.from(orgMap.entries()).map(([orgName, data]) => {
+              const ketua = data.pengurus.find(
+                (p) => p.jabatan.toLowerCase().includes("ketua") && !p.jabatan.toLowerCase().includes("wakil")
+              );
+              const members = data.pengurus.filter((p) => p !== ketua);
+
+              return (
+                <Card
+                  key={orgName}
+                  className="flex flex-col justify-between border-emerald-200/80 bg-gradient-to-b from-emerald-50/30 via-card to-card p-6 shadow-sm"
+                >
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 border-b border-emerald-100 pb-3.5">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-100/80">
+                        {renderOrgIcon(data.icon)}
+                      </div>
+                      <div>
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800">
+                          Kelembagaan Warga
+                        </span>
+                        <h4 className="font-heading text-lg font-extrabold text-foreground">
+                          {orgName}
+                        </h4>
+                      </div>
                     </div>
-                    <div>
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700">
-                        Organisasi Pertanian
-                      </span>
-                      <h4 className="font-heading text-lg font-extrabold text-foreground">
-                        Kelompok Tani {namaKelompokTani !== "Kelompok Tani" ? namaKelompokTani : ""}
-                      </h4>
+
+                    <div className="space-y-3">
+                      {ketua && (
+                        <div className="rounded-lg border border-emerald-300/70 bg-emerald-100/40 p-4">
+                          <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider">
+                            {ketua.jabatan}
+                          </span>
+                          <p className="font-heading text-lg font-extrabold text-foreground mt-0.5">
+                            {ketua.nama}
+                          </p>
+                        </div>
+                      )}
+
+                      {members.length > 0 && (
+                        <div className="space-y-2 pt-1 text-sm">
+                          {members.map((p, i) => (
+                            <div
+                              key={i}
+                              className="flex items-center justify-between rounded-md border border-border bg-card px-3.5 py-2 text-xs"
+                            >
+                              <span className="text-muted-foreground font-medium">{p.jabatan}</span>
+                              <span className="font-bold text-foreground">{p.nama}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
-
-                  {/* Highlight Ketua Kelompok Tani */}
-                  {(() => {
-                    const ketuaTani = taniList.find((p) => p.jabatan.toLowerCase().includes("ketua"));
-                    const otherTani = taniList.filter((p) => p !== ketuaTani);
-
-                    return (
-                      <div className="space-y-3">
-                        {ketuaTani && (
-                          <div className="rounded-lg border border-emerald-300/70 bg-emerald-100/50 p-4">
-                            <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider">
-                              {ketuaTani.jabatan}
-                            </span>
-                            <p className="font-heading text-lg font-extrabold text-foreground mt-0.5">
-                              {ketuaTani.nama}
-                            </p>
-                          </div>
-                        )}
-
-                        {/* Pengurus Tani Lainnya */}
-                        {otherTani.length > 0 && (
-                          <div className="space-y-2 pt-1 text-sm">
-                            {otherTani.map((p, i) => (
-                              <div
-                                key={i}
-                                className="flex items-center justify-between rounded-md border border-border bg-card px-3.5 py-2 text-xs"
-                              >
-                                <span className="text-muted-foreground font-medium">{p.jabatan}</span>
-                                <span className="font-bold text-foreground">{p.nama}</span>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })()}
-                </div>
-              </Card>
-            )}
-
-            {/* ── Karang Taruna ────────────────────────────────────────────── */}
-            {tarunaList.length > 0 && (
-              <Card className="flex flex-col justify-between border-blue-200/80 bg-gradient-to-b from-blue-50/40 via-card to-card p-6 shadow-sm">
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3 border-b border-blue-100 pb-3.5">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-100/80">
-                      <IconUsersGroup />
-                    </div>
-                    <div>
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-blue-700">
-                        Kepemudaan &amp; Kepemimpinan
-                      </span>
-                      <h4 className="font-heading text-lg font-extrabold text-foreground">
-                        Karang Taruna {namaKarangTaruna !== "Karang Taruna" ? namaKarangTaruna : ""}
-                      </h4>
-                    </div>
-                  </div>
-
-                  {/* Highlight Ketua Karang Taruna */}
-                  {(() => {
-                    const ketuaTaruna = tarunaList.find((p) => p.jabatan.toLowerCase().includes("ketua") && !p.jabatan.toLowerCase().includes("wakil"));
-                    const otherTaruna = tarunaList.filter((p) => p !== ketuaTaruna);
-
-                    return (
-                      <div className="space-y-3">
-                        {ketuaTaruna && (
-                          <div className="rounded-lg border border-blue-300/70 bg-blue-100/50 p-4">
-                            <span className="text-xs font-bold text-blue-800 uppercase tracking-wider">
-                              {ketuaTaruna.jabatan}
-                            </span>
-                            <p className="font-heading text-lg font-extrabold text-foreground mt-0.5">
-                              {ketuaTaruna.nama}
-                            </p>
-                          </div>
-                        )}
-
-                        {/* Pengurus Karang Taruna Lainnya */}
-                        {otherTaruna.length > 0 && (
-                          <div className="space-y-2 pt-1 text-sm">
-                            {otherTaruna.map((p, i) => (
-                              <div
-                                key={i}
-                                className="flex items-center justify-between rounded-md border border-border bg-card px-3.5 py-2 text-xs"
-                              >
-                                <span className="text-muted-foreground font-medium">{p.jabatan}</span>
-                                <span className="font-bold text-foreground">{p.nama}</span>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })()}
-                </div>
-              </Card>
-            )}
+                </Card>
+              );
+            })}
           </div>
         </div>
       )}

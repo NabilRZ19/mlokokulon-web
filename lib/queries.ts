@@ -12,7 +12,7 @@ import {
   umkmFoto,
   umkmProdukUnggulan,
 } from "./db/schema";
-import type { Berita, Galeri, Rw, StrukturKelurahan, Umkm, UmkmProdukUnggulan } from "./types";
+import type { Berita, Galeri, Rw, RwPengurus, StrukturKelurahan, Umkm, UmkmProdukUnggulan } from "./types";
 
 // Fetch server-side (Drizzle + MySQL VPS) untuk halaman publik SSG/ISR — halaman publik tidak
 // boleh fetch DB langsung dari client browser. Shape return tetap sama persis dengan lib/types.ts
@@ -49,7 +49,14 @@ async function assembleRwSingle(row: typeof rwTable.$inferSelect): Promise<Rw> {
     cakupan_dusun: row.cakupanDusun,
     jumlah_rt: row.jumlahRt,
     is_kampung_kb: row.isKampungKb,
-    struktur_pengurus: pengurus.map((p) => ({ nama: p.nama, jabatan: p.jabatan })),
+    deskripsi_singkat: row.deskripsiSingkat ?? undefined,
+    struktur_pengurus: pengurus.map((p) => ({
+      nama: p.nama,
+      jabatan: p.jabatan,
+      kategori: (p.kategori as "rw" | "rt" | "organisasi") || "rw",
+      organisasi: p.organisasi ?? undefined,
+      icon: p.icon ?? undefined,
+    })),
     statistik: { jumlah_kk: row.jumlahKk, jumlah_jiwa: row.jumlahJiwa },
     potensi: row.potensi,
     cakupan_wilayah_geojson: row.cakupanWilayahGeojson ?? undefined,
@@ -72,10 +79,16 @@ export async function getRwList(): Promise<Rw[]> {
       console.error("[queries] Error batch fetch rw_pengurus:", err);
     }
 
-    const pengurusMap = new Map<string, Array<{ nama: string; jabatan: string }>>();
+    const pengurusMap = new Map<string, Array<RwPengurus>>();
     for (const p of allPengurus) {
       const list = pengurusMap.get(p.rwId) ?? [];
-      list.push({ nama: p.nama, jabatan: p.jabatan });
+      list.push({
+        nama: p.nama,
+        jabatan: p.jabatan,
+        kategori: (p.kategori as "rw" | "rt" | "organisasi") || "rw",
+        organisasi: p.organisasi ?? undefined,
+        icon: p.icon ?? undefined,
+      });
       pengurusMap.set(p.rwId, list);
     }
 
@@ -85,6 +98,7 @@ export async function getRwList(): Promise<Rw[]> {
       cakupan_dusun: row.cakupanDusun,
       jumlah_rt: row.jumlahRt,
       is_kampung_kb: row.isKampungKb,
+      deskripsi_singkat: row.deskripsiSingkat ?? undefined,
       struktur_pengurus: pengurusMap.get(row.id) ?? [],
       statistik: { jumlah_kk: row.jumlahKk, jumlah_jiwa: row.jumlahJiwa },
       potensi: row.potensi,

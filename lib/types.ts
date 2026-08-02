@@ -9,6 +9,9 @@ export interface StrukturKelurahan {
 export interface RwPengurus {
   nama: string;
   jabatan: string;
+  kategori?: "rw" | "rt" | "organisasi";
+  organisasi?: string;
+  icon?: string;
 }
 
 export interface RwStatistik {
@@ -23,6 +26,7 @@ export interface Rw {
   cakupan_dusun: string;
   jumlah_rt: number;
   is_kampung_kb: boolean;
+  deskripsi_singkat?: string;
   struktur_pengurus: RwPengurus[];
   statistik: RwStatistik;
   potensi: string;
@@ -31,7 +35,14 @@ export interface Rw {
 
 export interface KampungKbPokja {
   nama: string;
+  ketua: string;
+  anggota: string;
   program: string[];
+}
+
+export interface KampungKbPengurusInti {
+  jabatan: string;
+  nama: string;
 }
 
 export interface KampungKb {
@@ -39,6 +50,9 @@ export interface KampungKb {
   nama_program: string;
   ketua: string;
   deskripsi_program: string;
+  sk_tahun: string;
+  fungsi: string[];
+  pengurus_inti: KampungKbPengurusInti[];
   pokja: KampungKbPokja[];
   foto_highlight_url: string;
 }

@@ -26,6 +26,7 @@ export const rw = mysqlTable("rw", {
   cakupanDusun: varchar("cakupan_dusun", { length: 255 }).notNull(),
   jumlahRt: int("jumlah_rt").notNull(),
   isKampungKb: boolean("is_kampung_kb").notNull().default(false),
+  deskripsiSingkat: text("deskripsi_singkat"),
   potensi: text("potensi").notNull(),
   jumlahKk: int("jumlah_kk").notNull(),
   jumlahJiwa: int("jumlah_jiwa").notNull(),
@@ -40,6 +41,9 @@ export const rwPengurus = mysqlTable("rw_pengurus", {
     .references(() => rw.id, { onDelete: "cascade" }),
   nama: varchar("nama", { length: 255 }).notNull(),
   jabatan: varchar("jabatan", { length: 255 }).notNull(),
+  kategori: varchar("kategori", { length: 64 }).notNull().default("rw"),
+  organisasi: varchar("organisasi", { length: 255 }),
+  icon: varchar("icon", { length: 64 }).default("users"),
 });
 
 export const berita = mysqlTable("berita", {
