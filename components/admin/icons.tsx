@@ -65,10 +65,22 @@ export function SettingsIcon(props: SVGProps<SVGSVGElement>) {
 export function UserCogIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base} {...props}>
-      <circle cx="9" cy="8" r="3.5" />
-      <path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" />
-      <circle cx="18" cy="17" r="2.5" />
-      <path d="M18 12.5v1.2M18 20.3v1.2M21.2 15.2l-1 .6M15.8 17.8l-1 .6M21.2 18.8l-1-.6M15.8 16.2l-1-.6" />
+      <circle cx="9" cy="8" r="4" />
+      <path d="M3 20a6 6 0 0 1 12 0" />
+      <circle cx="18" cy="15" r="2.5" />
+      <path d="M18 11.5v1M18 17.5v1M14.5 15h1M20.5 15h1" />
+    </svg>
+  );
+}
+
+export function LayananIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <line x1="16" y1="13" x2="8" y2="13" />
+      <line x1="16" y1="17" x2="8" y2="17" />
+      <line x1="10" y1="9" x2="8" y2="9" />
     </svg>
   );
 }

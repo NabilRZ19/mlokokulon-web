@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Reveal } from "@/components/ui/Reveal";
-import { layananData } from "@/lib/seed-data";
+import { getLayananList } from "@/lib/queries";
 import { pageOpenGraph } from "@/lib/seo";
 
 const description =
@@ -16,6 +16,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/layanan" },
   openGraph: pageOpenGraph({ title: "Pelayanan Publik", description, url: "/layanan" }),
 };
+
+export const dynamic = "force-dynamic";
 
 function IconFileText() {
   return (
@@ -72,7 +74,9 @@ function IconInfo() {
   );
 }
 
-export default function LayananPage() {
+export default async function LayananPage() {
+  const layananList = await getLayananList();
+
   return (
     <div className="min-h-screen bg-background pb-12">
       <PageHeader
@@ -103,7 +107,7 @@ export default function LayananPage() {
                 <h2 className="font-heading text-xl font-extrabold text-foreground sm:text-2xl">
                   Layanan Administrasi &amp; Kependudukan Warga
                 </h2>
-                <p className="text-sm text-muted-foreground leading-relaxed max-w-3xl">
+                <p className="text-sm text-muted-foreground leading-relaxed max-w-3xl text-justify">
                   Kantor Kelurahan Mlokomanis Kulon memfasilitasi pengurusan berbagai dokumen kependudukan, pengantar surat resmi, serta pelayanan integrasi 3 in 1 pencatatan sipil bekerja sama dengan Disdukcapil Kabupaten Wonogiri.
                 </p>
               </div>
@@ -123,8 +127,8 @@ export default function LayananPage() {
             <IconInfo />
             <div>
               <p className="font-heading font-bold text-blue-950">Catatan Pembaruan Layanan:</p>
-              <p className="mt-0.5 text-xs text-blue-800 leading-relaxed">
-                Daftar rincian persyaratan di bawah ini memuat data pelayanan resmi paket 3 in 1 dan kependudukan Disdukcapil Wonogiri yang telah terverifikasi. Rincian syarat untuk layanan pengantar surat desa lainnya saat ini masih dalam <strong>tahap pengumpulan data [DATA MENYUSUL]</strong> dan akan terus diperbarui secara bertahap.
+              <p className="mt-0.5 text-xs text-blue-800 leading-relaxed text-justify">
+                Daftar rincian persyaratan di bawah ini memuat data pelayanan resmi kependudukan yang dapat dikelola secara mandiri oleh petugas CMS Kelurahan.
               </p>
             </div>
           </div>
@@ -132,7 +136,7 @@ export default function LayananPage() {
 
         {/* ── Grid Daftar Layanan Resmi ───────────────────────────────────── */}
         <div className="grid gap-6 md:grid-cols-2">
-          {layananData.map((item, i) => (
+          {layananList.map((item, i) => (
             <Reveal key={item.id} mode="scroll" delay={(i % 4) * 0.08}>
               <Card className="flex flex-col justify-between p-6 sm:p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md h-full">
                 <div className="space-y-4">
@@ -145,36 +149,54 @@ export default function LayananPage() {
                         <h3 className="font-heading text-lg font-bold text-foreground">
                           {item.nama}
                         </h3>
-                        <p className="text-xs font-medium text-primary">Disdukcapil Wonogiri</p>
+                        <p className="text-xs font-medium text-primary">{item.kategori}</p>
                       </div>
                     </div>
-                    <Badge variant="accent">Pelayanan Resmi</Badge>
+                    <Badge variant="accent">{item.biaya}</Badge>
                   </div>
 
-                  <p className="text-sm leading-relaxed text-foreground">{item.deskripsi}</p>
+                  <p className="text-sm leading-relaxed text-foreground text-justify">{item.deskripsi}</p>
 
                   <hr className="border-border" />
 
-                  <div>
-                    <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2.5">
-                      Persyaratan Dokumen:
-                    </h4>
-                    <ul className="space-y-2 text-sm">
-                      {item.syarat.map((s, idx) => (
-                        <li key={idx} className="flex items-start gap-2.5 text-foreground leading-snug">
-                          <IconCheckCircle />
-                          <span>{s}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  {item.persyaratan && item.persyaratan.length > 0 && (
+                    <div>
+                      <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2.5">
+                        Persyaratan Dokumen:
+                      </h4>
+                      <ul className="space-y-2 text-sm">
+                        {item.persyaratan.map((s, idx) => (
+                          <li key={idx} className="flex items-start gap-2.5 text-foreground leading-snug text-justify">
+                            <IconCheckCircle />
+                            <span>{s}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {item.prosedur && item.prosedur.length > 0 && (
+                    <div className="pt-2 border-t border-border/60">
+                      <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2.5">
+                        Alur &amp; Prosedur Pengurusan:
+                      </h4>
+                      <ol className="space-y-1.5 text-xs text-foreground font-medium">
+                        {item.prosedur.map((p, idx) => (
+                          <li key={idx} className="flex items-start gap-2 text-justify">
+                            <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
+                              {idx + 1}
+                            </span>
+                            <span>{p}</span>
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+                  )}
                 </div>
 
                 <div className="mt-6 border-t border-border pt-4 flex items-center justify-between text-xs text-muted-foreground">
-                  <span>Tempat Pelayanan: <strong>{item.kontakJabatan}</strong></span>
-                  <Link href="/kontak" className="font-semibold text-primary hover:underline">
-                    Tanyakan Syarat →
-                  </Link>
+                  <span>Tempat: <strong>{item.kontak_penanggung_jawab || "Kantor Kelurahan"}</strong></span>
+                  <span className="font-bold text-emerald-700">⏱️ {item.waktu_proses}</span>
                 </div>
               </Card>
             </Reveal>

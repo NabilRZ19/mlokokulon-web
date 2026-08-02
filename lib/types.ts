@@ -115,3 +115,16 @@ export interface AdminUser {
   tier: AdminTier;
   created_by: string;
 }
+
+export interface Layanan {
+  id: string;
+  nama: string;
+  kategori: string;
+  deskripsi: string;
+  persyaratan: string[];
+  prosedur: string[];
+  waktu_proses: string;
+  biaya: string;
+  kontak_penanggung_jawab?: string;
+  urutan?: number;
+}

@@ -118,7 +118,7 @@ export function BeritaDetailClientView({
           </div>
 
           {/* Article Text Content */}
-          <div className="mt-6 whitespace-pre-line text-base leading-relaxed text-foreground">
+          <div className="mt-6 whitespace-pre-line text-base leading-relaxed text-foreground text-justify">
             {berita.isi}
           </div>
 

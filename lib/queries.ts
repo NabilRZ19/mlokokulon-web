@@ -5,6 +5,7 @@ import {
   berita as beritaTable,
   beritaFotoTambahan,
   galeri as galeriTable,
+  layanan as layananTable,
   rw as rwTable,
   rwPengurus,
   strukturKelurahan,
@@ -12,7 +13,7 @@ import {
   umkmFoto,
   umkmProdukUnggulan,
 } from "./db/schema";
-import type { Berita, Galeri, Rw, RwPengurus, StrukturKelurahan, Umkm, UmkmProdukUnggulan } from "./types";
+import type { Berita, Galeri, Layanan, Rw, RwPengurus, StrukturKelurahan, Umkm, UmkmProdukUnggulan } from "./types";
 
 // Fetch server-side (Drizzle + MySQL VPS) untuk halaman publik SSG/ISR — halaman publik tidak
 // boleh fetch DB langsung dari client browser. Shape return tetap sama persis dengan lib/types.ts
@@ -308,5 +309,49 @@ export async function getGaleriList(): Promise<Galeri[]> {
   } catch (err) {
     console.error("[queries] Error getGaleriList:", err);
     return [];
+  }
+}
+
+export async function getLayananList(): Promise<Layanan[]> {
+  try {
+    const rows = await db.select().from(layananTable).orderBy(asc(layananTable.urutan));
+    return rows.map((r) => ({
+      id: r.id,
+      nama: r.nama,
+      kategori: r.kategori,
+      deskripsi: r.deskripsi,
+      persyaratan: Array.isArray(r.persyaratan) ? r.persyaratan : [],
+      prosedur: Array.isArray(r.prosedur) ? r.prosedur : [],
+      waktu_proses: r.waktuProses,
+      biaya: r.biaya,
+      kontak_penanggung_jawab: r.kontakPenanggungJawab ?? undefined,
+      urutan: r.urutan,
+    }));
+  } catch (err) {
+    console.error("[queries] Error getLayananList:", err);
+    return [];
+  }
+}
+
+export async function getLayananById(id: string): Promise<Layanan | null> {
+  try {
+    const rows = await db.select().from(layananTable).where(eq(layananTable.id, id)).limit(1);
+    if (rows.length === 0) return null;
+    const r = rows[0];
+    return {
+      id: r.id,
+      nama: r.nama,
+      kategori: r.kategori,
+      deskripsi: r.deskripsi,
+      persyaratan: Array.isArray(r.persyaratan) ? r.persyaratan : [],
+      prosedur: Array.isArray(r.prosedur) ? r.prosedur : [],
+      waktu_proses: r.waktuProses,
+      biaya: r.biaya,
+      kontak_penanggung_jawab: r.kontakPenanggungJawab ?? undefined,
+      urutan: r.urutan,
+    };
+  } catch (err) {
+    console.error(`[queries] Error getLayananById for ${id}:`, err);
+    return null;
   }
 }

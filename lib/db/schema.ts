@@ -2,9 +2,11 @@ import {
   boolean,
   date,
   int,
+  json,
   mysqlEnum,
   mysqlTable,
   text,
+  timestamp,
   tinyint,
   varchar,
 } from "drizzle-orm/mysql-core";
@@ -123,4 +125,21 @@ export const adminUsers = mysqlTable("admin_users", {
   passwordHash: varchar("password_hash", { length: 255 }).notNull(),
   tier: tinyint("tier").notNull(),
   createdBy: int("created_by"),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+  lastLogin: timestamp("last_login"),
+});
+
+export const layanan = mysqlTable("layanan", {
+  id: varchar("id", { length: 64 }).primaryKey(),
+  nama: varchar("nama", { length: 255 }).notNull(),
+  kategori: varchar("kategori", { length: 100 }).notNull().default("Administrasi"),
+  deskripsi: text("deskripsi").notNull(),
+  persyaratan: json("persyaratan").$type<string[]>().notNull(),
+  prosedur: json("prosedur").$type<string[]>().notNull(),
+  waktuProses: varchar("waktu_proses", { length: 128 }).notNull().default("1 Hari Kerja"),
+  biaya: varchar("biaya", { length: 128 }).notNull().default("Gratis"),
+  kontakPenanggungJawab: varchar("kontak_penanggung_jawab", { length: 255 }),
+  urutan: int("urutan").notNull().default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
 });

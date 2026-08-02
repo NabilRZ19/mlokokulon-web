@@ -38,9 +38,9 @@ export const metadata: Metadata = {
     "UMKM Wonogiri",
   ],
   icons: {
-    icon: "/images/logo-wonogiri.png",
-    shortcut: "/images/logo-wonogiri.png",
-    apple: "/images/logo-wonogiri.png",
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
   },
   openGraph: {
     type: "website",

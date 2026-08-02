@@ -80,7 +80,7 @@ export default function ProfilPage() {
                     <span className="text-xs font-bold uppercase tracking-wider text-primary">
                       Visi Pembangunan
                     </span>
-                    <p className="mt-1 font-heading text-base font-bold text-foreground leading-relaxed">
+                    <p className="mt-1 font-heading text-base font-bold text-foreground leading-relaxed text-justify">
                       {p.visi}
                     </p>
                   </div>
@@ -94,12 +94,12 @@ export default function ProfilPage() {
                       {p.misi.map((m, i) => (
                         <li
                           key={i}
-                          className="flex items-start gap-2.5 rounded-md border border-border bg-card p-3"
+                          className="flex items-start gap-2.5 rounded-md border border-border bg-card p-3 text-justify leading-relaxed"
                         >
                           <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
                             {i + 1}
                           </span>
-                          <span className="leading-relaxed">{m}</span>
+                          <span>{m}</span>
                         </li>
                       ))}
                     </ol>

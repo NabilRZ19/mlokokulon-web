@@ -85,7 +85,7 @@ export default async function RwDetailPage({ params }: { params: Promise<{ rwId:
 
             <div className="mt-4 leading-relaxed text-sm text-foreground/90 font-sans">
               {rw.deskripsi_singkat ? (
-                <p className="whitespace-pre-line text-base sm:text-base leading-relaxed">
+                <p className="whitespace-pre-line text-base sm:text-base leading-relaxed text-justify">
                   {rw.deskripsi_singkat}
                 </p>
               ) : (

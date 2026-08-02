@@ -9,6 +9,7 @@ import type { SessionPayload } from "@/lib/auth";
 import {
   DashboardIcon,
   ImageIcon,
+  LayananIcon,
   LogOutIcon,
   NewspaperIcon,
   SettingsIcon,
@@ -20,6 +21,7 @@ const navItems = [
   { href: "/admin/dashboard", label: "Dashboard", icon: DashboardIcon },
   { href: "/admin/berita", label: "Berita", icon: NewspaperIcon },
   { href: "/admin/galeri", label: "Galeri", icon: ImageIcon },
+  { href: "/admin/layanan", label: "Layanan Kelurahan", icon: LayananIcon },
   { href: "/admin/umkm", label: "UMKM", icon: StoreIcon },
   { href: "/admin/wilayah", label: "Wilayah (RW)", icon: MapPinIcon },
   { href: "/admin/pengaturan", label: "Struktur Kelurahan", icon: SettingsIcon },
