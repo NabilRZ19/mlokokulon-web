@@ -118,14 +118,14 @@ export default function AdminWilayahPage() {
       {/* Desktop Table View (>= md) */}
       <div className="hidden md:block overflow-x-auto rounded-xl border border-border bg-card shadow-xs">
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-border bg-muted/50 text-muted-foreground">
+          <thead className="border-b border-border bg-muted/50 text-muted-foreground font-bold uppercase text-xs tracking-wider">
             <tr>
-              <th className="px-4 py-3 font-semibold">Nama RW</th>
-              <th className="px-4 py-3 font-semibold">Dusun</th>
-              <th className="px-4 py-3 font-semibold">Jumlah RT</th>
-              <th className="px-4 py-3 font-semibold">Statistik (KK / Jiwa)</th>
-              <th className="px-4 py-3 font-semibold">Status</th>
-              <th className="px-4 py-3 font-semibold text-right">Aksi</th>
+              <th className="px-4 py-3">Nama RW</th>
+              <th className="px-4 py-3">Cakupan Dusun</th>
+              <th className="px-4 py-3">Jumlah RT</th>
+              <th className="px-4 py-3">Statistik Demografi</th>
+              <th className="px-4 py-3">Status Wilayah</th>
+              <th className="px-4 py-3 text-right">Aksi</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
@@ -144,15 +144,15 @@ export default function AdminWilayahPage() {
             ) : (
               rwList.map((rw) => (
                 <tr key={rw.id} className="hover:bg-muted/30 transition-colors">
-                  <td className="px-4 py-3 font-medium text-foreground">{rw.nama_rw}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{rw.cakupan_dusun}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{rw.jumlah_rt} RT</td>
+                  <td className="px-4 py-3 font-bold text-foreground">{rw.nama_rw}</td>
+                  <td className="px-4 py-3 font-semibold text-primary">{rw.cakupan_dusun}</td>
+                  <td className="px-4 py-3 text-foreground">{rw.jumlah_rt} RT</td>
                   <td className="px-4 py-3 text-muted-foreground">
                     {rw.statistik.jumlah_kk} KK / {rw.statistik.jumlah_jiwa} Jiwa
                   </td>
                   <td className="px-4 py-3">
                     {rw.is_kampung_kb ? (
-                      <Badge variant="accent">★ Kampung KB</Badge>
+                      <Badge variant="accent">Kampung KB</Badge>
                     ) : (
                       <span className="text-xs text-muted-foreground">Reguler</span>
                     )}

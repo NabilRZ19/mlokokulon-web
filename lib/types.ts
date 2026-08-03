@@ -103,6 +103,7 @@ export interface Umkm {
   kontak: string;
   produk_unggulan: UmkmProdukUnggulan[];
   jam_operasional: string;
+  lokasi?: string | null;
   foto_urls: string[];
   foto_utama_url: string | null;
 }

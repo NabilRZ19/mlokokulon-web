@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { ImageCropperModal } from "@/components/admin/ImageCropperModal";
 import { compressImage } from "@/lib/image-compression";
+import { scrollToFirstError } from "@/lib/form-scroll";
 import { getPublicImageUrl } from "@/lib/image-url";
 
 export default function EditStrukturPage({ params }: { params: Promise<{ id: string }> }) {
@@ -94,12 +95,14 @@ export default function EditStrukturPage({ params }: { params: Promise<{ id: str
     e.preventDefault();
     setError(null);
 
-    if (!nama.trim() || !jabatan.trim()) {
-      setError("Field Nama dan Jabatan tidak boleh kosong.");
-      return;
-    }
-    if (!fotoUrl) {
-      setError("Foto pejabat wajib tersedia (upload baru atau biarkan foto saat ini).");
+    const errorIds: string[] = [];
+    if (!nama.trim()) errorIds.push("nama");
+    if (!jabatan.trim()) errorIds.push("jabatan");
+    if (!fotoUrl) errorIds.push("fotoArea");
+
+    if (errorIds.length > 0) {
+      setError(!nama.trim() || !jabatan.trim() ? "Field Nama dan Jabatan tidak boleh kosong." : "Foto pejabat wajib tersedia.");
+      scrollToFirstError(errorIds);
       return;
     }
 

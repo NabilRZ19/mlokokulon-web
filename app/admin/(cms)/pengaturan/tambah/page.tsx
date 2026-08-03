@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { ImageCropperModal } from "@/components/admin/ImageCropperModal";
 import { compressImage } from "@/lib/image-compression";
+import { scrollToFirstError } from "@/lib/form-scroll";
 
 export default function TambahStrukturPage() {
   const router = useRouter();
@@ -75,13 +76,14 @@ export default function TambahStrukturPage() {
     e.preventDefault();
     setError(null);
 
-    if (!nama.trim() || !jabatan.trim()) {
-      setError("Field Nama dan Jabatan tidak boleh kosong.");
-      return;
-    }
+    const errorIds: string[] = [];
+    if (!nama.trim()) errorIds.push("nama");
+    if (!jabatan.trim()) errorIds.push("jabatan");
+    if (!fotoUrl) errorIds.push("fotoArea");
 
-    if (!fotoUrl) {
-      setError("Foto pejabat wajib diupload.");
+    if (errorIds.length > 0) {
+      setError(!nama.trim() || !jabatan.trim() ? "Field Nama dan Jabatan tidak boleh kosong." : "Foto pejabat wajib diupload.");
+      scrollToFirstError(errorIds);
       return;
     }
 

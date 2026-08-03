@@ -96,6 +96,7 @@ export const umkm = mysqlTable("umkm", {
   linkGmaps: varchar("link_gmaps", { length: 512 }).notNull().default(""),
   kontak: varchar("kontak", { length: 100 }).notNull(),
   jamOperasional: varchar("jam_operasional", { length: 100 }).notNull(),
+  lokasi: varchar("lokasi", { length: 255 }),
   fotoUtamaUrl: varchar("foto_utama_url", { length: 512 }),
 });
 

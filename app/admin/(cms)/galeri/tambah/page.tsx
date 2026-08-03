@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { compressImage } from "@/lib/image-compression";
+import { scrollToFirstError } from "@/lib/form-scroll";
 
 type TipeMedia = "foto" | "video";
 
@@ -56,14 +57,17 @@ export default function TambahGaleriPage() {
     e.preventDefault();
     setError(null);
 
-    if (!judul.trim()) {
-      setError("Judul media tidak boleh kosong.");
-      return;
-    }
+    const errorIds: string[] = [];
+    if (!judul.trim()) errorIds.push("judul");
 
     const finalUrl = tipe === "foto" ? uploadedUrl : videoUrl;
     if (!finalUrl) {
-      setError(tipe === "foto" ? "Foto wajib diupload terlebih dahulu." : "URL Video wajib diisi.");
+      errorIds.push(tipe === "foto" ? "fotoArea" : "videoUrl");
+    }
+
+    if (errorIds.length > 0) {
+      setError(!judul.trim() ? "Judul media tidak boleh kosong." : tipe === "foto" ? "Foto wajib diupload terlebih dahulu." : "URL Video wajib diisi.");
+      scrollToFirstError(errorIds);
       return;
     }
 

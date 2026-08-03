@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { RefreshButton } from "@/components/admin/RefreshButton";
+import { BeritaBadge } from "@/components/berita/BeritaBadge";
 import { Badge } from "@/components/ui/Badge";
 import type { Berita } from "@/lib/types";
 
@@ -101,11 +102,11 @@ export default function AdminBeritaPage() {
                 <h3 className="font-heading text-sm font-bold text-foreground line-clamp-2">
                   {b.judul}
                 </h3>
-                <Badge>{KATEGORI_LABEL[b.kategori] || b.kategori}</Badge>
+                <BeritaBadge kategori={b.kategori} />
               </div>
 
               <div className="flex flex-wrap items-center justify-between text-xs text-muted-foreground pt-1 border-t border-border/50">
-                <span>Cakupan: <strong className="text-foreground">{b.cakupan === "kelurahan" ? "Kelurahan" : b.rw_nama || "RW"}</strong></span>
+                <span>{b.cakupan === "kelurahan" ? "Kelurahan" : b.rw_nama || "RW"}</span>
                 <span>
                   {new Date(b.tanggal).toLocaleDateString("id-ID", {
                     day: "numeric",
@@ -146,13 +147,13 @@ export default function AdminBeritaPage() {
       {/* Desktop Table View (>= md) */}
       <div className="hidden md:block overflow-x-auto rounded-xl border border-border bg-card shadow-xs">
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-border bg-muted/50 text-muted-foreground">
+          <thead className="border-b border-border bg-muted/50 text-muted-foreground font-bold uppercase text-xs tracking-wider">
             <tr>
-              <th className="px-4 py-3 font-semibold">Judul</th>
-              <th className="px-4 py-3 font-semibold">Kategori</th>
-              <th className="px-4 py-3 font-semibold">Cakupan</th>
-              <th className="px-4 py-3 font-semibold">Tanggal</th>
-              <th className="px-4 py-3 font-semibold text-right">Aksi</th>
+              <th className="px-4 py-3">Judul Artikel / Informasi</th>
+              <th className="px-4 py-3">Kategori Berita</th>
+              <th className="px-4 py-3">Cakupan Wilayah</th>
+              <th className="px-4 py-3">Tanggal Terbit</th>
+              <th className="px-4 py-3 text-right">Aksi</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
@@ -175,7 +176,7 @@ export default function AdminBeritaPage() {
                     {b.judul}
                   </td>
                   <td className="px-4 py-3">
-                    <Badge>{KATEGORI_LABEL[b.kategori] || b.kategori}</Badge>
+                    <BeritaBadge kategori={b.kategori} />
                   </td>
                   <td className="px-4 py-3 text-muted-foreground">
                     {b.cakupan === "kelurahan" ? "Kelurahan" : b.rw_nama || "RW"}

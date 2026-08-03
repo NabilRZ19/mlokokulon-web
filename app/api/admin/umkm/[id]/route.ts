@@ -44,6 +44,7 @@ export async function GET(
       link_gmaps: row.linkGmaps,
       kontak: row.kontak,
       jam_operasional: row.jamOperasional,
+      lokasi: row.lokasi ?? null,
       foto_utama_url: row.fotoUtamaUrl ?? null,
       produk_unggulan: produk.map((p) => ({ produk: p.produk, foto_url: p.fotoUrl ?? null })),
       foto_urls: foto.map((f) => f.url),
@@ -77,6 +78,7 @@ export async function PUT(
       link_gmaps = "",
       kontak,
       jam_operasional,
+      lokasi = null,
       produk_unggulan = [],
       foto_urls = [],
       foto_utama_url = null,
@@ -95,6 +97,7 @@ export async function PUT(
         linkGmaps: link_gmaps,
         kontak,
         jamOperasional: jam_operasional,
+        lokasi: lokasi || null,
         fotoUtamaUrl: foto_utama_url || null,
       })
       .where(eq(umkmTable.id, id));

@@ -175,7 +175,7 @@ export function UmkmDetailView({ umkm }: { umkm: Umkm }) {
                 </div>
               </div>
 
-              <div className="mt-5 whitespace-pre-line text-sm leading-relaxed text-foreground">
+              <div className="mt-5 whitespace-pre-line text-sm leading-relaxed text-foreground text-justify">
                 {umkm.deskripsi}
               </div>
             </div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
+import { scrollToFirstError } from "@/lib/form-scroll";
 
 export default function TambahLayananPage() {
   const router = useRouter();
@@ -48,8 +49,13 @@ export default function TambahLayananPage() {
     e.preventDefault();
     setError(null);
 
-    if (!nama.trim() || !deskripsi.trim()) {
+    const errorIds: string[] = [];
+    if (!nama.trim()) errorIds.push("nama");
+    if (!deskripsi.trim()) errorIds.push("deskripsi");
+
+    if (errorIds.length > 0) {
       setError("Nama layanan dan deskripsi wajib diisi.");
+      scrollToFirstError(errorIds);
       return;
     }
 

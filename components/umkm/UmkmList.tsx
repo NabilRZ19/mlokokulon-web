@@ -144,7 +144,7 @@ export function UmkmList({ umkm }: { umkm: Umkm[] }) {
                         </h2>
 
                         {/* Deskripsi */}
-                        <p className="mt-2 line-clamp-2 text-sm text-muted-foreground leading-relaxed">
+                        <p className="mt-2 line-clamp-2 text-sm text-muted-foreground leading-relaxed text-justify">
                           {u.deskripsi}
                         </p>
 

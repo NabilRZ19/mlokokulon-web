@@ -17,6 +17,40 @@ interface LayananItem {
   urutan: number;
 }
 
+function IconClock() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-3.5 w-3.5 text-primary shrink-0"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </svg>
+  );
+}
+
+function IconTag() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-3.5 w-3.5 text-emerald-700 shrink-0"
+    >
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" />
+      <line x1="7" y1="7" x2="7.01" y2="7" />
+    </svg>
+  );
+}
+
 export default function LayananAdminPage() {
   const [layananList, setLayananList] = useState<LayananItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -113,20 +147,28 @@ export default function LayananAdminPage() {
                     </td>
                     <td className="px-5 py-4">
                       <p className="font-heading font-extrabold text-foreground">{item.nama}</p>
-                      <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{item.deskripsi}</p>
+                      <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
+                        <strong className="font-bold text-foreground">Deskripsi:</strong> {item.deskripsi}
+                      </p>
                     </td>
                     <td className="px-5 py-4">
                       <span className="inline-block rounded-full bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary">
                         {item.kategori}
                       </span>
                     </td>
-                    <td className="px-5 py-4 text-xs font-medium">
-                      <p className="text-foreground font-semibold">⏱️ {item.waktuProses}</p>
-                      <p className="text-emerald-700 font-bold mt-0.5">💰 {item.biaya}</p>
+                    <td className="px-5 py-4 text-xs font-medium space-y-1">
+                      <div className="flex items-center gap-1.5 text-foreground">
+                        <IconClock />
+                        <span>Waktu: <strong className="font-extrabold text-foreground">{item.waktuProses}</strong></span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-emerald-700 font-bold">
+                        <IconTag />
+                        <span>Biaya: <strong className="font-extrabold text-emerald-800">{item.biaya}</strong></span>
+                      </div>
                     </td>
                     <td className="px-5 py-4 text-center text-xs">
-                      <span className="inline-block rounded-md bg-muted px-2 py-1 font-semibold text-foreground">
-                        {item.persyaratan?.length || 0} Syarat · {item.prosedur?.length || 0} Langkah
+                      <span className="inline-block rounded-md bg-muted px-2.5 py-1 font-semibold text-foreground border border-border/60">
+                        <strong className="font-bold text-primary">{item.persyaratan?.length || 0}</strong> Syarat · <strong className="font-bold text-primary">{item.prosedur?.length || 0}</strong> Langkah
                       </span>
                     </td>
                     <td className="px-5 py-4 text-right">
