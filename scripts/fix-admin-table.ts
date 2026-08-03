@@ -44,7 +44,6 @@ async function main() {
     tier: 1,
     createdBy: null,
   }).onDuplicateKeyUpdate({
-    target: adminUsers.email,
     set: { passwordHash, nama: "Super Admin 2" },
   });
 
