@@ -62,8 +62,17 @@ export async function POST(request: Request) {
   }
 
   // ── Auth check ────────────────────────────────────────────────────────────
-  const rows = await db.select().from(adminUsers).where(eq(adminUsers.email, email)).limit(1);
-  const user = rows[0];
+  let user;
+  try {
+    const rows = await db.select().from(adminUsers).where(eq(adminUsers.email, email)).limit(1);
+    user = rows[0];
+  } catch (err) {
+    console.error("[login] Database query error:", err);
+    return NextResponse.json(
+      { error: "Gagal terhubung ke server database. Mohon periksa koneksi DB VPS." },
+      { status: 500 }
+    );
+  }
 
   // Pesan error sengaja sama untuk email tidak ditemukan dan password salah
   // (menghindari user enumeration attack)

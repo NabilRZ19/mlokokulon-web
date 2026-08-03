@@ -12,7 +12,7 @@ import { getBeritaList, getGaleriList } from "@/lib/queries";
 import { kampungKbData as kb, kelurahanProfileData as p } from "@/lib/seed-data";
 import { SITE_NAME, pageOpenGraph } from "@/lib/seo";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600; // ISR 1 jam
 
 const description =
   "Website resmi Kelurahan Mlokomanis Kulon, Kecamatan Ngadirojo, Kabupaten Wonogiri — info layanan publik, berita terbaru, wilayah RW, UMKM, dan program Kampung KB.";
