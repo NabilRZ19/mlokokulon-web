@@ -22,16 +22,16 @@ interface FotoItem {
 const MAX_FOTO_TAMBAHAN = 4;
 
 const LIST_RW_OPTIONS = [
-  { id: "rw-01", nama: "RW 01 — Pencil" },
-  { id: "rw-02", nama: "RW 02 — Pencil" },
-  { id: "rw-03", nama: "RW 03 — Ngadirojo" },
-  { id: "rw-04", nama: "RW 04 — Tempuran" },
-  { id: "rw-05", nama: "RW 05 — Pencil" },
-  { id: "rw-06", nama: "RW 06 — Mlokomanis" },
-  { id: "rw-07", nama: "RW 07 — Mlokomanis" },
-  { id: "rw-08", nama: "RW 08 — Kerjo" },
-  { id: "rw-09", nama: "RW 09 — Kerjo" },
-  { id: "rw-10", nama: "RW 10 — Mlokomanis" },
+  { id: "rw-01", nama: "RW 01 (Pencil)" },
+  { id: "rw-02", nama: "RW 02 (Pencil)" },
+  { id: "rw-03", nama: "RW 03 (Ngadirojo)" },
+  { id: "rw-04", nama: "RW 04 (Tempuran)" },
+  { id: "rw-05", nama: "RW 05 (Pencil)" },
+  { id: "rw-06", nama: "RW 06 (Mlokomanis)" },
+  { id: "rw-07", nama: "RW 07 (Mlokomanis)" },
+  { id: "rw-08", nama: "RW 08 (Kerjo)" },
+  { id: "rw-09", nama: "RW 09 (Kerjo)" },
+  { id: "rw-10", nama: "RW 10 (Mlokomanis)" },
 ];
 
 const KATEGORI_CONFIG: Record<
@@ -253,7 +253,7 @@ function ImageUploadZone({
             <div className="text-center">
               <p className="text-sm font-bold text-foreground">Pilih Foto Headline Utama</p>
               <p className="mt-0.5 text-xs text-muted-foreground">
-                JPG, PNG, WebP — Dikompres otomatis (maks 500 KB)
+                JPG, PNG, WebP, dikompresi otomatis (maks 500 KB)
               </p>
             </div>
           </div>

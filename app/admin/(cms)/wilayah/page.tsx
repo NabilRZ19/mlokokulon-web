@@ -55,7 +55,7 @@ export default function AdminWilayahPage() {
       <AdminPageHeader title="Wilayah Administratif (RW)" actions={<RefreshButton onClick={fetchWilayah} />} />
 
       <p className="mb-4 text-xs text-muted-foreground font-medium">
-        Tier 1 &amp; Tier 3 — Pilih RW dari daftar di bawah ini untuk memperbarui data statistik, potensi, maupun susunan pengurus RW.
+        Tier 1 &amp; Tier 3. Pilih RW dari daftar di bawah ini untuk memperbarui data statistik, potensi, maupun susunan pengurus RW.
       </p>
 
       {error && (

@@ -14,9 +14,9 @@ interface AdminUser {
 }
 
 const TIER_LABEL: Record<number, string> = {
-  1: "Tier 1 — Super Admin",
-  2: "Tier 2 — Admin Kelurahan",
-  3: "Tier 3 — Admin RW",
+  1: "Tier 1: Super Admin",
+  2: "Tier 2: Admin Kelurahan",
+  3: "Tier 3: Admin RW",
 };
 
 export default function AdminUsersPage() {

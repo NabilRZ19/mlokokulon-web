@@ -263,6 +263,33 @@ export default async function Home() {
         </section>
       </Reveal>
 
+      {/* ── 3. Peta Wilayah Kelurahan (Scroll Reveal — Berada Tepat di Bawah Gambaran Umum) ── */}
+      <Reveal mode="scroll" duration={0.6}>
+        <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-[#0f172a] via-primary to-[#1e3a8a] py-16 text-white">
+          <div className="pointer-events-none absolute -left-20 -bottom-20 h-80 w-80 rounded-full bg-secondary/20 blur-3xl" />
+          <div className="pointer-events-none absolute -right-20 -top-20 h-80 w-80 rounded-full bg-accent/15 blur-3xl" />
+
+          <div className="relative mx-auto max-w-6xl px-4 space-y-6">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1 text-xs font-bold text-blue-200 backdrop-blur-md">
+                <IconMapPin />
+                <span>Geografis &amp; Pemetaan Wilayah</span>
+              </div>
+              <h2 className="font-heading text-2xl font-extrabold text-white sm:text-3xl lg:text-4xl mt-1">
+                Peta Wilayah Kelurahan Mlokomanis Kulon
+              </h2>
+              <p className="text-sm text-blue-100/90 max-w-2xl leading-relaxed">
+                Batas Administrasi &amp; Sebaran Sarana. Visualisasi pemetaan interaktif cakupan wilayah, kantor pemerintahan, sarana publik, serta sebaran 10 dusun di Kelurahan Mlokomanis Kulon.
+              </p>
+            </div>
+
+            <div className="overflow-hidden rounded-2xl border border-white/20 shadow-xl">
+              <MapWilayah height="500px" />
+            </div>
+          </div>
+        </section>
+      </Reveal>
+
       {/* ── 3. Teaser Kampung KB (Scroll Reveal) ────────────────────────── */}
       <Reveal mode="scroll" duration={0.6}>
         <section className="relative overflow-hidden border-y border-emerald-900/30 bg-gradient-to-br from-[#022c22] via-[#065f46] to-[#0f172a] py-16 text-white">
@@ -490,28 +517,7 @@ export default async function Home() {
         </Reveal>
       )}
 
-      {/* ── 6. Peta (Scroll Reveal) ────────────────────────────────────────── */}
-      <Reveal mode="scroll" duration={0.6}>
-        <section className="relative overflow-hidden border-t border-border bg-gradient-to-br from-[#0f172a] via-primary to-[#1e3a8a] py-16 text-white">
-          <div className="pointer-events-none absolute -left-20 -bottom-20 h-80 w-80 rounded-full bg-secondary/20 blur-3xl" />
 
-          <div className="relative mx-auto max-w-6xl px-4 space-y-4">
-            <div className="space-y-2">
-              <span className="text-xs font-bold uppercase tracking-widest text-blue-200">
-                Lokasi &amp; Geografis
-              </span>
-              <h2 className="font-heading text-2xl font-extrabold text-white sm:text-3xl mt-1">
-                Peta Wilayah Kelurahan
-              </h2>
-              <p className="text-sm text-blue-100/80 max-w-xl mt-2 leading-relaxed">
-                Visualisasi dan pemetaan cakupan batas wilayah administratif Kelurahan Mlokomanis Kulon.
-              </p>
-            </div>
-
-            <MapWilayah height="500px" />
-          </div>
-        </section>
-      </Reveal>
 
       {/* ── 7. Quick Links (Scroll Reveal) ────────────────────────────────── */}
       <Reveal mode="scroll" duration={0.6}>

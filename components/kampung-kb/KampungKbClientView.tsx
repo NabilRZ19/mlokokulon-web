@@ -8,18 +8,21 @@ import { Carousel } from "@/components/ui/Carousel";
 import { ImageLightboxModal } from "@/components/ui/ImageLightboxModal";
 import { Reveal } from "@/components/ui/Reveal";
 import { getPublicImageUrl } from "@/lib/image-url";
-import type { Berita, Galeri, Rw } from "@/lib/types";
-import { kampungKbData as kb } from "@/lib/seed-data";
+import type { Berita, Galeri, KampungKb, Rw } from "@/lib/types";
+import { kampungKbData as fallbackKb } from "@/lib/seed-data";
 
 export function KampungKbClientView({
   rw,
   galeriKampungKb,
   beritaKampungKb,
+  kbData,
 }: {
   rw: Rw | null;
   galeriKampungKb: Galeri[];
   beritaKampungKb: Berita[];
+  kbData?: KampungKb;
 }) {
+  const kb = kbData || fallbackKb;
   const [activeImage, setActiveImage] = useState<{ url: string; title: string } | null>(null);
 
   const headlinePhotoUrl = getPublicImageUrl(kb.foto_highlight_url);

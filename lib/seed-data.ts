@@ -479,7 +479,7 @@ export const rwSeed: Rw[] = dusunList.map((nama, i) => {
   const id = `rw-${String(i + 1).padStart(2, "0")}`;
   return {
     id,
-    nama_rw: `RW ${String(i + 1).padStart(2, "0")} — ${nama}`,
+    nama_rw: `RW ${String(i + 1).padStart(2, "0")} (${nama})`,
     cakupan_dusun: nama,
     jumlah_rt: rtPerRw[i],
     is_kampung_kb: i === KAMPUNG_KB_INDEX,
@@ -519,7 +519,7 @@ export const beritaSeed: Berita[] = [
     kategori: "pengumuman",
     cakupan: "rw",
     rw_id: "rw-05",
-    rw_nama: "RW 05 — Pencil",
+    rw_nama: "RW 05 (Pencil)",
     gambar_cover_url: "/images/placeholder-photo.svg",
     penulis: "Admin RW 05 (Dummy)",
     created_by: "dummy-admin",

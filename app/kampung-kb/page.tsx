@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { KampungKbClientView } from "@/components/kampung-kb/KampungKbClientView";
 import { getBeritaList, getGaleriList, getRwById } from "@/lib/queries";
-import { kampungKbData as kb } from "@/lib/seed-data";
+import { getKampungKbStore } from "@/lib/kampung-kb-store";
 import { pageOpenGraph } from "@/lib/seo";
 
 const description =
@@ -34,6 +34,7 @@ function IconHeart() {
 }
 
 export default async function KampungKbPage() {
+  const kb = getKampungKbStore();
   const [rw, galeriList, beritaList] = await Promise.all([
     getRwById(kb.rw_ref),
     getGaleriList(),
@@ -72,7 +73,7 @@ export default async function KampungKbPage() {
       </div>
 
       {/* ── Konten Utama ───────────────────────────────────────── */}
-      <KampungKbClientView rw={rw} galeriKampungKb={galeriKampungKb} beritaKampungKb={beritaKampungKb} />
+      <KampungKbClientView rw={rw} galeriKampungKb={galeriKampungKb} beritaKampungKb={beritaKampungKb} kbData={kb} />
     </div>
   );
 }

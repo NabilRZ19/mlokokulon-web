@@ -114,9 +114,9 @@ export default function TambahUserPage() {
               onChange={(e) => setTier(Number(e.target.value) as 1 | 2 | 3)}
               className="w-full rounded-lg border border-border bg-card px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
             >
-              <option value={1}>Tier 1 — Super Admin (Akses Penuh + Kelola Akun Admin)</option>
-              <option value={2}>Tier 2 — Admin Kelurahan (CRUD Berita, Galeri, UMKM, Struktur)</option>
-              <option value={3}>Tier 3 — Admin RW (CRUD Berita, Galeri, UMKM, Edit Wilayah RW)</option>
+              <option value={1}>Tier 1: Super Admin (Akses Penuh + Kelola Akun Admin)</option>
+              <option value={2}>Tier 2: Admin Kelurahan (CRUD Berita, Galeri, UMKM, Struktur)</option>
+              <option value={3}>Tier 3: Admin RW (CRUD Berita, Galeri, UMKM, Edit Wilayah RW)</option>
             </select>
           </div>
         </div>

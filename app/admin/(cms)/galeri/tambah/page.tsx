@@ -185,7 +185,7 @@ export default function TambahGaleriPage() {
                   <div className="text-center">
                     <p className="text-sm font-bold text-foreground">Pilih Foto dari Perangkat</p>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      WebP, JPG, PNG — Kompresi otomatis (maks 500 KB)
+                      WebP, JPG, PNG, kompresi otomatis (maks 500 KB)
                     </p>
                   </div>
                 )}
