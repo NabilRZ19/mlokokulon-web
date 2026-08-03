@@ -6,7 +6,7 @@ import { kampungKbData as kb } from "@/lib/seed-data";
 import { pageOpenGraph } from "@/lib/seo";
 
 const description =
-  "Program unggulan Kampung KB Kelurahan Mlokomanis Kulon: kegiatan 8 Pokja dan RW pelaksana program Keluarga Berencana.";
+  "Penyelenggaraan Kampung Keluarga Berkualitas (Kampung KB) Guyub Hanyawiji Kelurahan Mlokomanis Kulon: wadah konvergensi pemberdayaan keluarga, data kependudukan (iBangga), pencegahan stunting, serta kesehatan & ekonomi keluarga sejahtera sesuai Inpres No. 3 Tahun 2022 BKKBN RI.";
 
 export const metadata: Metadata = {
   title: "Kampung KB",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-function IconSprout() {
+function IconHeart() {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -26,12 +26,9 @@ function IconSprout() {
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="h-4 w-4 shrink-0 text-emerald-300"
+      className="h-4 w-4 shrink-0 text-emerald-300 fill-emerald-300/20"
     >
-      <path d="M7 20h10" />
-      <path d="M12 20v-8" />
-      <path d="M12 12c0-4 3-7 7-7 0 4-3 7-7 7Z" />
-      <path d="M12 12C12 8 9 5 5 5c0 4 3 7 7 7Z" />
+      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
     </svg>
   );
 }
@@ -57,8 +54,8 @@ export default async function KampungKbPage() {
           <div className="max-w-3xl space-y-4">
             {/* Eyebrow Badge Pill */}
             <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/20 px-3.5 py-1 text-xs font-bold text-emerald-300 backdrop-blur-md shadow-sm">
-              <IconSprout />
-              <span>Program Unggulan Kelurahan</span>
+              <IconHeart />
+              <span>Inpres No. 3 Tahun 2022 · BKKBN RI</span>
             </div>
 
             {/* Title */}
@@ -67,8 +64,8 @@ export default async function KampungKbPage() {
             </h1>
 
             {/* Subtitle / Description */}
-            <p className="font-sans text-base text-emerald-100/90 sm:text-lg leading-relaxed max-w-2xl">
-              Program unggulan Kampung Keluarga Berkualitas di RW 05 Dusun Pencil, diketuai oleh {kb.ketua}, untuk membina potensi, kesehatan, dan kesejahteraan warga desa.
+            <p className="font-sans text-base text-emerald-100/90 sm:text-lg leading-relaxed max-w-2xl text-justify">
+              Wadah konvergensi dan integrasi pemberdayaan keluarga dalam seluruh dimensinya—berdasarkan Instruksi Presiden No. 3 Tahun 2022 dan BKKBN RI guna meningkatkan kualitas SDM, ketahanan keluarga, serta lingkungan pemukiman sehat di Kelurahan Mlokomanis Kulon.
             </p>
           </div>
         </div>

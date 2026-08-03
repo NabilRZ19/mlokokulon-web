@@ -222,19 +222,15 @@ export const kampungKbData: KampungKb = {
   nama_program: "Guyub Hanyawiji",
   ketua: "Mujiono, S.Pd.I., M.Pd.I.",
   deskripsi_program:
-    "Program Kampung KB \"Guyub Hanyawiji\" di RW 05 (Pencil), diketuai oleh Mujiono, S.Pd.I., " +
-    "M.Pd.I., dibentuk tahun 2025 dengan 8 kelompok kerja (Pokja) yang mencakup bidang " +
-    "keagamaan, pendidikan, reproduksi, ekonomi, perlindungan, kasih sayang, sosial budaya, " +
-    "dan pembinaan lingkungan.",
+    "Kampung Keluarga Berkualitas (Kampung KB) \"Guyub Hanyawiji\" berpusat di RW 05 (Pencil) Kelurahan Mlokomanis Kulon. Berdasarkan amanat Instruksi Presiden (Inpres) No. 3 Tahun 2022 dan BKKBN RI, Kampung KB diselenggarakan sebagai wadah integrasi dan konvergensi pemberdayaan keluarga dalam seluruh dimensinya—meliputi penyediaan data kependudukan (iBangga), penguatan pola asuh anak & remaja, percepatan penurunan stunting, peningkatan ekonomi keluarga sejahtera, serta penataan pemukiman sehat.",
   sk_tahun: "2023",
   fungsi: [
-    "Peningkatan kualitas keagamaan dan aliran kepercayaan masyarakat",
-    "Peningkatan kualitas dan kuantitas pelayanan Keluarga Berencana bagi Pasangan Usia Subur (PUS)",
-    "Peningkatan kualitas pendidikan masyarakat",
-    "Peningkatan kualitas kesehatan reproduksi dan derajat kesehatan masyarakat secara menyeluruh",
-    "Peningkatan keberdayaan ekonomi bagi masyarakat Pra Sejahtera dan Keluarga Sejahtera Tahap I",
-    "Peningkatan kegiatan sosial budaya dan cinta kasih antar sesama warga masyarakat",
-    "Peningkatan program pelestarian lingkungan",
+    "Penyediaan Data Keluarga & Dokumen Kependudukan: Pengelolaan data mikro keluarga (iBangga & RKI) sebagai basis intervensi pembangunan kelurahan terpadu.",
+    "Peningkatan Kesehatan Reproduksi & Pelayanan KB: Perluasan jangkauan dan kualitas pelayanan Keluarga Berencana bagi Pasangan Usia Subur (PUS) serta rujukan kesehatan ibu-anak.",
+    "Perubahan Perilaku & Pengasuhan Keluarga (Stunting): Penguatan ketahanan dan pola asuh keluarga melalui Bina Keluarga Balita (BKB), Bina Keluarga Remaja (BKR), dan Bina Keluarga Lansia (BKL).",
+    "Pemberdayaan Ekonomi Keluarga Sejahtera: Peningkatan pendapatan keluarga melalui kelompok UPPKA (Usaha Peningkatan Pendapatan Keluarga Akseptor) dan potensi ekonomi lokal.",
+    "Penataan Lingkungan Pemukiman & Ketahanan Pangan: Penggalangan Gerakan Masyarakat Hidup Sehat (GERMAS), penataan sanitasi, dan pelestarian lingkungan pemukiman hijau.",
+    "Penguatan Nilai Sosial Budaya & Keharmonisan Warga: Pemeliharaan ketahanan moral, keagamaan, serta nilai gotong royong dalam kehidupan bermasyarakat.",
   ],
   pengurus_inti: [
     { jabatan: "Penasehat", nama: "Sulasno, S.E." },
