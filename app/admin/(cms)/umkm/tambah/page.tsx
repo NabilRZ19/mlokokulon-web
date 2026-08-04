@@ -53,6 +53,7 @@ export default function TambahUmkmPage() {
     const compressed = await compressImage(file);
     const fd = new FormData();
     fd.append("file", compressed, compressed.name);
+    fd.append("folder", "umkm");
     const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
     if (!res.ok) throw new Error("Upload gagal");
     const data = await res.json();

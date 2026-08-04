@@ -233,8 +233,8 @@ export const kampungKbData: KampungKb = {
     "Penguatan Nilai Sosial Budaya & Keharmonisan Warga: Pemeliharaan ketahanan moral, keagamaan, serta nilai gotong royong dalam kehidupan bermasyarakat.",
   ],
   pengurus_inti: [
-    { jabatan: "Penasehat", nama: "Sulasno, S.E." },
     { jabatan: "Penanggung Jawab", nama: "Yulis Triyanto" },
+    { jabatan: "Penasehat", nama: "Sulasno, S.E." },
     { jabatan: "Ketua POKJA", nama: "Mujiono, S.Pd.I., M.Pd.I." },
     { jabatan: "Wakil Ketua POKJA", nama: "Sutrisno" },
     { jabatan: "Sekretaris 1", nama: "Kaswati" },

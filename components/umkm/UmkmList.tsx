@@ -9,7 +9,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { getPublicImageUrl } from "@/lib/image-url";
 import type { Umkm } from "@/lib/types";
 
-const PER_PAGE = 6;
+const PER_PAGE = 4;
 
 // ─── Inline Icons ────────────────────────────────────────────────────────────
 function IconClock() {

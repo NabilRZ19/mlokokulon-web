@@ -9,7 +9,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { getPublicImageUrl } from "@/lib/image-url";
 import type { Galeri } from "@/lib/types";
 
-const PER_PAGE = 9;
+const PER_PAGE = 8;
 
 // Kategori Utama yang Linked dengan Kategori Berita & Kampung KB
 const MAIN_CATEGORIES = [

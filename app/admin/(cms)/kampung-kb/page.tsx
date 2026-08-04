@@ -103,6 +103,7 @@ export default function PengaturanKampungKbPage() {
       const compressed = await compressImage(file);
       const fd = new FormData();
       fd.append("file", compressed, compressed.name);
+      fd.append("folder", "kampung-kb");
 
       const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
       if (!res.ok) throw new Error("Upload foto gagal.");
@@ -144,6 +145,17 @@ export default function PengaturanKampungKbPage() {
   }
   function handlePengurusChange(idx: number, field: "jabatan" | "nama", val: string) {
     setPengurusInti((prev) => prev.map((p, i) => (i === idx ? { ...p, [field]: val } : p)));
+  }
+  function handleMovePengurus(idx: number, dir: "up" | "down") {
+    setPengurusInti((prev) => {
+      const targetIdx = dir === "up" ? idx - 1 : idx + 1;
+      if (targetIdx < 0 || targetIdx >= prev.length) return prev;
+      const next = [...prev];
+      const temp = next[idx];
+      next[idx] = next[targetIdx];
+      next[targetIdx] = temp;
+      return next;
+    });
   }
 
   // ── Pokja Handlers ──────────────────────────────────────────────────
@@ -500,13 +512,33 @@ export default function PengaturanKampungKbPage() {
                 <div key={idx} className="rounded-lg border border-border p-3 space-y-2 bg-muted/20">
                   <div className="flex justify-between items-center">
                     <span className="text-[11px] font-bold text-muted-foreground">Pengurus #{idx + 1}</span>
-                    <button
-                      type="button"
-                      onClick={() => handleRemovePengurus(idx)}
-                      className="text-xs font-bold text-destructive hover:underline"
-                    >
-                      Hapus
-                    </button>
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        disabled={idx === 0}
+                        onClick={() => handleMovePengurus(idx, "up")}
+                        className="rounded px-1.5 py-0.5 text-xs font-bold text-muted-foreground hover:bg-muted disabled:opacity-30 transition-colors"
+                        title="Geser Naik"
+                      >
+                        ▲
+                      </button>
+                      <button
+                        type="button"
+                        disabled={idx === pengurusInti.length - 1}
+                        onClick={() => handleMovePengurus(idx, "down")}
+                        className="rounded px-1.5 py-0.5 text-xs font-bold text-muted-foreground hover:bg-muted disabled:opacity-30 transition-colors"
+                        title="Geser Turun"
+                      >
+                        ▼
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleRemovePengurus(idx)}
+                        className="text-xs font-bold text-destructive hover:underline ml-1"
+                      >
+                        Hapus
+                      </button>
+                    </div>
                   </div>
                   <input
                     type="text"

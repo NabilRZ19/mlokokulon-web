@@ -128,7 +128,7 @@ export default function AdminUsersPage() {
                   disabled={deletingId === u.id}
                   className="rounded-lg bg-destructive/10 px-3 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 disabled:opacity-50"
                 >
-                  {deletingId === u.id ? "Hapus…" : "Hapus Akun"}
+                  {deletingId === u.id ? "Hapus…" : "Hapus"}
                 </button>
               </div>
             </div>

@@ -40,6 +40,7 @@ export default function TambahGaleriPage() {
       const compressed = await compressImage(selected);
       const fd = new FormData();
       fd.append("file", compressed, compressed.name);
+      fd.append("folder", "galeri");
 
       const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
       if (!res.ok) throw new Error("Gagal mengupload foto");

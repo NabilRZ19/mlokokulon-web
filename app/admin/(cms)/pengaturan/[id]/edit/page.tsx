@@ -80,6 +80,7 @@ export default function EditStrukturPage({ params }: { params: Promise<{ id: str
       const compressed = await compressImage(croppedFile);
       const fd = new FormData();
       fd.append("file", compressed, compressed.name);
+      fd.append("folder", "struktur");
       const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
       if (!res.ok) throw new Error("Upload foto gagal.");
       const data = await res.json();

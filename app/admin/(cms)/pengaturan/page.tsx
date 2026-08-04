@@ -116,7 +116,7 @@ export default function AdminPengaturanPage() {
                   disabled={deletingId === s.id}
                   className="rounded-lg bg-destructive/10 px-3 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 disabled:opacity-50"
                 >
-                  {deletingId === s.id ? "Hapus…" : "Hapus Jabatan"}
+                  {deletingId === s.id ? "Hapus…" : "Hapus"}
                 </button>
               </div>
             </div>

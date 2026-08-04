@@ -110,7 +110,61 @@ export default function LayananAdminPage() {
         </div>
       )}
 
-      <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+      {/* Mobile Card List (< md) */}
+      <div className="space-y-3 md:hidden">
+        {loading ? (
+          <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+            Memuat data layanan…
+          </div>
+        ) : layananList.length === 0 ? (
+          <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+            Belum Ada Data Layanan
+          </div>
+        ) : (
+          layananList.map((item) => (
+            <div key={item.id} className="rounded-xl border border-border bg-card p-4 space-y-3 shadow-2xs">
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <h3 className="font-heading text-sm font-bold text-foreground">{item.nama}</h3>
+                  <span className="inline-block mt-1 rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-bold text-primary">
+                    {item.kategori}
+                  </span>
+                </div>
+                <span className="rounded-md bg-emerald-100 px-2 py-1 text-[11px] font-bold text-emerald-800 shrink-0">
+                  {item.biaya}
+                </span>
+              </div>
+
+              <p className="text-xs text-muted-foreground line-clamp-2">{item.deskripsi}</p>
+
+              <div className="flex flex-wrap items-center justify-between text-xs text-muted-foreground pt-2 border-t border-border/50 gap-2">
+                <span>Proses: <strong className="text-foreground">{item.waktuProses}</strong></span>
+                <span>{item.persyaratan.length} Syarat · {item.prosedur.length} Langkah</span>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-border/50">
+                <Link
+                  href={`/admin/layanan/${item.id}/edit`}
+                  className="rounded-lg bg-primary/10 px-3.5 py-1.5 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors"
+                >
+                  Edit
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => handleDelete(item.id, item.nama)}
+                  disabled={deletingId === item.id}
+                  className="rounded-lg bg-destructive/10 px-3.5 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 disabled:opacity-50"
+                >
+                  {deletingId === item.id ? "Hapus…" : "Hapus"}
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Desktop Table View (>= md) */}
+      <div className="hidden md:block overflow-hidden rounded-xl border border-border bg-card shadow-sm">
         {loading ? (
           <div className="p-8 text-center text-sm text-muted-foreground">Memuat data layanan…</div>
         ) : layananList.length === 0 ? (

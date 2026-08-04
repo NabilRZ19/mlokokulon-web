@@ -19,7 +19,7 @@ const KATEGORI_OPTIONS: Array<Berita["kategori"] | "semua"> = [
 
 type SortOption = "terbaru" | "terlama" | "judul-asc" | "judul-desc";
 
-const ITEMS_PER_PAGE = 12;
+const ITEMS_PER_PAGE = 5;
 
 export function BeritaList({ berita, rwList }: { berita: Berita[]; rwList: Rw[] }) {
   const [kategori, setKategori] = useState<(typeof KATEGORI_OPTIONS)[number]>("semua");
