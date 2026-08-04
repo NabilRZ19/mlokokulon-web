@@ -1,6 +1,7 @@
 import {
   boolean,
   date,
+  index,
   int,
   json,
   mysqlEnum,
@@ -20,7 +21,9 @@ export const strukturKelurahan = mysqlTable("struktur_kelurahan", {
   jabatan: varchar("jabatan", { length: 255 }).notNull(),
   fotoUrl: varchar("foto_url", { length: 512 }).notNull(),
   urutan: int("urutan").notNull(),
-});
+}, (table) => [
+  index("struktur_kelurahan_urutan_idx").on(table.urutan),
+]);
 
 export const rw = mysqlTable("rw", {
   id: varchar("id", { length: 64 }).primaryKey(),
@@ -33,7 +36,9 @@ export const rw = mysqlTable("rw", {
   jumlahKk: int("jumlah_kk").notNull(),
   jumlahJiwa: int("jumlah_jiwa").notNull(),
   cakupanWilayahGeojson: text("cakupan_wilayah_geojson"),
-});
+}, (table) => [
+  index("rw_nama_rw_idx").on(table.namaRw),
+]);
 
 // Child table — struktur_pengurus[] di lib/types.ts
 export const rwPengurus = mysqlTable("rw_pengurus", {
@@ -46,7 +51,9 @@ export const rwPengurus = mysqlTable("rw_pengurus", {
   kategori: varchar("kategori", { length: 64 }).notNull().default("rw"),
   organisasi: varchar("organisasi", { length: 255 }),
   icon: varchar("icon", { length: 64 }).default("users"),
-});
+}, (table) => [
+  index("rw_pengurus_rw_id_idx").on(table.rwId),
+]);
 
 export const berita = mysqlTable("berita", {
   id: varchar("id", { length: 64 }).primaryKey(),
@@ -62,7 +69,10 @@ export const berita = mysqlTable("berita", {
   gambarCoverUrl: varchar("gambar_cover_url", { length: 512 }).notNull(),
   penulis: varchar("penulis", { length: 255 }).notNull(),
   createdBy: varchar("created_by", { length: 64 }).notNull(),
-});
+}, (table) => [
+  index("berita_tanggal_idx").on(table.tanggal),
+  index("berita_rw_id_idx").on(table.rwId),
+]);
 
 // Child table — foto_tambahan[] di lib/types.ts
 export const beritaFotoTambahan = mysqlTable("berita_foto_tambahan", {
@@ -71,7 +81,9 @@ export const beritaFotoTambahan = mysqlTable("berita_foto_tambahan", {
     .notNull()
     .references(() => berita.id, { onDelete: "cascade" }),
   url: varchar("url", { length: 512 }).notNull(),
-});
+}, (table) => [
+  index("berita_foto_tambahan_berita_id_idx").on(table.beritaId),
+]);
 
 export const galeri = mysqlTable("galeri", {
   id: varchar("id", { length: 64 }).primaryKey(),
@@ -85,7 +97,10 @@ export const galeri = mysqlTable("galeri", {
   sumberBeritaId: varchar("sumber_berita_id", { length: 64 }).references(() => berita.id, {
     onDelete: "set null",
   }),
-});
+}, (table) => [
+  index("galeri_judul_idx").on(table.judul),
+  index("galeri_sumber_berita_id_idx").on(table.sumberBeritaId),
+]);
 
 export const umkm = mysqlTable("umkm", {
   id: varchar("id", { length: 64 }).primaryKey(),
@@ -98,7 +113,9 @@ export const umkm = mysqlTable("umkm", {
   jamOperasional: varchar("jam_operasional", { length: 100 }).notNull(),
   lokasi: varchar("lokasi", { length: 255 }),
   fotoUtamaUrl: varchar("foto_utama_url", { length: 512 }),
-});
+}, (table) => [
+  index("umkm_nama_idx").on(table.nama),
+]);
 
 // Child table — produk_unggulan[] di lib/types.ts
 export const umkmProdukUnggulan = mysqlTable("umkm_produk_unggulan", {
@@ -108,7 +125,9 @@ export const umkmProdukUnggulan = mysqlTable("umkm_produk_unggulan", {
     .references(() => umkm.id, { onDelete: "cascade" }),
   produk: varchar("produk", { length: 255 }).notNull(),
   fotoUrl: varchar("foto_url", { length: 512 }),
-});
+}, (table) => [
+  index("umkm_produk_unggulan_umkm_id_idx").on(table.umkmId),
+]);
 
 // Child table — foto_urls[] di lib/types.ts
 export const umkmFoto = mysqlTable("umkm_foto", {
@@ -117,7 +136,9 @@ export const umkmFoto = mysqlTable("umkm_foto", {
     .notNull()
     .references(() => umkm.id, { onDelete: "cascade" }),
   url: varchar("url", { length: 512 }).notNull(),
-});
+}, (table) => [
+  index("umkm_foto_umkm_id_idx").on(table.umkmId),
+]);
 
 export const adminUsers = mysqlTable("admin_users", {
   id: int("id").primaryKey().autoincrement(),
@@ -143,4 +164,6 @@ export const layanan = mysqlTable("layanan", {
   urutan: int("urutan").notNull().default(0),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
-});
+}, (table) => [
+  index("layanan_urutan_idx").on(table.urutan),
+]);
