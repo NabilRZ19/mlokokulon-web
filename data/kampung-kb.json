@@ -1,0 +1,151 @@
+{
+  "rw_ref": "rw-05",
+  "nama_program": "Guyub Hanyawiji",
+  "ketua": "Mujiono, S.Pd.I., M.Pd.I.",
+  "sk_tahun": "2023",
+  "deskripsi_program": "Kampung Keluarga Berkualitas (Kampung KB) \"Guyub Hanyawiji\" berpusat di RW 05 (Pencil) Kelurahan Mlokomanis Kulon. Berdasarkan amanat Instruksi Presiden (Inpres) No. 3 Tahun 2022 dan BKKBN RI, Kampung KB diselenggarakan sebagai wadah integrasi dan konvergensi pemberdayaan keluarga dalam seluruh dimensinya—meliputi penyediaan data kependudukan (iBangga), penguatan pola asuh anak & remaja, percepatan penurunan stunting, peningkatan ekonomi keluarga sejahtera, serta penataan pemukiman sehat.",
+  "foto_highlight_url": "/api/media/mlokokulon/media/47e4e67c-7c08-4666-bce6-d5dc95c1db49.webp",
+  "fungsi": [
+    "Penyediaan Data Keluarga & Dokumen Kependudukan: Pengelolaan data mikro keluarga (iBangga & RKI) sebagai basis intervensi pembangunan kelurahan terpadu.",
+    "Peningkatan Kesehatan Reproduksi & Pelayanan KB: Perluasan jangkauan dan kualitas pelayanan Keluarga Berencana bagi Pasangan Usia Subur (PUS) serta rujukan kesehatan ibu-anak.",
+    "Perubahan Perilaku & Pengasuhan Keluarga (Stunting): Penguatan ketahanan dan pola asuh keluarga melalui Bina Keluarga Balita (BKB), Bina Keluarga Remaja (BKR), dan Bina Keluarga Lansia (BKL).",
+    "Pemberdayaan Ekonomi Keluarga Sejahtera: Peningkatan pendapatan keluarga melalui kelompok UPPKA (Usaha Peningkatan Pendapatan Keluarga Akseptor) dan potensi ekonomi lokal.",
+    "Penataan Lingkungan Pemukiman & Ketahanan Pangan: Penggalangan Gerakan Masyarakat Hidup Sehat (GERMAS), penataan sanitasi, dan pelestarian lingkungan pemukiman hijau.",
+    "Penguatan Nilai Sosial Budaya & Keharmonisan Warga: Pemeliharaan ketahanan moral, keagamaan, serta nilai gotong royong dalam kehidupan bermasyarakat."
+  ],
+  "pengurus_inti": [
+    {
+      "jabatan": "Penanggung Jawab",
+      "nama": "Yulis Triyanto"
+    },
+    {
+      "jabatan": "Penasehat",
+      "nama": "Sulasno, S.E."
+    },
+    {
+      "jabatan": "Ketua POKJA",
+      "nama": "Mujiono, S.Pd.I., M.Pd.I."
+    },
+    {
+      "jabatan": "Wakil Ketua POKJA",
+      "nama": "Sutrisno"
+    },
+    {
+      "jabatan": "Sekretaris 1",
+      "nama": "Kaswati"
+    },
+    {
+      "jabatan": "Sekretaris 2",
+      "nama": "Yuliyanti, S.Pd."
+    },
+    {
+      "jabatan": "Bendahara 1",
+      "nama": "Giyani"
+    },
+    {
+      "jabatan": "Bendahara 2",
+      "nama": "Suhartini"
+    }
+  ],
+  "pokja": [
+    {
+      "nama": "Pokja Keagamaan",
+      "ketua": "Sukasno",
+      "anggota": "Suyamto",
+      "program": [
+        "Pengajian 2 mingguan",
+        "TPQ 3 kali 1 minggu",
+        "Pengajian hari besar Islam",
+        "Program sholat berjamaah di masjid",
+        "Pengajian remaja",
+        "Mengaji tadarus seminggu sekali",
+        "Renovasi masjid"
+      ]
+    },
+    {
+      "nama": "Pokja Pendidikan",
+      "ketua": "Nanang Adi Saputra, S.Pd",
+      "anggota": "Indra Hermawan, S.Pd",
+      "program": [
+        "Kampung literasi 1x seminggu",
+        "Penyuluhan orang tua pentingnya literasi",
+        "Les mata pelajaran",
+        "Jalan sehat 1 bulan sekali"
+      ]
+    },
+    {
+      "nama": "Pokja Reproduksi",
+      "ketua": "Yuni Widayati",
+      "anggota": "Tunggal Fitri",
+      "program": [
+        "Posyandu balita",
+        "Posyandu lansia",
+        "Posyandu remaja",
+        "Penyuluhan KB PUS",
+        "Penyuluhan reproduksi remaja"
+      ]
+    },
+    {
+      "nama": "Pokja Ekonomi",
+      "ketua": "Indra Purwaningsih",
+      "anggota": "Sri Utami",
+      "program": [
+        "Bimbingan produk unggulan",
+        "Penanaman bibit sayuran",
+        "Budi daya panili",
+        "Pengembangan budi daya kakao/coklat",
+        "Car Free Day",
+        "Kelompencapir",
+        "Pembuatan ecoprint"
+      ]
+    },
+    {
+      "nama": "Pokja Perlindungan",
+      "ketua": "Warsito",
+      "anggota": "Suyanto",
+      "program": [
+        "Penyuluhan bahaya narkoba",
+        "Perizinan orang punya hajat",
+        "Penyuluhan KDRT",
+        "Pendataan BPJS",
+        "Pelayanan administrasi kependudukan"
+      ]
+    },
+    {
+      "nama": "Pokja Kasih Sayang",
+      "ketua": "Putri Wijayanti",
+      "anggota": "Sugiyanti",
+      "program": [
+        "Iuran kematian",
+        "Dana sosial orang sakit",
+        "Dasolin",
+        "Pemberian makan tambahan lansia",
+        "Pemberian makan tambahan balita"
+      ]
+    },
+    {
+      "nama": "Pokja Sosial Budaya",
+      "ketua": "Triyanto",
+      "anggota": "Siswadi",
+      "program": [
+        "Membentuk kelompok seni terbang",
+        "Kelompok rebana ibu-ibu",
+        "Menyelenggarakan lomba-lomba budaya"
+      ]
+    },
+    {
+      "nama": "Pokja Pembinaan Lingkungan",
+      "ketua": "Yatno",
+      "anggota": "Marlan",
+      "program": [
+        "Kerja bakti 2 minggu sekali",
+        "Perapian pagar",
+        "Penerangan jalan",
+        "Penunjuk arah",
+        "Penamaan gang jalan",
+        "Pemanfaatan pekarangan",
+        "Pembuatan jemplongan pekarangan"
+      ]
+    }
+  ]
+}

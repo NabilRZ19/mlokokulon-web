@@ -101,9 +101,14 @@ export async function POST(request: Request) {
     );
   }
 
-  // 5. Tentukan ekstensi dari MIME type biner yang sudah tervalidasi — BUKAN dari nama file/header client
+  // 5. Tentukan folder target berdasarkan parameter 'folder' (default: 'media')
+  const requestedFolder = formData.get("folder")?.toString()?.toLowerCase() || "media";
+  const ALLOWED_FOLDERS = new Set(["berita", "umkm", "galeri", "header", "kampung-kb", "layanan", "struktur", "media"]);
+  const targetFolder = ALLOWED_FOLDERS.has(requestedFolder) ? requestedFolder : "media";
+
+  // 6. Tentukan ekstensi dari MIME type biner yang sudah tervalidasi — BUKAN dari nama file/header client
   const ext = MIME_TO_EXT[actualMime] ?? "webp";
-  const key = `media/${randomUUID()}.${ext}`;
+  const key = `${targetFolder}/${randomUUID()}.${ext}`;
 
   try {
     const url = await uploadToStorage(key, buffer, actualMime);

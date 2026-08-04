@@ -4,6 +4,7 @@ import { use, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { compressImage } from "@/lib/image-compression";
+import { scrollToFirstError } from "@/lib/form-scroll";
 import { getPublicImageUrl } from "@/lib/image-url";
 
 export default function EditGaleriPage({ params }: { params: Promise<{ id: string }> }) {
@@ -53,6 +54,7 @@ export default function EditGaleriPage({ params }: { params: Promise<{ id: strin
       const compressed = await compressImage(file);
       const fd = new FormData();
       fd.append("file", compressed, compressed.name);
+      fd.append("folder", "galeri");
       const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
       if (!res.ok) throw new Error("Upload gagal.");
       const data = await res.json();
@@ -70,8 +72,13 @@ export default function EditGaleriPage({ params }: { params: Promise<{ id: strin
     e.preventDefault();
     setError(null);
 
-    if (!judul.trim() || !urlMedia) {
+    const errorIds: string[] = [];
+    if (!judul.trim()) errorIds.push("judul");
+    if (!urlMedia) errorIds.push("urlMedia");
+
+    if (errorIds.length > 0) {
       setError("Judul dan URL media wajib diisi.");
+      scrollToFirstError(errorIds);
       return;
     }
 

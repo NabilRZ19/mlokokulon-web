@@ -65,7 +65,15 @@ export function Footer() {
           </p>
           <div className="text-sm text-white/80 space-y-1">
             <p className="font-semibold text-white">
-              Hotline / CS Resmi: <span className="font-bold text-white">[DATA MENYUSUL]</span>
+              Hotline / CS Resmi:{" "}
+              <a
+                href="https://wa.me/6285183184314"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold text-emerald-400 underline hover:text-emerald-300 transition-colors"
+              >
+                0851-8318-4314
+              </a>
             </p>
             <p className="text-xs text-white/70">
               Jam Layanan: Senin–Kamis (07.00–15.30) &amp; Jumat (07.00–11.00 WIB)

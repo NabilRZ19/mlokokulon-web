@@ -87,13 +87,14 @@ export default function AdminUmkmPage() {
                   <h3 className="font-heading text-sm font-bold text-foreground">{u.nama}</h3>
                   <p className="text-xs font-semibold text-primary mt-0.5">{u.kategori}</p>
                 </div>
-                <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-bold text-primary">
-                  📞 {u.kontak}
+                <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-bold text-primary">
+                  {u.kontak}
                 </span>
               </div>
 
-              <div className="text-xs text-muted-foreground border-t border-border/50 pt-2">
-                <span>Jam Operasional: <strong className="text-foreground">{u.jam_operasional}</strong></span>
+              <div className="flex flex-wrap items-center justify-between text-xs text-muted-foreground border-t border-border/50 pt-2 gap-2">
+                <span className="font-semibold text-foreground">{u.lokasi || "RW 05 (Pencil)"}</span>
+                <span>{u.jam_operasional}</span>
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-1">
@@ -127,13 +128,13 @@ export default function AdminUmkmPage() {
       {/* Desktop Table View (>= md) */}
       <div className="hidden md:block overflow-x-auto rounded-xl border border-border bg-card shadow-xs">
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-border bg-muted/50 text-muted-foreground">
+          <thead className="border-b border-border bg-muted/50 text-muted-foreground font-bold uppercase text-xs tracking-wider">
             <tr>
-              <th className="px-4 py-3 font-semibold">Nama Usaha</th>
-              <th className="px-4 py-3 font-semibold">Kategori</th>
-              <th className="px-4 py-3 font-semibold">Kontak</th>
-              <th className="px-4 py-3 font-semibold">Jam Operasional</th>
-              <th className="px-4 py-3 font-semibold text-right">Aksi</th>
+              <th className="px-4 py-3">Nama Usaha</th>
+              <th className="px-4 py-3">Kategori Usaha</th>
+              <th className="px-4 py-3">Kontak / WA</th>
+              <th className="px-4 py-3">Jam Operasional</th>
+              <th className="px-4 py-3 text-right">Aksi</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
@@ -152,10 +153,16 @@ export default function AdminUmkmPage() {
             ) : (
               umkmList.map((u) => (
                 <tr key={u.id} className="hover:bg-muted/30 transition-colors">
-                  <td className="px-4 py-3 font-medium text-foreground">{u.nama}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{u.kategori}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{u.kontak}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{u.jam_operasional}</td>
+                  <td className="px-4 py-3 font-bold text-foreground">{u.nama}</td>
+                  <td className="px-4 py-3 font-semibold text-primary">
+                    Kategori: <strong className="font-extrabold">{u.kategori}</strong>
+                  </td>
+                  <td className="px-4 py-3 font-semibold text-foreground">
+                    Kontak: <strong className="font-extrabold">{u.kontak}</strong>
+                  </td>
+                  <td className="px-4 py-3 font-medium text-foreground">
+                    Jam: <strong className="font-bold">{u.jam_operasional}</strong>
+                  </td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex justify-end gap-3">
                       <Link

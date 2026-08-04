@@ -4,12 +4,14 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { compressImage } from "@/lib/image-compression";
+import { scrollToFirstError } from "@/lib/form-scroll";
 
 export default function TambahUmkmPage() {
   const router = useRouter();
 
   const [nama, setNama] = useState("");
   const [kategori, setKategori] = useState("Kuliner");
+  const [lokasi, setLokasi] = useState("RW 05 (Pencil)");
   const [deskripsi, setDeskripsi] = useState("");
   const [linkGmaps, setLinkGmaps] = useState("");
   const [kontak, setKontak] = useState("");
@@ -51,6 +53,7 @@ export default function TambahUmkmPage() {
     const compressed = await compressImage(file);
     const fd = new FormData();
     fd.append("file", compressed, compressed.name);
+    fd.append("folder", "umkm");
     const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
     if (!res.ok) throw new Error("Upload gagal");
     const data = await res.json();
@@ -137,8 +140,14 @@ export default function TambahUmkmPage() {
     e.preventDefault();
     setError(null);
 
-    if (!nama.trim() || !deskripsi.trim() || !kontak.trim()) {
+    const errorIds: string[] = [];
+    if (!nama.trim()) errorIds.push("nama");
+    if (!deskripsi.trim()) errorIds.push("deskripsi");
+    if (!kontak.trim()) errorIds.push("kontak");
+
+    if (errorIds.length > 0) {
       setError("Field Nama, Deskripsi, dan Kontak wajib diisi.");
+      scrollToFirstError(errorIds);
       return;
     }
 
@@ -147,6 +156,7 @@ export default function TambahUmkmPage() {
       const payload = {
         nama,
         kategori,
+        lokasi,
         deskripsi,
         link_gmaps: linkGmaps,
         kontak,
@@ -184,18 +194,43 @@ export default function TambahUmkmPage() {
 
       <form onSubmit={handleSubmit} className="mx-auto max-w-3xl space-y-6">
         <div className="rounded-xl border border-border bg-card p-6 shadow-sm space-y-5">
-          <div>
-            <label htmlFor="nama" className="mb-1 block text-sm font-bold text-foreground">
-              Nama Usaha / Potensi <span className="text-destructive">*</span>
-            </label>
-            <input
-              id="nama"
-              type="text"
-              value={nama}
-              onChange={(e) => setNama(e.target.value)}
-              placeholder="Misal: Keripik Tempe Mbok Yem"
-              className="w-full rounded-lg border border-border bg-card px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
-            />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="nama" className="mb-1 block text-sm font-bold text-foreground">
+                Nama Usaha / Potensi <span className="text-destructive">*</span>
+              </label>
+              <input
+                id="nama"
+                type="text"
+                value={nama}
+                onChange={(e) => setNama(e.target.value)}
+                placeholder="Misal: Keripik Tempe Mbok Yem"
+                className="w-full rounded-lg border border-border bg-card px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="lokasi" className="mb-1 block text-sm font-bold text-foreground">
+                Lokasi Wilayah (RW / Dusun) <span className="text-destructive">*</span>
+              </label>
+              <select
+                id="lokasi"
+                value={lokasi}
+                onChange={(e) => setLokasi(e.target.value)}
+                className="w-full rounded-lg border border-border bg-card px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 font-semibold"
+              >
+                <option value="RW 01 (Mlokomanis)">RW 01 (Mlokomanis)</option>
+                <option value="RW 02 (Mlokomanis)">RW 02 (Mlokomanis)</option>
+                <option value="RW 03 (Mlokomanis)">RW 03 (Mlokomanis)</option>
+                <option value="RW 04 (Dawe)">RW 04 (Dawe)</option>
+                <option value="RW 05 (Pencil)">RW 05 (Pencil)</option>
+                <option value="RW 06 (Dawe)">RW 06 (Dawe)</option>
+                <option value="RW 07 (Sundelan)">RW 07 (Sundelan)</option>
+                <option value="RW 08 (Giyono)">RW 08 (Giyono)</option>
+                <option value="RW 09 (Soka)">RW 09 (Soka)</option>
+                <option value="RW 10 (Soka)">RW 10 (Soka)</option>
+              </select>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -334,7 +369,7 @@ export default function TambahUmkmPage() {
             </div>
 
             <p className="mb-2 text-xs text-muted-foreground">
-              Foto per produk bersifat opsional — kosongkan kalau tidak perlu.
+              Foto per produk bersifat opsional. Kosongkan jika tidak diperlukan.
             </p>
 
             <div className="space-y-2">

@@ -4,6 +4,7 @@ import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { compressImage } from "@/lib/image-compression";
+import { scrollToFirstError } from "@/lib/form-scroll";
 
 type Kategori = "pengumuman" | "kegiatan" | "pembangunan" | "berita" | "kampung-kb";
 type Cakupan = "kelurahan" | "rw";
@@ -21,16 +22,16 @@ interface FotoItem {
 const MAX_FOTO_TAMBAHAN = 4;
 
 const LIST_RW_OPTIONS = [
-  { id: "rw-01", nama: "RW 01 — Dusun Pencil" },
-  { id: "rw-02", nama: "RW 02 — Dusun Pencil" },
-  { id: "rw-03", nama: "RW 03 — Dusun Ngadirojo" },
-  { id: "rw-04", nama: "RW 04 — Dusun Tempuran" },
-  { id: "rw-05", nama: "RW 05 — Dusun Pencil" },
-  { id: "rw-06", nama: "RW 06 — Dusun Mlokomanis" },
-  { id: "rw-07", nama: "RW 07 — Dusun Mlokomanis" },
-  { id: "rw-08", nama: "RW 08 — Dusun Kerjo" },
-  { id: "rw-09", nama: "RW 09 — Dusun Kerjo" },
-  { id: "rw-10", nama: "RW 10 — Dusun Mlokomanis" },
+  { id: "rw-01", nama: "RW 01 (Pencil)" },
+  { id: "rw-02", nama: "RW 02 (Pencil)" },
+  { id: "rw-03", nama: "RW 03 (Ngadirojo)" },
+  { id: "rw-04", nama: "RW 04 (Tempuran)" },
+  { id: "rw-05", nama: "RW 05 (Pencil)" },
+  { id: "rw-06", nama: "RW 06 (Mlokomanis)" },
+  { id: "rw-07", nama: "RW 07 (Mlokomanis)" },
+  { id: "rw-08", nama: "RW 08 (Kerjo)" },
+  { id: "rw-09", nama: "RW 09 (Kerjo)" },
+  { id: "rw-10", nama: "RW 10 (Mlokomanis)" },
 ];
 
 const KATEGORI_CONFIG: Record<
@@ -252,7 +253,7 @@ function ImageUploadZone({
             <div className="text-center">
               <p className="text-sm font-bold text-foreground">Pilih Foto Headline Utama</p>
               <p className="mt-0.5 text-xs text-muted-foreground">
-                JPG, PNG, WebP — Dikompres otomatis (maks 500 KB)
+                JPG, PNG, WebP, dikompresi otomatis (maks 500 KB)
               </p>
             </div>
           </div>
@@ -326,6 +327,7 @@ export default function TambahBeritaPage() {
     const compressed = await compressImage(file);
     const fd = new FormData();
     fd.append("file", compressed, compressed.name);
+    fd.append("folder", "berita");
     const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
     if (!res.ok) throw new Error("Upload gagal");
     const data = await res.json();
@@ -432,13 +434,37 @@ export default function TambahBeritaPage() {
 
   function validate(): boolean {
     const errs: Record<string, string> = {};
-    if (!judul.trim()) errs.judul = "Judul berita tidak boleh kosong.";
-    if (!isi.trim()) errs.isi = "Isi berita tidak boleh kosong.";
-    if (!tanggal) errs.tanggal = "Tanggal terbit wajib diisi.";
-    if (!penulis.trim()) errs.penulis = "Nama penulis wajib diisi.";
-    if (!coverUrl) errs.cover = "Foto headline wajib diupload.";
-    if (cakupan === "rw" && !rwId.trim()) errs.rw = "Pilih wilayah RW.";
+    const errorIds: string[] = [];
+
+    if (!judul.trim()) {
+      errs.judul = "Judul berita tidak boleh kosong.";
+      errorIds.push("judul");
+    }
+    if (!isi.trim()) {
+      errs.isi = "Isi berita tidak boleh kosong.";
+      errorIds.push("isi");
+    }
+    if (!tanggal) {
+      errs.tanggal = "Tanggal terbit wajib diisi.";
+      errorIds.push("tanggal");
+    }
+    if (!penulis.trim()) {
+      errs.penulis = "Nama penulis wajib diisi.";
+      errorIds.push("penulis");
+    }
+    if (!coverUrl) {
+      errs.cover = "Foto headline wajib diupload.";
+      errorIds.push("coverArea");
+    }
+    if (cakupan === "rw" && !rwId.trim()) {
+      errs.rw = "Pilih wilayah RW.";
+      errorIds.push("rwSelect");
+    }
+
     setErrors(errs);
+    if (errorIds.length > 0) {
+      scrollToFirstError(errorIds);
+    }
     return Object.keys(errs).length === 0;
   }
 

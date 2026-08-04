@@ -271,6 +271,33 @@ export default async function Home() {
         </section>
       </Reveal>
 
+      {/* ── 3. Peta Wilayah Kelurahan (Scroll Reveal — Berada Tepat di Bawah Gambaran Umum) ── */}
+      <Reveal mode="scroll" duration={0.6}>
+        <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-[#0f172a] via-primary to-[#1e3a8a] py-16 text-white">
+          <div className="pointer-events-none absolute -left-20 -bottom-20 h-80 w-80 rounded-full bg-secondary/20 blur-3xl" />
+          <div className="pointer-events-none absolute -right-20 -top-20 h-80 w-80 rounded-full bg-accent/15 blur-3xl" />
+
+          <div className="relative mx-auto max-w-6xl px-4 space-y-6">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1 text-xs font-bold text-blue-200 backdrop-blur-md">
+                <IconMapPin />
+                <span>Geografis &amp; Pemetaan Wilayah</span>
+              </div>
+              <h2 className="font-heading text-2xl font-extrabold text-white sm:text-3xl lg:text-4xl mt-1">
+                Peta Wilayah Kelurahan Mlokomanis Kulon
+              </h2>
+              <p className="text-sm text-blue-100/90 max-w-2xl leading-relaxed">
+                Batas Administrasi &amp; Sebaran Sarana. Visualisasi pemetaan interaktif cakupan wilayah, kantor pemerintahan, sarana publik, serta sebaran 10 dusun di Kelurahan Mlokomanis Kulon.
+              </p>
+            </div>
+
+            <div className="overflow-hidden rounded-2xl border border-white/20 shadow-xl">
+              <MapWilayah height="500px" />
+            </div>
+          </div>
+        </section>
+      </Reveal>
+
       {/* ── 3. Teaser Kampung KB (Scroll Reveal) ────────────────────────── */}
       <Reveal mode="scroll" duration={0.6}>
         <section className="relative overflow-hidden border-y border-emerald-900/30 bg-gradient-to-br from-[#022c22] via-[#065f46] to-[#0f172a] py-16 text-white">
@@ -279,31 +306,90 @@ export default async function Home() {
           <div className="pointer-events-none absolute -right-20 -bottom-20 h-80 w-80 rounded-full bg-accent/20 blur-3xl" />
 
           <div className="relative mx-auto max-w-6xl px-4 space-y-8">
-            {/* Section Header */}
-            <div className="space-y-2.5">
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-300 backdrop-blur-md">
-                <SproutIcon className="h-4 w-4 text-emerald-300" />
-                <span>Program Unggulan Kelurahan</span>
+            {/* Section Header (Sesuai Halaman Kampung KB) */}
+            <div className="max-w-3xl space-y-4">
+              {/* Eyebrow Badge Pill */}
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/20 px-3.5 py-1 text-xs font-bold text-emerald-300 backdrop-blur-md shadow-sm">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4 shrink-0 text-emerald-300 fill-emerald-300/20"
+                >
+                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                </svg>
+                <span>Inpres No. 3 Tahun 2022 · BKKBN RI</span>
               </div>
-              <h2 className="font-heading text-2xl font-extrabold text-white sm:text-3xl lg:text-4xl mt-1">
+
+              {/* Title */}
+              <h2 className="font-heading text-3xl font-extrabold tracking-tight text-white sm:text-5xl leading-tight">
                 Kampung KB &ldquo;{kb.nama_program}&rdquo;
               </h2>
-              <p className="max-w-2xl text-sm leading-relaxed text-emerald-100/90 mt-2">
-                Program unggulan pembinaan keluarga berkualitas di RW 05 Dusun Pencil untuk memajukan potensi, kesehatan, dan kesejahteraan warga desa.
+
+              {/* Subtitle / Description */}
+              <p className="font-sans text-base text-emerald-100/90 sm:text-lg leading-relaxed max-w-2xl text-justify">
+                Wadah konvergensi dan integrasi pemberdayaan keluarga dalam seluruh dimensinya—berdasarkan Instruksi Presiden No. 3 Tahun 2022 dan BKKBN RI guna meningkatkan kualitas SDM, ketahanan keluarga, serta lingkungan pemukiman sehat di Kelurahan Mlokomanis Kulon.
               </p>
             </div>
 
-            {/* Headline Photo Placeholder */}
-            <div className="group relative overflow-hidden rounded-xl border border-emerald-200/30 bg-card/95 shadow-lg">
-              <img
-                src={kb.foto_highlight_url}
-                alt={`Kampung KB ${kb.nama_program}`}
-                className="h-56 w-full object-cover sm:h-72 lg:h-80 transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              <p className="absolute bottom-0 left-0 right-0 p-4 text-xs font-semibold text-white translate-y-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 drop-shadow-md">
-                Dokumentasi kegiatan program unggulan Kampung KB &ldquo;{kb.nama_program}&rdquo;
-              </p>
+            {/* Headline Card Sesuai Halaman Kampung KB */}
+            <div className="overflow-hidden rounded-2xl border border-emerald-300/30 bg-card text-foreground shadow-xl">
+              <div className="grid lg:grid-cols-12 items-stretch">
+                <div className="relative overflow-hidden bg-muted group lg:col-span-6 min-h-[260px] sm:min-h-[300px]">
+                  <img
+                    src={kb.foto_highlight_url}
+                    alt={`Kampung KB ${kb.nama_program}`}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                  <p className="absolute bottom-0 left-0 right-0 p-4 text-xs font-semibold text-white drop-shadow-md">
+                    Dokumentasi kegiatan program unggulan Kampung KB &ldquo;{kb.nama_program}&rdquo;
+                  </p>
+                </div>
+
+                <div className="p-6 sm:p-8 lg:col-span-6 space-y-4 flex flex-col justify-between bg-gradient-to-br from-card via-emerald-50/20 to-card">
+                  <div className="space-y-3">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300/80 bg-emerald-100/80 px-3.5 py-1 text-xs font-bold text-emerald-900 shadow-2xs">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5 text-emerald-700">
+                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                        <circle cx="12" cy="10" r="3" />
+                      </svg>
+                      <span>Percontohan: RW 05 Pencil</span>
+                    </div>
+
+                    <h3 className="font-heading text-xl font-extrabold text-foreground sm:text-2xl leading-tight">
+                      Kampung KB &ldquo;{kb.nama_program}&rdquo;
+                    </h3>
+
+                    <p className="text-xs font-bold uppercase tracking-wider text-emerald-700">
+                      Ketua Pelaksana: <span className="text-foreground font-extrabold">{kb.ketua}</span>
+                    </p>
+
+                    <p className="text-xs text-muted-foreground leading-relaxed text-justify line-clamp-4 sm:line-clamp-none">
+                      {kb.deskripsi_program}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 border-t border-border/60 flex items-center justify-between gap-2 text-xs text-muted-foreground font-medium">
+                    <span className="flex items-center gap-1.5">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-emerald-600 shrink-0">
+                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                        <polyline points="14 2 14 8 20 8" />
+                      </svg>
+                      SK Kelurahan Tahun {kb.sk_tahun}
+                    </span>
+                    <Link
+                      href="/kampung-kb"
+                      className="font-bold text-emerald-600 hover:text-emerald-700 hover:underline"
+                    >
+                      Lihat Detail →
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Judul List Pokja & Tombol CTA */}
@@ -496,28 +582,7 @@ export default async function Home() {
         </Reveal>
       )}
 
-      {/* ── 6. Peta (Scroll Reveal) ────────────────────────────────────────── */}
-      <Reveal mode="scroll" duration={0.6}>
-        <section className="relative overflow-hidden border-t border-border bg-gradient-to-br from-[#0f172a] via-primary to-[#1e3a8a] py-16 text-white">
-          <div className="pointer-events-none absolute -left-20 -bottom-20 h-80 w-80 rounded-full bg-secondary/20 blur-3xl" />
 
-          <div className="relative mx-auto max-w-6xl px-4 space-y-4">
-            <div className="space-y-2">
-              <span className="text-xs font-bold uppercase tracking-widest text-blue-200">
-                Lokasi &amp; Geografis
-              </span>
-              <h2 className="font-heading text-2xl font-extrabold text-white sm:text-3xl mt-1">
-                Peta Wilayah Kelurahan
-              </h2>
-              <p className="text-sm text-blue-100/80 max-w-xl mt-2 leading-relaxed">
-                Visualisasi dan pemetaan cakupan batas wilayah administratif Kelurahan Mlokomanis Kulon.
-              </p>
-            </div>
-
-            <MapWilayah height="500px" />
-          </div>
-        </section>
-      </Reveal>
 
       {/* ── 7. Quick Links (Scroll Reveal) ────────────────────────────────── */}
       <Reveal mode="scroll" duration={0.6}>

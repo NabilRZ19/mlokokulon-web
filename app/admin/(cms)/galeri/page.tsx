@@ -167,7 +167,7 @@ export default function AdminGaleriPage() {
                       </div>
                     )}
                   </td>
-                  <td className="px-4 py-3 font-medium text-foreground max-w-xs truncate">
+                  <td className="px-4 py-3 font-bold text-foreground max-w-xs truncate">
                     {g.judul}
                   </td>
                   <td className="px-4 py-3 capitalize text-muted-foreground font-medium">

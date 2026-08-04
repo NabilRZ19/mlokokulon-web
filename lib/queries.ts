@@ -228,6 +228,7 @@ async function assembleUmkmSingle(row: typeof umkmTable.$inferSelect): Promise<U
     kontak: row.kontak,
     produk_unggulan: produk.map((p) => ({ produk: p.produk, foto_url: p.fotoUrl })),
     jam_operasional: row.jamOperasional,
+    lokasi: row.lokasi ?? undefined,
     foto_urls: foto.map((f) => f.url),
     foto_utama_url: row.fotoUtamaUrl,
   };
@@ -275,6 +276,7 @@ export async function getUmkmList(): Promise<Umkm[]> {
       kontak: row.kontak,
       produk_unggulan: produkMap.get(row.id) ?? [],
       jam_operasional: row.jamOperasional,
+      lokasi: row.lokasi ?? undefined,
       foto_urls: fotoMap.get(row.id) ?? [],
       foto_utama_url: row.fotoUtamaUrl,
     }));

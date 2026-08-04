@@ -25,16 +25,12 @@ function IconFileText() {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={1.5}
+      strokeWidth={1.75}
       strokeLinecap="round"
       strokeLinejoin="round"
       className="h-5 w-5 text-primary shrink-0"
     >
-      <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-      <polyline points="14 2 14 8 20 8" />
-      <line x1="16" y1="13" x2="8" y2="13" />
-      <line x1="16" y1="17" x2="8" y2="17" />
-      <line x1="10" y1="9" x2="8" y2="9" />
+      <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
     </svg>
   );
 }
@@ -45,13 +41,12 @@ function IconCheckCircle() {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={1.5}
+      strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
       className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5"
     >
-      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-      <polyline points="22 4 12 14.01 9 11.01" />
+      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
   );
 }
@@ -62,14 +57,31 @@ function IconInfo() {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={1.5}
+      strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="h-5 w-5 text-primary shrink-0"
+      className="h-5 w-5 text-blue-600 shrink-0"
     >
       <circle cx="12" cy="12" r="10" />
       <line x1="12" y1="16" x2="12" y2="12" />
       <line x1="12" y1="8" x2="12.01" y2="8" />
+    </svg>
+  );
+}
+
+function IconClock() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-3.5 w-3.5 text-emerald-700 shrink-0 inline-block"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
     </svg>
   );
 }
@@ -82,8 +94,8 @@ export default async function LayananPage() {
       <PageHeader
         badge="Pusat Pelayanan Publik Desa"
         icon={
-          <svg className="h-3.5 w-3.5 text-blue-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          <svg className="h-4 w-4 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
         }
         title="Layanan Publik Kelurahan"
@@ -196,7 +208,10 @@ export default async function LayananPage() {
 
                 <div className="mt-6 border-t border-border pt-4 flex items-center justify-between text-xs text-muted-foreground">
                   <span>Tempat: <strong>{item.kontak_penanggung_jawab || "Kantor Kelurahan"}</strong></span>
-                  <span className="font-bold text-emerald-700">⏱️ {item.waktu_proses}</span>
+                  <span className="inline-flex items-center gap-1.5 font-bold text-emerald-700">
+                    <IconClock />
+                    {item.waktu_proses}
+                  </span>
                 </div>
               </Card>
             </Reveal>

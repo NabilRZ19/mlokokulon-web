@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { ImageCropperModal } from "@/components/admin/ImageCropperModal";
 import { compressImage } from "@/lib/image-compression";
+import { scrollToFirstError } from "@/lib/form-scroll";
 
 export default function TambahStrukturPage() {
   const router = useRouter();
@@ -58,6 +59,7 @@ export default function TambahStrukturPage() {
       const compressed = await compressImage(croppedFile);
       const fd = new FormData();
       fd.append("file", compressed, compressed.name);
+      fd.append("folder", "struktur");
 
       const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
       if (!res.ok) throw new Error("Upload foto gagal.");
@@ -75,13 +77,14 @@ export default function TambahStrukturPage() {
     e.preventDefault();
     setError(null);
 
-    if (!nama.trim() || !jabatan.trim()) {
-      setError("Field Nama dan Jabatan tidak boleh kosong.");
-      return;
-    }
+    const errorIds: string[] = [];
+    if (!nama.trim()) errorIds.push("nama");
+    if (!jabatan.trim()) errorIds.push("jabatan");
+    if (!fotoUrl) errorIds.push("fotoArea");
 
-    if (!fotoUrl) {
-      setError("Foto pejabat wajib diupload.");
+    if (errorIds.length > 0) {
+      setError(!nama.trim() || !jabatan.trim() ? "Field Nama dan Jabatan tidak boleh kosong." : "Foto pejabat wajib diupload.");
+      scrollToFirstError(errorIds);
       return;
     }
 
@@ -157,11 +160,11 @@ export default function TambahStrukturPage() {
               onChange={(e) => handleLevelChange(e.target.value)}
               className="w-full rounded-lg border border-border bg-card px-3.5 py-2.5 text-sm font-bold text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
             >
-              <option value="1">Level 1 — Lurah / Kepala Kelurahan (Pimpinan Utama - Paling Atas)</option>
-              <option value="2">Level 2 — Sekretaris Kelurahan (Seklu)</option>
-              <option value="3">Level 3 — Kepala Seksi / Kasi (Pemerintahan, Trantib, Ekbang)</option>
-              <option value="4">Level 4 — Kepala Urusan / Kaur (Umum, Keuangan)</option>
-              <option value="5">Level 5 — Pelaksana &amp; Staf Lapangan</option>
+              <option value="1">Level 1: Lurah / Kepala Kelurahan (Pimpinan Utama, Paling Atas)</option>
+              <option value="2">Level 2: Sekretaris Kelurahan (Seklu)</option>
+              <option value="3">Level 3: Kepala Seksi / Kasi (Pemerintahan, Trantib, Ekbang)</option>
+              <option value="4">Level 4: Kepala Urusan / Kaur (Umum, Keuangan)</option>
+              <option value="5">Level 5: Pelaksana &amp; Staf Lapangan</option>
               <option value="custom">Kustom (Isi Nomor Urutan Sendiri)</option>
             </select>
 
@@ -233,7 +236,7 @@ export default function TambahStrukturPage() {
                 ) : (
                   <div className="text-center">
                     <p className="text-xs font-semibold text-muted-foreground">
-                      Klik untuk upload pasfoto resmi (WebP, JPG, PNG — Kompresi Otomatis)
+                      Klik untuk upload pasfoto resmi (WebP, JPG, PNG, dikompresi otomatis)
                     </p>
                   </div>
                 )}

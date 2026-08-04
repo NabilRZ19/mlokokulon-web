@@ -116,7 +116,7 @@ export default function AdminPengaturanPage() {
                   disabled={deletingId === s.id}
                   className="rounded-lg bg-destructive/10 px-3 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 disabled:opacity-50"
                 >
-                  {deletingId === s.id ? "Hapus…" : "Hapus Jabatan"}
+                  {deletingId === s.id ? "Hapus…" : "Hapus"}
                 </button>
               </div>
             </div>
@@ -127,13 +127,13 @@ export default function AdminPengaturanPage() {
       {/* Desktop Table View (>= md) */}
       <div className="hidden md:block overflow-x-auto rounded-xl border border-border bg-card shadow-xs">
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-border bg-muted/50 text-muted-foreground">
+          <thead className="border-b border-border bg-muted/50 text-muted-foreground font-bold uppercase text-xs tracking-wider">
             <tr>
-              <th className="px-4 py-3 font-semibold">Foto</th>
-              <th className="px-4 py-3 font-semibold">Nama Pejabat</th>
-              <th className="px-4 py-3 font-semibold">Jabatan</th>
-              <th className="px-4 py-3 font-semibold">Urutan</th>
-              <th className="px-4 py-3 font-semibold text-right">Aksi</th>
+              <th className="px-4 py-3">Foto Profile</th>
+              <th className="px-4 py-3">Nama Pejabat</th>
+              <th className="px-4 py-3">Jabatan Kelurahan</th>
+              <th className="px-4 py-3">Urutan Bagan</th>
+              <th className="px-4 py-3 text-right">Aksi</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
@@ -160,9 +160,9 @@ export default function AdminPengaturanPage() {
                       className="h-10 w-10 rounded-full object-cover border border-border"
                     />
                   </td>
-                  <td className="px-4 py-3 font-medium text-foreground">{s.nama}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{s.jabatan}</td>
-                  <td className="px-4 py-3 text-muted-foreground font-semibold">{s.urutan}</td>
+                  <td className="px-4 py-3 font-bold text-foreground">{s.nama}</td>
+                  <td className="px-4 py-3 font-medium text-muted-foreground">{s.jabatan}</td>
+                  <td className="px-4 py-3 font-semibold text-primary">#{s.urutan}</td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex justify-end gap-3">
                       <Link

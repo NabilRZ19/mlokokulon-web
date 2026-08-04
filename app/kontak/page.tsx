@@ -132,13 +132,21 @@ export default function KontakPage() {
                   Untuk pertanyaan, informasi publik, maupun bantuan layanan administrasi warga Kelurahan Mlokomanis Kulon, Anda dapat menghubungi nomor hotline resmi di bawah ini.
                 </p>
 
-                {/* Status Nomor Menyusul */}
-                <div className="rounded-lg border border-border bg-muted/40 p-4">
-                  <PlaceholderNotice>
-                    [DATA MENYUSUL] — Nomor resmi hotline/WhatsApp kelurahan akan diperbarui setelah konfirmasi dari pihak kelurahan.
-                  </PlaceholderNotice>
+                {/* Hotline Card */}
+                <div className="rounded-xl border border-emerald-200/80 bg-gradient-to-br from-emerald-50/50 via-card to-card p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+                      Nomor Hotline / WhatsApp
+                    </span>
+                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-800">
+                      ● Aktif
+                    </span>
+                  </div>
+                  <p className="font-heading text-2xl font-extrabold text-foreground">
+                    0851-8318-4314
+                  </p>
 
-                  <div className="mt-4 space-y-2 text-sm text-foreground">
+                  <div className="pt-2 border-t border-emerald-100 space-y-2 text-sm text-foreground">
                     <div className="flex items-start gap-2">
                       <IconClock />
                       <div>
@@ -152,14 +160,15 @@ export default function KontakPage() {
               </div>
 
               <div className="mt-6 pt-4 border-t border-border">
-                <button
-                  type="button"
-                  disabled
-                  className="flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-lg bg-emerald-600/60 px-4 py-3 text-sm font-semibold text-white opacity-80"
+                <a
+                  href="https://wa.me/6285183184314"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-3 text-sm font-bold text-white shadow-sm transition-all hover:bg-emerald-700 hover:shadow"
                 >
                   <IconWhatsapp />
-                  Hubungi via WhatsApp (Menyusul)
-                </button>
+                  Hubungi via WhatsApp (0851-8318-4314)
+                </a>
               </div>
             </Card>
           </Reveal>

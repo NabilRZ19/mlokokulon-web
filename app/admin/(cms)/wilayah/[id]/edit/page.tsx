@@ -3,6 +3,7 @@
 import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
+import { scrollToFirstError } from "@/lib/form-scroll";
 
 interface PengurusItem {
   nama: string;
@@ -230,6 +231,18 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+
+    const errorIds: string[] = [];
+    if (!namaRw.trim()) errorIds.push("namaRw");
+    if (!cakupanDusun.trim()) errorIds.push("cakupanDusun");
+    if (!jumlahRt) errorIds.push("jumlahRt");
+
+    if (errorIds.length > 0) {
+      setError("Nama RW, Cakupan Dusun, dan Jumlah RT wajib diisi.");
+      scrollToFirstError(errorIds);
+      return;
+    }
+
     setSubmitting(true);
 
     try {

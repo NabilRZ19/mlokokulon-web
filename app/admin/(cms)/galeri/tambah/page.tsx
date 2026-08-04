@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { compressImage } from "@/lib/image-compression";
+import { scrollToFirstError } from "@/lib/form-scroll";
 
 type TipeMedia = "foto" | "video";
 
@@ -39,6 +40,7 @@ export default function TambahGaleriPage() {
       const compressed = await compressImage(selected);
       const fd = new FormData();
       fd.append("file", compressed, compressed.name);
+      fd.append("folder", "galeri");
 
       const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
       if (!res.ok) throw new Error("Gagal mengupload foto");
@@ -56,14 +58,17 @@ export default function TambahGaleriPage() {
     e.preventDefault();
     setError(null);
 
-    if (!judul.trim()) {
-      setError("Judul media tidak boleh kosong.");
-      return;
-    }
+    const errorIds: string[] = [];
+    if (!judul.trim()) errorIds.push("judul");
 
     const finalUrl = tipe === "foto" ? uploadedUrl : videoUrl;
     if (!finalUrl) {
-      setError(tipe === "foto" ? "Foto wajib diupload terlebih dahulu." : "URL Video wajib diisi.");
+      errorIds.push(tipe === "foto" ? "fotoArea" : "videoUrl");
+    }
+
+    if (errorIds.length > 0) {
+      setError(!judul.trim() ? "Judul media tidak boleh kosong." : tipe === "foto" ? "Foto wajib diupload terlebih dahulu." : "URL Video wajib diisi.");
+      scrollToFirstError(errorIds);
       return;
     }
 
@@ -181,7 +186,7 @@ export default function TambahGaleriPage() {
                   <div className="text-center">
                     <p className="text-sm font-bold text-foreground">Pilih Foto dari Perangkat</p>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      WebP, JPG, PNG — Kompresi otomatis (maks 500 KB)
+                      WebP, JPG, PNG, kompresi otomatis (maks 500 KB)
                     </p>
                   </div>
                 )}

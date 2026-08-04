@@ -63,9 +63,15 @@ export const kelurahanProfileData: KelurahanProfileData = {
   kodePos: "57681",
   kodeKemendagri: "33.12.13.1009",
   terbentuk: 1981,
-  sejarah: "[DATA MENYUSUL] — narasi sejarah desa & timeline akan dilengkapi tim KKN.",
-  visi: "[DATA MENYUSUL] — visi kelurahan akan dilengkapi setelah konfirmasi pihak kelurahan.",
-  misi: ["[DATA MENYUSUL]"],
+  sejarah: "Kelurahan Mlokomanis Kulon dibentuk pada tahun 1981 sebagai wilayah administratif tingkat kelurahan di Kecamatan Ngadirojo, Kabupaten Wonogiri.",
+  visi: "Mewujudkan Kabupaten Wonogiri yang Maju, Sejahtera, dan Berkelanjutan",
+  misi: [
+    "Meningkatkan kualitas sumber daya manusia yang berdaya saing, berkarakter, dan sehat.",
+    "Meningkatkan pertumbuhan ekonomi daerah yang inklusif berbasis potensi lokal pertanian, UMKM, dan pariwisata.",
+    "Meningkatkan pemerataan pembangunan infrastruktur wilayah yang berkualitas dan berwawasan lingkungan.",
+    "Mewujudkan tata kelola pemerintahan yang bersih, efektif, transparan, dan akuntabel berbasis teknologi informasi.",
+    "Meningkatkan ketahanan sosial budaya dan keharmonisan kehidupan masyarakat.",
+  ],
   geografis: {
     koordinat: "7°47'25\" LS, 110°59'43\" BT",
     elevasiMdpl: 485,
@@ -191,22 +197,10 @@ export interface KontakPerangkatItem {
 // [DATA MENYUSUL] — kontak riil perangkat belum ada, ini dummy struktur.
 export const kontakPerangkatData: KontakPerangkatItem[] = [
   {
-    jabatan: "Lurah",
-    nama: "(Nama Lurah — Dummy)",
-    whatsapp: "0800-0000-0001",
-    jamLayanan: "Senin–Jumat, 08.00–15.00",
-  },
-  {
-    jabatan: "Sekretaris Kelurahan",
-    nama: "(Nama Sekretaris — Dummy)",
-    whatsapp: "0800-0000-0002",
-    jamLayanan: "Senin–Jumat, 08.00–15.00",
-  },
-  {
-    jabatan: "Staff Kelurahan",
-    nama: "(Nama Staff — Dummy)",
-    whatsapp: "0800-0000-0003",
-    jamLayanan: "Senin–Jumat, 08.00–15.00",
+    jabatan: "Hotline Kelurahan",
+    nama: "Pelayanan Publik Kelurahan Mlokomanis Kulon",
+    whatsapp: "085183184314",
+    jamLayanan: "Senin–Kamis 07.00–15.30 WIB, Jumat 07.00–11.00 WIB",
   },
 ];
 
@@ -222,23 +216,19 @@ export const kampungKbData: KampungKb = {
   nama_program: "Guyub Hanyawiji",
   ketua: "Mujiono, S.Pd.I., M.Pd.I.",
   deskripsi_program:
-    "Program Kampung KB \"Guyub Hanyawiji\" di RW 05 (Pencil), diketuai oleh Mujiono, S.Pd.I., " +
-    "M.Pd.I., dibentuk tahun 2025 dengan 8 kelompok kerja (Pokja) yang mencakup bidang " +
-    "keagamaan, pendidikan, reproduksi, ekonomi, perlindungan, kasih sayang, sosial budaya, " +
-    "dan pembinaan lingkungan.",
+    "Kampung Keluarga Berkualitas (Kampung KB) \"Guyub Hanyawiji\" berpusat di RW 05 (Pencil) Kelurahan Mlokomanis Kulon. Berdasarkan amanat Instruksi Presiden (Inpres) No. 3 Tahun 2022 dan BKKBN RI, Kampung KB diselenggarakan sebagai wadah integrasi dan konvergensi pemberdayaan keluarga dalam seluruh dimensinya—meliputi penyediaan data kependudukan (iBangga), penguatan pola asuh anak & remaja, percepatan penurunan stunting, peningkatan ekonomi keluarga sejahtera, serta penataan pemukiman sehat.",
   sk_tahun: "2023",
   fungsi: [
-    "Peningkatan kualitas keagamaan dan aliran kepercayaan masyarakat",
-    "Peningkatan kualitas dan kuantitas pelayanan Keluarga Berencana bagi Pasangan Usia Subur (PUS)",
-    "Peningkatan kualitas pendidikan masyarakat",
-    "Peningkatan kualitas kesehatan reproduksi dan derajat kesehatan masyarakat secara menyeluruh",
-    "Peningkatan keberdayaan ekonomi bagi masyarakat Pra Sejahtera dan Keluarga Sejahtera Tahap I",
-    "Peningkatan kegiatan sosial budaya dan cinta kasih antar sesama warga masyarakat",
-    "Peningkatan program pelestarian lingkungan",
+    "Penyediaan Data Keluarga & Dokumen Kependudukan: Pengelolaan data mikro keluarga (iBangga & RKI) sebagai basis intervensi pembangunan kelurahan terpadu.",
+    "Peningkatan Kesehatan Reproduksi & Pelayanan KB: Perluasan jangkauan dan kualitas pelayanan Keluarga Berencana bagi Pasangan Usia Subur (PUS) serta rujukan kesehatan ibu-anak.",
+    "Perubahan Perilaku & Pengasuhan Keluarga (Stunting): Penguatan ketahanan dan pola asuh keluarga melalui Bina Keluarga Balita (BKB), Bina Keluarga Remaja (BKR), dan Bina Keluarga Lansia (BKL).",
+    "Pemberdayaan Ekonomi Keluarga Sejahtera: Peningkatan pendapatan keluarga melalui kelompok UPPKA (Usaha Peningkatan Pendapatan Keluarga Akseptor) dan potensi ekonomi lokal.",
+    "Penataan Lingkungan Pemukiman & Ketahanan Pangan: Penggalangan Gerakan Masyarakat Hidup Sehat (GERMAS), penataan sanitasi, dan pelestarian lingkungan pemukiman hijau.",
+    "Penguatan Nilai Sosial Budaya & Keharmonisan Warga: Pemeliharaan ketahanan moral, keagamaan, serta nilai gotong royong dalam kehidupan bermasyarakat.",
   ],
   pengurus_inti: [
-    { jabatan: "Penasehat", nama: "Sulasno, S.E." },
     { jabatan: "Penanggung Jawab", nama: "Yulis Triyanto" },
+    { jabatan: "Penasehat", nama: "Sulasno, S.E." },
     { jabatan: "Ketua POKJA", nama: "Mujiono, S.Pd.I., M.Pd.I." },
     { jabatan: "Wakil Ketua POKJA", nama: "Sutrisno" },
     { jabatan: "Sekretaris 1", nama: "Kaswati" },
@@ -483,20 +473,20 @@ export const rwSeed: Rw[] = dusunList.map((nama, i) => {
   const id = `rw-${String(i + 1).padStart(2, "0")}`;
   return {
     id,
-    nama_rw: `RW ${String(i + 1).padStart(2, "0")} — ${nama}`,
+    nama_rw: `RW ${String(i + 1).padStart(2, "0")} (${nama})`,
     cakupan_dusun: nama,
     jumlah_rt: rtPerRw[i],
     is_kampung_kb: i === KAMPUNG_KB_INDEX,
     deskripsi_singkat: deskripsiRwMap[id],
     struktur_pengurus: pengurusRwMap[id] || [
-      { nama: `(Ketua RW ${nama} — Dummy)`, jabatan: "Ketua RW" },
-      { nama: `(Sekretaris RW ${nama} — Dummy)`, jabatan: "Sekretaris" },
+      { nama: "Data belum diberikan oleh pihak terkait", jabatan: "Ketua RW" },
+      { nama: "Data belum diberikan oleh pihak terkait", jabatan: "Sekretaris" },
     ],
     statistik: {
       jumlah_kk: statistikKkMap[id] ?? kkPerRw[i],
       jumlah_jiwa: statistikJiwaMap[id] ?? jiwaPerRw[i],
     },
-    potensi: potensiMap[id] ?? "[DATA MENYUSUL] — potensi spesifik RW ini belum dikonfirmasi.",
+    potensi: potensiMap[id] ?? "Data belum diberikan oleh pihak terkait",
   };
 });
 
@@ -523,7 +513,7 @@ export const beritaSeed: Berita[] = [
     kategori: "pengumuman",
     cakupan: "rw",
     rw_id: "rw-05",
-    rw_nama: "RW 05 — Pencil",
+    rw_nama: "RW 05 (Pencil)",
     gambar_cover_url: "/images/placeholder-photo.svg",
     penulis: "Admin RW 05 (Dummy)",
     created_by: "dummy-admin",

@@ -9,7 +9,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { getPublicImageUrl } from "@/lib/image-url";
 import type { Umkm } from "@/lib/types";
 
-const PER_PAGE = 6;
+const PER_PAGE = 4;
 
 // ─── Inline Icons ────────────────────────────────────────────────────────────
 function IconClock() {
@@ -144,7 +144,7 @@ export function UmkmList({ umkm }: { umkm: Umkm[] }) {
                         </h2>
 
                         {/* Deskripsi */}
-                        <p className="mt-2 line-clamp-2 text-sm text-muted-foreground leading-relaxed">
+                        <p className="mt-2 line-clamp-2 text-sm text-muted-foreground leading-relaxed text-justify">
                           {u.deskripsi}
                         </p>
 

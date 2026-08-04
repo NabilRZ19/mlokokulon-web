@@ -40,6 +40,7 @@ export async function POST(request: Request) {
       link_gmaps = "",
       kontak,
       jam_operasional,
+      lokasi = null,
       produk_unggulan = [],
       foto_urls = [],
       foto_utama_url = null,
@@ -68,6 +69,7 @@ export async function POST(request: Request) {
       linkGmaps: link_gmaps,
       kontak,
       jamOperasional: jam_operasional,
+      lokasi: lokasi || null,
       fotoUtamaUrl: foto_utama_url || null,
     });
 

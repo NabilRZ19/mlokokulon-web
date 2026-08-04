@@ -2,14 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { PlaceholderNotice } from "@/components/ui/PlaceholderNotice";
 import { Reveal } from "@/components/ui/Reveal";
-import { SementaraTag } from "@/components/ui/SementaraTag";
 import { Stat } from "@/components/ui/Stat";
 import {
-  BookIcon,
   CompassIcon,
-  FlagIcon,
   MapPinIcon,
   SproutIcon,
   TargetIcon,
@@ -46,21 +42,10 @@ export default function ProfilPage() {
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 lg:grid-cols-3">
         {/* Kolom utama */}
         <div className="space-y-6 lg:col-span-2">
-          <Reveal mode="scroll" duration={0.6}>
-            <Card>
-              <h2 className="flex items-center gap-2 font-heading text-lg font-semibold text-foreground">
-                <BookIcon className="h-5 w-5 text-primary" /> Sejarah Desa
-              </h2>
-              <div className="mt-3">
-                <PlaceholderNotice>{p.sejarah}</PlaceholderNotice>
-              </div>
-            </Card>
-          </Reveal>
-
           {/* Visi & Misi Unified Section */}
           <Reveal mode="scroll" duration={0.6}>
             <Card>
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div className="flex items-center justify-between border-b border-border pb-3">
                   <div className="flex items-center gap-2">
                     <TargetIcon className="h-5 w-5 text-primary" />
@@ -68,51 +53,51 @@ export default function ProfilPage() {
                       Visi &amp; Misi
                     </h2>
                   </div>
-                  <span className="text-xs font-semibold text-muted-foreground">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-0.5 text-xs font-bold text-primary">
                     Kabupaten Wonogiri
                   </span>
                 </div>
 
                 {/* Statement Visi & Misi */}
-                <div className="space-y-4">
+                <div className="space-y-5">
                   {/* Visi */}
-                  <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
+                  <div className="rounded-xl border border-primary/25 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-5 shadow-xs">
                     <span className="text-xs font-bold uppercase tracking-wider text-primary">
-                      Visi Pembangunan
+                      Visi Pembangunan Kabupaten Wonogiri
                     </span>
-                    <p className="mt-1 font-heading text-base font-bold text-foreground leading-relaxed text-justify">
-                      {p.visi}
+                    <p className="mt-2 font-heading text-lg font-extrabold text-foreground leading-relaxed text-justify">
+                      &ldquo;{p.visi}&rdquo;
                     </p>
                   </div>
 
                   {/* Misi */}
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                      Misi Pembangunan
+                      Misi Pembangunan Kabupaten Wonogiri
                     </span>
-                    <ol className="space-y-2 text-sm text-foreground">
+                    <ol className="space-y-2.5 text-sm text-foreground">
                       {p.misi.map((m, i) => (
                         <li
                           key={i}
-                          className="flex items-start gap-2.5 rounded-md border border-border bg-card p-3 text-justify leading-relaxed"
+                          className="flex items-start gap-3 rounded-lg border border-border bg-card p-3.5 text-justify leading-relaxed shadow-xs transition-all hover:border-primary/30"
                         >
-                          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary font-heading text-xs font-bold text-white shadow-xs">
                             {i + 1}
                           </span>
-                          <span>{m}</span>
+                          <span className="pt-0.5 font-medium text-foreground">{m}</span>
                         </li>
                       ))}
                     </ol>
                   </div>
                 </div>
 
-                {/* Narasi Penyelarasan / Alignment */}
-                <div className="rounded-lg border border-border bg-muted/40 p-4 space-y-1.5">
+                {/* Narasi Penyelarasan / Alignment (Arahan Pemkab Wonogiri) */}
+                <div className="rounded-xl border border-border bg-muted/40 p-4 space-y-1.5">
                   <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
-                    Narasi Penyelarasan Kelurahan
+                    Narasi Penyelarasan Kelurahan Mlokomanis Kulon
                   </h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    Pemerintah Kelurahan Mlokomanis Kulon sepenuhnya menginduk dan menyelaraskan seluruh arah kebijakan tata kelola pemerintahan, pembangunan wilayah, dan pelayanan publik secara terpadu mengikuti Visi dan Misi Kabupaten Wonogiri demi terwujudnya masyarakat yang sejahtera, berdaya saing, dan berkelanjutan.
+                  <p className="text-xs text-muted-foreground leading-relaxed text-justify">
+                    Pemerintah Kelurahan Mlokomanis Kulon senantiasa melaksanakan tugas dan fungsi pelayanan publik serta pembangunan wilayah dengan merujuk dan mengikuti seluruh arahan, petunjuk teknis, serta kebijakan strategis dari Pemerintah Kabupaten Wonogiri guna mendukung terwujudnya visi Wonogiri yang maju, sejahtera, dan berkelanjutan.
                   </p>
                 </div>
               </div>
@@ -123,7 +108,6 @@ export default function ProfilPage() {
             <Card>
               <h2 className="flex items-center gap-2 font-heading text-lg font-semibold text-foreground">
                 <SproutIcon className="h-5 w-5 text-primary" /> Potensi Desa
-                <SementaraTag />
               </h2>
               <p className="mt-2 text-sm text-foreground">{p.potensi.catatanEkonomi}</p>
 
@@ -163,22 +147,29 @@ export default function ProfilPage() {
           <Card>
             <h2 className="flex items-center gap-2 font-heading text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               <UsersIcon className="h-4 w-4" /> Data Cepat
-              <SementaraTag />
             </h2>
             <div className="mt-4 grid grid-cols-2 gap-4">
+              <Stat label="Tahun Terbentuk" value={`${p.terbentuk}`} />
               <Stat label="Penduduk" value={p.demografi.totalJiwa.toLocaleString("id-ID")} />
               <Stat label="Kepala Keluarga" value={p.administratif.jumlahKk.toLocaleString("id-ID")} />
-              <Stat label="RW" value={`${p.administratif.jumlahRw}`} />
-              <Stat label="RT" value={`${p.administratif.jumlahRt}`} />
+              <Stat label="Wilayah RW" value={`${p.administratif.jumlahRw}`} />
             </div>
-            <dl className="mt-4 space-y-1 border-t border-border pt-3 text-sm text-foreground">
+            <dl className="mt-4 space-y-1.5 border-t border-border pt-3 text-sm text-foreground">
+              <div className="flex justify-between">
+                <dt className="text-muted-foreground">Tahun Terbentuk</dt>
+                <dd className="font-semibold text-foreground">{p.terbentuk}</dd>
+              </div>
               <div className="flex justify-between">
                 <dt className="text-muted-foreground">Jumlah Dusun</dt>
-                <dd>{p.administratif.jumlahDusun}</dd>
+                <dd className="font-semibold text-foreground">{p.administratif.jumlahDusun} Dusun</dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="text-muted-foreground">Jumlah RT</dt>
+                <dd className="font-semibold text-foreground">{p.administratif.jumlahRt} RT</dd>
               </div>
               <div className="flex justify-between">
                 <dt className="text-muted-foreground">Laki-laki / Perempuan</dt>
-                <dd>
+                <dd className="font-semibold text-foreground">
                   {p.demografi.lakiLaki.toLocaleString("id-ID")} /{" "}
                   {p.demografi.perempuan.toLocaleString("id-ID")}
                 </dd>
@@ -189,7 +180,6 @@ export default function ProfilPage() {
           <Card>
             <h2 className="flex items-center gap-2 font-heading text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               <MapPinIcon className="h-4 w-4" /> Letak Geografis
-              <SementaraTag />
             </h2>
             <dl className="mt-3 space-y-2 text-sm text-foreground">
               <div className="flex justify-between gap-2">
@@ -220,7 +210,6 @@ export default function ProfilPage() {
           <Card>
             <h2 className="flex items-center gap-2 font-heading text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               <CompassIcon className="h-4 w-4" /> Batas Wilayah
-              <SementaraTag />
             </h2>
             <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-foreground">
               <dt className="text-muted-foreground">Utara</dt>
