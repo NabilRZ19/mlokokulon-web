@@ -337,7 +337,7 @@ export const kampungKbData: KampungKb = {
       ],
     },
   ],
-  foto_highlight_url: "/images/placeholder-photo.svg",
+  foto_highlight_url: "/api/media/mlokokulon/media/47e4e67c-7c08-4666-bce6-d5dc95c1db49.webp",
 };
 
 // ============================================================

@@ -8,8 +8,9 @@ import { MapWilayah } from "@/components/ui/MapWilayah";
 import { Reveal } from "@/components/ui/Reveal";
 import { SproutIcon } from "@/components/ui/icons";
 import { getPublicImageUrl } from "@/lib/image-url";
+import { getKampungKbStore } from "@/lib/kampung-kb-store";
 import { getBeritaList, getGaleriList } from "@/lib/queries";
-import { kampungKbData as kb, kelurahanProfileData as p } from "@/lib/seed-data";
+import { kelurahanProfileData as p } from "@/lib/seed-data";
 import { SITE_NAME, pageOpenGraph } from "@/lib/seo";
 
 export const revalidate = 3600; // ISR 1 jam
@@ -125,6 +126,7 @@ const quickLinks = [
 ];
 
 export default async function Home() {
+  const kb = getKampungKbStore();
   const [beritaAll, galeriAll] = await Promise.all([getBeritaList(), getGaleriList()]);
 
   // Tampilkan hingga 9 berita di carousel homepage (3 slide × 3 card)
@@ -332,7 +334,7 @@ export default async function Home() {
               <div className="grid lg:grid-cols-12 items-stretch">
                 <div className="relative overflow-hidden bg-muted group lg:col-span-6 min-h-[260px] sm:min-h-[300px]">
                   <img
-                    src={kb.foto_highlight_url}
+                    src={getPublicImageUrl(kb.foto_highlight_url)}
                     alt={`Kampung KB ${kb.nama_program}`}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
