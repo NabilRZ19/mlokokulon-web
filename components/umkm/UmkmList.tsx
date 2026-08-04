@@ -9,9 +9,19 @@ import { Reveal } from "@/components/ui/Reveal";
 import { getPublicImageUrl } from "@/lib/image-url";
 import type { Umkm } from "@/lib/types";
 
-const PER_PAGE = 4;
+const PER_PAGE = 9;
 
 // ─── Inline Icons ────────────────────────────────────────────────────────────
+function IconMapPin() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75}
+      strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5 shrink-0 text-primary">
+      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  );
+}
+
 function IconClock() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}
@@ -132,10 +142,16 @@ export function UmkmList({ umkm }: { umkm: Umkm[] }) {
                     {/* Card Content */}
                     <div className="flex flex-1 flex-col justify-between p-5">
                       <div>
-                        {/* Jam Operasional */}
-                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-2">
-                          <IconClock />
-                          <span>{u.jam_operasional}</span>
+                        {/* Lokasi RT/RW & Jam Operasional */}
+                        <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground mb-2">
+                          <div className="flex items-center gap-1.5 font-bold text-primary">
+                            <IconMapPin />
+                            <span className="truncate max-w-[150px]">{u.lokasi || "Kelurahan Mlokomanis Kulon"}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <IconClock />
+                            <span>{u.jam_operasional}</span>
+                          </div>
                         </div>
 
                         {/* Nama Usaha */}

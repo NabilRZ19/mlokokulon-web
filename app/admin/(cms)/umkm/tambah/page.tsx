@@ -11,7 +11,7 @@ export default function TambahUmkmPage() {
 
   const [nama, setNama] = useState("");
   const [kategori, setKategori] = useState("Kuliner");
-  const [lokasi, setLokasi] = useState("RW 05 (Pencil)");
+  const [lokasi, setLokasi] = useState("");
   const [deskripsi, setDeskripsi] = useState("");
   const [linkGmaps, setLinkGmaps] = useState("");
   const [kontak, setKontak] = useState("");
@@ -211,25 +211,16 @@ export default function TambahUmkmPage() {
 
             <div>
               <label htmlFor="lokasi" className="mb-1 block text-sm font-bold text-foreground">
-                Lokasi Wilayah (RW / Dusun) <span className="text-destructive">*</span>
+                Lokasi / Alamat (Dusun, RT, RW) <span className="text-destructive">*</span>
               </label>
-              <select
+              <input
                 id="lokasi"
+                type="text"
                 value={lokasi}
                 onChange={(e) => setLokasi(e.target.value)}
-                className="w-full rounded-lg border border-border bg-card px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 font-semibold"
-              >
-                <option value="RW 01 (Mlokomanis)">RW 01 (Mlokomanis)</option>
-                <option value="RW 02 (Mlokomanis)">RW 02 (Mlokomanis)</option>
-                <option value="RW 03 (Mlokomanis)">RW 03 (Mlokomanis)</option>
-                <option value="RW 04 (Dawe)">RW 04 (Dawe)</option>
-                <option value="RW 05 (Pencil)">RW 05 (Pencil)</option>
-                <option value="RW 06 (Dawe)">RW 06 (Dawe)</option>
-                <option value="RW 07 (Sundelan)">RW 07 (Sundelan)</option>
-                <option value="RW 08 (Giyono)">RW 08 (Giyono)</option>
-                <option value="RW 09 (Soka)">RW 09 (Soka)</option>
-                <option value="RW 10 (Soka)">RW 10 (Soka)</option>
-              </select>
+                placeholder="Misal: Jaten RT 02/RW 06"
+                className="w-full rounded-lg border border-border bg-card px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+              />
             </div>
           </div>
 

@@ -115,6 +115,7 @@ async function main() {
       linkGmaps: u.link_gmaps,
       kontak: u.kontak,
       jamOperasional: u.jam_operasional,
+      lokasi: u.lokasi ?? null,
       fotoUtamaUrl: u.foto_utama_url ?? null,
     })),
   );

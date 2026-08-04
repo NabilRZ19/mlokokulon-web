@@ -133,18 +133,7 @@ export default async function LayananPage() {
           </div>
         </Reveal>
 
-        {/* ── Notice Tahap Pengumpulan Data ─────────────────────────────── */}
-        <Reveal mode="scroll" duration={0.6}>
-          <div className="flex items-start gap-3 rounded-xl border border-blue-200/80 bg-blue-50/60 p-4 text-sm text-blue-900 shadow-xs">
-            <IconInfo />
-            <div>
-              <p className="font-heading font-bold text-blue-950">Catatan Pembaruan Layanan:</p>
-              <p className="mt-0.5 text-xs text-blue-800 leading-relaxed text-justify">
-                Daftar rincian persyaratan di bawah ini memuat data pelayanan resmi kependudukan yang dapat dikelola secara mandiri oleh petugas CMS Kelurahan.
-              </p>
-            </div>
-          </div>
-        </Reveal>
+
 
         {/* ── Grid Daftar Layanan Resmi ───────────────────────────────────── */}
         <div className="grid gap-6 md:grid-cols-2">

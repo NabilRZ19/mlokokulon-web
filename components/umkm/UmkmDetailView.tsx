@@ -251,8 +251,10 @@ export function UmkmDetailView({ umkm }: { umkm: Umkm }) {
                   <div className="flex items-start gap-3">
                     <IconMapPin />
                     <div>
-                      <p className="text-xs font-medium text-muted-foreground">Wilayah Kelurahan</p>
-                      <p className="font-semibold text-foreground">Kelurahan Mlokomanis Kulon</p>
+                      <p className="text-xs font-medium text-muted-foreground">Lokasi / Alamat Usaha</p>
+                      <p className="font-bold text-foreground">
+                        {umkm.lokasi ? `${umkm.lokasi}, Kelurahan Mlokomanis Kulon` : "Kelurahan Mlokomanis Kulon"}
+                      </p>
                     </div>
                   </div>
                 </div>
