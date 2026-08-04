@@ -15,6 +15,9 @@ import { SITE_NAME, pageOpenGraph } from "@/lib/seo";
 
 export const revalidate = 3600; // ISR 1 jam
 
+// Foto kantor kelurahan di MinIO
+const heroFotoUrl = getPublicImageUrl("media/kantorkelurahan.png");
+
 const description =
   "Website resmi Kelurahan Mlokomanis Kulon, Kecamatan Ngadirojo, Kabupaten Wonogiri — info layanan publik, berita terbaru, wilayah RW, UMKM, dan program Kampung KB.";
 
@@ -142,12 +145,17 @@ export default async function Home() {
     <div className="bg-background">
       {/* ── 1. Hero (Biru Gradasi Signature — Page Load Animation) ────────── */}
       <Reveal mode="load" duration={0.65} distance={24}>
-        <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-[#0f172a] via-primary to-[#1e3a8a] py-20 text-white sm:py-28">
-          {/* Ambient Radial Background Glows */}
-          <div className="pointer-events-none absolute -left-20 -top-20 h-80 w-80 rounded-full bg-secondary/25 blur-3xl" />
-          <div className="pointer-events-none absolute -right-20 -bottom-20 h-96 w-96 rounded-full bg-accent/20 blur-3xl" />
+        <section className="relative overflow-hidden border-b border-border py-20 text-white sm:py-28">
+          {/* Foto Kantor Kelurahan — background penuh */}
+          <img
+            src={heroFotoUrl}
+            alt="Kantor Kelurahan Mlokomanis Kulon"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+          {/* Overlay gelap biar teks putih tetap terbaca */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a]/90 via-primary/80 to-[#1e3a8a]/70" />
 
-          <div className="relative mx-auto max-w-6xl px-4">
+          <div className="relative z-10 mx-auto max-w-6xl px-4">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1 text-xs font-medium tracking-wide text-white backdrop-blur-md shadow-sm mb-3">
               <span className="h-2 w-2 rounded-full bg-secondary animate-pulse" />
               <span>Website Resmi Pemerintah Kelurahan</span>
