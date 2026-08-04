@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Reveal } from "@/components/ui/Reveal";
-import { SementaraTag } from "@/components/ui/SementaraTag";
 import { Stat } from "@/components/ui/Stat";
 import {
   CompassIcon,
@@ -92,13 +91,13 @@ export default function ProfilPage() {
                   </div>
                 </div>
 
-                {/* Narasi Penyelarasan / Alignment */}
+                {/* Narasi Penyelarasan / Alignment (Arahan Pemkab Wonogiri) */}
                 <div className="rounded-xl border border-border bg-muted/40 p-4 space-y-1.5">
                   <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
                     Narasi Penyelarasan Kelurahan Mlokomanis Kulon
                   </h3>
                   <p className="text-xs text-muted-foreground leading-relaxed text-justify">
-                    Pemerintah Kelurahan Mlokomanis Kulon sepenuhnya menginduk dan menyelaraskan seluruh arah kebijakan tata kelola pemerintahan, pembangunan wilayah, dan pelayanan publik secara terpadu mengikuti Visi dan Misi Kabupaten Wonogiri demi terwujudnya masyarakat yang sejahtera, berdaya saing, dan berkelanjutan.
+                    Pemerintah Kelurahan Mlokomanis Kulon senantiasa melaksanakan tugas dan fungsi pelayanan publik serta pembangunan wilayah dengan merujuk dan mengikuti seluruh arahan, petunjuk teknis, serta kebijakan strategis dari Pemerintah Kabupaten Wonogiri guna mendukung terwujudnya visi Wonogiri yang maju, sejahtera, dan berkelanjutan.
                   </p>
                 </div>
               </div>
@@ -109,7 +108,6 @@ export default function ProfilPage() {
             <Card>
               <h2 className="flex items-center gap-2 font-heading text-lg font-semibold text-foreground">
                 <SproutIcon className="h-5 w-5 text-primary" /> Potensi Desa
-                <SementaraTag />
               </h2>
               <p className="mt-2 text-sm text-foreground">{p.potensi.catatanEkonomi}</p>
 
@@ -149,7 +147,6 @@ export default function ProfilPage() {
           <Card>
             <h2 className="flex items-center gap-2 font-heading text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               <UsersIcon className="h-4 w-4" /> Data Cepat
-              <SementaraTag />
             </h2>
             <div className="mt-4 grid grid-cols-2 gap-4">
               <Stat label="Tahun Terbentuk" value={`${p.terbentuk}`} />
@@ -183,7 +180,6 @@ export default function ProfilPage() {
           <Card>
             <h2 className="flex items-center gap-2 font-heading text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               <MapPinIcon className="h-4 w-4" /> Letak Geografis
-              <SementaraTag />
             </h2>
             <dl className="mt-3 space-y-2 text-sm text-foreground">
               <div className="flex justify-between gap-2">
@@ -214,7 +210,6 @@ export default function ProfilPage() {
           <Card>
             <h2 className="flex items-center gap-2 font-heading text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               <CompassIcon className="h-4 w-4" /> Batas Wilayah
-              <SementaraTag />
             </h2>
             <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-foreground">
               <dt className="text-muted-foreground">Utara</dt>

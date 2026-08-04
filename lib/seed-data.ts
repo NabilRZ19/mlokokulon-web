@@ -197,22 +197,10 @@ export interface KontakPerangkatItem {
 // [DATA MENYUSUL] — kontak riil perangkat belum ada, ini dummy struktur.
 export const kontakPerangkatData: KontakPerangkatItem[] = [
   {
-    jabatan: "Lurah",
-    nama: "(Nama Lurah — Dummy)",
-    whatsapp: "0800-0000-0001",
-    jamLayanan: "Senin–Jumat, 08.00–15.00",
-  },
-  {
-    jabatan: "Sekretaris Kelurahan",
-    nama: "(Nama Sekretaris — Dummy)",
-    whatsapp: "0800-0000-0002",
-    jamLayanan: "Senin–Jumat, 08.00–15.00",
-  },
-  {
-    jabatan: "Staff Kelurahan",
-    nama: "(Nama Staff — Dummy)",
-    whatsapp: "0800-0000-0003",
-    jamLayanan: "Senin–Jumat, 08.00–15.00",
+    jabatan: "Hotline Kelurahan",
+    nama: "Pelayanan Publik Kelurahan Mlokomanis Kulon",
+    whatsapp: "085183184314",
+    jamLayanan: "Senin–Kamis 07.00–15.30 WIB, Jumat 07.00–11.00 WIB",
   },
 ];
 
@@ -491,14 +479,14 @@ export const rwSeed: Rw[] = dusunList.map((nama, i) => {
     is_kampung_kb: i === KAMPUNG_KB_INDEX,
     deskripsi_singkat: deskripsiRwMap[id],
     struktur_pengurus: pengurusRwMap[id] || [
-      { nama: `(Ketua RW ${nama} — Dummy)`, jabatan: "Ketua RW" },
-      { nama: `(Sekretaris RW ${nama} — Dummy)`, jabatan: "Sekretaris" },
+      { nama: "Data belum diberikan oleh pihak terkait", jabatan: "Ketua RW" },
+      { nama: "Data belum diberikan oleh pihak terkait", jabatan: "Sekretaris" },
     ],
     statistik: {
       jumlah_kk: statistikKkMap[id] ?? kkPerRw[i],
       jumlah_jiwa: statistikJiwaMap[id] ?? jiwaPerRw[i],
     },
-    potensi: potensiMap[id] ?? "[DATA MENYUSUL] — potensi spesifik RW ini belum dikonfirmasi.",
+    potensi: potensiMap[id] ?? "Data belum diberikan oleh pihak terkait",
   };
 });
 

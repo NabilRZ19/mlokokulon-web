@@ -84,13 +84,13 @@ export default async function RwDetailPage({ params }: { params: Promise<{ rwId:
             </div>
 
             <div className="mt-4 leading-relaxed text-sm text-foreground/90 font-sans">
-              {rw.deskripsi_singkat ? (
+              {rw.deskripsi_singkat && !rw.deskripsi_singkat.includes("[DATA MENYUSUL]") ? (
                 <p className="whitespace-pre-line text-base sm:text-base leading-relaxed text-justify">
                   {rw.deskripsi_singkat}
                 </p>
               ) : (
                 <PlaceholderNotice>
-                  {`[DATA MENYUSUL] Wilayah ${rw.nama_rw} mencakup Dusun ${rw.cakupan_dusun} dengan ${rw.jumlah_rt} RT, berfokus pada pelayanan warga dan pengembangan potensi wilayah.`}
+                  Data belum diberikan oleh pihak terkait.
                 </PlaceholderNotice>
               )}
             </div>
@@ -124,7 +124,7 @@ export default async function RwDetailPage({ params }: { params: Promise<{ rwId:
                   </p>
                 </div>
               ) : (
-                <PlaceholderNotice>{rw.potensi}</PlaceholderNotice>
+                <PlaceholderNotice>Data belum diberikan oleh pihak terkait.</PlaceholderNotice>
               )}
             </div>
           </Card>
