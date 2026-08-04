@@ -2,11 +2,42 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
-import { ImageCropperModal } from "@/components/admin/ImageCropperModal";
 import { compressImage } from "@/lib/image-compression";
 import { getPublicImageUrl } from "@/lib/image-url";
 import { scrollToFirstError } from "@/lib/form-scroll";
 import type { KampungKb, KampungKbPokja } from "@/lib/types";
+
+function FieldLabel({
+  htmlFor,
+  children,
+  required,
+  size = "md",
+}: {
+  htmlFor: string;
+  children: React.ReactNode;
+  required?: boolean;
+  size?: "md" | "sm";
+}) {
+  const sizeClasses =
+    size === "sm"
+      ? "text-xs font-bold uppercase tracking-wider text-muted-foreground"
+      : "text-sm font-bold text-foreground";
+
+  return (
+    <label htmlFor={htmlFor} className={`mb-1.5 block ${sizeClasses}`}>
+      {children}
+      {required && <span className="ml-1 text-destructive font-bold">*</span>}
+    </label>
+  );
+}
+
+function inputClass(hasError?: boolean) {
+  return `w-full rounded-lg border ${
+    hasError ? "border-destructive ring-1 ring-destructive/40" : "border-border"
+  } bg-card px-3.5 py-2.5 text-sm font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all`;
+}
+
+const DEFAULT_RW_REF = "rw-05";
 
 export default function PengaturanKampungKbPage() {
   const [loading, setLoading] = useState(true);
@@ -15,22 +46,22 @@ export default function PengaturanKampungKbPage() {
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   // Form states
+  const [rwRef, setRwRef] = useState(DEFAULT_RW_REF);
   const [namaProgram, setNamaProgram] = useState("");
   const [ketua, setKetua] = useState("");
   const [skTahun, setSkTahun] = useState("2023");
   const [deskripsiProgram, setDeskripsiProgram] = useState("");
-  const [fotoHighlightUrl, setFotoHighlightUrl] = useState<string | null>(null);
 
   // Lists
   const [fungsiList, setFungsiList] = useState<string[]>([]);
   const [pengurusInti, setPengurusInti] = useState<Array<{ jabatan: string; nama: string }>>([]);
   const [pokjaList, setPokjaList] = useState<KampungKbPokja[]>([]);
 
-  // Image Upload & Crop
-  const [rawImage, setRawImage] = useState<string | null>(null);
-  const [cropperOpen, setCropperOpen] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [uploadError, setUploadError] = useState<string | null>(null);
+  // Foto Highlight Upload (langsung upload, tanpa crop — foto lanskap, bukan pasfoto)
+  const [fotoUrl, setFotoUrl] = useState<string | null>(null);
+  const [fotoPreview, setFotoPreview] = useState<string | null>(null);
+  const [fotoUploading, setFotoUploading] = useState(false);
+  const [fotoError, setFotoError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -40,11 +71,13 @@ export default function PengaturanKampungKbPage() {
         if (!res.ok) throw new Error("Gagal memuat pengaturan Kampung KB.");
         const data: KampungKb = await res.json();
 
+        setRwRef(data.rw_ref || DEFAULT_RW_REF);
         setNamaProgram(data.nama_program || "");
         setKetua(data.ketua || "");
         setSkTahun(data.sk_tahun || "2023");
         setDeskripsiProgram(data.deskripsi_program || "");
-        setFotoHighlightUrl(data.foto_highlight_url || null);
+        setFotoUrl(data.foto_highlight_url || null);
+        setFotoPreview(data.foto_highlight_url ? getPublicImageUrl(data.foto_highlight_url) : null);
         setFungsiList(data.fungsi || []);
         setPengurusInti(data.pengurus_inti || []);
         setPokjaList(data.pokja || []);
@@ -57,24 +90,17 @@ export default function PengaturanKampungKbPage() {
     fetchData();
   }, []);
 
-  // ── Image Handlers ──────────────────────────────────────────────────────────
-  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const selected = e.target.files?.[0];
-    if (!selected) return;
-    const rawUrl = URL.createObjectURL(selected);
-    setRawImage(rawUrl);
-    setCropperOpen(true);
-    if (e.target) e.target.value = "";
-  }
+  // ── Foto Highlight Handlers ──────────────────────────────────────────────
+  async function handleFotoChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  async function handleCropComplete(croppedBlob: Blob, previewUrl: string) {
-    setFotoHighlightUrl(previewUrl);
-    setUploadError(null);
-    setUploading(true);
+    setFotoPreview(URL.createObjectURL(file));
+    setFotoError(null);
+    setFotoUploading(true);
 
     try {
-      const croppedFile = new File([croppedBlob], "kampung-kb-crop.webp", { type: "image/webp" });
-      const compressed = await compressImage(croppedFile);
+      const compressed = await compressImage(file);
       const fd = new FormData();
       fd.append("file", compressed, compressed.name);
 
@@ -82,12 +108,20 @@ export default function PengaturanKampungKbPage() {
       if (!res.ok) throw new Error("Upload foto gagal.");
 
       const data = await res.json();
-      setFotoHighlightUrl(data.url);
+      setFotoUrl(data.url);
     } catch (err) {
-      setUploadError(err instanceof Error ? err.message : "Upload gagal.");
+      setFotoError(err instanceof Error ? err.message : "Upload foto gagal.");
     } finally {
-      setUploading(false);
+      setFotoUploading(false);
+      if (e.target) e.target.value = "";
     }
+  }
+
+  function handleRemoveFoto() {
+    setFotoUrl(null);
+    setFotoPreview(null);
+    setFotoError(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
   // ── Tujuan/Fungsi Handlers ─────────────────────────────────────────
@@ -171,15 +205,21 @@ export default function PengaturanKampungKbPage() {
       return;
     }
 
+    if (fotoUploading) {
+      setError("Tunggu hingga foto highlight selesai diupload sebelum menyimpan.");
+      scrollToFirstError(["fotoArea"]);
+      return;
+    }
+
     setSubmitting(true);
     try {
       const payload: KampungKb = {
-        rw_ref: "rw-05",
+        rw_ref: rwRef,
         nama_program: namaProgram.trim(),
         ketua: ketua.trim(),
         sk_tahun: skTahun.trim(),
         deskripsi_program: deskripsiProgram.trim(),
-        foto_highlight_url: fotoHighlightUrl || "",
+        foto_highlight_url: fotoUrl || "",
         fungsi: fungsiList.filter((f) => f.trim().length > 0),
         pengurus_inti: pengurusInti.filter((p) => p.nama.trim().length > 0),
         pokja: pokjaList,
@@ -214,339 +254,409 @@ export default function PengaturanKampungKbPage() {
   }
 
   return (
-    <div className="max-w-4xl space-y-6">
+    <div className="max-w-4xl">
       <AdminPageHeader title="Pengaturan Kampung KB" />
-      <p className="-mt-4 text-xs text-muted-foreground">
+      <p className="mb-4 text-xs text-muted-foreground font-medium">
         Kelola informasi program Kampung KB (foto highlight, tujuan, pengurus inti, &amp; pokja) yang tampil pada website utama.
       </p>
 
       {error && (
-        <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive font-medium">
+        <div className="mb-4 rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive font-medium">
           {error}
         </div>
       )}
 
       {successMsg && (
-        <div className="rounded-lg border border-emerald-300 bg-emerald-50 p-4 text-sm text-emerald-800 font-bold">
+        <div className="mb-4 rounded-lg border border-emerald-300 bg-emerald-50 p-3 text-sm text-emerald-800 font-bold">
           ✓ {successMsg}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={handleSubmit} noValidate className="space-y-6">
         {/* Card 1: Informasi Umum & Header Foto */}
-        <div className="rounded-xl border border-border bg-card p-6 shadow-2xs space-y-5">
-          <h2 className="font-heading text-base font-bold text-foreground border-b border-border pb-3">
-            1. Informasi Umum &amp; Foto Highlight
-          </h2>
+        <section className="rounded-xl border border-border bg-card p-6 sm:p-8 shadow-sm space-y-6">
+          <div className="border-b border-border pb-4">
+            <h2 className="font-heading text-lg font-extrabold text-foreground">
+              1. Informasi Umum &amp; Foto Highlight
+            </h2>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Nama program, ketua pelaksana, tahun SK, dan foto utama yang tampil di halaman Kampung KB.
+            </p>
+          </div>
 
           <div className="grid gap-5 sm:grid-cols-2">
             <div>
-              <label htmlFor="namaProgram" className="block text-xs font-bold text-foreground">
-                Nama Program Kampung KB <span className="text-destructive">*</span>
-              </label>
+              <FieldLabel htmlFor="namaProgram" required>
+                Nama Program Kampung KB
+              </FieldLabel>
               <input
                 id="namaProgram"
                 type="text"
                 value={namaProgram}
                 onChange={(e) => setNamaProgram(e.target.value)}
                 placeholder="mis. Guyub Hanyawiji"
-                className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-hidden"
+                className={inputClass()}
               />
             </div>
 
             <div>
-              <label htmlFor="ketua" className="block text-xs font-bold text-foreground">
-                Ketua Pelaksana <span className="text-destructive">*</span>
-              </label>
+              <FieldLabel htmlFor="ketua" required>
+                Ketua Pelaksana
+              </FieldLabel>
               <input
                 id="ketua"
                 type="text"
                 value={ketua}
                 onChange={(e) => setKetua(e.target.value)}
                 placeholder="mis. Mujiono, S.Pd.I., M.Pd.I."
-                className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-hidden"
+                className={inputClass()}
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="skTahun" className="block text-xs font-bold text-foreground">
-              Tahun SK Penetapan Kelurahan
-            </label>
+            <FieldLabel htmlFor="skTahun">Tahun SK Penetapan Kelurahan</FieldLabel>
             <input
               id="skTahun"
               type="text"
               value={skTahun}
               onChange={(e) => setSkTahun(e.target.value)}
               placeholder="mis. 2023"
-              className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-hidden"
+              className={inputClass()}
             />
           </div>
 
           <div>
-            <label htmlFor="deskripsiProgram" className="block text-xs font-bold text-foreground">
-              Deskripsi Utama Program <span className="text-destructive">*</span>
-            </label>
+            <FieldLabel htmlFor="deskripsiProgram" required>
+              Deskripsi Utama Program
+            </FieldLabel>
             <textarea
               id="deskripsiProgram"
               rows={4}
               value={deskripsiProgram}
               onChange={(e) => setDeskripsiProgram(e.target.value)}
               placeholder="Tuliskan deskripsi lengkap Kampung KB..."
-              className="mt-1 w-full rounded-md border border-input bg-background p-3 text-sm text-foreground focus:border-primary focus:outline-hidden"
+              className={`${inputClass()} resize-y`}
             />
           </div>
 
-          {/* Upload Foto Highlight */}
+          {/* Upload Foto Highlight — upload langsung + kompresi, tanpa crop paksa (foto lanskap) */}
           <div id="fotoArea">
-            <label className="block text-xs font-bold text-foreground mb-1">
-              Foto Highlight Utama
-            </label>
-            {fotoHighlightUrl ? (
-              <div className="relative overflow-hidden rounded-xl border border-border bg-muted max-w-lg">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={getPublicImageUrl(fotoHighlightUrl)}
-                  alt="Preview Highlight"
-                  className="h-48 w-full object-cover"
-                />
+            <FieldLabel htmlFor="fotoInput">Foto Highlight Utama</FieldLabel>
+
+            <input
+              ref={fileInputRef}
+              id="fotoInput"
+              type="file"
+              accept="image/*,.heic,.heif"
+              className="hidden"
+              onChange={handleFotoChange}
+            />
+
+            <div
+              className={`relative flex min-h-[200px] overflow-hidden flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed transition-all ${
+                fotoError ? "border-destructive/60 bg-destructive/5" : "border-border hover:border-primary/50 hover:bg-primary/5"
+              }`}
+            >
+              {fotoPreview ? (
+                <div className="relative w-full p-2 flex flex-col items-center">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={fotoPreview}
+                    alt="Preview Foto Highlight"
+                    className="max-h-64 w-full rounded-lg object-cover bg-black/5"
+                  />
+                  {fotoUploading && (
+                    <div className="absolute bottom-4 left-4 right-4 flex items-center justify-center gap-2 rounded-lg bg-black/75 px-4 py-2.5 text-xs font-semibold text-white backdrop-blur-md shadow-md animate-pulse">
+                      <svg className="h-4 w-4 animate-spin text-white" viewBox="0 0 24 24" fill="none">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      <span>Mengompres &amp; mengupload foto…</span>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => e.key === "Enter" && fileInputRef.current?.click()}
+                  className="flex w-full cursor-pointer flex-col items-center justify-center gap-3 p-8"
+                >
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}
+                      strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+                      <rect x="3.5" y="4.5" width="17" height="15" rx="1.5" />
+                      <circle cx="8.5" cy="9.5" r="1.5" />
+                      <path d="m5 17 4.5-5 3 3.5L16 11l4 5" />
+                    </svg>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-sm font-bold text-foreground">Klik untuk upload foto highlight</p>
+                    <p className="mt-0.5 text-xs text-muted-foreground">JPG, PNG, WebP, dikompresi otomatis (maks 500 KB)</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {fotoError && <p className="mt-1 text-xs text-destructive font-semibold">{fotoError}</p>}
+
+            {fotoPreview && (
+              <div className="mt-2 flex items-center gap-3">
                 <button
                   type="button"
-                  onClick={() => setFotoHighlightUrl(null)}
-                  className="absolute top-2 right-2 rounded-full bg-black/60 px-3 py-1 text-xs font-bold text-white hover:bg-destructive"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="text-xs font-bold text-primary hover:underline"
                 >
                   Ganti Foto
                 </button>
-              </div>
-            ) : (
-              <div
-                onClick={() => fileInputRef.current?.click()}
-                className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-border p-6 text-center cursor-pointer hover:border-primary hover:bg-primary/5 transition-colors"
-              >
-                <p className="text-xs font-bold text-foreground">Klik untuk upload foto highlight</p>
-                <p className="text-[11px] text-muted-foreground mt-1">Format WEBP/JPG, maks 5MB</p>
+                <span className="text-muted-foreground">•</span>
+                <button
+                  type="button"
+                  onClick={handleRemoveFoto}
+                  className="text-xs font-bold text-destructive hover:underline"
+                >
+                  Hapus Foto
+                </button>
               </div>
             )}
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleFileChange}
-            />
-            {uploading && <p className="mt-1 text-xs text-primary font-bold">Mengompres &amp; mengupload foto…</p>}
-            {uploadError && <p className="mt-1 text-xs text-destructive">{uploadError}</p>}
           </div>
-        </div>
+        </section>
 
         {/* Card 2: Tujuan Program */}
-        <div className="rounded-xl border border-border bg-card p-6 shadow-2xs space-y-4">
-          <div className="flex items-center justify-between border-b border-border pb-3">
-            <h2 className="font-heading text-base font-bold text-foreground">
-              2. Tujuan Program Kampung KB
-            </h2>
+        <section className="rounded-xl border border-border bg-card p-6 sm:p-8 shadow-sm space-y-4">
+          <div className="flex items-center justify-between border-b border-border pb-4">
+            <div>
+              <h2 className="font-heading text-lg font-extrabold text-foreground">
+                2. Tujuan Program Kampung KB
+              </h2>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Format <span className="font-bold text-foreground">Judul Tujuan: Keterangan penjelas</span> agar judul di-bold otomatis.
+              </p>
+            </div>
             <button
               type="button"
               onClick={handleAddFungsi}
-              className="rounded-md bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800 hover:bg-emerald-200"
+              className="shrink-0 rounded-lg border border-border bg-muted px-3.5 py-1.5 text-xs font-bold text-foreground transition-colors hover:bg-primary/10 hover:text-primary"
             >
               + Tambah Tujuan
             </button>
           </div>
 
-          <p className="text-xs text-muted-foreground">
-            Gunakan format <span className="font-bold text-foreground">Judul Tujuan: Keterangan penjelas</span> agar judul di-bold otomatis di halaman utama.
-          </p>
-
           <div className="space-y-3">
-            {fungsiList.map((item, idx) => (
-              <div key={idx} className="flex items-center gap-2">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-800">
-                  {idx + 1}
-                </span>
-                <input
-                  type="text"
-                  value={item}
-                  onChange={(e) => handleFungsiChange(idx, e.target.value)}
-                  className="flex-1 rounded-md border border-input bg-background px-3 py-1.5 text-sm text-foreground focus:border-primary focus:outline-hidden"
-                />
-                <button
-                  type="button"
-                  onClick={() => handleRemoveFungsi(idx)}
-                  className="rounded-md border border-destructive/30 px-2.5 py-1 text-xs font-bold text-destructive hover:bg-destructive/10"
-                >
-                  Hapus
-                </button>
-              </div>
-            ))}
+            {fungsiList.length === 0 ? (
+              <p className="rounded-lg border border-dashed border-border py-6 text-center text-xs text-muted-foreground">
+                Belum ada tujuan program. Klik &quot;+ Tambah Tujuan&quot; untuk menambahkan.
+              </p>
+            ) : (
+              fungsiList.map((item, idx) => (
+                <div key={idx} className="flex items-center gap-2">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-800">
+                    {idx + 1}
+                  </span>
+                  <input
+                    type="text"
+                    value={item}
+                    onChange={(e) => handleFungsiChange(idx, e.target.value)}
+                    className={inputClass()}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveFungsi(idx)}
+                    className="shrink-0 rounded-lg border border-destructive/30 px-3 py-2 text-xs font-bold text-destructive hover:bg-destructive/10"
+                  >
+                    Hapus
+                  </button>
+                </div>
+              ))
+            )}
           </div>
-        </div>
+        </section>
 
         {/* Card 3: Pengurus Inti */}
-        <div className="rounded-xl border border-border bg-card p-6 shadow-2xs space-y-4">
-          <div className="flex items-center justify-between border-b border-border pb-3">
-            <h2 className="font-heading text-base font-bold text-foreground">
-              3. Pengurus Inti
-            </h2>
+        <section className="rounded-xl border border-border bg-card p-6 sm:p-8 shadow-sm space-y-4">
+          <div className="flex items-center justify-between border-b border-border pb-4">
+            <div>
+              <h2 className="font-heading text-lg font-extrabold text-foreground">3. Pengurus Inti</h2>
+              <p className="text-xs text-muted-foreground mt-0.5">Susunan penasehat, penanggung jawab, sekretaris, &amp; bendahara.</p>
+            </div>
             <button
               type="button"
               onClick={handleAddPengurus}
-              className="rounded-md bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800 hover:bg-emerald-200"
+              className="shrink-0 rounded-lg border border-border bg-muted px-3.5 py-1.5 text-xs font-bold text-foreground transition-colors hover:bg-primary/10 hover:text-primary"
             >
               + Tambah Pengurus
             </button>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            {pengurusInti.map((p, idx) => (
-              <div key={idx} className="rounded-lg border border-border p-3 space-y-2 bg-muted/20">
-                <div className="flex justify-between items-center">
-                  <span className="text-[11px] font-bold text-muted-foreground">Pengurus #{idx + 1}</span>
-                  <button
-                    type="button"
-                    onClick={() => handleRemovePengurus(idx)}
-                    className="text-xs font-bold text-destructive hover:underline"
-                  >
-                    Hapus
-                  </button>
+          {pengurusInti.length === 0 ? (
+            <p className="rounded-lg border border-dashed border-border py-6 text-center text-xs text-muted-foreground">
+              Belum ada pengurus inti. Klik &quot;+ Tambah Pengurus&quot; untuk menambahkan.
+            </p>
+          ) : (
+            <div className="grid gap-4 sm:grid-cols-2">
+              {pengurusInti.map((p, idx) => (
+                <div key={idx} className="rounded-lg border border-border p-3 space-y-2 bg-muted/20">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[11px] font-bold text-muted-foreground">Pengurus #{idx + 1}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemovePengurus(idx)}
+                      className="text-xs font-bold text-destructive hover:underline"
+                    >
+                      Hapus
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    value={p.jabatan}
+                    onChange={(e) => handlePengurusChange(idx, "jabatan", e.target.value)}
+                    placeholder="Jabatan"
+                    className={`${inputClass()} py-1.5 font-bold`}
+                  />
+                  <input
+                    type="text"
+                    value={p.nama}
+                    onChange={(e) => handlePengurusChange(idx, "nama", e.target.value)}
+                    placeholder="Nama Lengkap"
+                    className={`${inputClass()} py-1.5`}
+                  />
                 </div>
-                <input
-                  type="text"
-                  value={p.jabatan}
-                  onChange={(e) => handlePengurusChange(idx, "jabatan", e.target.value)}
-                  placeholder="Jabatan"
-                  className="w-full rounded-md border border-input bg-background px-3 py-1.5 text-xs font-bold text-foreground"
-                />
-                <input
-                  type="text"
-                  value={p.nama}
-                  onChange={(e) => handlePengurusChange(idx, "nama", e.target.value)}
-                  placeholder="Nama Lengkap"
-                  className="w-full rounded-md border border-input bg-background px-3 py-1.5 text-xs text-foreground"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+              ))}
+            </div>
+          )}
+        </section>
 
         {/* Card 4: Pokja (Kelompok Kerja) */}
-        <div className="rounded-xl border border-border bg-card p-6 shadow-2xs space-y-4">
-          <div className="flex items-center justify-between border-b border-border pb-3">
-            <h2 className="font-heading text-base font-bold text-foreground">
-              4. Kelompok Kerja (Pokja)
-            </h2>
+        <section className="rounded-xl border border-border bg-card p-6 sm:p-8 shadow-sm space-y-4">
+          <div className="flex items-center justify-between border-b border-border pb-4">
+            <div>
+              <h2 className="font-heading text-lg font-extrabold text-foreground">4. Kelompok Kerja (Pokja)</h2>
+              <p className="text-xs text-muted-foreground mt-0.5">Daftar pokja beserta program kerja masing-masing.</p>
+            </div>
             <button
               type="button"
               onClick={handleAddPokja}
-              className="rounded-md bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800 hover:bg-emerald-200"
+              className="shrink-0 rounded-lg border border-border bg-muted px-3.5 py-1.5 text-xs font-bold text-foreground transition-colors hover:bg-primary/10 hover:text-primary"
             >
               + Tambah Pokja
             </button>
           </div>
 
-          <div className="space-y-5">
-            {pokjaList.map((pokja, pokjaIdx) => (
-              <div key={pokjaIdx} className="rounded-xl border border-emerald-200/80 bg-emerald-50/20 p-4 space-y-3">
-                <div className="flex items-center justify-between border-b border-emerald-200 pb-2">
-                  <span className="text-xs font-extrabold text-emerald-900">Pokja #{pokjaIdx + 1}</span>
-                  <button
-                    type="button"
-                    onClick={() => handleRemovePokja(pokjaIdx)}
-                    className="text-xs font-bold text-destructive hover:underline"
-                  >
-                    Hapus Pokja
-                  </button>
-                </div>
-
-                <div className="grid gap-3 sm:grid-cols-3">
-                  <div>
-                    <label className="block text-[11px] font-bold text-foreground">Nama Pokja</label>
-                    <input
-                      type="text"
-                      value={pokja.nama}
-                      onChange={(e) => handlePokjaMetaChange(pokjaIdx, "nama", e.target.value)}
-                      className="mt-1 w-full rounded-md border border-input bg-background px-3 py-1 text-xs font-bold text-foreground"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-bold text-foreground">Ketua Pokja</label>
-                    <input
-                      type="text"
-                      value={pokja.ketua}
-                      onChange={(e) => handlePokjaMetaChange(pokjaIdx, "ketua", e.target.value)}
-                      className="mt-1 w-full rounded-md border border-input bg-background px-3 py-1 text-xs text-foreground"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-bold text-foreground">Anggota Pokja</label>
-                    <input
-                      type="text"
-                      value={pokja.anggota}
-                      onChange={(e) => handlePokjaMetaChange(pokjaIdx, "anggota", e.target.value)}
-                      className="mt-1 w-full rounded-md border border-input bg-background px-3 py-1 text-xs text-foreground"
-                    />
-                  </div>
-                </div>
-
-                {/* Program Kerja Items */}
-                <div className="pt-2">
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="text-[11px] font-bold text-foreground">Daftar Program Kerja</label>
+          {pokjaList.length === 0 ? (
+            <p className="rounded-lg border border-dashed border-border py-6 text-center text-xs text-muted-foreground">
+              Belum ada pokja. Klik &quot;+ Tambah Pokja&quot; untuk menambahkan.
+            </p>
+          ) : (
+            <div className="space-y-5">
+              {pokjaList.map((pokja, pokjaIdx) => (
+                <div key={pokjaIdx} className="rounded-xl border border-emerald-200/80 bg-emerald-50/20 p-4 space-y-3">
+                  <div className="flex items-center justify-between border-b border-emerald-200 pb-2">
+                    <span className="text-xs font-extrabold text-emerald-900">Pokja #{pokjaIdx + 1}</span>
                     <button
                       type="button"
-                      onClick={() => handleAddPokjaProgram(pokjaIdx)}
-                      className="text-xs font-bold text-emerald-800 hover:underline"
+                      onClick={() => handleRemovePokja(pokjaIdx)}
+                      className="text-xs font-bold text-destructive hover:underline"
                     >
-                      + Tambah Program
+                      Hapus Pokja
                     </button>
                   </div>
-                  <div className="space-y-2">
-                    {pokja.program.map((progItem, progIdx) => (
-                      <div key={progIdx} className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-emerald-700">•</span>
-                        <input
-                          type="text"
-                          value={progItem}
-                          onChange={(e) => handlePokjaProgramChange(pokjaIdx, progIdx, e.target.value)}
-                          className="flex-1 rounded-md border border-input bg-background px-3 py-1 text-xs text-foreground"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => handleRemovePokjaProgram(pokjaIdx, progIdx)}
-                          className="text-xs font-bold text-destructive hover:underline"
-                        >
-                          Hapus
-                        </button>
-                      </div>
-                    ))}
+
+                  <div className="grid gap-3 sm:grid-cols-3">
+                    <div>
+                      <label className="mb-1 block text-[11px] font-bold text-foreground">Nama Pokja</label>
+                      <input
+                        type="text"
+                        value={pokja.nama}
+                        onChange={(e) => handlePokjaMetaChange(pokjaIdx, "nama", e.target.value)}
+                        className={`${inputClass()} py-1.5 font-bold`}
+                      />
+                    </div>
+                    <div>
+                      <label className="mb-1 block text-[11px] font-bold text-foreground">Ketua Pokja</label>
+                      <input
+                        type="text"
+                        value={pokja.ketua}
+                        onChange={(e) => handlePokjaMetaChange(pokjaIdx, "ketua", e.target.value)}
+                        className={`${inputClass()} py-1.5`}
+                      />
+                    </div>
+                    <div>
+                      <label className="mb-1 block text-[11px] font-bold text-foreground">Anggota Pokja</label>
+                      <input
+                        type="text"
+                        value={pokja.anggota}
+                        onChange={(e) => handlePokjaMetaChange(pokjaIdx, "anggota", e.target.value)}
+                        className={`${inputClass()} py-1.5`}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Program Kerja Items */}
+                  <div className="pt-2">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-[11px] font-bold text-foreground">Daftar Program Kerja</label>
+                      <button
+                        type="button"
+                        onClick={() => handleAddPokjaProgram(pokjaIdx)}
+                        className="text-xs font-bold text-emerald-800 hover:underline"
+                      >
+                        + Tambah Program
+                      </button>
+                    </div>
+                    <div className="space-y-2">
+                      {pokja.program.map((progItem, progIdx) => (
+                        <div key={progIdx} className="flex items-center gap-2">
+                          <span className="text-xs font-bold text-emerald-700">•</span>
+                          <input
+                            type="text"
+                            value={progItem}
+                            onChange={(e) => handlePokjaProgramChange(pokjaIdx, progIdx, e.target.value)}
+                            className={`${inputClass()} py-1.5`}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleRemovePokjaProgram(pokjaIdx, progIdx)}
+                            className="shrink-0 text-xs font-bold text-destructive hover:underline"
+                          >
+                            Hapus
+                          </button>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
+              ))}
+            </div>
+          )}
+        </section>
 
-        {/* Tombol Simpan */}
-        <div className="flex items-center gap-4 pt-2">
+        {/* Sticky Bottom Action Bar */}
+        <div className="sticky bottom-4 z-20 flex items-center justify-between rounded-xl border border-border bg-card/95 p-4 shadow-lg backdrop-blur-md">
+          <p className="text-xs text-muted-foreground font-medium">
+            {fotoUploading ? (
+              <span className="font-semibold text-primary">Mengompres &amp; mengupload foto…</span>
+            ) : (
+              "Pastikan seluruh field bertanda * sudah terisi."
+            )}
+          </p>
           <button
             type="submit"
-            disabled={submitting}
-            className="rounded-lg bg-emerald-700 px-6 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-emerald-800 disabled:opacity-50 transition-colors"
+            disabled={submitting || fotoUploading}
+            className="flex items-center gap-2 rounded-lg bg-emerald-700 px-5 py-2 text-xs font-bold text-white shadow-sm transition-all hover:bg-emerald-800 hover:shadow disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {submitting ? "Menyimpan…" : "Simpan Perubahan Kampung KB"}
+            {submitting ? (
+              <>
+                <span className="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                Menyimpan…
+              </>
+            ) : (
+              "Simpan Perubahan Kampung KB"
+            )}
           </button>
         </div>
       </form>
-
-      {/* Image Cropper Modal */}
-      {rawImage && (
-        <ImageCropperModal
-          isOpen={cropperOpen}
-          imageSrc={rawImage}
-          onClose={() => setCropperOpen(false)}
-          onCropComplete={handleCropComplete}
-        />
-      )}
     </div>
   );
 }
