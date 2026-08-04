@@ -298,19 +298,32 @@ export default async function Home() {
           <div className="pointer-events-none absolute -right-20 -bottom-20 h-80 w-80 rounded-full bg-accent/20 blur-3xl" />
 
           <div className="relative mx-auto max-w-6xl px-4 space-y-8">
-            {/* Section Header */}
-            <div className="space-y-2.5">
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-300 backdrop-blur-md">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-emerald-300 fill-emerald-300/20">
+            {/* Section Header (Sesuai Halaman Kampung KB) */}
+            <div className="max-w-3xl space-y-4">
+              {/* Eyebrow Badge Pill */}
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/20 px-3.5 py-1 text-xs font-bold text-emerald-300 backdrop-blur-md shadow-sm">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4 shrink-0 text-emerald-300 fill-emerald-300/20"
+                >
                   <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
                 </svg>
                 <span>Inpres No. 3 Tahun 2022 · BKKBN RI</span>
               </div>
-              <h2 className="font-heading text-2xl font-extrabold text-white sm:text-3xl lg:text-4xl mt-1">
+
+              {/* Title */}
+              <h2 className="font-heading text-3xl font-extrabold tracking-tight text-white sm:text-5xl leading-tight">
                 Kampung KB &ldquo;{kb.nama_program}&rdquo;
               </h2>
-              <p className="max-w-2xl text-sm leading-relaxed text-emerald-100/90 mt-2 text-justify">
-                Wadah konvergensi dan integrasi pemberdayaan keluarga dalam seluruh dimensinya—sesuai amanat Inpres No. 3 Tahun 2022 BKKBN RI untuk memperkuat ketahanan keluarga, pencegahan stunting, dan ekonomi warga sejahtera di Kelurahan Mlokomanis Kulon.
+
+              {/* Subtitle / Description */}
+              <p className="font-sans text-base text-emerald-100/90 sm:text-lg leading-relaxed max-w-2xl text-justify">
+                Wadah konvergensi dan integrasi pemberdayaan keluarga dalam seluruh dimensinya—berdasarkan Instruksi Presiden No. 3 Tahun 2022 dan BKKBN RI guna meningkatkan kualitas SDM, ketahanan keluarga, serta lingkungan pemukiman sehat di Kelurahan Mlokomanis Kulon.
               </p>
             </div>
 

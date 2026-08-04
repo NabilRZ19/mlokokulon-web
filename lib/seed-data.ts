@@ -63,9 +63,15 @@ export const kelurahanProfileData: KelurahanProfileData = {
   kodePos: "57681",
   kodeKemendagri: "33.12.13.1009",
   terbentuk: 1981,
-  sejarah: "[DATA MENYUSUL] — narasi sejarah desa & timeline akan dilengkapi tim KKN.",
-  visi: "[DATA MENYUSUL] — visi kelurahan akan dilengkapi setelah konfirmasi pihak kelurahan.",
-  misi: ["[DATA MENYUSUL]"],
+  sejarah: "Kelurahan Mlokomanis Kulon dibentuk pada tahun 1981 sebagai wilayah administratif tingkat kelurahan di Kecamatan Ngadirojo, Kabupaten Wonogiri.",
+  visi: "Mewujudkan Kabupaten Wonogiri yang Maju, Sejahtera, dan Berkelanjutan",
+  misi: [
+    "Meningkatkan kualitas sumber daya manusia yang berdaya saing, berkarakter, dan sehat.",
+    "Meningkatkan pertumbuhan ekonomi daerah yang inklusif berbasis potensi lokal pertanian, UMKM, dan pariwisata.",
+    "Meningkatkan pemerataan pembangunan infrastruktur wilayah yang berkualitas dan berwawasan lingkungan.",
+    "Mewujudkan tata kelola pemerintahan yang bersih, efektif, transparan, dan akuntabel berbasis teknologi informasi.",
+    "Meningkatkan ketahanan sosial budaya dan keharmonisan kehidupan masyarakat.",
+  ],
   geografis: {
     koordinat: "7°47'25\" LS, 110°59'43\" BT",
     elevasiMdpl: 485,
