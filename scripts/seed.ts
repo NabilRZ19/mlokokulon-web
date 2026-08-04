@@ -1,5 +1,6 @@
 import { readFileSync } from "fs";
 import { resolve } from "path";
+import { inArray } from "drizzle-orm";
 
 async function main() {
   // tsx tidak otomatis load .env.local seperti Next.js — load manual dulu
@@ -29,19 +30,32 @@ async function main() {
     "../lib/seed-data"
   );
 
-  console.log("Seeding MySQL (VPS)...");
+  console.log("Seeding MySQL (VPS) dengan Proteksi Data CMS Admin...");
 
-  // Hapus child table dulu (FK constraint), baru parent — urutan kebalikannya pas insert.
-  await db.delete(rwPengurus);
-  await db.delete(beritaFotoTambahan);
-  await db.delete(umkmProdukUnggulan);
-  await db.delete(umkmFoto);
-  await db.delete(strukturKelurahan);
-  await db.delete(rw);
-  await db.delete(berita);
-  await db.delete(galeri);
-  await db.delete(umkm);
+  // 1. Target ID khusus Seed (agar data custom yang dibuat via CMS admin TIDAK PERNAH terhapus)
+  const seedStrukturIds = strukturKelurahanSeed.map((s) => s.id);
+  const seedRwIds = rwSeed.map((r) => r.id);
+  const seedGaleriIds = galeriSeed.map((g) => g.id);
+  const seedUmkmIds = umkmSeed.map((u) => u.id);
 
+  // 2. Hapus HANYA data seed lama (Child dulu baru Parent), simpan data custom CMS warga/admin
+  if (seedRwIds.length > 0) {
+    await db.delete(rwPengurus).where(inArray(rwPengurus.rwId, seedRwIds));
+    await db.delete(rw).where(inArray(rw.id, seedRwIds));
+  }
+  if (seedUmkmIds.length > 0) {
+    await db.delete(umkmProdukUnggulan).where(inArray(umkmProdukUnggulan.umkmId, seedUmkmIds));
+    await db.delete(umkmFoto).where(inArray(umkmFoto.umkmId, seedUmkmIds));
+    await db.delete(umkm).where(inArray(umkm.id, seedUmkmIds));
+  }
+  if (seedStrukturIds.length > 0) {
+    await db.delete(strukturKelurahan).where(inArray(strukturKelurahan.id, seedStrukturIds));
+  }
+  if (seedGaleriIds.length > 0) {
+    await db.delete(galeri).where(inArray(galeri.id, seedGaleriIds));
+  }
+
+  // 3. Reseed Struktur Kelurahan
   await db.insert(strukturKelurahan).values(
     strukturKelurahanSeed.map((s) => ({
       id: s.id,
@@ -51,8 +65,9 @@ async function main() {
       urutan: s.urutan,
     })),
   );
-  console.log(`  struktur_kelurahan: ${strukturKelurahanSeed.length} ditulis`);
+  console.log(`  ✓ struktur_kelurahan: ${strukturKelurahanSeed.length} data seed diperbarui`);
 
+  // 4. Reseed RW & Pengurus
   await db.insert(rw).values(
     rwSeed.map((r) => ({
       id: r.id,
@@ -70,30 +85,37 @@ async function main() {
     r.struktur_pengurus.map((p) => ({ rwId: r.id, nama: p.nama, jabatan: p.jabatan })),
   );
   if (rwPengurusRows.length > 0) await db.insert(rwPengurus).values(rwPengurusRows);
-  console.log(`  rw: ${rwSeed.length} ditulis (+ ${rwPengurusRows.length} rw_pengurus)`);
+  console.log(`  ✓ rw: ${rwSeed.length} data seed diperbarui (+ ${rwPengurusRows.length} rw_pengurus)`);
 
-  await db.insert(berita).values(
-    beritaSeed.map((b) => ({
-      id: b.id,
-      judul: b.judul,
-      slug: b.slug,
-      isi: b.isi,
-      tanggal: b.tanggal,
-      kategori: b.kategori,
-      cakupan: b.cakupan,
-      rwId: b.rw_id ?? null,
-      rwNama: b.rw_nama ?? null,
-      gambarCoverUrl: b.gambar_cover_url,
-      penulis: b.penulis,
-      createdBy: b.created_by,
-    })),
-  );
-  const beritaFotoRows = beritaSeed.flatMap((b) =>
-    b.foto_tambahan.map((url) => ({ beritaId: b.id, url })),
-  );
-  if (beritaFotoRows.length > 0) await db.insert(beritaFotoTambahan).values(beritaFotoRows);
-  console.log(`  berita: ${beritaSeed.length} ditulis (+ ${beritaFotoRows.length} foto tambahan)`);
+  // 5. Proteksi Berita: Hanya tulis berita seed jika tabel berita kosong (berita lama/CMS 100% aman)
+  const existingBerita = await db.select().from(berita);
+  if (existingBerita.length === 0) {
+    await db.insert(berita).values(
+      beritaSeed.map((b) => ({
+        id: b.id,
+        judul: b.judul,
+        slug: b.slug,
+        isi: b.isi,
+        tanggal: b.tanggal,
+        kategori: b.kategori,
+        cakupan: b.cakupan,
+        rwId: b.rw_id ?? null,
+        rwNama: b.rw_nama ?? null,
+        gambarCoverUrl: b.gambar_cover_url,
+        penulis: b.penulis,
+        createdBy: b.created_by,
+      })),
+    );
+    const beritaFotoRows = beritaSeed.flatMap((b) =>
+      b.foto_tambahan.map((url) => ({ beritaId: b.id, url })),
+    );
+    if (beritaFotoRows.length > 0) await db.insert(beritaFotoTambahan).values(beritaFotoRows);
+    console.log(`  ✓ berita: ${beritaSeed.length} data seed diawal ditulis`);
+  } else {
+    console.log(`  🔒 berita: ${existingBerita.length} berita CMS/warga dipertahankan penuh (aman)`);
+  }
 
+  // 6. Reseed Galeri
   await db.insert(galeri).values(
     galeriSeed.map((g) => ({
       id: g.id,
@@ -103,8 +125,9 @@ async function main() {
       kategori: g.kategori ?? null,
     })),
   );
-  console.log(`  galeri: ${galeriSeed.length} ditulis`);
+  console.log(`  ✓ galeri: ${galeriSeed.length} data seed diperbarui`);
 
+  // 7. Reseed UMKM
   await db.insert(umkm).values(
     umkmSeed.map((u) => ({
       id: u.id,
@@ -126,10 +149,10 @@ async function main() {
   const umkmFotoRows = umkmSeed.flatMap((u) => u.foto_urls.map((url) => ({ umkmId: u.id, url })));
   if (umkmFotoRows.length > 0) await db.insert(umkmFoto).values(umkmFotoRows);
   console.log(
-    `  umkm: ${umkmSeed.length} ditulis (+ ${umkmProdukRows.length} produk, ${umkmFotoRows.length} foto)`,
+    `  ✓ umkm: ${umkmSeed.length} data seed diperbarui (+ ${umkmProdukRows.length} produk, ${umkmFotoRows.length} foto)`,
   );
 
-  console.log("Selesai. Jalankan ulang `npm run db:seed` kapan saja untuk reset + reseed.");
+  console.log("\n🎉 Seeding selesai dengan aman. Data CMS buatan Admin/Warga terproteksi penuh.");
 }
 
 main()
