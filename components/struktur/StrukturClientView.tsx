@@ -149,7 +149,7 @@ export function StrukturClientView({
 
   return (
     <div className="space-y-8">
-      {/* ── 1. Wrapper Card Tingkat 1 & 2: Perangkat Desa / Kelurahan ────── */}
+      {/* ── 1. Wrapper Card Tingkat 1 & 2: Perangkat Kelurahan ────── */}
       <Reveal mode="scroll" duration={0.6}>
         <Card className="p-6 sm:p-8 space-y-8">
           <div className="border-b border-border pb-4 text-center sm:text-left space-y-1">
@@ -157,7 +157,7 @@ export function StrukturClientView({
               Tingkat Kelurahan
             </span>
             <h2 className="font-heading text-xl font-extrabold text-foreground sm:text-2xl">
-              Perangkat Desa / Kelurahan
+              Perangkat Kelurahan
             </h2>
             <p className="text-xs text-muted-foreground">
               Pimpinan dan kepala seksi pelayanan di Kantor Kelurahan Mlokomanis Kulon. Klik foto pejabat untuk melihat ukuran utuh.
@@ -191,7 +191,7 @@ export function StrukturClientView({
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             {rwList.map((rw) => {
               const ketuaRw = rw.struktur_pengurus?.find(
                 (p) =>
@@ -199,23 +199,54 @@ export function StrukturClientView({
                   p.jabatan.toLowerCase().includes("ketua")
               );
 
+              // Ambil kode RW & Dusun dengan aman dari "RW 01 - Bulurejo"
+              const parts = rw.nama_rw.split("-").map((s) => s.trim());
+              const rwCode = parts[0] || rw.nama_rw;
+              const dusunName = parts[1] || rw.cakupan_dusun;
+              const hasPhoto = Boolean((ketuaRw as any)?.foto_url);
+              const fotoUrl = hasPhoto ? getPublicImageUrl((ketuaRw as any).foto_url) : null;
+
               return (
                 <div
                   key={rw.id}
-                  className="flex flex-col items-center rounded-xl border border-border bg-card p-4 text-center transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md"
+                  className="flex flex-col items-center justify-between rounded-xl border border-border bg-card p-4 text-center transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md space-y-3"
                 >
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 font-heading text-xs font-bold text-primary mb-2">
-                    {rw.nama_rw.split("—")[0].trim()}
+                  <div className="flex w-full items-center justify-between border-b border-border/50 pb-2">
+                    <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-extrabold text-primary">
+                      {rwCode}
+                    </span>
+                    <span className="text-[11px] font-semibold text-muted-foreground">
+                      Dusun {dusunName}
+                    </span>
                   </div>
-                  <p className="font-heading text-sm font-bold text-foreground line-clamp-1">
-                    {ketuaRw ? ketuaRw.nama : "(Ketua RW)"}
-                  </p>
-                  <p className="text-[11px] font-semibold text-primary mt-0.5">
-                    Ketua {rw.nama_rw.split("—")[0].trim()}
-                  </p>
-                  <p className="text-[11px] text-muted-foreground mt-0.5">
-                    Dusun {rw.cakupan_dusun}
-                  </p>
+
+                  {/* Foto Pejabat RW / Avatar Placeholder */}
+                  <div className="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 border-primary/30 bg-muted/50 p-1 shadow-2xs">
+                    {fotoUrl ? (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img
+                        src={fotoUrl}
+                        alt={ketuaRw?.nama || rwCode}
+                        className="h-full w-full rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center justify-center text-muted-foreground/70">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="h-8 w-8 text-primary/40">
+                          <circle cx="12" cy="8" r="4" />
+                          <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="w-full space-y-1">
+                    <p className="font-heading text-sm font-extrabold text-foreground line-clamp-2 leading-tight">
+                      {ketuaRw ? ketuaRw.nama : "Data belum diberikan oleh pihak terkait"}
+                    </p>
+                    <p className="text-[11px] font-bold text-primary">
+                      Ketua {rwCode}
+                    </p>
+                  </div>
                 </div>
               );
             })}

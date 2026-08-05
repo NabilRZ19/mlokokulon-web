@@ -397,17 +397,28 @@ export default function LeafletMapInner({
         // 5. SARANA
         // -----------------------------------------------
 
-        // Popup dengan tombol Google Maps jika GmapsLink tersedia
+        // Popup dengan tombol Google Maps untuk semua sarana/lokasi
         function popupSarana(feature: any, layer: L.Layer) {
-          const link = feature.properties.GmapsLink;
-          const tombolGmaps = link
-            ? `<a href="${link}" target="_blank" rel="noopener" class="btn-gmaps">📍 Buka di Google Maps</a>`
-            : "";
+          const name = feature.properties?.Nama || "Lokasi Sarana";
+          const jenis = feature.properties?.Jenis || "-";
+          const link = feature.properties?.GmapsLink;
+
+          let gmapsUrl = link;
+          if (!gmapsUrl) {
+            const latlng = (layer as any).getLatLng ? (layer as any).getLatLng() : null;
+            if (latlng) {
+              gmapsUrl = `https://www.google.com/maps?q=${latlng.lat},${latlng.lng}`;
+            } else {
+              gmapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + " Mlokomanis Kulon Wonogiri")}`;
+            }
+          }
+
+          const tombolGmaps = `<a href="${gmapsUrl}" target="_blank" rel="noopener noreferrer" class="btn-gmaps">📍 Buka di Google Maps</a>`;
 
           layer.bindPopup(
             `<div class="popup-sarana">` +
-            `<b>${feature.properties.Nama}</b><br>` +
-            `Jenis : ${feature.properties.Jenis}<br>` +
+            `<strong style="font-size:14px;color:#0f172a;display:block;margin-bottom:2px;">${name}</strong>` +
+            `<span style="font-size:12px;color:#64748b;">Jenis : ${jenis}</span><br>` +
             tombolGmaps +
             `</div>`
           );

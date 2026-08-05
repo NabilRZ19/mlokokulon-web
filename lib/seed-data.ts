@@ -64,13 +64,12 @@ export const kelurahanProfileData: KelurahanProfileData = {
   kodeKemendagri: "33.12.13.1009",
   terbentuk: 1981,
   sejarah: "Kelurahan Mlokomanis Kulon dibentuk pada tahun 1981 sebagai wilayah administratif tingkat kelurahan di Kecamatan Ngadirojo, Kabupaten Wonogiri.",
-  visi: "Mewujudkan Kabupaten Wonogiri yang Maju, Sejahtera, dan Berkelanjutan",
+  visi: "Wonogiri yang Berdaya Saing, Maju, Sejahtera, dan Berkelanjutan.",
   misi: [
-    "Meningkatkan kualitas sumber daya manusia yang berdaya saing, berkarakter, dan sehat.",
-    "Meningkatkan pertumbuhan ekonomi daerah yang inklusif berbasis potensi lokal pertanian, UMKM, dan pariwisata.",
-    "Meningkatkan pemerataan pembangunan infrastruktur wilayah yang berkualitas dan berwawasan lingkungan.",
-    "Mewujudkan tata kelola pemerintahan yang bersih, efektif, transparan, dan akuntabel berbasis teknologi informasi.",
-    "Meningkatkan ketahanan sosial budaya dan keharmonisan kehidupan masyarakat.",
+    "Meningkatkan pembangunan ekonomi yang berdaya saing dan berkelanjutan.",
+    "Meningkatkan kualitas hidup masyarakat yang didukung oleh lingkungan sosial dan budaya masyarakat yang maju.",
+    "Mewujudkan tata kelola pemerintahan yang baik.",
+    "Mewujudkan ketahanan sumber daya alam, lingkungan hidup, dan kebencanaan.",
   ],
   geografis: {
     koordinat: "7°47'25\" LS, 110°59'43\" BT",
@@ -385,6 +384,11 @@ const deskripsiRwMap: Record<string, string> = {
 };
 
 const pengurusRwMap: Record<string, RwPengurus[]> = {
+  "rw-02": [
+    { nama: "Untung", jabatan: "Ketua RW 02" },
+    { nama: "Ismadi", jabatan: "Sekretaris RW 02" },
+    { nama: "Slamet", jabatan: "Bendahara RW 02" },
+  ],
   "rw-03": [
     { nama: "Widodo", jabatan: "Ketua RW 03" },
     { nama: "Narti", jabatan: "Sekretaris RW 03" },
@@ -395,9 +399,9 @@ const pengurusRwMap: Record<string, RwPengurus[]> = {
     { nama: "Sunardi", jabatan: "Ketua RT 02" },
     { nama: "Marsudi", jabatan: "Sekretaris RT 02" },
     { nama: "Jalu Asmoro", jabatan: "Bendahara RT 02" },
-    { nama: "Usman Catur", jabatan: "Ketua Karang Taruna Bakti Remaja" },
-    { nama: "Marsudi", jabatan: "Sekretaris Karang Taruna Bakti Remaja" },
-    { nama: "Yekti Utami", jabatan: "Bendahara Karang Taruna Bakti Remaja" },
+    { nama: "Usman Catur", jabatan: "Ketua Karang Taruna Bakti Remaja Link Bonagung" },
+    { nama: "Marsudi", jabatan: "Sekretaris Karang Taruna Bakti Remaja Link Bonagung" },
+    { nama: "Yekti Utami", jabatan: "Bendahara Karang Taruna Bakti Remaja Link Bonagung" },
   ],
   "rw-04": [
     { nama: "Suwandi", jabatan: "Ketua RW 04" },
@@ -448,6 +452,7 @@ const pengurusRwMap: Record<string, RwPengurus[]> = {
 };
 
 const statistikKkMap: Record<string, number> = {
+  "rw-02": 119,
   "rw-03": 130,
   "rw-04": 90,
   "rw-05": 105,
@@ -456,6 +461,7 @@ const statistikKkMap: Record<string, number> = {
 };
 
 const statistikJiwaMap: Record<string, number> = {
+  "rw-02": 470,
   "rw-03": 362,
   "rw-04": 263,
   "rw-05": 316,
@@ -473,7 +479,7 @@ export const rwSeed: Rw[] = dusunList.map((nama, i) => {
   const id = `rw-${String(i + 1).padStart(2, "0")}`;
   return {
     id,
-    nama_rw: `RW ${String(i + 1).padStart(2, "0")} (${nama})`,
+    nama_rw: `RW ${String(i + 1).padStart(2, "0")} - ${nama}`,
     cakupan_dusun: nama,
     jumlah_rt: rtPerRw[i],
     is_kampung_kb: i === KAMPUNG_KB_INDEX,
@@ -513,7 +519,7 @@ export const beritaSeed: Berita[] = [
     kategori: "pengumuman",
     cakupan: "rw",
     rw_id: "rw-05",
-    rw_nama: "RW 05 (Pencil)",
+    rw_nama: "RW 05 - Pencil",
     gambar_cover_url: "/images/placeholder-photo.svg",
     penulis: "Admin RW 05 (Dummy)",
     created_by: "dummy-admin",

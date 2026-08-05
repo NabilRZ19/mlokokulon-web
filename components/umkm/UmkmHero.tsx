@@ -30,12 +30,12 @@ export function UmkmHero() {
 
             {/* Title */}
             <h1 className="font-heading text-3xl font-extrabold tracking-tight text-white sm:text-5xl leading-tight sm:leading-tight">
-              Katalog UMKM &amp; Potensi Desa
+              Katalog UMKM &amp; Potensi Kelurahan
             </h1>
 
             {/* Subtitle */}
             <p className="font-sans text-base text-emerald-100/90 sm:text-lg leading-relaxed max-w-2xl">
-              Temukan produk kerajinan, kuliner olahan, dan beragam jasa usaha lokal karya warga Kelurahan Mlokomanis Kulon. Mari dukung perekonomian desa kita!
+              Temukan produk kerajinan, kuliner olahan, dan beragam jasa usaha lokal karya warga Kelurahan Mlokomanis Kulon. Mari dukung perekonomian kelurahan kita!
             </p>
 
           </div>

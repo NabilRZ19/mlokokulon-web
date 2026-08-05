@@ -31,7 +31,7 @@ export function BeritaHero() {
 
             {/* Title */}
             <h1 className="font-heading text-3xl font-extrabold tracking-tight text-white sm:text-5xl leading-tight sm:leading-tight">
-              Kabar Terkini &amp; Pengumuman Desa
+              Kabar Terkini &amp; Pengumuman Kelurahan
             </h1>
 
             {/* Subtitle */}

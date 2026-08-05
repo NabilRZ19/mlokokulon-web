@@ -4,7 +4,7 @@ import { kelurahanProfileData as p } from "@/lib/seed-data";
 
 const navigasiCepat = [
   { href: "/", label: "Beranda" },
-  { href: "/profil", label: "Profil Desa" },
+  { href: "/profil", label: "Profil Kelurahan" },
   { href: "/struktur", label: "Struktur Kelurahan" },
   { href: "/layanan", label: "Layanan Publik" },
   { href: "/kampung-kb", label: "Kampung KB" },

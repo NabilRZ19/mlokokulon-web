@@ -49,7 +49,7 @@ export default function AdminUmkmPage() {
   return (
     <div>
       <AdminPageHeader
-        title="UMKM & Potensi Desa"
+        title="UMKM & Potensi Kelurahan"
         actions={
           <>
             <RefreshButton onClick={fetchUmkm} />
@@ -93,7 +93,7 @@ export default function AdminUmkmPage() {
               </div>
 
               <div className="flex flex-wrap items-center justify-between text-xs text-muted-foreground border-t border-border/50 pt-2 gap-2">
-                <span className="font-semibold text-foreground">{u.lokasi || "RW 05 (Pencil)"}</span>
+                <span className="font-semibold text-foreground">{u.lokasi || "Kelurahan Mlokomanis Kulon"}</span>
                 <span>{u.jam_operasional}</span>
               </div>
 

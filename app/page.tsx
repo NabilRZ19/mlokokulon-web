@@ -108,7 +108,7 @@ function IconMapPin() {
 const quickLinks = [
   {
     href: "/profil",
-    title: "Profil Desa",
+    title: "Profil Kelurahan",
     description: "Sejarah, visi-misi, letak geografis, dan batas wilayah kelurahan.",
   },
   {
@@ -175,7 +175,7 @@ export default async function Home() {
                 href="/profil"
                 className="rounded-lg bg-white px-5 py-2.5 text-sm font-bold text-primary shadow-sm transition-all hover:bg-blue-50 hover:shadow"
               >
-                Lihat Profil Desa →
+                Lihat Profil Kelurahan →
               </Link>
               <Link
                 href="/kontak"
@@ -588,30 +588,32 @@ export default async function Home() {
 
       {/* ── 7. Quick Links (Scroll Reveal) ────────────────────────────────── */}
       <Reveal mode="scroll" duration={0.6}>
-        <section className="mx-auto max-w-6xl px-4 py-16">
-          <div className="space-y-2 mb-10">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary">
-              Navigasi Cepat
-            </span>
-            <h2 className="font-heading text-2xl font-bold text-foreground sm:text-3xl mt-1">
-              Jelajahi Website
-            </h2>
-            <p className="text-sm text-muted-foreground max-w-xl mt-2 leading-relaxed">
-              Pintasan navigasi langsung menuju halaman utama profil desa, struktur organisasi, layanan publik, dan informasi kontak.
-            </p>
-          </div>
+        <section className="border-t border-border bg-gradient-to-b from-muted/40 via-card/50 to-muted/40 py-16 shadow-2xs">
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="space-y-2 mb-10 text-center sm:text-left">
+              <span className="text-xs font-bold uppercase tracking-widest text-primary">
+                Navigasi Cepat
+              </span>
+              <h2 className="font-heading text-2xl font-bold text-foreground sm:text-3xl mt-1">
+                Jelajahi Website
+              </h2>
+              <p className="text-sm text-muted-foreground max-w-xl mt-2 leading-relaxed">
+                Pintasan navigasi langsung menuju halaman utama profil kelurahan, struktur organisasi, layanan publik, dan informasi kontak.
+              </p>
+            </div>
 
-          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {quickLinks.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="block rounded-lg border border-border bg-card p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md"
-              >
-                <h3 className="font-heading font-semibold text-foreground">{item.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
-              </Link>
-            ))}
+            <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {quickLinks.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="block rounded-xl border border-border bg-card p-5 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md"
+                >
+                  <h3 className="font-heading font-bold text-foreground">{item.title}</h3>
+                  <p className="mt-2 text-xs text-muted-foreground leading-relaxed">{item.description}</p>
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
       </Reveal>

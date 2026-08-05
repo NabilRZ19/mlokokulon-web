@@ -20,11 +20,14 @@ export function ImageCropperModal({
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ clientX: 0, clientY: 0, startX: 0, startY: 0 });
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [naturalDim, setNaturalDim] = useState<{ w: number; h: number }>({ w: 0, h: 0 });
 
   const imgRef = useRef<HTMLImageElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Reset offset & zoom saat imageSrc baru dimuat
+  const CROP_VIEWPORT_SIZE = 250; // Ukuran container modal di UI
+
+  // Reset state saat imageSrc baru dimuat
   useEffect(() => {
     if (imageSrc) {
       setZoom(1);
@@ -34,6 +37,14 @@ export function ImageCropperModal({
   }, [imageSrc]);
 
   if (!isOpen || !imageSrc) return null;
+
+  function handleImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
+    const img = e.currentTarget;
+    if (img.naturalWidth && img.naturalHeight) {
+      setNaturalDim({ w: img.naturalWidth, h: img.naturalHeight });
+    }
+    setImageLoaded(true);
+  }
 
   function handleMouseDown(e: React.MouseEvent | React.TouchEvent) {
     setIsDragging(true);
@@ -58,37 +69,44 @@ export function ImageCropperModal({
     setIsDragging(false);
   }
 
+  // Hitung skala penyesuaian agar gambar pas (cover) di dalam viewport 250px
+  const fitScale =
+    naturalDim.w > 0 && naturalDim.h > 0
+      ? Math.max(CROP_VIEWPORT_SIZE / naturalDim.w, CROP_VIEWPORT_SIZE / naturalDim.h)
+      : 1;
+
+  const displayedW = naturalDim.w * fitScale;
+  const displayedH = naturalDim.h * fitScale;
+
   function handleSaveCrop() {
-    if (!imgRef.current) return;
+    if (!imgRef.current || naturalDim.w === 0 || naturalDim.h === 0) return;
 
     const img = imgRef.current;
     const canvas = document.createElement("canvas");
-    const outputSize = 400; // Standar pasfoto 400x400px
+    const outputSize = 400; // Output standar pasfoto WebP 400x400
     canvas.width = outputSize;
     canvas.height = outputSize;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Bersihkan canvas
+    // Bersihkan canvas dengan background putih
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, outputSize, outputSize);
 
-    // Hitung posisi relatif di canvas
-    const cropSize = 250; // Ukuran viewport crop di UI modal
-    const scaleFactor = outputSize / cropSize;
+    // Hitung posisi penggambaran di canvas 400x400 relatif terhadap viewport 250px
+    const scaleFactor = outputSize / CROP_VIEWPORT_SIZE;
 
-    const imgWidth = img.naturalWidth * zoom;
-    const imgHeight = img.naturalHeight * zoom;
+    const currentRenderW = displayedW * zoom;
+    const currentRenderH = displayedH * zoom;
 
-    // Center image base + offset user
-    const baseCenterX = cropSize / 2;
-    const baseCenterY = cropSize / 2;
+    const baseCenterX = CROP_VIEWPORT_SIZE / 2;
+    const baseCenterY = CROP_VIEWPORT_SIZE / 2;
 
-    const drawX = (baseCenterX - imgWidth / 2 + offset.x) * scaleFactor;
-    const drawY = (baseCenterY - imgHeight / 2 + offset.y) * scaleFactor;
-    const drawW = imgWidth * scaleFactor;
-    const drawH = imgHeight * scaleFactor;
+    const drawX = (baseCenterX - currentRenderW / 2 + offset.x) * scaleFactor;
+    const drawY = (baseCenterY - currentRenderH / 2 + offset.y) * scaleFactor;
+    const drawW = currentRenderW * scaleFactor;
+    const drawH = currentRenderH * scaleFactor;
 
     ctx.drawImage(img, drawX, drawY, drawW, drawH);
 
@@ -132,7 +150,7 @@ export function ImageCropperModal({
           </button>
         </div>
 
-        {/* Interactive Crop Viewport (250x250px Circle/Square Frame) */}
+        {/* Interactive Crop Viewport (250x250px Circle Viewport) */}
         <div className="flex flex-col items-center justify-center space-y-3">
           <div
             ref={containerRef}
@@ -144,24 +162,24 @@ export function ImageCropperModal({
             onTouchEnd={handleMouseUp}
             className="relative h-[250px] w-[250px] overflow-hidden rounded-full border-4 border-primary bg-black/90 cursor-grab active:cursor-grabbing shadow-inner select-none touch-none"
           >
-            {/* Hidden Element for Natural Dimensions */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               ref={imgRef}
               src={imageSrc}
               alt="Cropping target"
-              onLoad={() => setImageLoaded(true)}
+              onLoad={handleImageLoad}
               style={{
+                width: displayedW ? `${displayedW}px` : "auto",
+                height: displayedH ? `${displayedH}px` : "auto",
+                maxWidth: "none",
+                maxHeight: "none",
                 transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
                 transformOrigin: "center center",
-                maxWidth: "100%",
-                maxHeight: "100%",
                 position: "absolute",
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0,
-                margin: "auto",
+                top: "50%",
+                left: "50%",
+                marginTop: displayedH ? `-${displayedH / 2}px` : "-125px",
+                marginLeft: displayedW ? `-${displayedW / 2}px` : "-125px",
                 pointerEvents: "none",
               }}
             />
@@ -189,7 +207,7 @@ export function ImageCropperModal({
           </div>
           <input
             type="range"
-            min={0.5}
+            min={0.8}
             max={3}
             step={0.05}
             value={zoom}
