@@ -309,6 +309,7 @@ export default function TambahBeritaPage() {
   const [rwNama, setRwNama] = useState("");
   const [penulis, setPenulis] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
+  const [videoTitle, setVideoTitle] = useState("");
 
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [coverPreview, setCoverPreview] = useState<string | null>(null);
@@ -492,6 +493,7 @@ export default function TambahBeritaPage() {
         rw_nama: cakupan === "rw" ? rwNama : undefined,
         gambar_cover_url: coverUrl,
         video_url: videoUrl.trim() || undefined,
+        video_title: videoTitle.trim() || undefined,
         penulis,
         foto_tambahan: fotoList
           .filter((f) => f.uploadedUrl)
@@ -598,7 +600,7 @@ export default function TambahBeritaPage() {
             </div>
 
             {/* Tanggal Terbit, Penulis & Cakupan Wilayah */}
-            <div className="grid gap-4 sm:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
               <div>
                 <FieldLabel htmlFor="tanggal" size="sm" required>
                   Tanggal Terbit
@@ -761,42 +763,61 @@ export default function TambahBeritaPage() {
           </div>
         </section>
 
-        {/* ── 4. Media Video (Opsional) ────────────────────────────────────── */}
-        <section className="rounded-xl border border-border bg-card p-6 sm:p-8 shadow-sm space-y-4">
+        {/* ── 4. Media & Tautan Eksternal (Opsional) ────────────────────────── */}
+        <section className="rounded-xl border border-border bg-card p-4 sm:p-8 shadow-sm space-y-4">
           <div className="flex items-center justify-between border-b border-border pb-3">
             <div>
               <h2 className="font-heading text-base font-bold text-foreground">
-                4. Media Video Berita (Opsional)
+                4. Media &amp; Tautan Eksternal (Opsional)
               </h2>
               <p className="mt-0.5 text-xs text-muted-foreground">
-                Sematkan video YouTube / link video terkait berita ini.
+                Sematkan video (YouTube, TikTok), dokumen (Google Drive), atau link media eksternal terkait berita ini.
               </p>
             </div>
             <InfoLinkButton />
           </div>
 
-          <div className="space-y-3">
-            <FieldLabel htmlFor="videoUrl" size="sm">
-              Link Video (YouTube / Direct Link)
-            </FieldLabel>
-            <input
-              id="videoUrl"
-              type="url"
-              value={videoUrl}
-              onChange={(e) => setVideoUrl(e.target.value)}
-              placeholder="https://www.youtube.com/watch?v=... atau https://youtu.be/..."
-              className={inputClass()}
-            />
+          <div className="space-y-4">
+            <div>
+              <FieldLabel htmlFor="videoTitle" size="sm">
+                Judul / Label Tautan Media (Opsional)
+              </FieldLabel>
+              <input
+                id="videoTitle"
+                type="text"
+                value={videoTitle}
+                onChange={(e) => setVideoTitle(e.target.value)}
+                placeholder="Contoh: Video Dokumentasi Liputan / Berkas Lampiran Google Drive / Video TikTok"
+                className={inputClass()}
+              />
+              <p className="mt-1 text-xs text-muted-foreground">
+                Judul atau keterangan yang akan ditampilkan di atas media pada halaman berita publik.
+              </p>
+            </div>
+
+            <div>
+              <FieldLabel htmlFor="videoUrl" size="sm">
+                Link Media / Tautan Eksternal (YouTube, TikTok, Google Drive, dll)
+              </FieldLabel>
+              <input
+                id="videoUrl"
+                type="url"
+                value={videoUrl}
+                onChange={(e) => setVideoUrl(e.target.value)}
+                placeholder="https://www.youtube.com/... atau https://drive.google.com/... atau https://vt.tiktok.com/..."
+                className={inputClass()}
+              />
+            </div>
             {videoUrl.trim() && (
-              <div className="rounded-xl border border-border bg-muted/30 p-3">
-                <p className="text-xs font-semibold text-foreground mb-2">Preview Media Video:</p>
+              <div className="rounded-xl border border-border bg-muted/30 p-3.5 space-y-2">
+                <p className="text-xs font-semibold text-foreground">Preview Tautan Media:</p>
                 {(() => {
-                  const match = videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
-                  if (match) {
+                  const ytMatch = videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+                  if (ytMatch) {
                     return (
                       <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-black">
                         <iframe
-                          src={`https://www.youtube.com/embed/${match[1]}`}
+                          src={`https://www.youtube.com/embed/${ytMatch[1]}`}
                           title="YouTube video player"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                           allowFullScreen
@@ -805,9 +826,16 @@ export default function TambahBeritaPage() {
                       </div>
                     );
                   }
+                  const isDrive = videoUrl.includes("drive.google.com");
+                  const isTikTok = videoUrl.includes("tiktok.com");
+                  const isIG = videoUrl.includes("instagram.com");
+
                   return (
-                    <div className="rounded-lg border border-primary/20 bg-primary/5 p-3 text-xs text-primary font-medium">
-                      ✓ Link video terpasang: <span className="font-mono text-[11px] underline">{videoUrl}</span>
+                    <div className="rounded-lg border border-primary/20 bg-primary/5 p-3 text-xs text-primary font-medium flex items-center gap-2">
+                      <span className="rounded bg-primary px-2 py-0.5 text-[10px] font-bold text-white uppercase tracking-wider shrink-0">
+                        {isDrive ? "Google Drive" : isTikTok ? "TikTok" : isIG ? "Instagram" : "Link Eksternal"}
+                      </span>
+                      <span className="font-mono text-[11px] truncate flex-1 underline">{videoUrl}</span>
                     </div>
                   );
                 })()}

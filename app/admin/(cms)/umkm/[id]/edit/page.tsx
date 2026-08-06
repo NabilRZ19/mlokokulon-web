@@ -255,8 +255,8 @@ export default function EditUmkmPage({ params }: { params: Promise<{ id: string 
       <AdminPageHeader title="Edit UMKM & Potensi" />
 
       <form onSubmit={handleSubmit} className="mx-auto max-w-3xl space-y-6">
-        <div className="rounded-xl border border-border bg-card p-6 shadow-sm space-y-5">
-          <div className="grid grid-cols-2 gap-4">
+        <div className="rounded-xl border border-border bg-card p-4 sm:p-6 shadow-sm space-y-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label htmlFor="nama" className="mb-1 block text-sm font-bold text-foreground">
                 Nama Usaha / Potensi <span className="text-destructive">*</span>
@@ -286,7 +286,7 @@ export default function EditUmkmPage({ params }: { params: Promise<{ id: string 
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label htmlFor="kategori" className="mb-1 block text-sm font-bold text-foreground">
                 Kategori UMKM <span className="text-destructive">*</span>
@@ -538,7 +538,7 @@ export default function EditUmkmPage({ params }: { params: Promise<{ id: string 
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {fotoList.map((item, idx) => (
                   <div key={idx} className="relative aspect-video rounded-lg overflow-hidden border border-border group">
                     {/* eslint-disable-next-line @next/next/no-img-element */}

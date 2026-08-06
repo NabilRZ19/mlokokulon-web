@@ -47,6 +47,7 @@ export async function POST(request: Request) {
       rw_nama,
       gambar_cover_url,
       video_url,
+      video_title,
       penulis,
       foto_tambahan = [],
       galeri_foto = [],
@@ -71,6 +72,7 @@ export async function POST(request: Request) {
     const sanitizedRwId = cakupan === "rw" && typeof rw_id === "string" && rw_id.trim().length > 0 ? rw_id.trim() : null;
     const sanitizedRwNama = cakupan === "rw" && typeof rw_nama === "string" && rw_nama.trim().length > 0 ? rw_nama.trim() : null;
     const sanitizedVideoUrl = typeof video_url === "string" && video_url.trim().length > 0 ? video_url.trim() : null;
+    const sanitizedVideoTitle = typeof video_title === "string" && video_title.trim().length > 0 ? video_title.trim() : null;
 
     await db.insert(beritaTable).values({
       id,
@@ -84,6 +86,7 @@ export async function POST(request: Request) {
       rwNama: sanitizedRwNama,
       gambarCoverUrl: gambar_cover_url,
       videoUrl: sanitizedVideoUrl,
+      videoTitle: sanitizedVideoTitle,
       penulis,
       createdBy: String(session.id),
     });

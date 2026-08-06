@@ -330,8 +330,8 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
       <AdminPageHeader title={`Edit Data ${namaRw || "RW"}`} />
 
       <form onSubmit={handleSubmit} className="mx-auto max-w-3xl space-y-6">
-        <div className="rounded-xl border border-border bg-card p-6 shadow-sm space-y-5">
-          <div className="grid grid-cols-2 gap-4">
+        <div className="rounded-xl border border-border bg-card p-4 sm:p-6 shadow-sm space-y-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label htmlFor="namaRw" className="mb-1 block text-sm font-bold text-foreground">
                 Nama RW <span className="text-destructive">*</span>
@@ -359,7 +359,7 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <label htmlFor="jumlahRt" className="mb-1 block text-sm font-bold text-foreground">
                 Jumlah RT <span className="font-normal text-muted-foreground">(Rukun Tetangga)</span>
@@ -444,8 +444,8 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
           </div>
 
           {/* ── SEKSI A: Pengurus Inti RW (Ketua, Sekretaris, Bendahara RW) ── */}
-          <div className="rounded-xl border border-primary/20 bg-primary/5 p-5 space-y-4">
-            <div className="flex items-center justify-between border-b border-primary/10 pb-3">
+          <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 sm:p-5 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-primary/10 pb-3">
               <div>
                 <h3 className="font-heading text-base font-extrabold text-foreground">
                   1. Pengurus Inti RW
@@ -457,7 +457,7 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
               <button
                 type="button"
                 onClick={handleAddRwCore}
-                className="rounded-lg bg-primary px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-primary/90 transition-colors"
+                className="rounded-lg bg-primary px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-primary/90 transition-colors self-start sm:self-auto"
               >
                 + Tambah Pengurus RW
               </button>
@@ -465,39 +465,43 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
 
             <div className="space-y-2.5">
               {rwCoreList.map((p, idx) => (
-                <div key={idx} className="flex gap-2 items-center">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary shrink-0">
-                    {idx + 1}
-                  </span>
-                  <input
-                    type="text"
-                    value={p.nama}
-                    onChange={(e) => handleRwCoreChange(idx, "nama", e.target.value)}
-                    placeholder="Nama Lengkap Pengurus RW"
-                    className="flex-1 rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
-                  />
-                  <input
-                    type="text"
-                    value={p.jabatan}
-                    onChange={(e) => handleRwCoreChange(idx, "jabatan", e.target.value)}
-                    placeholder="Jabatan (Ketua RW / Sekretaris RW / Bendahara RW)"
-                    className="w-2/5 rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 font-semibold"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveRwCore(idx)}
-                    className="px-2.5 py-2 text-xs font-bold text-destructive hover:bg-destructive/10 rounded-lg shrink-0"
-                  >
-                    Hapus
-                  </button>
+                <div key={idx} className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center rounded-lg border border-border/50 bg-card/60 p-2.5 sm:p-0 sm:border-0 sm:bg-transparent">
+                  <div className="flex items-center gap-2 flex-1 min-w-0">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary shrink-0">
+                      {idx + 1}
+                    </span>
+                    <input
+                      type="text"
+                      value={p.nama}
+                      onChange={(e) => handleRwCoreChange(idx, "nama", e.target.value)}
+                      placeholder="Nama Lengkap Pengurus RW"
+                      className="flex-1 min-w-0 rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2 sm:w-2/5">
+                    <input
+                      type="text"
+                      value={p.jabatan}
+                      onChange={(e) => handleRwCoreChange(idx, "jabatan", e.target.value)}
+                      placeholder="Jabatan (Ketua RW / Sekretaris / Bendahara)"
+                      className="flex-1 min-w-0 rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 font-semibold"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveRwCore(idx)}
+                      className="px-3 py-2 text-xs font-bold text-destructive hover:bg-destructive/10 rounded-lg shrink-0"
+                    >
+                      Hapus
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
 
           {/* ── SEKSI B: Form Terpisah Pengurus Rukun Tetangga (RT) ── */}
-          <div className="rounded-xl border border-blue-200 bg-blue-50/40 p-5 space-y-4">
-            <div className="flex items-center justify-between border-b border-blue-100 pb-3">
+          <div className="rounded-xl border border-blue-200 bg-blue-50/40 p-4 sm:p-5 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-blue-100 pb-3">
               <div>
                 <h3 className="font-heading text-base font-extrabold text-foreground">
                   2. Pengurus Rukun Tetangga (RT)
@@ -509,7 +513,7 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
               <button
                 type="button"
                 onClick={handleAddRtPengurus}
-                className="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-blue-700 transition-colors"
+                className="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-blue-700 transition-colors self-start sm:self-auto"
               >
                 + Tambah Pengurus RT
               </button>
@@ -520,31 +524,35 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
             ) : (
               <div className="space-y-2.5">
                 {rtPengurusList.map((p, idx) => (
-                  <div key={idx} className="flex gap-2 items-center">
-                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700 shrink-0">
-                      {idx + 1}
-                    </span>
-                    <input
-                      type="text"
-                      value={p.nama}
-                      onChange={(e) => handleRtPengurusChange(idx, "nama", e.target.value)}
-                      placeholder="Nama Pengurus RT"
-                      className="flex-1 rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500/40"
-                    />
-                    <input
-                      type="text"
-                      value={p.jabatan}
-                      onChange={(e) => handleRtPengurusChange(idx, "jabatan", e.target.value)}
-                      placeholder="Jabatan (Ketua RT 01 / Sekretaris RT 01)"
-                      className="w-2/5 rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500/40 font-semibold"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveRtPengurus(idx)}
-                      className="px-2.5 py-2 text-xs font-bold text-destructive hover:bg-destructive/10 rounded-lg shrink-0"
-                    >
-                      Hapus
-                    </button>
+                  <div key={idx} className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center rounded-lg border border-border/50 bg-card/60 p-2.5 sm:p-0 sm:border-0 sm:bg-transparent">
+                    <div className="flex items-center gap-2 flex-1 min-w-0">
+                      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700 shrink-0">
+                        {idx + 1}
+                      </span>
+                      <input
+                        type="text"
+                        value={p.nama}
+                        onChange={(e) => handleRtPengurusChange(idx, "nama", e.target.value)}
+                        placeholder="Nama Pengurus RT"
+                        className="flex-1 min-w-0 rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2 sm:w-2/5">
+                      <input
+                        type="text"
+                        value={p.jabatan}
+                        onChange={(e) => handleRtPengurusChange(idx, "jabatan", e.target.value)}
+                        placeholder="Jabatan (Ketua RT 01 / Sekretaris RT 01)"
+                        className="flex-1 min-w-0 rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500/40 font-semibold"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveRtPengurus(idx)}
+                        className="px-3 py-2 text-xs font-bold text-destructive hover:bg-destructive/10 rounded-lg shrink-0"
+                      >
+                        Hapus
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -552,8 +560,8 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
           </div>
 
           {/* ── SEKSI C: Form Tambahan Organisasi Kemasyarakatan (Tani, Karang Taruna, PKK, dll) ── */}
-          <div className="rounded-xl border border-emerald-200 bg-emerald-50/40 p-5 space-y-5">
-            <div className="flex items-center justify-between border-b border-emerald-100 pb-3">
+          <div className="rounded-xl border border-emerald-200 bg-emerald-50/40 p-4 sm:p-5 space-y-5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-emerald-100 pb-3">
               <div>
                 <h3 className="font-heading text-base font-extrabold text-foreground">
                   3. Organisasi Kemasyarakatan &amp; Pokja RW
@@ -565,7 +573,7 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
               <button
                 type="button"
                 onClick={handleAddOrgBlock}
-                className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-emerald-700 transition-colors"
+                className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-emerald-700 transition-colors self-start sm:self-auto"
               >
                 + Tambah Organisasi / Pokja
               </button>
@@ -634,28 +642,30 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
 
                       <div className="space-y-2">
                         {block.pengurus.map((m, mIdx) => (
-                          <div key={mIdx} className="flex gap-2 items-center">
+                          <div key={mIdx} className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center rounded-lg border border-border/40 bg-background/50 p-2 sm:p-0 sm:border-0 sm:bg-transparent">
                             <input
                               type="text"
                               value={m.nama}
                               onChange={(e) => handleOrgMemberChange(block.id, mIdx, "nama", e.target.value)}
                               placeholder="Nama Lengkap"
-                              className="flex-1 rounded-lg border border-border bg-background px-3 py-1.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/40"
+                              className="flex-1 min-w-0 rounded-lg border border-border bg-background px-3 py-1.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/40"
                             />
-                            <input
-                              type="text"
-                              value={m.jabatan}
-                              onChange={(e) => handleOrgMemberChange(block.id, mIdx, "jabatan", e.target.value)}
-                              placeholder="Jabatan (Ketua / Wakil / Sekretaris / Bendahara)"
-                              className="w-2/5 rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/40"
-                            />
-                            <button
-                              type="button"
-                              onClick={() => handleRemoveOrgMember(block.id, mIdx)}
-                              className="px-2 py-1 text-xs font-bold text-destructive hover:bg-destructive/10 rounded-lg shrink-0"
-                            >
-                              ✕
-                            </button>
+                            <div className="flex items-center gap-2 sm:w-2/5">
+                              <input
+                                type="text"
+                                value={m.jabatan}
+                                onChange={(e) => handleOrgMemberChange(block.id, mIdx, "jabatan", e.target.value)}
+                                placeholder="Jabatan (Ketua / Wakil / Sekretaris)"
+                                className="flex-1 min-w-0 rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/40"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveOrgMember(block.id, mIdx)}
+                                className="px-2.5 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/10 rounded-lg shrink-0"
+                              >
+                                Hapus
+                              </button>
+                            </div>
                           </div>
                         ))}
                       </div>

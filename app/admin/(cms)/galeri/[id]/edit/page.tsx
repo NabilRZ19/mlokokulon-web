@@ -126,7 +126,7 @@ export default function EditGaleriPage({ params }: { params: Promise<{ id: strin
       <AdminPageHeader title="Edit Item Galeri" />
 
       <form onSubmit={handleSubmit} className="mx-auto max-w-xl space-y-6">
-        <div className="rounded-xl border border-border bg-card p-6 shadow-sm space-y-5">
+        <div className="rounded-xl border border-border bg-card p-4 sm:p-6 shadow-sm space-y-5">
           <div>
             <label htmlFor="judul" className="mb-1 block text-sm font-bold text-foreground">
               Judul Foto / Video <span className="text-destructive">*</span>

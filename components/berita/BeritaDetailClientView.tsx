@@ -122,24 +122,24 @@ export function BeritaDetailClientView({
             {berita.isi}
           </div>
 
-          {/* Video Section (jika berita mempunyai video_url) */}
+          {/* Media & Tautan Eksternal Section */}
           {berita.video_url && (
             <div className="mt-8 border-t border-border pt-6 space-y-3">
               <h2 className="font-heading text-xs font-bold uppercase tracking-widest text-primary flex items-center gap-2">
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                 </svg>
-                Media Video Terkait
+                {berita.video_title || "Media & Tautan Eksternal Terkait"}
               </h2>
               {(() => {
-                const match = berita.video_url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
-                if (match) {
+                const url = berita.video_url || "";
+                const ytMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+                if (ytMatch) {
                   return (
                     <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-black shadow-md border border-border">
                       <iframe
-                        src={`https://www.youtube.com/embed/${match[1]}`}
-                        title={berita.judul}
+                        src={`https://www.youtube.com/embed/${ytMatch[1]}`}
+                        title={berita.video_title || berita.judul}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                         className="h-full w-full border-0"
@@ -147,16 +147,59 @@ export function BeritaDetailClientView({
                     </div>
                   );
                 }
+
+                // Handling Google Drive Embed
+                const driveMatch = url.match(/drive\.google\.com\/file\/d\/([^\/]+)/);
+                if (driveMatch) {
+                  const fileId = driveMatch[1];
+                  return (
+                    <div className="space-y-3">
+                      <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-muted/40 shadow-md border border-border">
+                        <iframe
+                          src={`https://drive.google.com/file/d/${fileId}/preview`}
+                          title={berita.video_title || "Pratinjau Dokumen Google Drive"}
+                          className="h-full w-full border-0"
+                          allow="autoplay"
+                        />
+                      </div>
+                      <div className="flex justify-end">
+                        <a
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3.5 py-2 text-xs font-bold text-white shadow-xs hover:bg-primary/90 transition-colors"
+                        >
+                          <span>Buka Berkas di Google Drive ↗</span>
+                        </a>
+                      </div>
+                    </div>
+                  );
+                }
+
+                const isDrive = url.includes("drive.google.com");
+                const isTikTok = url.includes("tiktok.com");
+                const isIG = url.includes("instagram.com");
+
+                const platformName = isDrive ? "Google Drive" : isTikTok ? "TikTok" : isIG ? "Instagram" : "Media / Link Eksternal";
+
                 return (
-                  <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 text-sm text-primary font-medium flex items-center justify-between">
-                    <span>Tonton Video Publik Berita</span>
+                  <div className="rounded-xl border border-primary/20 bg-primary/5 p-4.5 text-sm text-foreground flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 shadow-xs">
+                    <div className="space-y-1 min-w-0 flex-1">
+                      <span className="inline-block rounded-md bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary uppercase tracking-wider">
+                        {platformName}
+                      </span>
+                      <p className="font-heading font-extrabold text-foreground text-sm truncate">
+                        {berita.video_title || "Lihat Dokumen / Media Publik Berita"}
+                      </p>
+                      <p className="font-mono text-xs text-muted-foreground truncate">{url}</p>
+                    </div>
                     <a
-                      href={berita.video_url}
+                      href={url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="rounded-lg bg-primary px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-primary/90 transition-colors"
+                      className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-xs font-bold text-white shadow-xs hover:bg-primary/90 transition-colors shrink-0"
                     >
-                      Buka Video ↗
+                      <span>Buka Link Media ↗</span>
                     </a>
                   </div>
                 );

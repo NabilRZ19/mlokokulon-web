@@ -68,6 +68,7 @@ export const berita = mysqlTable("berita", {
   rwNama: varchar("rw_nama", { length: 255 }), // denormalisasi, PRD Bagian 7 poin 4
   gambarCoverUrl: varchar("gambar_cover_url", { length: 512 }).notNull(),
   videoUrl: varchar("video_url", { length: 512 }),
+  videoTitle: varchar("video_title", { length: 255 }),
   penulis: varchar("penulis", { length: 255 }).notNull(),
   createdBy: varchar("created_by", { length: 64 }).notNull(),
 }, (table) => [

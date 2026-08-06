@@ -96,13 +96,13 @@ export function InfoLinkButton({
             {/* Quick Format Guidelines */}
             <div className="space-y-3.5 rounded-xl border border-border bg-muted/40 p-4 text-xs">
               <p className="font-bold text-foreground uppercase tracking-wider text-[11px]">
-                Format Link yang Didukung:
+                Format Link Media yang Didukung:
               </p>
-              <ul className="space-y-2 text-muted-foreground font-medium">
+              <ul className="space-y-2.5 text-muted-foreground font-medium">
                 <li className="flex items-start gap-2">
                   <span className="font-bold text-primary">•</span>
                   <span>
-                    <strong className="text-foreground">YouTube Video:</strong> Gunakan link lengkap atau pendek (misal:{" "}
+                    <strong className="text-foreground">YouTube Video:</strong> Link video lengkap atau pendek (misal:{" "}
                     <code className="rounded bg-background px-1 py-0.5 font-mono text-[11px] text-foreground">
                       https://www.youtube.com/watch?v=...
                     </code>{" "}
@@ -116,9 +116,23 @@ export function InfoLinkButton({
                 <li className="flex items-start gap-2">
                   <span className="font-bold text-primary">•</span>
                   <span>
-                    <strong className="text-foreground">Google Maps:</strong> Salin link lokasi publik dari tombol Bagikan (misal:{" "}
+                    <strong className="text-foreground">Google Drive / Berkas PDF:</strong> Salin link file atau folder (misal:{" "}
                     <code className="rounded bg-background px-1 py-0.5 font-mono text-[11px] text-foreground">
-                      https://maps.app.goo.gl/...
+                      https://drive.google.com/file/d/.../view
+                    </code>
+                    ). <em>Pastikan akses file diset "Siapa saja yang memiliki link".</em>
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="font-bold text-primary">•</span>
+                  <span>
+                    <strong className="text-foreground">TikTok / Instagram:</strong> Link postingan atau video publik (misal:{" "}
+                    <code className="rounded bg-background px-1 py-0.5 font-mono text-[11px] text-foreground">
+                      https://vt.tiktok.com/...
+                    </code>{" "}
+                    atau{" "}
+                    <code className="rounded bg-background px-1 py-0.5 font-mono text-[11px] text-foreground">
+                      https://www.instagram.com/p/...
                     </code>
                     ).
                   </span>
@@ -126,7 +140,7 @@ export function InfoLinkButton({
                 <li className="flex items-start gap-2">
                   <span className="font-bold text-primary">•</span>
                   <span>
-                    <strong className="text-foreground">Akses Publik:</strong> Pastikan media/link tidak dikunci dan dapat dibuka langsung tanpa login.
+                    <strong className="text-foreground">Google Maps &amp; Tautan Website:</strong> Link lokasi publik dari Google Maps atau tautan website resmi.
                   </span>
                 </li>
               </ul>

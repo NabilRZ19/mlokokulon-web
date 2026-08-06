@@ -105,7 +105,7 @@ export default function TambahGaleriPage() {
       <AdminPageHeader title="Upload Media Galeri" />
 
       <form onSubmit={handleSubmit} className="mx-auto max-w-2xl space-y-6">
-        <div className="rounded-xl border border-border bg-card p-6 shadow-sm space-y-5">
+        <div className="rounded-xl border border-border bg-card p-4 sm:p-6 shadow-sm space-y-5">
           <div>
             <label htmlFor="judul" className="mb-1 block text-sm font-bold text-foreground">
               Judul Media / Keterangan Dokumentasi <span className="text-destructive">*</span>
@@ -120,7 +120,7 @@ export default function TambahGaleriPage() {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label htmlFor="tipe" className="mb-1 block text-sm font-bold text-foreground">
                 Tipe Media

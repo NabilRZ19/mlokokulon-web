@@ -98,8 +98,8 @@ export default function TambahLayananPage() {
       <AdminPageHeader title="Tambah Jenis Layanan Baru" />
 
       <form onSubmit={handleSubmit} className="mx-auto max-w-3xl space-y-6">
-        <div className="rounded-xl border border-border bg-card p-6 shadow-sm space-y-5">
-          <div className="grid grid-cols-2 gap-4">
+        <div className="rounded-xl border border-border bg-card p-4 sm:p-6 shadow-sm space-y-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label htmlFor="nama" className="mb-1 block text-sm font-bold text-foreground">
                 Nama Layanan <span className="text-destructive">*</span>
@@ -146,7 +146,7 @@ export default function TambahLayananPage() {
             />
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <label htmlFor="waktuProses" className="mb-1 block text-sm font-bold text-foreground">
                 Waktu Proses Estimasi
@@ -204,8 +204,8 @@ export default function TambahLayananPage() {
           </div>
 
           {/* ── Persyaratan Berkas ── */}
-          <div className="rounded-xl border border-primary/20 bg-primary/5 p-5 space-y-4">
-            <div className="flex items-center justify-between border-b border-primary/10 pb-3">
+          <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 sm:p-5 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-primary/10 pb-3">
               <div>
                 <h3 className="font-heading text-base font-extrabold text-foreground">
                   Persyaratan Berkas &amp; Dokumen
@@ -234,7 +234,7 @@ export default function TambahLayananPage() {
                     value={syarat}
                     onChange={(e) => handleSyaratChange(idx, e.target.value)}
                     placeholder={`Persyaratan Berkas #${idx + 1}`}
-                    className="flex-1 rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+                    className="flex-1 min-w-0 rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
                   />
                   <button
                     type="button"
@@ -249,8 +249,8 @@ export default function TambahLayananPage() {
           </div>
 
           {/* ── Alur Prosedur Pengurusan ── */}
-          <div className="rounded-xl border border-blue-200 bg-blue-50/40 p-5 space-y-4">
-            <div className="flex items-center justify-between border-b border-blue-100 pb-3">
+          <div className="rounded-xl border border-blue-200 bg-blue-50/40 p-4 sm:p-5 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-blue-100 pb-3">
               <div>
                 <h3 className="font-heading text-base font-extrabold text-foreground">
                   Alur Prosedur Pengurusan
@@ -279,7 +279,7 @@ export default function TambahLayananPage() {
                     value={p}
                     onChange={(e) => handleProsedurChange(idx, e.target.value)}
                     placeholder={`Langkah Prosedur #${idx + 1}`}
-                    className="flex-1 rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+                    className="flex-1 min-w-0 rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500/40"
                   />
                   <button
                     type="button"
