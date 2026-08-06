@@ -52,8 +52,8 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
       return;
     }
 
-    if (password.length < 12) {
-      setError("Password minimal 12 karakter untuk keamanan akun admin.");
+    if (password.length < 8) {
+      setError("Password minimal 8 karakter untuk keamanan akun admin.");
       return;
     }
 
@@ -143,7 +143,7 @@ export default function EditUserPage({ params }: { params: Promise<{ id: string 
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Min. 12 karakter, kombinasi huruf & angka"
+              placeholder="Min. 8 karakter, kombinasi huruf & angka"
               className="w-full rounded-lg border border-border bg-card px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
             />
             <p className="mt-1 text-[11px] text-muted-foreground">

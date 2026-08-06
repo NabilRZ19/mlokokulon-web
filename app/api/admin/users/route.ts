@@ -42,8 +42,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Field nama, email, password, dan tier wajib diisi" }, { status: 400 });
     }
 
-    if (password.length < 12) {
-      return NextResponse.json({ error: "Password minimal 12 karakter untuk keamanan admin" }, { status: 400 });
+    if (password.length < 8) {
+      return NextResponse.json({ error: "Password minimal 8 karakter untuk keamanan admin" }, { status: 400 });
     }
 
     if (!/(?=.*[a-zA-Z])(?=.*[0-9])/.test(password)) {

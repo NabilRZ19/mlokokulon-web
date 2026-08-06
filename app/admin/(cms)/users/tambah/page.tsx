@@ -24,8 +24,8 @@ export default function TambahUserPage() {
       return;
     }
 
-    if (password.length < 6) {
-      setError("Password minimal 6 karakter.");
+    if (password.length < 8) {
+      setError("Password minimal 8 karakter.");
       return;
     }
 
@@ -99,7 +99,7 @@ export default function TambahUserPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Minimal 6 karakter"
+              placeholder="Minimal 8 karakter"
               className="w-full rounded-lg border border-border bg-card px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
             />
           </div>
