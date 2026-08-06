@@ -11,7 +11,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await getSession();
-  const deny = requireTier(session, canManageUsers, [1]);
+  const deny = requireTier(session, canManageUsers, [1, 2]);
   if (deny) return deny;
 
   const { id } = await params;
@@ -49,7 +49,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await getSession();
-  const deny = requireTier(session, canManageUsers, [1]);
+  const deny = requireTier(session, canManageUsers, [1, 2]);
   if (deny) return deny;
 
   const { id } = await params;
@@ -105,7 +105,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await getSession();
-  const deny = requireTier(session, canManageUsers, [1]);
+  const deny = requireTier(session, canManageUsers, [1, 2]);
   if (deny) return deny;
   // TypeScript tidak bisa narrow null lewat helper function — session dijamin non-null di sini
   // karena requireTier sudah return 401 jika session === null.

@@ -3,6 +3,7 @@
 import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
+import { InfoLinkButton } from "@/components/admin/InfoLinkButton";
 import { compressImage } from "@/lib/image-compression";
 import { scrollToFirstError } from "@/lib/form-scroll";
 
@@ -307,6 +308,7 @@ export default function TambahBeritaPage() {
   const [rwId, setRwId] = useState("");
   const [rwNama, setRwNama] = useState("");
   const [penulis, setPenulis] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
 
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [coverPreview, setCoverPreview] = useState<string | null>(null);
@@ -489,6 +491,7 @@ export default function TambahBeritaPage() {
         rw_id: cakupan === "rw" ? rwId : undefined,
         rw_nama: cakupan === "rw" ? rwNama : undefined,
         gambar_cover_url: coverUrl,
+        video_url: videoUrl.trim() || undefined,
         penulis,
         foto_tambahan: fotoList
           .filter((f) => f.uploadedUrl)
@@ -758,12 +761,67 @@ export default function TambahBeritaPage() {
           </div>
         </section>
 
-        {/* ── 4. Foto Tambahan (Dokumentasi Opsional) ──────────────────────── */}
+        {/* ── 4. Media Video (Opsional) ────────────────────────────────────── */}
+        <section className="rounded-xl border border-border bg-card p-6 sm:p-8 shadow-sm space-y-4">
+          <div className="flex items-center justify-between border-b border-border pb-3">
+            <div>
+              <h2 className="font-heading text-base font-bold text-foreground">
+                4. Media Video Berita (Opsional)
+              </h2>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                Sematkan video YouTube / link video terkait berita ini.
+              </p>
+            </div>
+            <InfoLinkButton />
+          </div>
+
+          <div className="space-y-3">
+            <FieldLabel htmlFor="videoUrl" size="sm">
+              Link Video (YouTube / Direct Link)
+            </FieldLabel>
+            <input
+              id="videoUrl"
+              type="url"
+              value={videoUrl}
+              onChange={(e) => setVideoUrl(e.target.value)}
+              placeholder="https://www.youtube.com/watch?v=... atau https://youtu.be/..."
+              className={inputClass()}
+            />
+            {videoUrl.trim() && (
+              <div className="rounded-xl border border-border bg-muted/30 p-3">
+                <p className="text-xs font-semibold text-foreground mb-2">Preview Media Video:</p>
+                {(() => {
+                  const match = videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+                  if (match) {
+                    return (
+                      <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-black">
+                        <iframe
+                          src={`https://www.youtube.com/embed/${match[1]}`}
+                          title="YouTube video player"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="h-full w-full border-0"
+                        />
+                      </div>
+                    );
+                  }
+                  return (
+                    <div className="rounded-lg border border-primary/20 bg-primary/5 p-3 text-xs text-primary font-medium">
+                      ✓ Link video terpasang: <span className="font-mono text-[11px] underline">{videoUrl}</span>
+                    </div>
+                  );
+                })()}
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* ── 5. Foto Tambahan (Dokumentasi Opsional) ──────────────────────── */}
         <section className="rounded-xl border border-border bg-card p-6 sm:p-8 shadow-sm space-y-4">
           <div className="flex items-start justify-between gap-4 border-b border-border pb-3">
             <div>
               <h2 className="font-heading text-base font-bold text-foreground">
-                4. Foto Tambahan (Dokumentasi)
+                5. Foto Tambahan (Dokumentasi)
                 <span className="ml-2 text-xs font-medium text-muted-foreground">
                   ({fotoList.length}/{MAX_FOTO_TAMBAHAN})
                 </span>

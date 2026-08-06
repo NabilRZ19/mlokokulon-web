@@ -83,7 +83,7 @@ export default function AdminUsersPage() {
       />
 
       <p className="mb-4 text-xs text-muted-foreground font-medium">
-        Halaman khusus Tier 1 (Super Admin). Pengelolaan hak akses 3-tier kelurahan.
+        Halaman pengelolaan akun admin (Tier 1 &amp; Tier 2). Pengelolaan hak akses 3-tier kelurahan.
       </p>
 
       {error && (

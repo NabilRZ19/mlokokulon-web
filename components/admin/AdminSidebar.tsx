@@ -41,7 +41,7 @@ const navItems: NavItem[] = [
   { href: "/admin/kampung-kb", label: "Pengaturan Kampung KB", icon: HeartIcon },
   { href: "/admin/wilayah", label: "Wilayah (RW)", icon: MapPinIcon, canAccess: (t) => t === 1 || t === 3 },
   { href: "/admin/pengaturan", label: "Struktur Kelurahan", icon: SettingsIcon, canAccess: (t) => t === 1 || t === 2 },
-  { href: "/admin/users", label: "Kelola Admin", icon: UserCogIcon, canAccess: (t) => t === 1 },
+  { href: "/admin/users", label: "Kelola Admin", icon: UserCogIcon, canAccess: (t) => t === 1 || t === 2 },
 ];
 
 const TIER_LABEL: Record<number, string> = {

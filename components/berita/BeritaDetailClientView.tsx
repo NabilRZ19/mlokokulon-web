@@ -122,6 +122,48 @@ export function BeritaDetailClientView({
             {berita.isi}
           </div>
 
+          {/* Video Section (jika berita mempunyai video_url) */}
+          {berita.video_url && (
+            <div className="mt-8 border-t border-border pt-6 space-y-3">
+              <h2 className="font-heading text-xs font-bold uppercase tracking-widest text-primary flex items-center gap-2">
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Media Video Terkait
+              </h2>
+              {(() => {
+                const match = berita.video_url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+                if (match) {
+                  return (
+                    <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-black shadow-md border border-border">
+                      <iframe
+                        src={`https://www.youtube.com/embed/${match[1]}`}
+                        title={berita.judul}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="h-full w-full border-0"
+                      />
+                    </div>
+                  );
+                }
+                return (
+                  <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 text-sm text-primary font-medium flex items-center justify-between">
+                    <span>Tonton Video Publik Berita</span>
+                    <a
+                      href={berita.video_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-lg bg-primary px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-primary/90 transition-colors"
+                    >
+                      Buka Video ↗
+                    </a>
+                  </div>
+                );
+              })()}
+            </div>
+          )}
+
           {/* Documentation Photos dengan Lightbox Click */}
           {fotoTambahan.length > 0 && (
             <div className="mt-10 border-t border-border pt-8">

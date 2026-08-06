@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
+import { InfoLinkButton } from "@/components/admin/InfoLinkButton";
 import { compressImage } from "@/lib/image-compression";
 import { scrollToFirstError } from "@/lib/form-scroll";
 
@@ -205,9 +206,12 @@ export default function TambahGaleriPage() {
             </div>
           ) : (
             <div>
-              <label htmlFor="videoUrl" className="mb-1 block text-sm font-bold text-foreground">
-                URL Video (YouTube / Direct Link) <span className="text-destructive">*</span>
-              </label>
+              <div className="mb-1 flex items-center justify-between">
+                <label htmlFor="videoUrl" className="block text-sm font-bold text-foreground">
+                  URL Video (YouTube / Direct Link) <span className="text-destructive">*</span>
+                </label>
+                <InfoLinkButton />
+              </div>
               <input
                 id="videoUrl"
                 type="url"

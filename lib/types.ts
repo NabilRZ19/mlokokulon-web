@@ -71,6 +71,7 @@ export interface Berita {
   rw_id?: string;
   rw_nama?: string; // denormalisasi dari rw.nama_rw saat submit
   gambar_cover_url: string;
+  video_url?: string;
   penulis: string;
   created_by: string;
   foto_tambahan: string[];

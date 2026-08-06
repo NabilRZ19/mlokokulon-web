@@ -15,8 +15,8 @@ import type { SessionPayload } from "./auth";
 
 // ── Policy functions ──────────────────────────────────────────────────────────
 
-/** Tier 1 saja: manajemen akun admin (tambah, hapus, lihat semua) */
-export const canManageUsers = (tier: number) => tier === 1;
+/** Tier 1 & Tier 2: manajemen akun admin (tambah, edit, hapus, lihat semua) */
+export const canManageUsers = (tier: number) => tier === 1 || tier === 2;
 
 /**
  * Tier 1 & 2: kelola struktur organisasi kelurahan.

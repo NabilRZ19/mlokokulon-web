@@ -274,51 +274,6 @@ export default function EditStrukturPage({ params }: { params: Promise<{ id: str
                 )}
                 {uploading && <p className="mt-2 text-xs font-bold text-primary">Mengompres &amp; upload foto…</p>}
               </div>
-
-              {/* Opsi Penyesuaian Foto */}
-              <div className="rounded-xl border border-border bg-muted/30 p-4 space-y-3">
-                <p className="text-xs font-bold text-foreground uppercase tracking-wider">
-                  Pengaturan Tampilan Foto
-                </p>
-                <div className="space-y-2">
-                  <span className="text-xs font-medium text-muted-foreground block">Metode Fit Gambar:</span>
-                  <div className="flex gap-2">
-                    {(["cover", "contain"] as const).map((mode) => (
-                      <button
-                        key={mode}
-                        type="button"
-                        onClick={() => setFitMode(mode)}
-                        className={`flex-1 rounded-md px-2.5 py-1.5 text-xs font-semibold border transition-colors ${
-                          fitMode === mode
-                            ? "bg-primary text-white border-primary"
-                            : "bg-card text-foreground border-border hover:bg-muted"
-                        }`}
-                      >
-                        {mode === "cover" ? "Cover" : "Contain"}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <span className="text-xs font-medium text-muted-foreground block">Fokus Posisi Foto:</span>
-                  <div className="flex gap-2">
-                    {(["top", "center"] as const).map((pos) => (
-                      <button
-                        key={pos}
-                        type="button"
-                        onClick={() => setObjectPosition(pos)}
-                        className={`flex-1 rounded-md px-2.5 py-1.5 text-xs font-semibold border transition-colors ${
-                          objectPosition === pos
-                            ? "bg-primary text-white border-primary"
-                            : "bg-card text-foreground border-border hover:bg-muted"
-                        }`}
-                      >
-                        {pos === "top" ? "Atas Wajah (Top)" : "Tengah (Center)"}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
             </div>
 
             {fotoUrl && !uploading && (

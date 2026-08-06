@@ -55,6 +55,7 @@ export async function GET(
       rw_id: row.rwId ?? "",
       rw_nama: row.rwNama ?? "",
       gambar_cover_url: row.gambarCoverUrl,
+      video_url: row.videoUrl ?? "",
       penulis: row.penulis,
       foto_tambahan: foto.map((f) => f.url),
     });
@@ -88,6 +89,7 @@ export async function PUT(
       rw_id,
       rw_nama,
       gambar_cover_url,
+      video_url,
       penulis,
       foto_tambahan = [],
       galeri_foto = [],
@@ -107,6 +109,7 @@ export async function PUT(
 
     const sanitizedRwId = cakupan === "rw" && typeof rw_id === "string" && rw_id.trim().length > 0 ? rw_id.trim() : null;
     const sanitizedRwNama = cakupan === "rw" && typeof rw_nama === "string" && rw_nama.trim().length > 0 ? rw_nama.trim() : null;
+    const sanitizedVideoUrl = typeof video_url === "string" && video_url.trim().length > 0 ? video_url.trim() : null;
 
     await db
       .update(beritaTable)
@@ -119,6 +122,7 @@ export async function PUT(
         rwId: sanitizedRwId,
         rwNama: sanitizedRwNama,
         gambarCoverUrl: gambar_cover_url,
+        videoUrl: sanitizedVideoUrl,
         penulis,
       })
       .where(eq(beritaTable.id, id));

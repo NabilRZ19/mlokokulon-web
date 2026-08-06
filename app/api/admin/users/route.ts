@@ -8,7 +8,7 @@ import { canManageUsers, requireTier } from "@/lib/auth-policy";
 
 export async function GET() {
   const session = await getSession();
-  const deny = requireTier(session, canManageUsers, [1]);
+  const deny = requireTier(session, canManageUsers, [1, 2]);
   if (deny) return deny;
 
   try {
@@ -31,7 +31,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const session = await getSession();
-  const deny = requireTier(session, canManageUsers, [1]);
+  const deny = requireTier(session, canManageUsers, [1, 2]);
   if (deny) return deny;
 
   try {

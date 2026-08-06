@@ -3,6 +3,7 @@
 import { use, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
+import { InfoLinkButton } from "@/components/admin/InfoLinkButton";
 import { compressImage } from "@/lib/image-compression";
 import { getPublicImageUrl } from "@/lib/image-url";
 import { scrollToFirstError } from "@/lib/form-scroll";
@@ -388,9 +389,12 @@ export default function EditUmkmPage({ params }: { params: Promise<{ id: string 
           </div>
 
           <div>
-            <label htmlFor="linkGmaps" className="mb-1 block text-sm font-bold text-foreground">
-              Link Google Maps (Opsional)
-            </label>
+            <div className="mb-1 flex items-center justify-between">
+              <label htmlFor="linkGmaps" className="block text-sm font-bold text-foreground">
+                Link Google Maps (Opsional)
+              </label>
+              <InfoLinkButton />
+            </div>
             <input
               id="linkGmaps"
               type="url"
