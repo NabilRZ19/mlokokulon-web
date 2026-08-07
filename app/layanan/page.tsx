@@ -142,18 +142,18 @@ export default async function LayananPage() {
               <Card className="flex flex-col justify-between p-6 sm:p-7 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md h-full">
                 <div className="space-y-4">
                   <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
                         <IconFileText />
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <h3 className="font-heading text-lg font-bold text-foreground">
                           {item.nama}
                         </h3>
                         <p className="text-xs font-medium text-primary">{item.kategori}</p>
                       </div>
                     </div>
-                    <Badge variant="accent">{item.biaya}</Badge>
+                    <Badge variant="accent" className="shrink-0 whitespace-nowrap">{item.biaya}</Badge>
                   </div>
 
                   <p className="text-sm leading-relaxed text-foreground text-justify">{item.deskripsi}</p>

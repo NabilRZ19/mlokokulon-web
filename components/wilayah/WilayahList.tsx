@@ -224,7 +224,7 @@ export function WilayahList({ rwList }: WilayahListProps) {
             }`}
           >
             <KampungKbIcon className="h-3.5 w-3.5 fill-current" />
-            <span>Kampung KB Only</span>
+            <span>Kampung KB Saja</span>
           </button>
         </div>
       </div>

@@ -15,7 +15,7 @@ export function Badge({ children, variant = "default", className = "" }: BadgePr
       : "bg-muted text-muted-foreground border-border";
 
   return (
-    <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${styles} ${className}`}>
+    <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium whitespace-nowrap shrink-0 ${styles} ${className}`}>
       {children}
     </span>
   );

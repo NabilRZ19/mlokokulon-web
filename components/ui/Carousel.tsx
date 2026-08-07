@@ -106,12 +106,12 @@ export function Carousel({
       <div
         ref={trackRef}
         onScroll={handleScroll}
-        className="no-scrollbar flex snap-x snap-mandatory overflow-x-auto scroll-smooth"
+        className="no-scrollbar flex snap-x snap-mandatory overflow-x-auto scroll-smooth py-3 -my-3 px-1 -mx-1"
       >
         {slides.map((slide, i) => (
           <div
             key={i}
-            className={`grid w-full shrink-0 snap-start gap-4 transition-opacity duration-500 ease-out ${gridCls} ${
+            className={`grid w-full shrink-0 snap-start gap-4 transition-opacity duration-500 ease-out p-1 ${gridCls} ${
               i === active ? "opacity-100" : "opacity-40"
             }`}
           >
