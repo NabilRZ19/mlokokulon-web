@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Card } from "@/components/ui/Card";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { PlaceholderNotice } from "@/components/ui/PlaceholderNotice";
 import { Reveal } from "@/components/ui/Reveal";
+import { getPublicImageUrl } from "@/lib/image-url";
 import { kelurahanProfileData as p } from "@/lib/seed-data";
 import { pageOpenGraph } from "@/lib/seo";
 
@@ -217,28 +217,32 @@ export default function KontakPage() {
               </div>
 
               <div className="mt-6 pt-4 border-t border-border space-y-3">
-                <div className="overflow-hidden rounded-xl border border-border bg-muted shadow-2xs">
-                  <iframe
-                    title="Peta Lokasi Kantor Kelurahan Mlokomanis Kulon"
-                    src="https://maps.google.com/maps?q=Kantor+Kelurahan+Mlokomanis+Kulon+Wonogiri&t=&z=16&ie=UTF8&iwloc=&output=embed"
-                    width="100%"
-                    height="180"
-                    style={{ border: 0 }}
-                    allowFullScreen={false}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    className="w-full transition-all duration-300"
+                <div className="relative overflow-hidden rounded-xl border border-border bg-muted shadow-2xs group min-h-[160px]">
+                  <img
+                    src={getPublicImageUrl("media/kantorkelurahan.png")}
+                    alt="Gedung Kantor Kelurahan Mlokomanis Kulon"
+                    className="h-44 w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
+                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-xs font-semibold drop-shadow-md">
+                    <span className="flex items-center gap-1.5 font-heading font-bold">
+                      <IconMapPin />
+                      <span>Kantor Kelurahan Mlokomanis Kulon</span>
+                    </span>
+                    <span className="rounded-full bg-emerald-600/90 px-2.5 py-0.5 text-[10px] font-bold backdrop-blur-xs text-white">
+                      Google Maps
+                    </span>
+                  </div>
                 </div>
 
                 <a
                   href="https://maps.app.goo.gl/pNsbhJ2xtcfzi7K97"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-primary/30 bg-primary/10 px-4 py-2.5 text-xs font-bold text-primary shadow-2xs transition-all hover:bg-primary hover:text-white hover:border-primary hover:shadow"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-3 text-xs font-bold text-emerald-800 shadow-2xs transition-all hover:bg-emerald-600 hover:text-white hover:border-emerald-600 hover:shadow-md"
                 >
                   <IconMapPin />
-                  <span>Buka Petunjuk Lokasi di Google Maps →</span>
+                  <span>Buka Petunjuk Lokasi di Google Maps (maps.app.goo.gl) →</span>
                 </a>
               </div>
             </Card>
