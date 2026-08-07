@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/Card";
 import { Carousel } from "@/components/ui/Carousel";
 import { MapWilayah } from "@/components/ui/MapWilayah";
 import { Reveal } from "@/components/ui/Reveal";
-import { SproutIcon } from "@/components/ui/icons";
+import { KampungKbIcon, SproutIcon } from "@/components/ui/icons";
 import { getPublicImageUrl } from "@/lib/image-url";
 import { getKampungKbStore } from "@/lib/kampung-kb-store";
 import { getBeritaList, getGaleriList } from "@/lib/queries";
@@ -312,17 +312,7 @@ export default async function Home() {
             <div className="max-w-3xl space-y-4">
               {/* Eyebrow Badge Pill */}
               <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/20 px-3.5 py-1 text-xs font-bold text-emerald-300 backdrop-blur-md shadow-sm">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-4 w-4 shrink-0 text-emerald-300 fill-emerald-300/20"
-                >
-                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                </svg>
+                <KampungKbIcon className="h-4 w-4 shrink-0 text-emerald-300 fill-emerald-300/20" />
                 <span>Inpres No. 3 Tahun 2022 · BKKBN RI</span>
               </div>
 
@@ -355,10 +345,7 @@ export default async function Home() {
                 <div className="p-6 sm:p-8 lg:col-span-6 space-y-4 flex flex-col justify-between bg-gradient-to-br from-card via-emerald-50/20 to-card">
                   <div className="space-y-3">
                     <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300/80 bg-emerald-100/80 px-3.5 py-1 text-xs font-bold text-emerald-900 shadow-2xs">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5 text-emerald-700">
-                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-                        <circle cx="12" cy="10" r="3" />
-                      </svg>
+                      <KampungKbIcon className="h-3.5 w-3.5 text-emerald-700 fill-emerald-700/20" />
                       <span>Percontohan: RW 05 Pencil</span>
                     </div>
 
@@ -487,6 +474,7 @@ export default async function Home() {
                   itemsPerSlide={3}
                   colsMobile={1}
                   colsSm={3}
+                  dotVariant="light"
                   items={beritaTerbaru.map((b) => (
                     <Link key={b.id} href={`/berita/${b.slug}`}>
                       <Card

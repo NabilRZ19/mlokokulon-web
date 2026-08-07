@@ -15,6 +15,8 @@ interface CarouselProps {
   colsMobile?: number;
   /** Jumlah kolom grid sm+ (default 3) */
   colsSm?: number;
+  /** Varian warna kontrol & titik slide: "default" (bg terang) atau "light" (bg gelap) */
+  dotVariant?: "default" | "light";
 }
 
 const GRID_COLS_SM: Record<number, string> = {
@@ -44,6 +46,7 @@ export function Carousel({
   autoplayInterval = 5000,
   colsMobile = 1,
   colsSm = 3,
+  dotVariant = "default",
 }: CarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -118,37 +121,53 @@ export function Carousel({
       </div>
 
       {slides.length > 1 && (
-        <div className="mt-4 flex items-center justify-center gap-4">
+        <div className="mt-6 flex items-center justify-center gap-3">
           <button
             type="button"
             onClick={() => { setPaused(true); goTo(active - 1); }}
-            disabled={active === 0}
             aria-label="Sebelumnya"
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border bg-card text-foreground transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-40"
+            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-all duration-200 active:scale-95 ${
+              dotVariant === "light"
+                ? "border-white/30 bg-white/10 text-white hover:bg-white hover:text-slate-900 shadow-sm"
+                : "border-border bg-card text-foreground hover:bg-muted shadow-xs"
+            }`}
           >
             <ChevronLeftIcon className="h-4 w-4" />
           </button>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 px-1 py-1">
             {slides.map((_, i) => (
               <button
                 key={i}
                 type="button"
                 onClick={() => { setPaused(true); goTo(i); }}
                 aria-label={`Slide ${i + 1}`}
-                className={`rounded-full transition-all duration-300 ${
-                  i === active ? "h-2 w-5 bg-primary" : "h-2 w-2 bg-border hover:bg-muted-foreground"
-                }`}
-              />
+                className="group relative flex h-7 items-center justify-center px-1"
+              >
+                <span
+                  className={`block rounded-full transition-all duration-300 ${
+                    i === active
+                      ? dotVariant === "light"
+                        ? "h-2.5 w-7 bg-white shadow-sm"
+                        : "h-2.5 w-7 bg-primary shadow-xs"
+                      : dotVariant === "light"
+                        ? "h-2.5 w-2.5 bg-white/40 group-hover:bg-white/70"
+                        : "h-2.5 w-2.5 bg-foreground/25 group-hover:bg-foreground/50"
+                  }`}
+                />
+              </button>
             ))}
           </div>
 
           <button
             type="button"
             onClick={() => { setPaused(true); goTo(active + 1); }}
-            disabled={active === slides.length - 1}
             aria-label="Selanjutnya"
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border bg-card text-foreground transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-40"
+            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-all duration-200 active:scale-95 ${
+              dotVariant === "light"
+                ? "border-white/30 bg-white/10 text-white hover:bg-white hover:text-slate-900 shadow-sm"
+                : "border-border bg-card text-foreground hover:bg-muted shadow-xs"
+            }`}
           >
             <ChevronRightIcon className="h-4 w-4" />
           </button>
@@ -157,3 +176,4 @@ export function Carousel({
     </div>
   );
 }
+

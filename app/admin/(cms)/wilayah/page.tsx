@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { RefreshButton } from "@/components/admin/RefreshButton";
 import { Badge } from "@/components/ui/Badge";
+import { KampungKbIcon } from "@/components/ui/icons";
 import type { Rw } from "@/lib/types";
 
 export default function AdminWilayahPage() {
@@ -83,7 +84,10 @@ export default function AdminWilayahPage() {
                   <p className="text-xs text-muted-foreground mt-0.5">Dusun {rw.cakupan_dusun}</p>
                 </div>
                 {rw.is_kampung_kb ? (
-                  <Badge variant="accent">★ Kampung KB</Badge>
+                  <Badge variant="accent" className="inline-flex items-center gap-1">
+                    <KampungKbIcon className="h-3 w-3 fill-current" />
+                    <span>Kampung KB</span>
+                  </Badge>
                 ) : (
                   <span className="text-[11px] font-semibold text-muted-foreground">Reguler</span>
                 )}
@@ -152,7 +156,10 @@ export default function AdminWilayahPage() {
                   </td>
                   <td className="px-4 py-3">
                     {rw.is_kampung_kb ? (
-                      <Badge variant="accent">Kampung KB</Badge>
+                      <Badge variant="accent" className="inline-flex items-center gap-1">
+                        <KampungKbIcon className="h-3 w-3 fill-current" />
+                        <span>Kampung KB</span>
+                      </Badge>
                     ) : (
                       <span className="text-xs text-muted-foreground">Reguler</span>
                     )}

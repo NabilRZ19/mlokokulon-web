@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { KampungKbClientView } from "@/components/kampung-kb/KampungKbClientView";
+import { KampungKbIcon } from "@/components/ui/icons";
 import { getBeritaList, getGaleriList, getRwById } from "@/lib/queries";
 import { getKampungKbStore } from "@/lib/kampung-kb-store";
 import { pageOpenGraph } from "@/lib/seo";
@@ -16,22 +17,6 @@ export const metadata: Metadata = {
 };
 
 export const dynamic = "force-dynamic";
-
-function IconHeart() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="h-4 w-4 shrink-0 text-emerald-300 fill-emerald-300/20"
-    >
-      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-    </svg>
-  );
-}
 
 export default async function KampungKbPage() {
   const kb = getKampungKbStore();
@@ -55,7 +40,7 @@ export default async function KampungKbPage() {
           <div className="max-w-3xl space-y-4">
             {/* Eyebrow Badge Pill */}
             <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/20 px-3.5 py-1 text-xs font-bold text-emerald-300 backdrop-blur-md shadow-sm">
-              <IconHeart />
+              <KampungKbIcon className="h-4 w-4 shrink-0 text-emerald-300 fill-emerald-300/20" />
               <span>Inpres No. 3 Tahun 2022 · BKKBN RI</span>
             </div>
 

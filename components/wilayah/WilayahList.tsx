@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
+import { KampungKbIcon } from "@/components/ui/icons";
 import type { Rw } from "@/lib/types";
 
 interface WilayahListProps {
@@ -222,7 +223,7 @@ export function WilayahList({ rwList }: WilayahListProps) {
                 : "border border-emerald-200 bg-emerald-50/60 text-emerald-800 hover:bg-emerald-100"
             }`}
           >
-            <IconSprout />
+            <KampungKbIcon className="h-3.5 w-3.5 fill-current" />
             <span>Kampung KB Only</span>
           </button>
         </div>
@@ -273,7 +274,7 @@ export function WilayahList({ rwList }: WilayahListProps) {
                     {rw.is_kampung_kb && (
                       <Badge variant="accent">
                         <span className="flex items-center gap-1">
-                          <IconSprout />
+                          <KampungKbIcon className="h-3.5 w-3.5 fill-current" />
                           Kampung KB
                         </span>
                       </Badge>

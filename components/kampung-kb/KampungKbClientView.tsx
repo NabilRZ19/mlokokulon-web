@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/Card";
 import { Carousel } from "@/components/ui/Carousel";
 import { ImageLightboxModal } from "@/components/ui/ImageLightboxModal";
 import { Reveal } from "@/components/ui/Reveal";
+import { KampungKbIcon } from "@/components/ui/icons";
 import { getPublicImageUrl } from "@/lib/image-url";
 import type { Berita, Galeri, KampungKb, Rw } from "@/lib/types";
 import { kampungKbData as fallbackKb } from "@/lib/seed-data";
@@ -55,10 +56,7 @@ export function KampungKbClientView({
 
             <div className="p-6 sm:p-8 lg:col-span-6 space-y-4 flex flex-col justify-center">
               <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300/80 bg-emerald-100/80 px-3.5 py-1 text-xs font-bold text-emerald-900 shadow-2xs self-start">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5 text-emerald-700">
-                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-                  <circle cx="12" cy="10" r="3" />
-                </svg>
+                <KampungKbIcon className="h-3.5 w-3.5 text-emerald-700 fill-emerald-700/20" />
                 Percontohan: RW 05 Pencil
               </div>
 
