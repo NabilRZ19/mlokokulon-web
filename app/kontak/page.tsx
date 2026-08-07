@@ -216,10 +216,30 @@ export default function KontakPage() {
                 </div>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-border">
-                <div className="rounded-lg border border-border bg-muted/30 p-4 text-center text-xs text-muted-foreground">
-                  📍 Peta petunjuk lokasi interaktif (Google Maps) segera hadir.
+              <div className="mt-6 pt-4 border-t border-border space-y-3">
+                <div className="overflow-hidden rounded-xl border border-border bg-muted shadow-2xs">
+                  <iframe
+                    title="Peta Lokasi Kantor Kelurahan Mlokomanis Kulon"
+                    src="https://maps.google.com/maps?q=Kantor+Kelurahan+Mlokomanis+Kulon+Wonogiri&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                    width="100%"
+                    height="180"
+                    style={{ border: 0 }}
+                    allowFullScreen={false}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    className="w-full transition-all duration-300"
+                  />
                 </div>
+
+                <a
+                  href="https://maps.app.goo.gl/pNsbhJ2xtcfzi7K97"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-primary/30 bg-primary/10 px-4 py-2.5 text-xs font-bold text-primary shadow-2xs transition-all hover:bg-primary hover:text-white hover:border-primary hover:shadow"
+                >
+                  <IconMapPin />
+                  <span>Buka Petunjuk Lokasi di Google Maps →</span>
+                </a>
               </div>
             </Card>
           </Reveal>
