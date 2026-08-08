@@ -5,6 +5,7 @@ import { berita as beritaTable, beritaFotoTambahan, galeri as galeriTable } from
 import { getBeritaList } from "@/lib/queries";
 import { getSession } from "@/lib/session";
 import { isValidDateStr, isValidEnum, isValidString, isValidUrl } from "@/lib/validate";
+import { revalidatePath } from "next/cache";
 import { handleApiError } from "@/lib/api-error";
 import { needsApproval } from "@/lib/auth-policy";
 
@@ -119,6 +120,10 @@ export async function POST(request: Request) {
         }))
       );
     }
+
+    revalidatePath("/");
+    revalidatePath("/berita");
+    revalidatePath("/galeri");
 
     return NextResponse.json({ id, slug }, { status: 201 });
   } catch (err) {

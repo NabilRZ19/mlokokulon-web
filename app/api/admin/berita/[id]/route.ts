@@ -7,6 +7,7 @@ import {
   beritaFotoTambahan,
   galeri as galeriTable,
 } from "@/lib/db/schema";
+import { revalidatePath } from "next/cache";
 import { getSession } from "@/lib/session";
 import { isValidDateStr, isValidEnum, isValidString, isValidUrl } from "@/lib/validate";
 import { handleApiError } from "@/lib/api-error";
@@ -167,6 +168,10 @@ export async function PUT(
       );
     }
 
+    revalidatePath("/");
+    revalidatePath("/berita");
+    revalidatePath("/galeri");
+
     return NextResponse.json({ success: true });
   } catch (err) {
     return handleApiError("api/admin/berita/[id] PUT", err, "Gagal memperbarui berita");
@@ -190,6 +195,10 @@ export async function DELETE(
   try {
     await db.delete(beritaFotoTambahan).where(eq(beritaFotoTambahan.beritaId, id));
     await db.delete(beritaTable).where(eq(beritaTable.id, id));
+
+    revalidatePath("/");
+    revalidatePath("/berita");
+    revalidatePath("/galeri");
 
     return NextResponse.json({ success: true });
   } catch (err) {

@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db/client";
 import { galeri as galeriTable } from "@/lib/db/schema";
 import { getGaleriList } from "@/lib/queries";
+import { revalidatePath } from "next/cache";
 import { getSession } from "@/lib/session";
 import { isValidEnum, isValidString, isValidUrl } from "@/lib/validate";
 import { needsApproval } from "@/lib/auth-policy";
@@ -49,6 +50,9 @@ export async function POST(request: Request) {
       submittedByTier: session.tier,
       pengusul: typeof pengusul === "string" && pengusul.trim() ? pengusul.trim() : null,
     });
+
+    revalidatePath("/");
+    revalidatePath("/galeri");
 
     return NextResponse.json({ id }, { status: 201 });
   } catch (err) {

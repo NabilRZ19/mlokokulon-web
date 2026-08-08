@@ -4,6 +4,7 @@ import { db } from "@/lib/db/client";
 import { berita as beritaTable, beritaFotoTambahan as beritaFotoTambahanTable } from "@/lib/db/schema";
 import { getSession } from "@/lib/session";
 import { canApproveContent, requireTier } from "@/lib/auth-policy";
+import { revalidatePath } from "next/cache";
 import { handleApiError } from "@/lib/api-error";
 
 /** GET: Ambil detail berita pending tertentu untuk preview */
@@ -95,6 +96,9 @@ export async function PATCH(
         reviewerNote: note.trim() || null,
       })
       .where(eq(beritaTable.id, id));
+
+    revalidatePath("/");
+    revalidatePath("/berita");
 
     return NextResponse.json({ success: true, status: newStatus });
   } catch (err) {

@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db/client";
 import { umkm as umkmTable, umkmFoto, umkmProdukUnggulan } from "@/lib/db/schema";
 import { getUmkmList } from "@/lib/queries";
+import { revalidatePath } from "next/cache";
 import { getSession } from "@/lib/session";
 import { isValidString, isValidUrl } from "@/lib/validate";
 import { needsApproval } from "@/lib/auth-policy";
@@ -100,6 +101,9 @@ export async function POST(request: Request) {
         }))
       );
     }
+
+    revalidatePath("/");
+    revalidatePath("/umkm");
 
     return NextResponse.json({ id, slug }, { status: 201 });
   } catch (err) {
