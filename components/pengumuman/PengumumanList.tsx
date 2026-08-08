@@ -1,7 +1,8 @@
-import { TargetIcon } from "@/components/admin/icons";
+"use client";
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { TargetIcon } from "@/components/admin/icons";
 import type { PengumumanItem } from "@/lib/types";
 
 type SortOption = "terbaru" | "terlama" | "judul-asc" | "judul-desc";
