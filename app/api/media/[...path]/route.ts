@@ -59,7 +59,7 @@ export async function GET(
 
     // Fallback direct HTTP fetch ke MinIO jika AWS S3 SDK mengalami kendala
     try {
-      const s3Endpoint = S3_ENDPOINT.replace(/\/$/, "");
+      const s3Endpoint = (process.env.S3_ENDPOINT || "").replace(/\/$/, "");
       const directUrl = `${s3Endpoint}/${bucket}/${key}`;
       const res = await fetch(directUrl);
       if (res.ok) {

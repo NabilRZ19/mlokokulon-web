@@ -87,7 +87,15 @@ export function Footer() {
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-4 text-center text-xs text-white/60 sm:flex-row sm:text-left">
           <p>© {new Date().getFullYear()} Kelurahan {p.nama}. Hak Cipta Dilindungi.</p>
           <p className="font-medium text-white/80">
-            Dikembangkan oleh <strong>Tim KKN 268 Universitas Sebelas Maret (UNS)</strong>
+            Dikembangkan oleh Tim KKN 268{" "}
+            <a
+              href="https://uns.ac.id"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-bold text-white underline hover:text-secondary transition-colors"
+            >
+              Universitas Sebelas Maret (UNS)
+            </a>
           </p>
         </div>
       </div>

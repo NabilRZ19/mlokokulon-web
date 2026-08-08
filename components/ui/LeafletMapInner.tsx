@@ -752,20 +752,26 @@ export default function LeafletMapInner({
            CUSTOM LAYER CONTROL PANEL
         ================================ */
         .custom-layer-control {
-          background: #ffffff;
-          border-radius: 8px;
-          box-shadow: 0 4px 16px rgba(0,0,0,0.18);
-          padding: 10px 14px;
-          font-size: 13px;
-          line-height: 1.7;
-          max-height: 80vh;
-          overflow-y: auto;
-          min-width: 200px;
+          background: #ffffff !important;
+          color: #0f172a !important;
+          border-radius: 12px !important;
+          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2) !important;
+          border: 1px solid #cbd5e1 !important;
+          padding: 12px 14px !important;
+          font-size: 12px !important;
+          line-height: 1.6 !important;
+          max-height: 80vh !important;
+          overflow-y: auto !important;
+          min-width: 220px !important;
           /* Animasi muncul */
           transform-origin: top right;
           transition: opacity 0.2s ease, transform 0.2s ease;
           opacity: 1;
           transform: scale(1) translateY(0);
+        }
+
+        .custom-layer-control * {
+          color: #0f172a !important;
         }
 
         /* State tersembunyi */
@@ -776,22 +782,37 @@ export default function LeafletMapInner({
           max-height: 0;
           padding: 0;
           overflow: hidden;
-          border: none;
-          box-shadow: none;
+          border: none !important;
+          box-shadow: none !important;
         }
 
         .custom-layer-control hr {
-          border: none;
-          border-top: 1px solid #ddd;
-          margin: 6px 0;
+          border: none !important;
+          border-top: 1px solid #e2e8f0 !important;
+          margin: 8px 0 !important;
         }
 
         .custom-layer-control .lc-row {
-          display: flex;
-          align-items: center;
-          gap: 7px;
-          cursor: pointer;
-          white-space: nowrap;
+          display: flex !important;
+          align-items: center !important;
+          gap: 8px !important;
+          cursor: pointer !important;
+          white-space: nowrap !important;
+          color: #0f172a !important;
+          font-weight: 600 !important;
+          padding: 3px 5px !important;
+          border-radius: 6px !important;
+          transition: background-color 0.15s ease !important;
+        }
+
+        .custom-layer-control .lc-row:hover {
+          background-color: #f1f5f9 !important;
+        }
+
+        .custom-layer-control .lc-row span {
+          color: #0f172a !important;
+          font-size: 12px !important;
+          font-weight: 600 !important;
         }
 
         .custom-layer-control .lc-row input {
@@ -801,27 +822,27 @@ export default function LeafletMapInner({
         }
 
         .custom-layer-control .lc-basemap {
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
+          display: flex !important;
+          flex-direction: column !important;
+          gap: 3px !important;
         }
 
         .custom-layer-control .lc-section-header {
-          font-size: 11px;
-          font-weight: bold;
-          color: #666666;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          margin: 2px 0 3px;
+          font-size: 10px !important;
+          font-weight: 800 !important;
+          color: #475569 !important;
+          text-transform: uppercase !important;
+          letter-spacing: 0.6px !important;
+          margin: 4px 0 4px !important;
         }
 
         .custom-layer-control .lc-row.lc-master {
-          font-size: 11px;
-          font-weight: bold;
-          color: #444444;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          margin: 2px 0 3px;
+          font-size: 11px !important;
+          font-weight: 800 !important;
+          color: #1e293b !important;
+          text-transform: uppercase !important;
+          letter-spacing: 0.6px !important;
+          margin: 4px 0 2px !important;
         }
 
         .legend-swatch {
