@@ -8,7 +8,7 @@ import { MapWilayah } from "@/components/ui/MapWilayah";
 import { Reveal } from "@/components/ui/Reveal";
 import { KampungKbIcon, SproutIcon } from "@/components/ui/icons";
 import { getPublicImageUrl } from "@/lib/image-url";
-import { getKampungKbStore } from "@/lib/kampung-kb-store";
+import { getKampungKbStoreAsync } from "@/lib/kampung-kb-store";
 import { getBeritaList, getGaleriList } from "@/lib/queries";
 import { kelurahanProfileData as p } from "@/lib/seed-data";
 import { SITE_NAME, pageOpenGraph } from "@/lib/seo";
@@ -129,7 +129,7 @@ const quickLinks = [
 ];
 
 export default async function Home() {
-  const kb = getKampungKbStore();
+  const kb = await getKampungKbStoreAsync();
   const [beritaAll, galeriAll] = await Promise.all([getBeritaList(), getGaleriList()]);
 
   // Tampilkan hingga 9 berita di carousel homepage (3 slide × 3 card)
@@ -401,7 +401,7 @@ export default async function Home() {
 
             {/* Pokja Grid Teaser Cards */}
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {pokjaTeaser.map((pokja, idx) => (
+              {pokjaTeaser.map((pokja: any, idx: number) => (
                 <Card
                   key={pokja.nama}
                   className="flex flex-col justify-between gap-3 p-5 bg-card/95 backdrop-blur-md border-emerald-200/20 shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md"
@@ -414,7 +414,7 @@ export default async function Home() {
                       <h3 className="font-heading text-sm font-bold text-foreground">{pokja.nama}</h3>
                     </div>
                     <ul className="mt-3 space-y-1 border-t border-border pt-3">
-                      {pokja.program.slice(0, 3).map((item) => (
+                      {pokja.program.slice(0, 3).map((item: string) => (
                         <li key={item} className="flex items-start gap-1.5 text-xs text-muted-foreground">
                           <span className="mt-0.5 shrink-0 text-accent">•</span>
                           {item}

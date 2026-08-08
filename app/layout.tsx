@@ -9,12 +9,14 @@ const lexend = Lexend({
   variable: "--font-lexend",
   subsets: ["latin"],
   display: "swap",
+  adjustFontFallback: false,
 });
 
 const sourceSans = Source_Sans_3({
   variable: "--font-source-sans",
   subsets: ["latin"],
   display: "swap",
+  adjustFontFallback: false,
 });
 
 const DEFAULT_DESCRIPTION =

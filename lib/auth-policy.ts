@@ -35,13 +35,12 @@ export const canAssignTier = (actorTier: number, targetTier: number) =>
 export const canManageStruktur = (tier: number) => tier === 1 || tier === 2;
 
 /**
- * Tier 1, 3 & 4: kelola data wilayah RW.
- * Tier 1 = super admin bisa edit semua RW.
+ * Tier 1, 2, 3 & 4: kelola data wilayah RW.
+ * Tier 1 & 2 = super admin & admin kelurahan bisa edit semua RW.
  * Tier 3 = admin RW bisa edit data RW-nya sendiri (selain Ketua RW yang perlu approval).
  * Tier 4 = admin Kampung KB bisa edit data wilayah RW-nya.
- * Tier 2 = admin kelurahan tidak mengelola wilayah RW secara langsung.
  */
-export const canManageWilayah = (tier: number) => tier === 1 || tier === 3 || tier === 4;
+export const canManageWilayah = (tier: number) => tier === 1 || tier === 2 || tier === 3 || tier === 4;
 
 /**
  * Semua tier: bisa membuat/edit/hapus konten publik (berita, galeri, UMKM, layanan).

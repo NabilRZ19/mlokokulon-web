@@ -212,3 +212,17 @@ export const layanan = mysqlTable("layanan", {
 }, (table) => [
   index("layanan_urutan_idx").on(table.urutan),
 ]);
+
+export const pengaturanKampungKb = mysqlTable("pengaturan_kampung_kb", {
+  id: varchar("id", { length: 64 }).primaryKey().default("default"),
+  rwRef: varchar("rw_ref", { length: 64 }).notNull().default("rw-05"),
+  namaProgram: varchar("nama_program", { length: 255 }).notNull(),
+  ketua: varchar("ketua", { length: 255 }).notNull(),
+  deskripsiProgram: text("deskripsi_program").notNull(),
+  skTahun: varchar("sk_tahun", { length: 64 }),
+  fungsi: json("fungsi").$type<string[]>(),
+  pengurusInti: json("pengurus_inti").$type<any[]>(),
+  pokja: json("pokja").$type<any[]>(),
+  fotoHighlightUrl: varchar("foto_highlight_url", { length: 512 }),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+});

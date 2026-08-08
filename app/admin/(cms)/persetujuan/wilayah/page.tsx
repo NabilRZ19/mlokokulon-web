@@ -106,32 +106,40 @@ export default function PersetujuanWilayahPage() {
           Memuat daftar pengajuan…
         </div>
       ) : list.length === 0 ? (
-        <div className="rounded-xl border border-border bg-card p-8 text-center space-y-2">
-          <div className="text-3xl">✅</div>
-          <p className="text-sm font-semibold text-foreground">Tidak ada pengajuan perubahan Ketua RW yang menunggu</p>
+        <div className="rounded-2xl border border-border bg-card p-10 text-center space-y-3 shadow-2xs">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600 border border-emerald-200">
+            <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <p className="text-base font-bold text-foreground font-heading">Tidak Ada Pengajuan Ketua RW Menunggu Persetujuan</p>
+          <p className="text-xs text-muted-foreground max-w-sm mx-auto">Seluruh pengajuan pengangkatan / perubahan Ketua RW dari Admin RW (Tier 3) telah diproses.</p>
         </div>
       ) : (
         <div className="space-y-4">
           {list.map((item) => (
-            <div key={item.id} className="rounded-xl border border-orange-200 bg-orange-50/30 p-4 shadow-xs space-y-3">
-              <div className="flex items-start gap-4">
+            <div key={item.id} className="rounded-2xl border border-orange-200 bg-orange-50/30 p-4 sm:p-5 shadow-xs space-y-4">
+              <div className="flex flex-col sm:flex-row items-start gap-4">
                 {/* Foto Baru */}
                 {item.ketua_foto_url_baru && (
-                  <div className="shrink-0 h-16 w-16 rounded-full border-2 border-orange-300 bg-muted overflow-hidden">
+                  <div className="h-20 w-20 shrink-0 rounded-2xl border-2 border-orange-300 bg-muted overflow-hidden shadow-2xs">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={item.ketua_foto_url_baru} alt="Foto Ketua Baru" className="h-full w-full object-cover" />
                   </div>
                 )}
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-wrap items-center gap-2 mb-1">
-                    <span className="rounded-full bg-orange-100 px-2 py-0.5 text-[11px] font-bold text-orange-700">
-                      ⏳ Menunggu Persetujuan
+                <div className="flex-1 min-w-0 space-y-1.5">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-orange-100 px-2.5 py-0.5 text-[11px] font-bold text-orange-800 border border-orange-200">
+                      <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span>Menunggu Persetujuan</span>
                     </span>
                   </div>
-                  <h3 className="font-heading text-sm font-bold text-foreground">
+                  <h3 className="font-heading text-base font-bold text-foreground leading-snug">
                     {item.rw_nama} — Perubahan Ketua RW
                   </h3>
-                  <p className="text-sm text-foreground mt-1">
+                  <p className="text-xs text-foreground font-medium">
                     Ketua Baru: <strong className="text-primary">{item.ketua_nama_baru}</strong>
                   </p>
                 </div>
@@ -151,7 +159,16 @@ export default function PersetujuanWilayahPage() {
               </div>
 
               {/* Actions */}
-              <div className="flex flex-wrap items-center justify-end gap-3 pt-1 border-t border-orange-200">
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-orange-200">
+                <Link
+                  href={`/admin/persetujuan/wilayah/${item.id}/preview`}
+                  className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline"
+                >
+                  <span>Preview Perbandingan Lengkap</span>
+                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </Link>
                 <div className="flex gap-2">
                   <button
                     type="button"

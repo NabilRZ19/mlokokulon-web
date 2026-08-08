@@ -1,29 +1,72 @@
-import fs from "fs";
-import path from "path";
+import { eq } from "drizzle-orm";
+import { db } from "./db/client";
+import { pengaturanKampungKb } from "./db/schema";
 import { kampungKbData as fallbackData } from "./seed-data";
 import type { KampungKb } from "./types";
 
-const FILE_PATH = path.join(process.cwd(), "data", "kampung-kb.json");
-
 export function getKampungKbStore(): KampungKb {
+  return fallbackData;
+}
+
+export async function getKampungKbStoreAsync(): Promise<KampungKb> {
   try {
-    if (fs.existsSync(FILE_PATH)) {
-      const content = fs.readFileSync(FILE_PATH, "utf-8");
-      const parsed = JSON.parse(content);
-      if (parsed && typeof parsed === "object" && parsed.nama_program) {
-        return parsed as KampungKb;
-      }
+    const rows = await db
+      .select()
+      .from(pengaturanKampungKb)
+      .where(eq(pengaturanKampungKb.id, "default"))
+      .limit(1);
+
+    if (rows.length > 0) {
+      const row = rows[0];
+      return {
+        rw_ref: row.rwRef ?? fallbackData.rw_ref,
+        nama_program: row.namaProgram,
+        ketua: row.ketua,
+        deskripsi_program: row.deskripsiProgram,
+        sk_tahun: row.skTahun ?? fallbackData.sk_tahun,
+        fungsi: (row.fungsi as string[]) ?? fallbackData.fungsi,
+        pengurus_inti: (row.pengurusInti as any[]) ?? fallbackData.pengurus_inti,
+        pokja: (row.pokja as any[]) ?? fallbackData.pokja,
+        foto_highlight_url: row.fotoHighlightUrl ?? fallbackData.foto_highlight_url,
+      };
     }
   } catch (err) {
-    console.error("[kampung-kb-store] Failed to read kampung-kb.json, using fallback:", err);
+    console.error("[kampung-kb-store] Error reading from DB, using fallback:", err);
   }
   return fallbackData;
 }
 
-export function saveKampungKbStore(data: KampungKb): void {
-  const dir = path.dirname(FILE_PATH);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
+export async function saveKampungKbStoreAsync(data: KampungKb): Promise<void> {
+  try {
+    await db
+      .insert(pengaturanKampungKb)
+      .values({
+        id: "default",
+        rwRef: data.rw_ref || "rw-05",
+        namaProgram: data.nama_program,
+        ketua: data.ketua,
+        deskripsiProgram: data.deskripsi_program,
+        skTahun: data.sk_tahun,
+        fungsi: data.fungsi,
+        pengurusInti: data.pengurus_inti,
+        pokja: data.pokja,
+        fotoHighlightUrl: data.foto_highlight_url,
+      })
+      .onDuplicateKeyUpdate({
+        set: {
+          rwRef: data.rw_ref || "rw-05",
+          namaProgram: data.nama_program,
+          ketua: data.ketua,
+          deskripsiProgram: data.deskripsi_program,
+          skTahun: data.sk_tahun,
+          fungsi: data.fungsi,
+          pengurusInti: data.pengurus_inti,
+          pokja: data.pokja,
+          fotoHighlightUrl: data.foto_highlight_url,
+        },
+      });
+  } catch (err) {
+    console.error("[kampung-kb-store] Error saving to DB:", err);
+    throw err;
   }
-  fs.writeFileSync(FILE_PATH, JSON.stringify(data, null, 2), "utf-8");
 }

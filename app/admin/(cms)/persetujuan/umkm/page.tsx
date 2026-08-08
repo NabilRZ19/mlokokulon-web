@@ -111,30 +111,45 @@ export default function PersetujuanUmkmPage() {
           Memuat daftar UMKM pending…
         </div>
       ) : list.length === 0 ? (
-        <div className="rounded-xl border border-border bg-card p-8 text-center space-y-2">
-          <div className="text-3xl">✅</div>
-          <p className="text-sm font-semibold text-foreground">Tidak ada UMKM yang menunggu persetujuan</p>
+        <div className="rounded-2xl border border-border bg-card p-10 text-center space-y-3 shadow-2xs">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600 border border-emerald-200">
+            <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <p className="text-base font-bold text-foreground font-heading">Tidak Ada Profil UMKM Menunggu Persetujuan</p>
+          <p className="text-xs text-muted-foreground max-w-sm mx-auto">Seluruh pengajuan profil UMKM dari Admin RW (Tier 3) dan Admin Kampung KB (Tier 4) telah diproses.</p>
         </div>
       ) : (
         <div className="space-y-4">
           {list.map((item) => (
-            <div key={item.id} className="rounded-xl border border-orange-200 bg-orange-50/30 p-4 shadow-xs space-y-3">
-              <div className="flex items-start gap-4">
+            <div key={item.id} className="rounded-2xl border border-orange-200 bg-orange-50/30 p-4 sm:p-5 shadow-xs space-y-4">
+              <div className="flex flex-col sm:flex-row items-start gap-4">
                 {/* Foto */}
-                <div className="shrink-0 h-16 w-20 rounded-lg border border-border bg-muted overflow-hidden">
+                <div className="h-36 w-full sm:h-20 sm:w-32 shrink-0 rounded-xl border border-border bg-muted overflow-hidden shadow-2xs">
                   {item.foto_utama_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={item.foto_utama_url} alt={item.nama} className="h-full w-full object-cover" />
                   ) : (
-                    <div className="flex h-full items-center justify-center text-2xl">🏪</div>
+                    <div className="flex h-full items-center justify-center bg-amber-50 text-amber-700 font-bold text-xs">
+                      Foto Usaha
+                    </div>
                   )}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <span className="rounded-full bg-orange-100 px-2 py-0.5 text-[11px] font-bold text-orange-700 mb-1 inline-block">
-                    ⏳ Menunggu Persetujuan
-                  </span>
-                  <h3 className="font-heading text-sm font-bold text-foreground">{item.nama}</h3>
-                  <p className="text-xs text-muted-foreground">{item.kategori} · {item.kontak}</p>
+                <div className="flex-1 min-w-0 space-y-1.5">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-bold text-primary border border-primary/20">
+                      {item.kategori}
+                    </span>
+                    <span className="inline-flex items-center gap-1 rounded-full bg-orange-100 px-2.5 py-0.5 text-[11px] font-bold text-orange-800 border border-orange-200">
+                      <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span>Menunggu Persetujuan</span>
+                    </span>
+                  </div>
+                  <h3 className="font-heading text-base font-bold text-foreground leading-snug">{item.nama}</h3>
+                  <p className="text-xs text-muted-foreground">{item.kontak || "Tanpa Kontak"}</p>
                 </div>
               </div>
 
@@ -150,11 +165,13 @@ export default function PersetujuanUmkmPage() {
               {/* Actions */}
               <div className="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-orange-200">
                 <Link
-                  href={`/umkm/${item.slug}`}
-                  target="_blank"
-                  className="text-xs font-semibold text-primary hover:underline"
+                  href={`/admin/persetujuan/umkm/${item.id}/preview`}
+                  className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline"
                 >
-                  Preview UMKM ↗
+                  <span>Preview Profil Lengkap</span>
+                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
                 </Link>
                 <div className="flex gap-2">
                   <button

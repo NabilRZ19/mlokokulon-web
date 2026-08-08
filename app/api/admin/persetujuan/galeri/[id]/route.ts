@@ -6,6 +6,41 @@ import { getSession } from "@/lib/session";
 import { canApproveContent, requireTier } from "@/lib/auth-policy";
 import { handleApiError } from "@/lib/api-error";
 
+/** GET: Ambil detail galeri pending tertentu untuk preview */
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const session = await getSession();
+  const deny = requireTier(session, canApproveContent, [1, 2]);
+  if (deny) return deny;
+
+  const { id } = await params;
+  if (!id) return NextResponse.json({ error: "ID galeri tidak valid" }, { status: 400 });
+
+  try {
+    const rows = await db.select().from(galeriTable).where(eq(galeriTable.id, id)).limit(1);
+    if (rows.length === 0) return NextResponse.json({ error: "Media galeri tidak ditemukan" }, { status: 404 });
+    const r = rows[0];
+
+    return NextResponse.json({
+      id: r.id,
+      judul: r.judul,
+      tipe: r.tipe,
+      url_media: r.urlMedia,
+      kategori: r.kategori,
+      sumber_berita_id: r.sumberBeritaId,
+      submitted_by_tier: r.submittedByTier,
+      pengusul: r.pengusul,
+      created_by: r.createdBy,
+      status: r.status,
+      reviewer_note: r.reviewerNote,
+    });
+  } catch (err) {
+    return handleApiError("api/admin/persetujuan/galeri/[id] GET", err, "Gagal mengambil detail galeri");
+  }
+}
+
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }

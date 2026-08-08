@@ -161,7 +161,18 @@ export default function AdminGaleriPage() {
                       </div>
               )}
               <div className="min-w-0 flex-1 space-y-1">
-                <h3 className="font-heading text-sm font-bold text-foreground truncate">{g.judul}</h3>
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <h3 className="font-heading text-sm font-bold text-foreground truncate">{g.judul}</h3>
+                  <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                    g.status === "pending"
+                      ? "bg-amber-100 text-amber-800 border border-amber-200"
+                      : g.status === "rejected"
+                      ? "bg-rose-100 text-rose-800 border border-rose-200"
+                      : "bg-emerald-100 text-emerald-800 border border-emerald-200"
+                  }`}>
+                    {g.status === "pending" ? "⏳ Pending" : g.status === "rejected" ? "✕ Ditolak" : "✓ Published"}
+                  </span>
+                </div>
                 <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                   <span className="capitalize font-semibold text-primary">{g.tipe}</span>
                   <span>•</span>

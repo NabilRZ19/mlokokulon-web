@@ -3,7 +3,7 @@ import Link from "next/link";
 import { KampungKbClientView } from "@/components/kampung-kb/KampungKbClientView";
 import { KampungKbIcon } from "@/components/ui/icons";
 import { getBeritaList, getGaleriList, getRwById } from "@/lib/queries";
-import { getKampungKbStore } from "@/lib/kampung-kb-store";
+import { getKampungKbStoreAsync } from "@/lib/kampung-kb-store";
 import { pageOpenGraph } from "@/lib/seo";
 
 const description =
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function KampungKbPage() {
-  const kb = getKampungKbStore();
+  const kb = await getKampungKbStoreAsync();
   const [rw, galeriList, beritaList] = await Promise.all([
     getRwById(kb.rw_ref),
     getGaleriList(),
