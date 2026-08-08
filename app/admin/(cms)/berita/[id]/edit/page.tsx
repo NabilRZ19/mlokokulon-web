@@ -194,6 +194,18 @@ export default function EditBeritaPage({ params }: { params: Promise<{ id: strin
   const [penulis, setPenulis] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [videoTitle, setVideoTitle] = useState("");
+  const [userTier, setUserTier] = useState<number>(1);
+  const [userName, setUserName] = useState<string>("");
+
+  useEffect(() => {
+    fetch("/api/admin/session")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.tier) setUserTier(d.tier);
+        if (d?.nama) setUserName(d.nama);
+      })
+      .catch(() => null);
+  }, []);
 
   // Cover foto — existing URL (dari DB) atau URL baru setelah re-upload
   const [coverPreview, setCoverPreview] = useState<string | null>(null);
@@ -426,7 +438,7 @@ export default function EditBeritaPage({ params }: { params: Promise<{ id: strin
         video_url: videoUrl.trim() || undefined,
         video_title: videoTitle.trim() || undefined,
         penulis,
-        pengusul: penulis.trim() || "Admin",
+        pengusul: userName || penulis.trim() || "Admin",
         foto_tambahan: fotoList
           .filter((f) => f.uploadedUrl)
           .slice(0, MAX_FOTO_TAMBAHAN)
@@ -867,12 +879,12 @@ export default function EditBeritaPage({ params }: { params: Promise<{ id: strin
             <button
               type="submit"
               disabled={submitting || isUploading}
-              className="flex items-center gap-2 rounded-lg bg-primary px-5 py-2 text-xs font-bold text-white shadow-sm transition-all hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex items-center gap-2 rounded-lg bg-primary px-5 py-2 text-xs font-bold text-white shadow-sm transition-all hover:bg-primary/90 hover:shadow disabled:cursor-not-allowed disabled:opacity-60"
             >
               {submitting ? (
                 <>
                   <span className="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-                  Menyimpan…
+                  {userTier === 3 || userTier === 4 ? "Mengajukan…" : "Menyimpan…"}
                 </>
               ) : (
                 "Simpan Perubahan Berita"

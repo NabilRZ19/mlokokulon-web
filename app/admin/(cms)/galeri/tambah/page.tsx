@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { InfoLinkButton } from "@/components/admin/InfoLinkButton";
@@ -27,6 +27,18 @@ export default function TambahGaleriPage() {
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [userTier, setUserTier] = useState<number>(1);
+  const [userName, setUserName] = useState<string>("");
+
+  useEffect(() => {
+    fetch("/api/admin/session")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.tier) setUserTier(d.tier);
+        if (d?.nama) setUserName(d.nama);
+      })
+      .catch(() => null);
+  }, []);
 
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const selected = e.target.files?.[0];
@@ -84,6 +96,7 @@ export default function TambahGaleriPage() {
           tipe,
           url_media: finalUrl,
           kategori,
+          pengusul: userName || "Admin",
         }),
       });
 
@@ -246,7 +259,9 @@ export default function TambahGaleriPage() {
             disabled={submitting || uploading}
             className="rounded-lg bg-primary px-5 py-2 text-xs font-bold text-white shadow-xs hover:bg-primary/90 disabled:opacity-50"
           >
-            {submitting ? "Menyimpan…" : "Simpan Media"}
+            {submitting
+              ? (userTier === 3 || userTier === 4 ? "Mengajukan…" : "Menyimpan…")
+              : (userTier === 3 || userTier === 4 ? "Ajukan Media Galeri" : "Simpan Media Galeri")}
           </button>
         </div>
       </form>

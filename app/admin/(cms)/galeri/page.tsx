@@ -14,6 +14,7 @@ export default function AdminGaleriPage() {
   const [error, setError] = useState<string | null>(null);
   const [pendingCount, setPendingCount] = useState(0);
   const [userTier, setUserTier] = useState<number | null>(null);
+  const [sortBy, setSortBy] = useState<"terbaru" | "terlama" | "judul-asc" | "judul-desc">("terbaru");
 
   async function fetchGaleri() {
     setLoading(true);
@@ -39,6 +40,14 @@ export default function AdminGaleriPage() {
   useEffect(() => {
     fetchGaleri();
   }, []);
+
+  const sortedItems = items.slice().sort((a, b) => {
+    if (sortBy === "terbaru") return b.id.localeCompare(a.id);
+    if (sortBy === "terlama") return a.id.localeCompare(b.id);
+    if (sortBy === "judul-asc") return a.judul.localeCompare(b.judul, "id", { sensitivity: "base" });
+    if (sortBy === "judul-desc") return b.judul.localeCompare(a.judul, "id", { sensitivity: "base" });
+    return 0;
+  });
 
   async function handleDelete(id: string, judul: string) {
     if (!confirm(`Hapus media "${judul}" dari galeri?`)) return;
@@ -81,8 +90,12 @@ export default function AdminGaleriPage() {
       {/* Banner Persetujuan — hanya Tier 1 & 2 */}
       {(userTier === 1 || userTier === 2) && pendingCount > 0 && (
         <div className="mb-4 flex items-center justify-between gap-3 rounded-xl border border-orange-200 bg-orange-50 px-4 py-3">
-          <div className="flex items-center gap-2.5">
-            <span className="text-xl">⏳</span>
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-orange-700 border border-orange-200">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
             <div>
               <p className="text-sm font-bold text-orange-900">
                 {pendingCount} item galeri menunggu persetujuan Anda
@@ -99,18 +112,41 @@ export default function AdminGaleriPage() {
         </div>
       )}
 
+      {/* Sort Control Bar */}
+      <div className="mb-4 flex items-center justify-between rounded-xl border border-border bg-card p-3 shadow-2xs">
+        <span className="text-xs font-bold text-muted-foreground">
+          Total: <strong className="text-foreground">{sortedItems.length} Media</strong>
+        </span>
+        <div className="flex items-center gap-2">
+          <label htmlFor="cms-galeri-sort" className="text-xs font-bold text-muted-foreground whitespace-nowrap">
+            Urutkan:
+          </label>
+          <select
+            id="cms-galeri-sort"
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as any)}
+            className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold text-foreground focus:border-primary focus:outline-hidden"
+          >
+            <option value="terbaru">Terbaru (Default)</option>
+            <option value="terlama">Terlama</option>
+            <option value="judul-asc">Judul (A–Z)</option>
+            <option value="judul-desc">Judul (Z–A)</option>
+          </select>
+        </div>
+      </div>
+
       {/* Mobile Card Grid (< md) */}
       <div className="space-y-3 md:hidden">
         {loading ? (
           <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
             Memuat galeri…
           </div>
-        ) : items.length === 0 ? (
+        ) : sortedItems.length === 0 ? (
           <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
             Belum ada item galeri.
           </div>
         ) : (
-          items.map((g) => (
+          sortedItems.map((g) => (
             <div key={g.id} className="flex items-center gap-3 rounded-xl border border-border bg-card p-3 shadow-xs">
               {g.tipe === "foto" ? (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -170,18 +206,18 @@ export default function AdminGaleriPage() {
           <tbody className="divide-y divide-border">
             {loading ? (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">
+                <td colSpan={7} className="px-4 py-8 text-center text-muted-foreground">
                   Memuat galeri…
                 </td>
               </tr>
-            ) : items.length === 0 ? (
+            ) : sortedItems.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">
+                <td colSpan={7} className="px-4 py-8 text-center text-muted-foreground">
                   Belum ada item galeri.
                 </td>
               </tr>
             ) : (
-              items.map((g) => (
+              sortedItems.map((g) => (
                 <tr key={g.id} className="hover:bg-muted/30 transition-colors">
                   <td className="px-4 py-3">
                     {g.tipe === "foto" ? (

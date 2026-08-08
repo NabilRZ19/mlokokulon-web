@@ -31,10 +31,10 @@ export function ApprovalNoticeBanner({ contentType }: ApprovalNoticeBannerProps)
       </div>
       <div className="min-w-0 flex-1">
         <h4 className="font-heading text-sm font-extrabold text-amber-900">
-          Perhatian Persetujuan {tier === 3 ? "Admin RW (Tier 3)" : "Admin Kampung KB (Tier 4)"}
+          Perhatian!
         </h4>
         <p className="mt-0.5 text-xs font-medium text-amber-800 leading-relaxed">
-          Konten <strong className="font-bold underline decoration-amber-400">{contentType}</strong> ini perlu persetujuan Admin Kelurahan (Tier 1/2) sebelum diterbitkan secara resmi di halaman utama website.
+          Konten <strong className="font-bold underline decoration-amber-400">{contentType}</strong> ini perlu persetujuan Admin Kelurahan sebelum diterbitkan secara resmi di halaman utama website.
         </p>
       </div>
     </div>

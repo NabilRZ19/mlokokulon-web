@@ -30,6 +30,7 @@ export default function AdminBeritaPage() {
   const [error, setError] = useState<string | null>(null);
   const [pendingCount, setPendingCount] = useState(0);
   const [userTier, setUserTier] = useState<number | null>(null);
+  const [sortBy, setSortBy] = useState<"terbaru" | "terlama" | "judul-asc" | "judul-desc">("terbaru");
 
   async function fetchBerita() {
     setLoading(true);
@@ -60,6 +61,14 @@ export default function AdminBeritaPage() {
   useEffect(() => {
     fetchBerita();
   }, []);
+
+  const sortedBeritaList = beritaList.slice().sort((a, b) => {
+    if (sortBy === "terbaru") return new Date(b.tanggal).getTime() - new Date(a.tanggal).getTime();
+    if (sortBy === "terlama") return new Date(a.tanggal).getTime() - new Date(b.tanggal).getTime();
+    if (sortBy === "judul-asc") return a.judul.localeCompare(b.judul, "id", { sensitivity: "base" });
+    if (sortBy === "judul-desc") return b.judul.localeCompare(a.judul, "id", { sensitivity: "base" });
+    return 0;
+  });
 
   async function handleDelete(id: string, judul: string) {
     if (!confirm(`Apakah Anda yakin ingin menghapus berita "${judul}"?`)) return;
@@ -105,8 +114,12 @@ export default function AdminBeritaPage() {
       {/* Banner Persetujuan — hanya Tier 1 & 2 */}
       {(userTier === 1 || userTier === 2) && pendingCount > 0 && (
         <div className="mb-4 flex items-center justify-between gap-3 rounded-xl border border-orange-200 bg-orange-50 px-4 py-3">
-          <div className="flex items-center gap-2.5">
-            <span className="text-xl">⏳</span>
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-orange-700 border border-orange-200">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
             <div>
               <p className="text-sm font-bold text-orange-900">
                 {pendingCount} berita menunggu persetujuan Anda
@@ -123,18 +136,41 @@ export default function AdminBeritaPage() {
         </div>
       )}
 
+      {/* Sort Control Bar */}
+      <div className="mb-4 flex items-center justify-between rounded-xl border border-border bg-card p-3 shadow-2xs">
+        <span className="text-xs font-bold text-muted-foreground">
+          Total: <strong className="text-foreground">{sortedBeritaList.length} Artikel</strong>
+        </span>
+        <div className="flex items-center gap-2">
+          <label htmlFor="cms-berita-sort" className="text-xs font-bold text-muted-foreground whitespace-nowrap">
+            Urutkan:
+          </label>
+          <select
+            id="cms-berita-sort"
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as any)}
+            className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold text-foreground focus:border-primary focus:outline-hidden"
+          >
+            <option value="terbaru">Terbaru (Tanggal ↓)</option>
+            <option value="terlama">Terlama (Tanggal ↑)</option>
+            <option value="judul-asc">Judul (A–Z)</option>
+            <option value="judul-desc">Judul (Z–A)</option>
+          </select>
+        </div>
+      </div>
+
       {/* Mobile Card List (< md) */}
       <div className="space-y-3 md:hidden">
         {loading ? (
           <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
             Memuat data berita…
           </div>
-        ) : beritaList.length === 0 ? (
+        ) : sortedBeritaList.length === 0 ? (
           <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
             Belum ada berita yang diterbitkan.
           </div>
         ) : (
-          beritaList.map((b) => (
+          sortedBeritaList.map((b) => (
             <div key={b.id} className="rounded-xl border border-border bg-card p-4 space-y-3 shadow-xs">
               <div className="flex items-start justify-between gap-2">
                 <h3 className="font-heading text-sm font-bold text-foreground line-clamp-2">
@@ -218,14 +254,14 @@ export default function AdminBeritaPage() {
                   Memuat data berita…
                 </td>
               </tr>
-            ) : beritaList.length === 0 ? (
+            ) : sortedBeritaList.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">
+                <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">
                   Belum ada berita yang diterbitkan.
                 </td>
               </tr>
             ) : (
-              beritaList.map((b) => (
+              sortedBeritaList.map((b) => (
                 <tr key={b.id} className={`hover:bg-muted/30 transition-colors ${
                   b.status === "pending" ? "bg-orange-50/50" :
                   b.status === "rejected" ? "bg-destructive/5" : ""

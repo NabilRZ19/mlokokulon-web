@@ -24,6 +24,7 @@ const MAIN_CATEGORIES = [
 export function GaleriList({ galeri }: { galeri: Galeri[] }) {
   const [activeKategori, setActiveKategori] = useState("Semua");
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [sortBy, setSortBy] = useState<"terbaru" | "terlama" | "judul-asc" | "judul-desc">("terbaru");
   const [page, setPage] = useState(1);
   const [activeImage, setActiveImage] = useState<{ url: string; title: string } | null>(null);
 
@@ -52,23 +53,32 @@ export function GaleriList({ galeri }: { galeri: Galeri[] }) {
     return Array.from(uniqueMap.values());
   }, [galeri, mainKeys]);
 
-  // Logic Filtering Data
-  const filtered = useMemo(() => {
-    if (activeKategori === "Semua") return galeri;
-    const targetLower = activeKategori.toLowerCase();
-
-    if (targetLower === "kampung-kb" || targetLower === "kampung kb") {
-      return galeri.filter((g) => {
-        const cat = g.kategori?.trim().toLowerCase();
-        return cat === "kampung-kb" || cat === "kampung kb" || cat === "kampungkb";
-      });
+  // Logic Filtering & Sorting Data
+  const filteredAndSorted = useMemo(() => {
+    let result = galeri;
+    if (activeKategori !== "Semua") {
+      const targetLower = activeKategori.toLowerCase();
+      if (targetLower === "kampung-kb" || targetLower === "kampung kb") {
+        result = galeri.filter((g) => {
+          const cat = g.kategori?.trim().toLowerCase();
+          return cat === "kampung-kb" || cat === "kampung kb" || cat === "kampungkb";
+        });
+      } else {
+        result = galeri.filter((g) => g.kategori?.trim().toLowerCase() === targetLower);
+      }
     }
 
-    return galeri.filter((g) => g.kategori?.trim().toLowerCase() === targetLower);
-  }, [galeri, activeKategori]);
+    return [...result].sort((a, b) => {
+      if (sortBy === "terbaru") return b.id.localeCompare(a.id);
+      if (sortBy === "terlama") return a.id.localeCompare(b.id);
+      if (sortBy === "judul-asc") return a.judul.localeCompare(b.judul, "id", { sensitivity: "base" });
+      if (sortBy === "judul-desc") return b.judul.localeCompare(a.judul, "id", { sensitivity: "base" });
+      return 0;
+    });
+  }, [galeri, activeKategori, sortBy]);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
-  const pageItems = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+  const totalPages = Math.max(1, Math.ceil(filteredAndSorted.length / PER_PAGE));
+  const pageItems = filteredAndSorted.slice((page - 1) * PER_PAGE, page * PER_PAGE);
 
   function handleSelectKategori(catKey: string) {
     setActiveKategori(catKey);
@@ -160,6 +170,27 @@ export function GaleriList({ galeri }: { galeri: Galeri[] }) {
             )}
           </div>
         )}
+
+        {/* Dropdown Sort Control */}
+        <div className="ml-auto flex items-center gap-2">
+          <label htmlFor="galeri-sort" className="text-xs font-bold text-muted-foreground whitespace-nowrap">
+            Urutkan:
+          </label>
+          <select
+            id="galeri-sort"
+            value={sortBy}
+            onChange={(e) => {
+              setSortBy(e.target.value as any);
+              setPage(1);
+            }}
+            className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground focus:border-primary focus:outline-hidden"
+          >
+            <option value="terbaru">Terbaru (Default)</option>
+            <option value="terlama">Terlama</option>
+            <option value="judul-asc">Judul / Nama (A–Z)</option>
+            <option value="judul-desc">Judul / Nama (Z–A)</option>
+          </select>
+        </div>
       </div>
 
       {/* ── Grid Items Galeri ── */}

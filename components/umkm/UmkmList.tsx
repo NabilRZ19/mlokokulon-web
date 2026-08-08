@@ -58,15 +58,22 @@ export function UmkmList({ umkm }: { umkm: Umkm[] }) {
   );
 
   const [kategori, setKategori] = useState("Semua");
+  const [sortBy, setSortBy] = useState<"terbaru" | "terlama" | "nama-asc" | "nama-desc">("terbaru");
   const [page, setPage] = useState(1);
 
-  const filtered = useMemo(
-    () => (kategori === "Semua" ? umkm : umkm.filter((u) => u.kategori === kategori)),
-    [umkm, kategori],
-  );
+  const filteredAndSorted = useMemo(() => {
+    let result = kategori === "Semua" ? umkm : umkm.filter((u) => u.kategori === kategori);
+    return [...result].sort((a, b) => {
+      if (sortBy === "terbaru") return b.id.localeCompare(a.id);
+      if (sortBy === "terlama") return a.id.localeCompare(b.id);
+      if (sortBy === "nama-asc") return a.nama.localeCompare(b.nama, "id", { sensitivity: "base" });
+      if (sortBy === "nama-desc") return b.nama.localeCompare(a.nama, "id", { sensitivity: "base" });
+      return 0;
+    });
+  }, [umkm, kategori, sortBy]);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
-  const pageItems = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+  const totalPages = Math.max(1, Math.ceil(filteredAndSorted.length / PER_PAGE));
+  const pageItems = filteredAndSorted.slice((page - 1) * PER_PAGE, page * PER_PAGE);
 
   function handleKategoriChange(k: string) {
     setKategori(k);
@@ -93,9 +100,30 @@ export function UmkmList({ umkm }: { umkm: Umkm[] }) {
             </button>
           ))}
         </div>
-        <span className="text-xs text-muted-foreground font-medium">
-          Menampilkan {filtered.length} Usaha
-        </span>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <label htmlFor="umkm-sort" className="text-xs font-bold text-muted-foreground whitespace-nowrap">
+              Urutkan:
+            </label>
+            <select
+              id="umkm-sort"
+              value={sortBy}
+              onChange={(e) => {
+                setSortBy(e.target.value as any);
+                setPage(1);
+              }}
+              className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground focus:border-primary focus:outline-hidden"
+            >
+              <option value="terbaru">Terbaru (Default)</option>
+              <option value="terlama">Terlama</option>
+              <option value="nama-asc">Nama Usaha (A–Z)</option>
+              <option value="nama-desc">Nama Usaha (Z–A)</option>
+            </select>
+          </div>
+          <span className="text-xs text-muted-foreground font-medium">
+            Menampilkan {filteredAndSorted.length} Usaha
+          </span>
+        </div>
       </div>
 
       {/* Grid Katalog UMKM */}

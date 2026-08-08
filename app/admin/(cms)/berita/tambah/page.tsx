@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { InfoLinkButton } from "@/components/admin/InfoLinkButton";
@@ -311,6 +311,21 @@ export default function TambahBeritaPage() {
   const [penulis, setPenulis] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [videoTitle, setVideoTitle] = useState("");
+  const [userTier, setUserTier] = useState<number>(1);
+  const [userName, setUserName] = useState<string>("");
+
+  useEffect(() => {
+    fetch("/api/admin/session")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.tier) setUserTier(d.tier);
+        if (d?.nama) {
+          setUserName(d.nama);
+          if (!penulis) setPenulis(d.nama);
+        }
+      })
+      .catch(() => null);
+  }, []);
 
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [coverPreview, setCoverPreview] = useState<string | null>(null);
@@ -496,7 +511,7 @@ export default function TambahBeritaPage() {
         video_url: videoUrl.trim() || undefined,
         video_title: videoTitle.trim() || undefined,
         penulis,
-        pengusul: penulis.trim() || "Admin",
+        pengusul: userName || penulis.trim() || "Admin",
         foto_tambahan: fotoList
           .filter((f) => f.uploadedUrl)
           .slice(0, MAX_FOTO_TAMBAHAN)
@@ -956,10 +971,10 @@ export default function TambahBeritaPage() {
               {submitting ? (
                 <>
                   <span className="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-                  Menyimpan…
+                  {userTier === 3 || userTier === 4 ? "Mengajukan…" : "Menyimpan…"}
                 </>
               ) : (
-                "Simpan Berita"
+                userTier === 3 || userTier === 4 ? "Ajukan Berita" : "Simpan Berita"
               )}
             </button>
           </div>

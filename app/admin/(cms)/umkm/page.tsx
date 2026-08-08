@@ -13,6 +13,7 @@ export default function AdminUmkmPage() {
   const [error, setError] = useState<string | null>(null);
   const [pendingCount, setPendingCount] = useState(0);
   const [userTier, setUserTier] = useState<number | null>(null);
+  const [sortBy, setSortBy] = useState<"terbaru" | "terlama" | "nama-asc" | "nama-desc">("terbaru");
 
   async function fetchUmkm() {
     setLoading(true);
@@ -38,6 +39,14 @@ export default function AdminUmkmPage() {
   useEffect(() => {
     fetchUmkm();
   }, []);
+
+  const sortedUmkmList = umkmList.slice().sort((a, b) => {
+    if (sortBy === "terbaru") return b.id.localeCompare(a.id);
+    if (sortBy === "terlama") return a.id.localeCompare(b.id);
+    if (sortBy === "nama-asc") return a.nama.localeCompare(b.nama, "id", { sensitivity: "base" });
+    if (sortBy === "nama-desc") return b.nama.localeCompare(a.nama, "id", { sensitivity: "base" });
+    return 0;
+  });
 
   async function handleDelete(id: string, nama: string) {
     if (!confirm(`Hapus UMKM "${nama}" dari database?`)) return;
@@ -80,8 +89,12 @@ export default function AdminUmkmPage() {
       {/* Banner Persetujuan — hanya Tier 1 & 2 */}
       {(userTier === 1 || userTier === 2) && pendingCount > 0 && (
         <div className="mb-4 flex items-center justify-between gap-3 rounded-xl border border-orange-200 bg-orange-50 px-4 py-3">
-          <div className="flex items-center gap-2.5">
-            <span className="text-xl">⏳</span>
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-orange-700 border border-orange-200">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
             <div>
               <p className="text-sm font-bold text-orange-900">
                 {pendingCount} profil UMKM menunggu persetujuan Anda
@@ -98,18 +111,41 @@ export default function AdminUmkmPage() {
         </div>
       )}
 
+      {/* Sort Control Bar */}
+      <div className="mb-4 flex items-center justify-between rounded-xl border border-border bg-card p-3 shadow-2xs">
+        <span className="text-xs font-bold text-muted-foreground">
+          Total: <strong className="text-foreground">{sortedUmkmList.length} Usaha</strong>
+        </span>
+        <div className="flex items-center gap-2">
+          <label htmlFor="cms-umkm-sort" className="text-xs font-bold text-muted-foreground whitespace-nowrap">
+            Urutkan:
+          </label>
+          <select
+            id="cms-umkm-sort"
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as any)}
+            className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold text-foreground focus:border-primary focus:outline-hidden"
+          >
+            <option value="terbaru">Terbaru (Default)</option>
+            <option value="terlama">Terlama</option>
+            <option value="nama-asc">Nama Usaha (A–Z)</option>
+            <option value="nama-desc">Nama Usaha (Z–A)</option>
+          </select>
+        </div>
+      </div>
+
       {/* Mobile Card List (< md) */}
       <div className="space-y-3 md:hidden">
         {loading ? (
           <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
             Memuat data UMKM…
           </div>
-        ) : umkmList.length === 0 ? (
+        ) : sortedUmkmList.length === 0 ? (
           <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
             Belum ada profil UMKM yang terdaftar.
           </div>
         ) : (
-          umkmList.map((u) => (
+          sortedUmkmList.map((u) => (
             <div key={u.id} className="rounded-xl border border-border bg-card p-4 space-y-3 shadow-xs">
               <div className="flex items-start justify-between gap-2">
                 <div>
@@ -170,18 +206,18 @@ export default function AdminUmkmPage() {
           <tbody className="divide-y divide-border">
             {loading ? (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">
+                <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">
                   Memuat data UMKM…
                 </td>
               </tr>
-            ) : umkmList.length === 0 ? (
+            ) : sortedUmkmList.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">
+                <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">
                   Belum ada profil UMKM yang terdaftar.
                 </td>
               </tr>
             ) : (
-              umkmList.map((u) => (
+              sortedUmkmList.map((u) => (
                 <tr key={u.id} className="hover:bg-muted/30 transition-colors">
                   <td className="px-4 py-3 font-bold text-foreground">{u.nama}</td>
                   <td className="px-4 py-3 font-semibold text-primary">
