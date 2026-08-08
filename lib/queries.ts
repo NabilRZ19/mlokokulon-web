@@ -4,8 +4,10 @@ import { db } from "./db/client";
 import {
   berita as beritaTable,
   beritaFotoTambahan,
+  event as eventTable,
   galeri as galeriTable,
   layanan as layananTable,
+  pengumuman as pengumumanTable,
   rw as rwTable,
   rwPengurus,
   strukturKelurahan,
@@ -13,7 +15,18 @@ import {
   umkmFoto,
   umkmProdukUnggulan,
 } from "./db/schema";
-import type { Berita, Galeri, Layanan, Rw, RwPengurus, StrukturKelurahan, Umkm, UmkmProdukUnggulan } from "./types";
+import type {
+  Berita,
+  EventItem,
+  Galeri,
+  Layanan,
+  PengumumanItem,
+  Rw,
+  RwPengurus,
+  StrukturKelurahan,
+  Umkm,
+  UmkmProdukUnggulan,
+} from "./types";
 
 // Fetch server-side (Drizzle + MySQL VPS) untuk halaman publik SSG/ISR — halaman publik tidak
 // boleh fetch DB langsung dari client browser. Shape return tetap sama persis dengan lib/types.ts
@@ -405,6 +418,124 @@ export async function getLayananById(id: string): Promise<Layanan | null> {
     };
   } catch (err) {
     console.error(`[queries] Error getLayananById for ${id}:`, err);
+    return null;
+  }
+}
+
+// ── Event Mendatang ────────────────────────────────────────────────────────
+export async function getEventList(onlyPublished = true): Promise<EventItem[]> {
+  try {
+    const query = db.select().from(eventTable);
+    const rows = onlyPublished
+      ? await query.where(eq(eventTable.status, "published")).orderBy(asc(eventTable.tanggalMulai))
+      : await query.orderBy(asc(eventTable.tanggalMulai));
+
+    return rows.map((r) => ({
+      id: r.id,
+      judul: r.judul,
+      slug: r.slug,
+      deskripsi: r.deskripsi,
+      tanggal_mulai: r.tanggalMulai instanceof Date ? r.tanggalMulai.toISOString().split("T")[0] : String(r.tanggalMulai),
+      tanggal_selesai: r.tanggalSelesai ? (r.tanggalSelesai instanceof Date ? r.tanggalSelesai.toISOString().split("T")[0] : String(r.tanggalSelesai)) : null,
+      jam_mulai: r.jamMulai,
+      lokasi: r.lokasi,
+      gambar_cover_url: r.gambarCoverUrl ?? null,
+      penulis: r.penulis,
+      pengusul: r.pengusul ?? undefined,
+      status: r.status,
+      reviewer_note: r.reviewerNote ?? undefined,
+      submitted_by_tier: r.submittedByTier ?? undefined,
+      created_by: r.createdBy,
+    }));
+  } catch (err) {
+    console.error("[queries] Error getEventList:", err);
+    return [];
+  }
+}
+
+export async function getEventBySlug(slug: string, onlyPublished = true): Promise<EventItem | null> {
+  try {
+    const rows = await db.select().from(eventTable).where(eq(eventTable.slug, slug)).limit(1);
+    if (rows.length === 0) return null;
+    const r = rows[0];
+    if (onlyPublished && r.status !== "published") return null;
+
+    return {
+      id: r.id,
+      judul: r.judul,
+      slug: r.slug,
+      deskripsi: r.deskripsi,
+      tanggal_mulai: r.tanggalMulai instanceof Date ? r.tanggalMulai.toISOString().split("T")[0] : String(r.tanggalMulai),
+      tanggal_selesai: r.tanggalSelesai ? (r.tanggalSelesai instanceof Date ? r.tanggalSelesai.toISOString().split("T")[0] : String(r.tanggalSelesai)) : null,
+      jam_mulai: r.jamMulai,
+      lokasi: r.lokasi,
+      gambar_cover_url: r.gambarCoverUrl ?? null,
+      penulis: r.penulis,
+      pengusul: r.pengusul ?? undefined,
+      status: r.status,
+      reviewer_note: r.reviewerNote ?? undefined,
+      submitted_by_tier: r.submittedByTier ?? undefined,
+      created_by: r.createdBy,
+    };
+  } catch (err) {
+    console.error(`[queries] Error getEventBySlug for ${slug}:`, err);
+    return null;
+  }
+}
+
+// ── Pengumuman ─────────────────────────────────────────────────────────────
+export async function getPengumumanList(onlyPublished = true): Promise<PengumumanItem[]> {
+  try {
+    const query = db.select().from(pengumumanTable);
+    const rows = onlyPublished
+      ? await query.where(eq(pengumumanTable.status, "published")).orderBy(desc(pengumumanTable.tanggal))
+      : await query.orderBy(desc(pengumumanTable.tanggal));
+
+    return rows.map((r) => ({
+      id: r.id,
+      judul: r.judul,
+      slug: r.slug,
+      target_pengumuman: r.targetPengumuman,
+      isi: r.isi,
+      tanggal: r.tanggal instanceof Date ? r.tanggal.toISOString().split("T")[0] : String(r.tanggal),
+      gambar_cover_url: r.gambarCoverUrl ?? null,
+      penulis: r.penulis,
+      pengusul: r.pengusul ?? undefined,
+      status: r.status,
+      reviewer_note: r.reviewerNote ?? undefined,
+      submitted_by_tier: r.submittedByTier ?? undefined,
+      created_by: r.createdBy,
+    }));
+  } catch (err) {
+    console.error("[queries] Error getPengumumanList:", err);
+    return [];
+  }
+}
+
+export async function getPengumumanBySlug(slug: string, onlyPublished = true): Promise<PengumumanItem | null> {
+  try {
+    const rows = await db.select().from(pengumumanTable).where(eq(pengumumanTable.slug, slug)).limit(1);
+    if (rows.length === 0) return null;
+    const r = rows[0];
+    if (onlyPublished && r.status !== "published") return null;
+
+    return {
+      id: r.id,
+      judul: r.judul,
+      slug: r.slug,
+      target_pengumuman: r.targetPengumuman,
+      isi: r.isi,
+      tanggal: r.tanggal instanceof Date ? r.tanggal.toISOString().split("T")[0] : String(r.tanggal),
+      gambar_cover_url: r.gambarCoverUrl ?? null,
+      penulis: r.penulis,
+      pengusul: r.pengusul ?? undefined,
+      status: r.status,
+      reviewer_note: r.reviewerNote ?? undefined,
+      submitted_by_tier: r.submittedByTier ?? undefined,
+      created_by: r.createdBy,
+    };
+  } catch (err) {
+    console.error(`[queries] Error getPengumumanBySlug for ${slug}:`, err);
     return null;
   }
 }

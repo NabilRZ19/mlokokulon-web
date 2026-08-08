@@ -169,3 +169,37 @@ export interface Layanan {
   kontak_penanggung_jawab?: string;
   urutan?: number;
 }
+
+export interface EventItem {
+  id: string;
+  judul: string;
+  slug: string;
+  deskripsi: string;
+  tanggal_mulai: string;
+  tanggal_selesai?: string | null;
+  jam_mulai: string;
+  lokasi: string;
+  gambar_cover_url?: string | null;
+  penulis: string;
+  pengusul?: string;
+  status?: ContentStatus;
+  reviewer_note?: string;
+  submitted_by_tier?: number;
+  created_by?: string;
+}
+
+export interface PengumumanItem {
+  id: string;
+  judul: string;
+  slug: string;
+  target_pengumuman: string; // Misal: Seluruh Warga, Ketua RT/RW, Pelaku UMKM, Ibu & Lansia
+  isi: string;
+  tanggal: string;
+  gambar_cover_url?: string | null;
+  penulis: string;
+  pengusul?: string;
+  status?: ContentStatus;
+  reviewer_note?: string;
+  submitted_by_tier?: number;
+  created_by?: string;
+}

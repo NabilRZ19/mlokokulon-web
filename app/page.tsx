@@ -9,7 +9,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { KampungKbIcon, SproutIcon } from "@/components/ui/icons";
 import { getPublicImageUrl } from "@/lib/image-url";
 import { getKampungKbStoreAsync } from "@/lib/kampung-kb-store";
-import { getBeritaList, getGaleriList } from "@/lib/queries";
+import { getBeritaList, getEventList, getGaleriList, getPengumumanList } from "@/lib/queries";
 import { kelurahanProfileData as p } from "@/lib/seed-data";
 import { SITE_NAME, pageOpenGraph } from "@/lib/seo";
 
@@ -130,7 +130,18 @@ const quickLinks = [
 
 export default async function Home() {
   const kb = await getKampungKbStoreAsync();
-  const [beritaAll, galeriAll] = await Promise.all([getBeritaList(), getGaleriList()]);
+  const [beritaAll, galeriAll, pengumumanAll, eventAll] = await Promise.all([
+    getBeritaList(),
+    getGaleriList(),
+    getPengumumanList(),
+    getEventList(),
+  ]);
+
+  // Tampilkan hingga 3 pengumuman terbaru di homepage
+  const pengumumanTerbaru = pengumumanAll.slice(0, 3);
+
+  // Tampilkan hingga 3 event mendatang di homepage
+  const eventTerdekat = eventAll.slice(0, 3);
 
   // Tampilkan hingga 9 berita di carousel homepage (3 slide × 3 card)
   const beritaTerbaru = beritaAll.slice(0, 9);
@@ -434,7 +445,75 @@ export default async function Home() {
         </section>
       </Reveal>
 
-      {/* ── 4. Berita Terbaru (Scroll Reveal) ─────────────────────────────── */}
+      {/* ── 4. Pengumuman Penting (Scroll Reveal — Di Atas Berita) ─────────────── */}
+      <Reveal mode="scroll" duration={0.6}>
+        <section className="border-b border-border bg-card py-14 shadow-xs">
+          <div className="mx-auto max-w-6xl px-4 space-y-8">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-xs font-bold text-primary">
+                  <span>📢 Informasi Resmi Kelurahan</span>
+                </div>
+                <h2 className="font-heading text-2xl font-extrabold text-foreground sm:text-3xl mt-1">
+                  Pengumuman Penting
+                </h2>
+                <p className="text-sm text-muted-foreground max-w-xl leading-relaxed">
+                  Pengumuman dan himbauan resmi terbaru bagi seluruh warga dan kelembagaan di Kelurahan Mlokomanis Kulon.
+                </p>
+              </div>
+              <Link
+                href="/pengumuman"
+                className="inline-flex items-center gap-1.5 self-start rounded-full border border-border bg-card px-4 py-2 text-xs font-bold text-foreground hover:bg-muted transition-all sm:self-auto shrink-0 shadow-2xs"
+              >
+                Lihat Semua Pengumuman →
+              </Link>
+            </div>
+
+            {pengumumanTerbaru.length === 0 ? (
+              <p className="text-xs text-muted-foreground">Belum ada pengumuman baru.</p>
+            ) : (
+              <div className="grid gap-4 sm:grid-cols-3">
+                {pengumumanTerbaru.map((p) => {
+                  const d = new Date(p.tanggal);
+                  const day = isNaN(d.getTime()) ? "15" : d.getDate().toString().padStart(2, "0");
+                  const month = isNaN(d.getTime()) ? "AGU" : d.toLocaleDateString("id-ID", { month: "short" }).toUpperCase();
+
+                  return (
+                    <Link
+                      key={p.id}
+                      href={`/pengumuman/${p.slug}`}
+                      className="group flex flex-col justify-between rounded-2xl border border-border bg-background p-5 shadow-2xs transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md"
+                    >
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-bold text-emerald-900 border border-emerald-300">
+                            🎯 {p.target_pengumuman}
+                          </span>
+                          <span className="text-[11px] font-extrabold text-primary bg-primary/10 px-2 py-0.5 rounded-md">
+                            {day} {month}
+                          </span>
+                        </div>
+                        <h3 className="font-heading text-sm font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-snug">
+                          {p.judul}
+                        </h3>
+                        <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                          {p.isi}
+                        </p>
+                      </div>
+                      <div className="pt-3 border-t border-border/60 mt-3 text-[11px] font-semibold text-primary group-hover:underline flex items-center justify-between">
+                        <span>Baca Rincian</span>
+                        <span>→</span>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </section>
+      </Reveal>
+
+      {/* ── 5. Berita Terbaru (Scroll Reveal) ─────────────────────────────── */}
       <Reveal mode="scroll" duration={0.6}>
         <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-[#0f172a] via-primary to-[#1e3a8a] py-16 text-white">
           {/* Ambient Glows */}
@@ -448,10 +527,10 @@ export default async function Home() {
                   Informasi &amp; Warta
                 </span>
                 <h2 className="font-heading text-2xl font-extrabold text-white sm:text-3xl mt-1">
-                  Berita dan Pengumuman
+                  Berita Kelurahan
                 </h2>
                 <p className="text-sm text-blue-100/80 max-w-xl mt-2 leading-relaxed">
-                  Informasi terkini, pengumuman resmi, dan kabar warta kegiatan pembangunan di lingkungan Kelurahan Mlokomanis Kulon.
+                  Kabar warta kegiatan pembangunan, agenda publik, dan cerita warga di lingkungan Kelurahan Mlokomanis Kulon.
                 </p>
               </div>
               <Link
@@ -510,6 +589,79 @@ export default async function Home() {
                     </Link>
                   ))}
                 />
+              </div>
+            )}
+          </div>
+        </section>
+      </Reveal>
+
+      {/* ── 6. Event Mendatang (Scroll Reveal — Di Bawah Berita) ─────────── */}
+      <Reveal mode="scroll" duration={0.6}>
+        <section className="border-b border-border bg-card py-16 shadow-xs">
+          <div className="mx-auto max-w-6xl px-4 space-y-8">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300/60 bg-emerald-100/80 px-3.5 py-1 text-xs font-bold text-emerald-900 shadow-2xs">
+                  <span>📅 Agenda Kelurahan</span>
+                </div>
+                <h2 className="font-heading text-2xl font-extrabold text-foreground sm:text-3xl mt-1">
+                  Event Mendatang
+                </h2>
+                <p className="text-sm text-muted-foreground max-w-xl leading-relaxed">
+                  Jadwal acara, pelatihan, dan kegiatan kemasyarakatan yang akan berlangsung dalam waktu dekat.
+                </p>
+              </div>
+              <Link
+                href="/event"
+                className="inline-flex items-center gap-1.5 self-start rounded-full border border-emerald-300 bg-emerald-50 px-4 py-2 text-xs font-bold text-emerald-900 transition-all hover:bg-emerald-600 hover:text-white sm:self-auto shrink-0"
+              >
+                Lihat Agenda Lengkap →
+              </Link>
+            </div>
+
+            {eventTerdekat.length === 0 ? (
+              <p className="text-xs text-muted-foreground">Belum ada agenda event mendatang.</p>
+            ) : (
+              <div className="grid gap-6 sm:grid-cols-3">
+                {eventTerdekat.map((ev) => {
+                  const d = new Date(ev.tanggal_mulai);
+                  const day = isNaN(d.getTime()) ? "15" : d.getDate().toString().padStart(2, "0");
+                  const month = isNaN(d.getTime()) ? "AGU" : d.toLocaleDateString("id-ID", { month: "short" }).toUpperCase();
+
+                  return (
+                    <div
+                      key={ev.id}
+                      className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-border bg-background shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500/50 hover:shadow-md"
+                    >
+                      <div className="p-5 space-y-3">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex flex-col items-center justify-center rounded-xl border border-emerald-300/60 bg-emerald-100/80 px-3 py-1.5 text-center shrink-0">
+                            <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-900">{month}</span>
+                            <span className="font-heading text-xl font-extrabold text-emerald-900 leading-none">{day}</span>
+                          </div>
+                          <span className="text-[11px] font-bold text-muted-foreground bg-muted px-2.5 py-1 rounded-full line-clamp-1">
+                            📍 {ev.lokasi}
+                          </span>
+                        </div>
+                        <h3 className="font-heading text-sm font-bold text-foreground group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug">
+                          {ev.judul}
+                        </h3>
+                        <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                          {ev.deskripsi}
+                        </p>
+                      </div>
+                      <div className="p-5 pt-0">
+                        <Link
+                          href={`/event/${ev.slug}`}
+                          className="inline-flex w-full items-center justify-center gap-1 rounded-xl border border-border bg-card px-3 py-2 text-xs font-bold text-foreground group-hover:border-emerald-500 group-hover:text-emerald-700 transition-colors"
+                        >
+                          <span>Rincian Event</span>
+                          <span>→</span>
+                        </Link>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>

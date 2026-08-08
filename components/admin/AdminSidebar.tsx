@@ -25,11 +25,13 @@ interface NavItem {
   icon: React.ComponentType<{ className?: string }>;
   canAccess?: (tier: number) => boolean;
   /** Kunci untuk badge pending — hanya tampil jika Tier 1 atau 2 */
-  pendingKey?: "berita" | "galeri" | "umkm" | "wilayah";
+  pendingKey?: "pengumuman" | "berita" | "event" | "galeri" | "umkm" | "wilayah";
 }
 
 interface PendingCounts {
+  pengumuman: number;
   berita: number;
+  event: number;
   galeri: number;
   umkm: number;
   wilayah: number;
@@ -37,7 +39,9 @@ interface PendingCounts {
 
 const navItems: NavItem[] = [
   { href: "/admin/dashboard", label: "Dashboard", icon: DashboardIcon },
+  { href: "/admin/pengumuman", label: "Pengumuman", icon: NewspaperIcon, pendingKey: "pengumuman" },
   { href: "/admin/berita", label: "Berita", icon: NewspaperIcon, pendingKey: "berita" },
+  { href: "/admin/event", label: "Event Mendatang", icon: KampungKbIcon, pendingKey: "event" },
   { href: "/admin/galeri", label: "Galeri", icon: ImageIcon, pendingKey: "galeri" },
   {
     href: "/admin/layanan",
@@ -90,7 +94,9 @@ export function AdminSidebar({ session }: { session: SessionPayload }) {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [pendingCounts, setPendingCounts] = useState<PendingCounts>({
+    pengumuman: 0,
     berita: 0,
+    event: 0,
     galeri: 0,
     umkm: 0,
     wilayah: 0,

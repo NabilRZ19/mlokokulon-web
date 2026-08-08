@@ -226,3 +226,45 @@ export const pengaturanKampungKb = mysqlTable("pengaturan_kampung_kb", {
   fotoHighlightUrl: varchar("foto_highlight_url", { length: 512 }),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
 });
+
+export const event = mysqlTable("event", {
+  id: varchar("id", { length: 64 }).primaryKey(),
+  judul: varchar("judul", { length: 255 }).notNull(),
+  slug: varchar("slug", { length: 255 }).notNull().unique(),
+  deskripsi: text("deskripsi").notNull(),
+  tanggalMulai: date("tanggal_mulai").notNull(),
+  tanggalSelesai: date("tanggal_selesai"),
+  jamMulai: varchar("jam_mulai", { length: 50 }).notNull().default("08:00 WIB"),
+  lokasi: varchar("lokasi", { length: 255 }).notNull(),
+  gambarCoverUrl: varchar("gambar_cover_url", { length: 512 }),
+  penulis: varchar("penulis", { length: 255 }).notNull(),
+  pengusul: varchar("pengusul", { length: 255 }),
+  status: mysqlEnum("status", ["draft", "pending", "published", "rejected"]).notNull().default("published"),
+  reviewerNote: text("reviewer_note"),
+  submittedByTier: tinyint("submitted_by_tier"),
+  createdBy: varchar("created_by", { length: 64 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => [
+  index("event_tanggal_mulai_idx").on(table.tanggalMulai),
+  index("event_status_idx").on(table.status),
+]);
+
+export const pengumuman = mysqlTable("pengumuman", {
+  id: varchar("id", { length: 64 }).primaryKey(),
+  judul: varchar("judul", { length: 255 }).notNull(),
+  slug: varchar("slug", { length: 255 }).notNull().unique(),
+  targetPengumuman: varchar("target_pengumuman", { length: 100 }).notNull().default("Seluruh Warga"),
+  isi: text("isi").notNull(),
+  tanggal: date("tanggal").notNull(),
+  gambarCoverUrl: varchar("gambar_cover_url", { length: 512 }),
+  penulis: varchar("penulis", { length: 255 }).notNull(),
+  pengusul: varchar("pengusul", { length: 255 }),
+  status: mysqlEnum("status", ["draft", "pending", "published", "rejected"]).notNull().default("published"),
+  reviewerNote: text("reviewer_note"),
+  submittedByTier: tinyint("submitted_by_tier"),
+  createdBy: varchar("created_by", { length: 64 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => [
+  index("pengumuman_tanggal_idx").on(table.tanggal),
+  index("pengumuman_status_idx").on(table.status),
+]);

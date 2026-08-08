@@ -29,8 +29,10 @@ const pemerintahanLinks = [
   { href: "/wilayah", label: "Wilayah Administratif" },
 ];
 
-const beritaMediaLinks = [
-  { href: "/berita", label: "Berita & Pengumuman" },
+const informasiLinks = [
+  { href: "/pengumuman", label: "Pengumuman" },
+  { href: "/berita", label: "Berita" },
+  { href: "/event", label: "Event Mendatang" },
   { href: "/galeri", label: "Galeri Dokumentasi" },
 ];
 
@@ -43,19 +45,19 @@ export function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [pemerintahanOpen, setPemerintahanOpen] = useState(false);
-  const [beritaMediaOpen, setBeritaMediaOpen] = useState(false);
+  const [informasiOpen, setInformasiOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
 
   const isKampungKbActive = pathname === "/kampung-kb";
   const isPemerintahanActive = pemerintahanLinks.some((l) => pathname === l.href);
-  const isBeritaMediaActive = beritaMediaLinks.some((l) => pathname.startsWith(l.href));
+  const isInformasiActive = informasiLinks.some((l) => pathname.startsWith(l.href));
 
   // Tutup dropdown jika user meng-klik di luar area header / navbar
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
         setPemerintahanOpen(false);
-        setBeritaMediaOpen(false);
+        setInformasiOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -123,7 +125,7 @@ export function Navbar() {
                 type="button"
                 onClick={() => {
                   setPemerintahanOpen((v) => !v);
-                  setBeritaMediaOpen(false);
+                  setInformasiOpen(false);
                 }}
                 className={`rounded-md px-3 py-2 text-sm transition-colors ${
                   isPemerintahanActive
@@ -159,33 +161,33 @@ export function Navbar() {
               <span>Kampung KB</span>
             </Link>
 
-            {/* Dropdown Berita & Media */}
+            {/* Dropdown Informasi */}
             <div
               className="relative"
-              onMouseEnter={() => setBeritaMediaOpen(true)}
-              onMouseLeave={() => setBeritaMediaOpen(false)}
+              onMouseEnter={() => setInformasiOpen(true)}
+              onMouseLeave={() => setInformasiOpen(false)}
             >
               <button
                 type="button"
                 onClick={() => {
-                  setBeritaMediaOpen((v) => !v);
+                  setInformasiOpen((v) => !v);
                   setPemerintahanOpen(false);
                 }}
                 className={`rounded-md px-3 py-2 text-sm transition-colors ${
-                  isBeritaMediaActive
+                  isInformasiActive
                     ? "bg-primary/10 font-semibold text-primary"
                     : "text-foreground hover:bg-muted hover:text-primary"
                 }`}
               >
-                Berita &amp; Galeri ▾
+                Informasi ▾
               </button>
-              {beritaMediaOpen && (
+              {informasiOpen && (
                 <div className="absolute left-0 top-full w-52 rounded-md border border-border bg-card py-1 shadow-lg z-50">
-                  {beritaMediaLinks.map((link) => (
+                  {informasiLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
-                      onClick={() => setBeritaMediaOpen(false)}
+                      onClick={() => setInformasiOpen(false)}
                       className={`block px-3 py-2 text-sm transition-colors ${
                         pathname.startsWith(link.href)
                           ? "bg-primary/10 font-semibold text-primary"
@@ -283,9 +285,9 @@ export function Navbar() {
           </div>
 
           <div className="py-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Berita &amp; Galeri
+            Informasi
           </div>
-          {beritaMediaLinks.map((link) => (
+          {informasiLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
