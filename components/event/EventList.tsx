@@ -112,10 +112,10 @@ export function EventList({ list }: { list: EventItem[] }) {
               onChange={(e) => setSortBy(e.target.value as SortOption)}
               className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold text-foreground focus:border-emerald-500 focus:outline-hidden"
             >
-              <option value="terdekat">📅 Terdekat (Waktu Pelaksanaan ↑)</option>
-              <option value="terjauh">📅 Terjauh (Waktu Pelaksanaan ↓)</option>
-              <option value="judul-asc">🔤 Judul (A–Z)</option>
-              <option value="judul-desc">🔤 Judul (Z–A)</option>
+              <option value="terdekat">Terdekat</option>
+              <option value="terjauh">Terjauh</option>
+              <option value="judul-asc">Judul (A–Z)</option>
+              <option value="judul-desc">Judul (Z–A)</option>
             </select>
           </div>
         </div>

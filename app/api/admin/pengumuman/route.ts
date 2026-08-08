@@ -6,6 +6,13 @@ import { getSession } from "@/lib/session";
 import { canManageContent, requireTier } from "@/lib/auth-policy";
 import { handleApiError } from "@/lib/api-error";
 
+function cleanDate(val: any): string {
+  if (!val) return new Date().toISOString().split("T")[0];
+  if (typeof val === "string") return val.split("T")[0];
+  if (val instanceof Date) return val.toISOString().split("T")[0];
+  return String(val);
+}
+
 export async function GET() {
   const session = await getSession();
   const deny = requireTier(session, canManageContent, [1, 2, 3, 4]);
@@ -24,7 +31,7 @@ export async function GET() {
         slug: r.slug,
         target_pengumuman: r.targetPengumuman,
         isi: r.isi,
-        tanggal: r.tanggal,
+        tanggal: r.tanggal instanceof Date ? r.tanggal.toISOString().split("T")[0] : String(r.tanggal),
         gambar_cover_url: r.gambarCoverUrl,
         penulis: r.penulis,
         pengusul: r.pengusul,
@@ -56,19 +63,20 @@ export async function POST(request: Request) {
     const initialStatus = isTier34 ? "pending" : "published";
 
     const id = `pengumuman-${Date.now()}`;
+    const cleanTanggal = cleanDate(tanggal);
 
     await db.insert(pengumumanTable).values({
       id,
       judul,
       slug,
-      targetPengumuman: target_pengumuman || "Seluruh Warga",
+      targetPengumuman: target_pengumuman || "Seluruh Warga Kelurahan",
       isi,
-      tanggal,
+      tanggal: cleanTanggal as any,
       gambarCoverUrl: gambar_cover_url || null,
       penulis: penulis || session?.nama || "Admin",
       pengusul: isTier34 ? session?.nama : null,
       status: initialStatus,
-      submittedByTier: session?.tier,
+      submittedByTier: session?.tier ?? 1,
       createdBy: String(session?.id ?? "admin"),
     });
 

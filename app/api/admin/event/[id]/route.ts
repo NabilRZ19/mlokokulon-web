@@ -6,6 +6,13 @@ import { getSession } from "@/lib/session";
 import { canManageContent, requireTier } from "@/lib/auth-policy";
 import { handleApiError } from "@/lib/api-error";
 
+function cleanDate(val: any): string {
+  if (!val) return new Date().toISOString().split("T")[0];
+  if (typeof val === "string") return val.split("T")[0];
+  if (val instanceof Date) return val.toISOString().split("T")[0];
+  return String(val);
+}
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -25,8 +32,8 @@ export async function GET(
       judul: r.judul,
       slug: r.slug,
       deskripsi: r.deskripsi,
-      tanggal_mulai: r.tanggalMulai,
-      tanggal_selesai: r.tanggalSelesai,
+      tanggal_mulai: r.tanggalMulai instanceof Date ? r.tanggalMulai.toISOString().split("T")[0] : String(r.tanggalMulai),
+      tanggal_selesai: r.tanggalSelesai ? (r.tanggalSelesai instanceof Date ? r.tanggalSelesai.toISOString().split("T")[0] : String(r.tanggalSelesai)) : null,
       jam_mulai: r.jamMulai,
       lokasi: r.lokasi,
       gambar_cover_url: r.gambarCoverUrl,
@@ -71,14 +78,17 @@ export async function PUT(
     const isTier34 = session?.tier === 3 || session?.tier === 4;
     const nextStatus = isTier34 ? "pending" : existing[0].status === "rejected" ? "published" : existing[0].status;
 
+    const cleanMulai = cleanDate(tanggal_mulai);
+    const cleanSelesai = tanggal_selesai ? cleanDate(tanggal_selesai) : null;
+
     await db
       .update(eventTable)
       .set({
         judul,
         slug,
         deskripsi,
-        tanggalMulai: tanggal_mulai,
-        tanggalSelesai: tanggal_selesai || null,
+        tanggalMulai: cleanMulai as any,
+        tanggalSelesai: cleanSelesai as any,
         jamMulai: jam_mulai || "08:00 WIB",
         lokasi,
         gambarCoverUrl: gambar_cover_url || null,

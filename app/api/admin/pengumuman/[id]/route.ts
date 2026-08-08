@@ -6,6 +6,13 @@ import { getSession } from "@/lib/session";
 import { canManageContent, requireTier } from "@/lib/auth-policy";
 import { handleApiError } from "@/lib/api-error";
 
+function cleanDate(val: any): string {
+  if (!val) return new Date().toISOString().split("T")[0];
+  if (typeof val === "string") return val.split("T")[0];
+  if (val instanceof Date) return val.toISOString().split("T")[0];
+  return String(val);
+}
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -26,7 +33,7 @@ export async function GET(
       slug: r.slug,
       target_pengumuman: r.targetPengumuman,
       isi: r.isi,
-      tanggal: r.tanggal,
+      tanggal: r.tanggal instanceof Date ? r.tanggal.toISOString().split("T")[0] : String(r.tanggal),
       gambar_cover_url: r.gambarCoverUrl,
       penulis: r.penulis,
       pengusul: r.pengusul,
@@ -58,15 +65,16 @@ export async function PUT(
 
     const isTier34 = session?.tier === 3 || session?.tier === 4;
     const nextStatus = isTier34 ? "pending" : existing[0].status === "rejected" ? "published" : existing[0].status;
+    const cleanTanggal = cleanDate(tanggal);
 
     await db
       .update(pengumumanTable)
       .set({
         judul,
         slug,
-        targetPengumuman: target_pengumuman || "Seluruh Warga",
+        targetPengumuman: target_pengumuman || "Seluruh Warga Kelurahan",
         isi,
-        tanggal,
+        tanggal: cleanTanggal as any,
         gambarCoverUrl: gambar_cover_url || null,
         penulis,
         status: nextStatus,

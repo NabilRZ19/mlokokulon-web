@@ -100,10 +100,10 @@ export default function CmsEventPage() {
             onChange={(e: any) => setSortOrder(e.target.value)}
             className="rounded-xl border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground focus:outline-hidden focus:ring-2 focus:ring-emerald-500/50"
           >
-            <option value="newest">📅 Terdekat</option>
-            <option value="oldest">📅 Terjauh</option>
-            <option value="title-asc">🔤 Judul (A–Z)</option>
-            <option value="title-desc">🔤 Judul (Z–A)</option>
+            <option value="newest">Terdekat</option>
+            <option value="oldest">Terjauh</option>
+            <option value="title-asc">Judul (A–Z)</option>
+            <option value="title-desc">Judul (Z–A)</option>
           </select>
         </div>
       </div>

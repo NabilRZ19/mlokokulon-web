@@ -681,57 +681,64 @@ export default async function Home() {
         </section>
       </Reveal>
 
-      {/* ── 5. Galeri Kegiatan (Scroll Reveal) ───────────────────────────── */}
+      {/* ── 7. Galeri Kegiatan (Scroll Reveal — Biru Signature) ─────────────── */}
       {galeritTampil.length > 0 && (
         <Reveal mode="scroll" duration={0.6}>
-          <section className="mx-auto max-w-6xl px-4 py-16">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-              <div className="space-y-2">
-                <span className="text-xs font-bold uppercase tracking-widest text-primary">
-                  Dokumentasi Media
-                </span>
-                <h2 className="font-heading text-2xl font-bold text-foreground sm:text-3xl mt-1">
-                  Galeri Kegiatan
-                </h2>
-                <p className="text-sm text-muted-foreground max-w-xl mt-2 leading-relaxed">
-                  Dokumentasi visual rangkaian acara, kegiatan kemasyarakatan, dan program kerja kelurahan.
-                </p>
-              </div>
-              <Link
-                href="/galeri"
-                className="inline-flex items-center gap-1.5 self-start rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-xs font-bold text-primary shadow-xs transition-all duration-300 hover:bg-primary hover:text-white hover:border-primary hover:shadow-md hover:-translate-y-0.5 sm:self-auto shrink-0"
-              >
-                Lihat Galeri Lengkap →
-              </Link>
-            </div>
+          <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-[#0b1329] via-[#1e3a8a] to-[#0f172a] py-16 text-white">
+            {/* Ambient Glows */}
+            <div className="pointer-events-none absolute -left-20 -top-20 h-80 w-80 rounded-full bg-blue-500/20 blur-3xl animate-pulse" />
+            <div className="pointer-events-none absolute -right-20 -bottom-20 h-80 w-80 rounded-full bg-indigo-500/20 blur-3xl" />
 
-            <div className="mt-8">
-              <Carousel
-                autoplay
-                autoplayInterval={4500}
-                itemsPerSlide={3}
-                colsMobile={2}
-                colsSm={3}
-                items={galeritTampil.map((g) => (
-                  <Link
-                    key={g.id}
-                    href="/galeri"
-                    className="group relative overflow-hidden rounded-xl border border-border bg-card shadow-sm"
-                  >
-                    <img
-                      src={getPublicImageUrl(g.url_media)}
-                      alt={g.judul}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-44 w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                    <p className="absolute bottom-0 left-0 right-0 translate-y-2 p-3 text-xs font-semibold text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                      {g.judul}
-                    </p>
-                  </Link>
-                ))}
-              />
+            <div className="relative mx-auto max-w-6xl px-4">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                <div className="space-y-2 max-w-2xl">
+                  <span className="text-xs font-bold uppercase tracking-widest text-blue-200">
+                    Dokumentasi Media
+                  </span>
+                  <h2 className="font-heading text-2xl font-extrabold text-white sm:text-3xl lg:text-4xl mt-1">
+                    Galeri Kegiatan
+                  </h2>
+                  <p className="text-sm text-blue-100/80 mt-2 leading-relaxed">
+                    Dokumentasi visual rangkaian acara, kegiatan kemasyarakatan, dan program kerja kelurahan.
+                  </p>
+                </div>
+                <Link
+                  href="/galeri"
+                  className="inline-flex items-center gap-1.5 self-start rounded-full border border-white/30 bg-white/10 px-4 py-2 text-xs font-bold text-white backdrop-blur-md shadow-xs transition-all duration-300 hover:bg-white hover:text-primary hover:border-white hover:shadow-md hover:-translate-y-0.5 sm:self-auto shrink-0"
+                >
+                  Lihat Galeri Lengkap →
+                </Link>
+              </div>
+
+              <div className="mt-8">
+                <Carousel
+                  autoplay
+                  autoplayInterval={4500}
+                  itemsPerSlide={3}
+                  colsMobile={2}
+                  colsSm={3}
+                  dotVariant="light"
+                  items={galeritTampil.map((g) => (
+                    <Link
+                      key={g.id}
+                      href="/galeri"
+                      className="group relative overflow-hidden rounded-xl border border-white/20 bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50"
+                    >
+                      <img
+                        src={getPublicImageUrl(g.url_media)}
+                        alt={g.judul}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-44 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                      <p className="absolute bottom-0 left-0 right-0 translate-y-2 p-3 text-xs font-semibold text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                        {g.judul}
+                      </p>
+                    </Link>
+                  ))}
+                />
+              </div>
             </div>
           </section>
         </Reveal>

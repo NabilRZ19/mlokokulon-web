@@ -124,8 +124,8 @@ export function PengumumanList({ list }: { list: PengumumanItem[] }) {
                 onChange={(e) => setSortBy(e.target.value as SortOption)}
                 className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold text-foreground focus:border-primary focus:outline-hidden"
               >
-                <option value="terbaru">Terbaru (Tanggal ↓)</option>
-                <option value="terlama">Terlama (Tanggal ↑)</option>
+                <option value="terbaru">Terbaru</option>
+                <option value="terlama">Terlama</option>
                 <option value="judul-asc">Judul (A–Z)</option>
                 <option value="judul-desc">Judul (Z–A)</option>
               </select>

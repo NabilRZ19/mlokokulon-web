@@ -6,6 +6,13 @@ import { getSession } from "@/lib/session";
 import { canManageContent, requireTier } from "@/lib/auth-policy";
 import { handleApiError } from "@/lib/api-error";
 
+function cleanDate(val: any): string {
+  if (!val) return new Date().toISOString().split("T")[0];
+  if (typeof val === "string") return val.split("T")[0];
+  if (val instanceof Date) return val.toISOString().split("T")[0];
+  return String(val);
+}
+
 export async function GET() {
   const session = await getSession();
   const deny = requireTier(session, canManageContent, [1, 2, 3, 4]);
@@ -23,8 +30,8 @@ export async function GET() {
         judul: r.judul,
         slug: r.slug,
         deskripsi: r.deskripsi,
-        tanggal_mulai: r.tanggalMulai,
-        tanggal_selesai: r.tanggalSelesai,
+        tanggal_mulai: r.tanggalMulai instanceof Date ? r.tanggalMulai.toISOString().split("T")[0] : String(r.tanggalMulai),
+        tanggal_selesai: r.tanggalSelesai ? (r.tanggalSelesai instanceof Date ? r.tanggalSelesai.toISOString().split("T")[0] : String(r.tanggalSelesai)) : null,
         jam_mulai: r.jamMulai,
         lokasi: r.lokasi,
         gambar_cover_url: r.gambarCoverUrl,
@@ -68,20 +75,23 @@ export async function POST(request: Request) {
     const initialStatus = isTier34 ? "pending" : "published";
     const id = `event-${Date.now()}`;
 
+    const cleanMulai = cleanDate(tanggal_mulai);
+    const cleanSelesai = tanggal_selesai ? cleanDate(tanggal_selesai) : null;
+
     await db.insert(eventTable).values({
       id,
       judul,
       slug,
       deskripsi,
-      tanggalMulai: tanggal_mulai,
-      tanggalSelesai: tanggal_selesai || null,
+      tanggalMulai: cleanMulai as any,
+      tanggalSelesai: cleanSelesai as any,
       jamMulai: jam_mulai || "08:00 WIB",
       lokasi,
       gambarCoverUrl: gambar_cover_url || null,
       penulis: penulis || session?.nama || "Admin",
       pengusul: isTier34 ? session?.nama : null,
       status: initialStatus,
-      submittedByTier: session?.tier,
+      submittedByTier: session?.tier ?? 1,
       createdBy: String(session?.id ?? "admin"),
     });
 

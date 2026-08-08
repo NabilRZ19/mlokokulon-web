@@ -101,10 +101,10 @@ export default function CmsPengumumanPage() {
             onChange={(e: any) => setSortOrder(e.target.value)}
             className="rounded-xl border border-border bg-background px-3 py-2 text-xs font-semibold text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50"
           >
-            <option value="newest">📅 Terbaru</option>
-            <option value="oldest">📅 Terlama</option>
-            <option value="title-asc">🔤 Judul (A–Z)</option>
-            <option value="title-desc">🔤 Judul (Z–A)</option>
+            <option value="newest">Terbaru</option>
+            <option value="oldest">Terlama</option>
+            <option value="title-asc">Judul (A–Z)</option>
+            <option value="title-desc">Judul (Z–A)</option>
           </select>
         </div>
       </div>
