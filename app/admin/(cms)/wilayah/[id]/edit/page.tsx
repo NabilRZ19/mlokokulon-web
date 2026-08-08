@@ -3,6 +3,7 @@
 import { use, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
+import { ApprovalNoticeBanner } from "@/components/admin/ApprovalNoticeBanner";
 import { ImageCropperModal } from "@/components/admin/ImageCropperModal";
 import { compressImage } from "@/lib/image-compression";
 import { scrollToFirstError } from "@/lib/form-scroll";
@@ -449,6 +450,7 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
   return (
     <div>
       <AdminPageHeader title={`Edit Data ${namaRw || "RW"}`} />
+      <ApprovalNoticeBanner contentType="Wilayah RW" />
 
       <div className="mx-auto max-w-3xl space-y-6">
         {/* ── FORM KHUSUS JABATAN KETUA RW ── */}

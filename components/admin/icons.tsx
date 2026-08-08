@@ -90,3 +90,12 @@ export function LogOutIcon(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+export function CalendarIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <rect x="3.5" y="4.5" width="17" height="15" rx="2" />
+      <path d="M16 2.5v4M8 2.5v4M3.5 9.5h17" />
+    </svg>
+  );
+}

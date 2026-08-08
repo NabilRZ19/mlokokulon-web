@@ -39,7 +39,7 @@ export default async function PengumumanPage() {
         {/* Header Section */}
         <div className="space-y-4 max-w-3xl">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-xs font-bold text-primary">
-            <span>📢 Informasi Resmi Kelurahan</span>
+            <span>Informasi Resmi Kelurahan</span>
           </div>
           <h1 className="font-heading text-3xl sm:text-5xl font-extrabold tracking-tight text-foreground leading-tight">
             Pengumuman Kelurahan

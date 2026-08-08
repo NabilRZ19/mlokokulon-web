@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
+import { ApprovalNoticeBanner } from "@/components/admin/ApprovalNoticeBanner";
 
 export default function TambahPengumumanPage() {
   const router = useRouter();
@@ -98,16 +99,7 @@ export default function TambahPengumumanPage() {
         }
       />
 
-      {isTier34 && (
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-xs text-amber-900 font-medium space-y-1">
-          <p className="font-bold flex items-center gap-1.5">
-            <span>⚠️ Pengajuan Perlu Persetujuan</span>
-          </p>
-          <p>
-            Pengumuman yang Anda buat akan diajukan terlebih dahulu ke Admin Kelurahan (Tier 1 / 2) sebelum diterbitkan ke publik.
-          </p>
-        </div>
-      )}
+      <ApprovalNoticeBanner contentType="pengumuman" />
 
       {error && (
         <div className="rounded-2xl border border-destructive/30 bg-destructive/10 p-4 text-xs font-bold text-destructive">

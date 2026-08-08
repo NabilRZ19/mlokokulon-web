@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { MapPinIcon } from "@/components/ui/icons";
 import type { SessionPayload } from "@/lib/auth";
 import {
+  CalendarIcon,
   DashboardIcon,
   ImageIcon,
   LayananIcon,
@@ -41,7 +42,7 @@ const navItems: NavItem[] = [
   { href: "/admin/dashboard", label: "Dashboard", icon: DashboardIcon },
   { href: "/admin/pengumuman", label: "Pengumuman", icon: NewspaperIcon, pendingKey: "pengumuman" },
   { href: "/admin/berita", label: "Berita", icon: NewspaperIcon, pendingKey: "berita" },
-  { href: "/admin/event", label: "Event Mendatang", icon: KampungKbIcon, pendingKey: "event" },
+  { href: "/admin/event", label: "Event Mendatang", icon: CalendarIcon, pendingKey: "event" },
   { href: "/admin/galeri", label: "Galeri", icon: ImageIcon, pendingKey: "galeri" },
   {
     href: "/admin/layanan",

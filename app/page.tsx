@@ -447,14 +447,18 @@ export default async function Home() {
 
       {/* ── 4. Pengumuman Penting (Scroll Reveal — Di Atas Berita) ─────────────── */}
       <Reveal mode="scroll" duration={0.6}>
-        <section className="border-b border-border bg-card py-14 shadow-xs">
-          <div className="mx-auto max-w-6xl px-4 space-y-8">
+        <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-slate-900/5 via-card to-amber-500/5 py-16 shadow-2xs">
+          {/* Ambient Glows */}
+          <div className="pointer-events-none absolute -left-16 -top-16 h-72 w-72 rounded-full bg-amber-500/10 blur-3xl" />
+          <div className="pointer-events-none absolute -right-16 -bottom-16 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
+
+          <div className="relative mx-auto max-w-6xl px-4 space-y-8">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
               <div className="space-y-2">
-                <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-xs font-bold text-primary">
-                  <span>📢 Informasi Resmi Kelurahan</span>
+                <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-xs font-bold text-primary backdrop-blur-md">
+                  <span>Informasi Resmi Kelurahan</span>
                 </div>
-                <h2 className="font-heading text-2xl font-extrabold text-foreground sm:text-3xl mt-1">
+                <h2 className="font-heading text-2xl font-extrabold text-foreground sm:text-3xl lg:text-4xl mt-1">
                   Pengumuman Penting
                 </h2>
                 <p className="text-sm text-muted-foreground max-w-xl leading-relaxed">
@@ -463,16 +467,18 @@ export default async function Home() {
               </div>
               <Link
                 href="/pengumuman"
-                className="inline-flex items-center gap-1.5 self-start rounded-full border border-border bg-card px-4 py-2 text-xs font-bold text-foreground hover:bg-muted transition-all sm:self-auto shrink-0 shadow-2xs"
+                className="inline-flex items-center gap-1.5 self-start rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-xs font-bold text-primary shadow-xs transition-all duration-300 hover:bg-primary hover:text-white hover:border-primary hover:shadow-md hover:-translate-y-0.5 sm:self-auto shrink-0"
               >
                 Lihat Semua Pengumuman →
               </Link>
             </div>
 
             {pengumumanTerbaru.length === 0 ? (
-              <p className="text-xs text-muted-foreground">Belum ada pengumuman baru.</p>
+              <div className="rounded-2xl border border-dashed border-border bg-card/50 p-8 text-center text-xs text-muted-foreground">
+                Belum ada pengumuman baru yang diterbitkan.
+              </div>
             ) : (
-              <div className="grid gap-4 sm:grid-cols-3">
+              <div className="grid gap-5 sm:grid-cols-3">
                 {pengumumanTerbaru.map((p) => {
                   const d = new Date(p.tanggal);
                   const day = isNaN(d.getTime()) ? "15" : d.getDate().toString().padStart(2, "0");
@@ -482,27 +488,27 @@ export default async function Home() {
                     <Link
                       key={p.id}
                       href={`/pengumuman/${p.slug}`}
-                      className="group flex flex-col justify-between rounded-2xl border border-border bg-background p-5 shadow-2xs transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md"
+                      className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border bg-card/80 backdrop-blur-md p-6 shadow-xs transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/50 hover:shadow-xl hover:bg-card"
                     >
                       <div className="space-y-3">
                         <div className="flex items-center justify-between gap-2">
-                          <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-bold text-emerald-900 border border-emerald-300">
-                            🎯 {p.target_pengumuman}
+                          <span className="rounded-full bg-emerald-100 px-3 py-0.5 text-[11px] font-bold text-emerald-900 border border-emerald-300 shadow-2xs">
+                            Target: {p.target_pengumuman}
                           </span>
-                          <span className="text-[11px] font-extrabold text-primary bg-primary/10 px-2 py-0.5 rounded-md">
+                          <span className="text-[11px] font-extrabold text-primary bg-primary/10 px-2.5 py-0.5 rounded-lg border border-primary/20">
                             {day} {month}
                           </span>
                         </div>
-                        <h3 className="font-heading text-sm font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-snug">
+                        <h3 className="font-heading text-base font-extrabold text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-snug">
                           {p.judul}
                         </h3>
-                        <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                        <p className="text-xs text-muted-foreground line-clamp-3 leading-relaxed">
                           {p.isi}
                         </p>
                       </div>
-                      <div className="pt-3 border-t border-border/60 mt-3 text-[11px] font-semibold text-primary group-hover:underline flex items-center justify-between">
-                        <span>Baca Rincian</span>
-                        <span>→</span>
+                      <div className="pt-4 border-t border-border/60 mt-4 text-xs font-bold text-primary group-hover:underline flex items-center justify-between">
+                        <span>Baca Rincian Pengumuman</span>
+                        <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                       </div>
                     </Link>
                   );
@@ -515,38 +521,38 @@ export default async function Home() {
 
       {/* ── 5. Berita Terbaru (Scroll Reveal) ─────────────────────────────── */}
       <Reveal mode="scroll" duration={0.6}>
-        <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-[#0f172a] via-primary to-[#1e3a8a] py-16 text-white">
+        <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-[#0b1329] via-[#1e3a8a] to-[#0f172a] py-20 text-white">
           {/* Ambient Glows */}
-          <div className="pointer-events-none absolute -right-20 -top-20 h-80 w-80 rounded-full bg-secondary/20 blur-3xl" />
-          <div className="pointer-events-none absolute -left-20 -bottom-20 h-80 w-80 rounded-full bg-accent/15 blur-3xl" />
+          <div className="pointer-events-none absolute -right-20 -top-20 h-96 w-96 rounded-full bg-blue-500/20 blur-3xl animate-pulse" />
+          <div className="pointer-events-none absolute -left-20 -bottom-20 h-96 w-96 rounded-full bg-indigo-500/20 blur-3xl" />
 
-          <div className="relative mx-auto max-w-6xl px-4">
+          <div className="relative mx-auto max-w-6xl px-4 space-y-10">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-              <div className="space-y-2">
+              <div className="space-y-2 max-w-2xl">
                 <span className="text-xs font-bold uppercase tracking-widest text-blue-200">
-                  Informasi &amp; Warta
+                  Informasi &amp; Warta Kelurahan
                 </span>
-                <h2 className="font-heading text-2xl font-extrabold text-white sm:text-3xl mt-1">
+                <h2 className="font-heading text-3xl font-extrabold text-white sm:text-4xl lg:text-5xl leading-tight">
                   Berita Kelurahan
                 </h2>
-                <p className="text-sm text-blue-100/80 max-w-xl mt-2 leading-relaxed">
+                <p className="text-sm sm:text-base text-blue-100/80 leading-relaxed">
                   Kabar warta kegiatan pembangunan, agenda publik, dan cerita warga di lingkungan Kelurahan Mlokomanis Kulon.
                 </p>
               </div>
               <Link
                 href="/berita"
-                className="inline-flex items-center gap-1.5 self-start rounded-full border border-white/25 bg-white/10 px-4 py-2 text-xs font-bold text-white backdrop-blur-md shadow-xs transition-all duration-300 hover:bg-white hover:text-primary hover:border-white hover:shadow-md hover:-translate-y-0.5 sm:self-auto shrink-0"
+                className="inline-flex items-center gap-1.5 self-start rounded-full border border-white/30 bg-white/10 px-5 py-2.5 text-xs font-bold text-white backdrop-blur-md shadow-xs transition-all duration-300 hover:bg-white hover:text-primary hover:border-white hover:shadow-lg hover:-translate-y-0.5 sm:self-auto shrink-0"
               >
                 Lihat Semua Berita →
               </Link>
             </div>
 
             {beritaTerbaru.length === 0 ? (
-              <p className="mt-10 text-sm text-blue-100/80">
+              <p className="text-sm text-blue-100/80">
                 Belum ada berita. Konten akan segera hadir.
               </p>
             ) : (
-              <div className="mt-10">
+              <div>
                 <Carousel
                   autoplay
                   autoplayInterval={5500}
@@ -558,32 +564,37 @@ export default async function Home() {
                     <Link key={b.id} href={`/berita/${b.slug}`}>
                       <Card
                         padded={false}
-                        className="h-full overflow-hidden border-white/20 bg-card text-foreground transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md"
+                        className="group h-full overflow-hidden border-white/20 bg-card text-foreground transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/60 hover:shadow-2xl"
                       >
-                        <img
-                          src={getPublicImageUrl(b.gambar_cover_url)}
-                          alt={b.judul}
-                          loading="lazy"
-                          decoding="async"
-                          className="h-44 w-full object-cover"
-                        />
-                        <div className="p-5">
-                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                            <BeritaBadge kategori={b.kategori} />
-                            <span>
-                              {new Date(b.tanggal).toLocaleDateString("id-ID", {
-                                day: "numeric",
-                                month: "long",
-                                year: "numeric",
-                              })}
-                            </span>
+                        <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted">
+                          <img
+                            src={getPublicImageUrl(b.gambar_cover_url)}
+                            alt={b.judul}
+                            loading="lazy"
+                            decoding="async"
+                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                        </div>
+                        <div className="p-5 flex flex-col justify-between h-[calc(100%-11rem)]">
+                          <div>
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
+                              <BeritaBadge kategori={b.kategori} />
+                              <span>
+                                {new Date(b.tanggal).toLocaleDateString("id-ID", {
+                                  day: "numeric",
+                                  month: "short",
+                                  year: "numeric",
+                                })}
+                              </span>
+                            </div>
+                            <h3 className="font-heading font-bold text-foreground text-base line-clamp-2 leading-snug group-hover:text-primary transition-colors">
+                              {b.judul}
+                            </h3>
                           </div>
-                          <h3 className="mt-2 font-heading font-semibold text-foreground line-clamp-2">
-                            {b.judul}
-                          </h3>
-                          <p className="mt-1 text-xs text-muted-foreground">
-                            {b.cakupan === "kelurahan" ? "Kelurahan" : b.rw_nama}
-                          </p>
+                          <div className="mt-4 pt-3 border-t border-border/60 flex items-center justify-between text-xs text-muted-foreground">
+                            <span>{b.cakupan === "kelurahan" ? "Kelurahan" : b.rw_nama}</span>
+                            <span className="font-bold text-primary group-hover:underline">Baca selengkapnya →</span>
+                          </div>
                         </div>
                       </Card>
                     </Link>
@@ -597,14 +608,14 @@ export default async function Home() {
 
       {/* ── 6. Event Mendatang (Scroll Reveal — Di Bawah Berita) ─────────── */}
       <Reveal mode="scroll" duration={0.6}>
-        <section className="border-b border-border bg-card py-16 shadow-xs">
+        <section className="relative overflow-hidden border-b border-border bg-card py-16 shadow-2xs">
           <div className="mx-auto max-w-6xl px-4 space-y-8">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
               <div className="space-y-2">
-                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300/60 bg-emerald-100/80 px-3.5 py-1 text-xs font-bold text-emerald-900 shadow-2xs">
-                  <span>📅 Agenda Kelurahan</span>
+                <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-xs font-bold text-primary shadow-2xs backdrop-blur-md">
+                  <span>Agenda Kelurahan</span>
                 </div>
-                <h2 className="font-heading text-2xl font-extrabold text-foreground sm:text-3xl mt-1">
+                <h2 className="font-heading text-2xl font-extrabold text-foreground sm:text-3xl lg:text-4xl mt-1">
                   Event Mendatang
                 </h2>
                 <p className="text-sm text-muted-foreground max-w-xl leading-relaxed">
@@ -613,14 +624,16 @@ export default async function Home() {
               </div>
               <Link
                 href="/event"
-                className="inline-flex items-center gap-1.5 self-start rounded-full border border-emerald-300 bg-emerald-50 px-4 py-2 text-xs font-bold text-emerald-900 transition-all hover:bg-emerald-600 hover:text-white sm:self-auto shrink-0"
+                className="inline-flex items-center gap-1.5 self-start rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-xs font-bold text-primary transition-all duration-300 hover:bg-primary hover:text-white sm:self-auto shrink-0 shadow-2xs"
               >
                 Lihat Agenda Lengkap →
               </Link>
             </div>
 
             {eventTerdekat.length === 0 ? (
-              <p className="text-xs text-muted-foreground">Belum ada agenda event mendatang.</p>
+              <div className="rounded-2xl border border-dashed border-border bg-card/50 p-8 text-center text-xs text-muted-foreground">
+                Belum ada agenda event mendatang.
+              </div>
             ) : (
               <div className="grid gap-6 sm:grid-cols-3">
                 {eventTerdekat.map((ev) => {
@@ -631,19 +644,19 @@ export default async function Home() {
                   return (
                     <div
                       key={ev.id}
-                      className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-border bg-background shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500/50 hover:shadow-md"
+                      className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-border bg-background shadow-xs transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/50 hover:shadow-xl"
                     >
                       <div className="p-5 space-y-3">
                         <div className="flex items-start justify-between gap-3">
-                          <div className="flex flex-col items-center justify-center rounded-xl border border-emerald-300/60 bg-emerald-100/80 px-3 py-1.5 text-center shrink-0">
-                            <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-900">{month}</span>
-                            <span className="font-heading text-xl font-extrabold text-emerald-900 leading-none">{day}</span>
+                          <div className="flex flex-col items-center justify-center rounded-xl border border-primary/30 bg-primary/10 px-3.5 py-1.5 text-center shrink-0 shadow-2xs">
+                            <span className="text-[10px] font-extrabold uppercase tracking-wider text-primary">{month}</span>
+                            <span className="font-heading text-xl font-extrabold text-primary leading-none my-0.5">{day}</span>
                           </div>
                           <span className="text-[11px] font-bold text-muted-foreground bg-muted px-2.5 py-1 rounded-full line-clamp-1">
                             📍 {ev.lokasi}
                           </span>
                         </div>
-                        <h3 className="font-heading text-sm font-bold text-foreground group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug">
+                        <h3 className="font-heading text-sm font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-snug">
                           {ev.judul}
                         </h3>
                         <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
@@ -653,7 +666,7 @@ export default async function Home() {
                       <div className="p-5 pt-0">
                         <Link
                           href={`/event/${ev.slug}`}
-                          className="inline-flex w-full items-center justify-center gap-1 rounded-xl border border-border bg-card px-3 py-2 text-xs font-bold text-foreground group-hover:border-emerald-500 group-hover:text-emerald-700 transition-colors"
+                          className="inline-flex w-full items-center justify-center gap-1 rounded-xl border border-border bg-card px-3 py-2 text-xs font-bold text-foreground group-hover:border-primary group-hover:bg-primary group-hover:text-white transition-all shadow-2xs"
                         >
                           <span>Rincian Event</span>
                           <span>→</span>

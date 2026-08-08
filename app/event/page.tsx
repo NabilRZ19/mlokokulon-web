@@ -62,7 +62,7 @@ export default async function EventPage() {
         {/* Header Section */}
         <div className="space-y-4 max-w-3xl">
           <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300/60 bg-emerald-100/80 px-3.5 py-1 text-xs font-bold text-emerald-900 shadow-2xs">
-            <span>📅 Agenda &amp; Kegiatan Warga</span>
+            <span>Agenda &amp; Kegiatan Warga</span>
           </div>
           <h1 className="font-heading text-3xl sm:text-5xl font-extrabold tracking-tight text-foreground leading-tight">
             Event Mendatang

@@ -34,7 +34,7 @@ export function ApprovalNoticeBanner({ contentType }: ApprovalNoticeBannerProps)
           Perhatian!
         </h4>
         <p className="mt-0.5 text-xs font-medium text-amber-800 leading-relaxed">
-          Konten <strong className="font-bold underline decoration-amber-400">{contentType}</strong> ini perlu persetujuan Admin Kelurahan sebelum diterbitkan secara resmi di halaman utama website.
+          Konten <strong className="font-bold underline decoration-amber-400">{contentType}</strong> ini perlu persetujuan admin kelurahan sebelum di-upload. Hubungi admin kelurahan segera untuk update <strong className="font-bold">{contentType}</strong> lebih cepat.
         </p>
       </div>
     </div>
