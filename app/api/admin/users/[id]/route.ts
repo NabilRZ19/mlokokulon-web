@@ -4,7 +4,7 @@ import { hashPassword } from "@/lib/auth";
 import { db } from "@/lib/db/client";
 import { adminUsers } from "@/lib/db/schema";
 import { getSession } from "@/lib/session";
-import { canManageUsers, requireTier } from "@/lib/auth-policy";
+import { canAssignTier, canManageUsers, forbiddenResponse, requireTier } from "@/lib/auth-policy";
 
 export async function GET(
   request: Request,
@@ -80,6 +80,22 @@ export async function PUT(
       return NextResponse.json({ error: "Nilai tier tidak valid (harus 1, 2, atau 3)" }, { status: 400 });
     }
 
+    // Ambil tier target saat ini — cegah Tier 2 mengedit/ambil-alih akun Tier 1
+    // yang sudah ada, dan cegah Tier 2 menaikkan tier siapa pun jadi 1.
+    const [existingTarget] = await db
+      .select({ tier: adminUsers.tier })
+      .from(adminUsers)
+      .where(eq(adminUsers.id, targetId))
+      .limit(1);
+
+    if (!existingTarget) {
+      return NextResponse.json({ error: "User tidak ditemukan" }, { status: 404 });
+    }
+
+    if (!canAssignTier(session!.tier, existingTarget.tier) || !canAssignTier(session!.tier, tierNum)) {
+      return forbiddenResponse([1]);
+    }
+
     // Password wajib diisi ulang setiap edit — keputusan user
     const passwordHash = await hashPassword(password);
 
@@ -123,6 +139,21 @@ export async function DELETE(
   }
 
   try {
+    // Cegah Tier 2 menghapus akun Tier 1 (Super Admin) lain
+    const [existingTarget] = await db
+      .select({ tier: adminUsers.tier })
+      .from(adminUsers)
+      .where(eq(adminUsers.id, targetId))
+      .limit(1);
+
+    if (!existingTarget) {
+      return NextResponse.json({ error: "User tidak ditemukan" }, { status: 404 });
+    }
+
+    if (!canAssignTier(authedSession.tier, existingTarget.tier)) {
+      return forbiddenResponse([1]);
+    }
+
     await db.delete(adminUsers).where(eq(adminUsers.id, targetId));
     return NextResponse.json({ success: true });
   } catch (err) {

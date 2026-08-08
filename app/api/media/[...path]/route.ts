@@ -1,8 +1,13 @@
 import { NextResponse } from "next/server";
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
+const S3_ENDPOINT = process.env.S3_ENDPOINT;
+if (!S3_ENDPOINT) {
+  throw new Error("S3_ENDPOINT wajib diisi di environment variables.");
+}
+
 const s3 = new S3Client({
-  endpoint: process.env.S3_ENDPOINT || "http://76.13.191.42:9000",
+  endpoint: S3_ENDPOINT,
   region: process.env.S3_REGION || "ap-southeast-1",
   credentials: {
     accessKeyId: process.env.S3_ACCESS_KEY || "",
@@ -54,7 +59,7 @@ export async function GET(
 
     // Fallback direct HTTP fetch ke MinIO jika AWS S3 SDK mengalami kendala
     try {
-      const s3Endpoint = (process.env.S3_ENDPOINT || "http://76.13.191.42:9000").replace(/\/$/, "");
+      const s3Endpoint = S3_ENDPOINT.replace(/\/$/, "");
       const directUrl = `${s3Endpoint}/${bucket}/${key}`;
       const res = await fetch(directUrl);
       if (res.ok) {

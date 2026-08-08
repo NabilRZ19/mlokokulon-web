@@ -24,11 +24,7 @@ export function getPublicImageUrl(url: string | null | undefined): string {
   }
 
   // Jika URL mengarah ke MinIO (HTTP IP/Port atau MinIO domain)
-  if (
-    trimmed.startsWith("http://") ||
-    trimmed.includes("76.13.191.42") ||
-    trimmed.includes(":9000")
-  ) {
+  if (trimmed.startsWith("http://") || trimmed.includes(":9000")) {
     try {
       const parsed = new URL(trimmed);
       return `/api/media${parsed.pathname}`;

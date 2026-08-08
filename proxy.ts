@@ -23,7 +23,7 @@ function buildCsp(): string {
 
   // Catatan img-src & connect-src:
   //   Semua gambar MinIO sudah diproxy server-side via /api/media (lib/image-url.ts),
-  //   sehingga browser hanya fetch ke 'self' — tidak perlu izin http://76.13.191.42.
+  //   sehingga browser hanya fetch ke 'self' — tidak perlu izin ke endpoint MinIO.
   //   Unsplash diakses langsung via https, sehingga tetap perlu di img-src.
   const cspHeader = `
     default-src 'self';

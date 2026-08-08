@@ -19,6 +19,15 @@ import type { SessionPayload } from "./auth";
 export const canManageUsers = (tier: number) => tier === 1 || tier === 2;
 
 /**
+ * Cek apakah `actorTier` boleh menetapkan/menyentuh akun dengan `targetTier`.
+ * Hanya Tier 1 yang boleh membuat, mengedit, atau menghapus akun Tier 1 —
+ * mencegah Tier 2 (Admin Kelurahan) eskalasi diri sendiri atau akun lain
+ * jadi Super Admin, atau mengambil alih/menghapus akun Super Admin lain.
+ */
+export const canAssignTier = (actorTier: number, targetTier: number) =>
+  targetTier !== 1 || actorTier === 1;
+
+/**
  * Tier 1 & 2: kelola struktur organisasi kelurahan.
  * Tier 3 (Admin RW) tidak relevan dengan struktur kelurahan.
  */

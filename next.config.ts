@@ -4,20 +4,12 @@ import type { NextConfig } from "next";
 // Image Optimization bisa memproses gambar dari MinIO server-side.
 // Catatan: browser TIDAK pernah mengakses MinIO langsung; semua request gambar
 // diproxy via /api/media (lib/image-url.ts), sehingga CSP tidak perlu izin ke IP MinIO.
-const MINIO_HOSTNAME = process.env.S3_ENDPOINT
-  ? new URL(process.env.S3_ENDPOINT).hostname
-  : "76.13.191.42";
-
-const MINIO_PORT = process.env.S3_ENDPOINT
-  ? (() => {
-      try {
-        const u = new URL(process.env.S3_ENDPOINT ?? "");
-        return u.port ? `:${u.port}` : "";
-      } catch {
-        return ":9000";
-      }
-    })()
-  : ":9000";
+if (!process.env.S3_ENDPOINT) {
+  throw new Error("S3_ENDPOINT wajib diisi di environment variables.");
+}
+const minioEndpointUrl = new URL(process.env.S3_ENDPOINT);
+const MINIO_HOSTNAME = minioEndpointUrl.hostname;
+const MINIO_PORT = minioEndpointUrl.port ? `:${minioEndpointUrl.port}` : "";
 
 // ---------------------------------------------------------------------------
 // Security Headers (CSP tidak disertakan di sini — tetap dihandle di

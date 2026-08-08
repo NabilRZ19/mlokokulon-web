@@ -4,7 +4,7 @@ import { hashPassword } from "@/lib/auth";
 import { db } from "@/lib/db/client";
 import { adminUsers } from "@/lib/db/schema";
 import { getSession } from "@/lib/session";
-import { canManageUsers, requireTier } from "@/lib/auth-policy";
+import { canAssignTier, canManageUsers, forbiddenResponse, requireTier } from "@/lib/auth-policy";
 
 export async function GET() {
   const session = await getSession();
@@ -54,6 +54,11 @@ export async function POST(request: Request) {
     const tierNum = Number(tier);
     if (![1, 2, 3].includes(tierNum)) {
       return NextResponse.json({ error: "Nilai tier tidak valid (harus 1, 2, atau 3)" }, { status: 400 });
+    }
+
+    // Hanya Tier 1 yang boleh membuat akun Tier 1 (cegah Tier 2 bikin Super Admin baru)
+    if (!canAssignTier(session!.tier, tierNum)) {
+      return forbiddenResponse([1]);
     }
 
     const passwordHash = await hashPassword(password);
