@@ -1,8 +1,10 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
+import { ImageCropperModal } from "@/components/admin/ImageCropperModal";
+import { compressImage } from "@/lib/image-compression";
 import { scrollToFirstError } from "@/lib/form-scroll";
 
 interface PengurusItem {
@@ -33,6 +35,8 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
   const { id } = use(params);
   const router = useRouter();
 
+  const [userTier, setUserTier] = useState<number>(3); // fallback Tier 3
+  const [userName, setUserName] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [namaRw, setNamaRw] = useState("");
   const [cakupanDusun, setCakupanDusun] = useState("");
@@ -43,7 +47,21 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
   const [deskripsiSingkat, setDeskripsiSingkat] = useState("");
   const [potensi, setPotensi] = useState("");
 
-  // 1. Pengurus Inti RW
+  // ── State Khusus Ketua RW ──
+  const [ketuaNama, setKetuaNama] = useState("");
+  const [ketuaFotoUrl, setKetuaFotoUrl] = useState<string | null>(null);
+  const [pengusul, setPengusul] = useState("");
+  const [submittingKetua, setSubmittingKetua] = useState(false);
+  const [ketuaSuccessMsg, setKetuaSuccessMsg] = useState<string | null>(null);
+  const [ketuaErrorMsg, setKetuaErrorMsg] = useState<string | null>(null);
+
+  // Crop & Upload state untuk foto Ketua RW
+  const [rawImage, setRawImage] = useState<string | null>(null);
+  const [cropperOpen, setCropperOpen] = useState(false);
+  const [uploadingKetuaFoto, setUploadingKetuaFoto] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // 1. Pengurus Inti RW lainnya (Sekretaris, Bendahara, dll)
   const [rwCoreList, setRwCoreList] = useState<{ nama: string; jabatan: string }[]>([]);
 
   // 2. Pengurus RT (Dipisahkan)
@@ -54,6 +72,20 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Fetch Session
+  useEffect(() => {
+    fetch("/api/admin/session")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.tier) setUserTier(d.tier);
+        if (d?.nama) {
+          setUserName(d.nama);
+          setPengusul(d.nama);
+        }
+      })
+      .catch(() => null);
+  }, []);
 
   useEffect(() => {
     async function loadRwData() {
@@ -71,6 +103,8 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
         setIsKampungKb(data.is_kampung_kb);
         setDeskripsiSingkat(data.deskripsi_singkat || "");
         setPotensi(data.potensi || "");
+        setKetuaNama(data.ketua_nama || "");
+        setKetuaFotoUrl(data.ketua_foto_url || null);
 
         const existingPengurus: PengurusItem[] = data.struktur_pengurus || [];
 
@@ -226,8 +260,99 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
       })
     );
   }
+  // ── Helper Foto Ketua RW ──
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const selected = e.target.files?.[0];
+    if (!selected) return;
+    const rawUrl = URL.createObjectURL(selected);
+    setRawImage(rawUrl);
+    setCropperOpen(true);
+    if (e.target) e.target.value = "";
+  }
 
-  // ── Submit Form ──
+  async function handleCropComplete(croppedBlob: Blob, previewUrl: string) {
+    setUploadingKetuaFoto(true);
+    setKetuaErrorMsg(null);
+    try {
+      const croppedFile = new File([croppedBlob], "ketua-rw.webp", { type: "image/webp" });
+      const compressed = await compressImage(croppedFile);
+      const fd = new FormData();
+      fd.append("file", compressed, compressed.name);
+      fd.append("folder", "rw");
+
+      const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+      if (!res.ok) throw new Error("Upload foto Ketua RW gagal.");
+
+      const data = await res.json();
+      setKetuaFotoUrl(data.url);
+    } catch (err) {
+      setKetuaErrorMsg(err instanceof Error ? err.message : "Upload foto gagal.");
+    } finally {
+      setUploadingKetuaFoto(false);
+    }
+  }
+
+  // Submit Perubahan Ketua RW (Approval Workflow untuk Tier 3/4)
+  async function handleSubmitKetua(e: React.FormEvent) {
+    e.preventDefault();
+    setKetuaErrorMsg(null);
+    setKetuaSuccessMsg(null);
+
+    if (!ketuaNama.trim()) {
+      setKetuaErrorMsg("Nama Ketua RW wajib diisi.");
+      return;
+    }
+
+    setSubmittingKetua(true);
+    try {
+      if (userTier === 3 || userTier === 4) {
+        // Tier 3/4: Kirim pengajuan ke rw_ketua_pengajuan
+        const res = await fetch("/api/admin/wilayah/ketua-pengajuan", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            rw_id: id,
+            pengusul: pengusul || userName,
+            ketua_nama_baru: ketuaNama.trim(),
+            ketua_foto_url_baru: ketuaFotoUrl,
+          }),
+        });
+
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.error || "Gagal mengirim pengajuan.");
+        }
+
+        setKetuaSuccessMsg("✓ Pengajuan perubahan Ketua RW berhasil dikirim ke Admin Kelurahan (Tier 1/2) untuk disetujui.");
+      } else {
+        // Tier 1/2: Update langsung ke database
+        const res = await fetch(`/api/admin/wilayah/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nama_rw: namaRw,
+            cakupan_dusun: cakupanDusun,
+            jumlah_rt: Number(jumlahRt),
+            is_kampung_kb: isKampungKb,
+            ketua_nama: ketuaNama.trim(),
+            ketua_foto_url: ketuaFotoUrl,
+            deskripsi_singkat: deskripsiSingkat,
+            potensi,
+            statistik: { jumlah_kk: Number(jumlahKk), jumlah_jiwa: Number(jumlahJiwa) },
+          }),
+        });
+
+        if (!res.ok) throw new Error("Gagal memperbarui Ketua RW.");
+        setKetuaSuccessMsg("✓ Data Ketua RW berhasil diperbarui secara langsung.");
+      }
+    } catch (err) {
+      setKetuaErrorMsg(err instanceof Error ? err.message : "Terjadi kesalahan.");
+    } finally {
+      setSubmittingKetua(false);
+    }
+  }
+
+  // ── Submit Form Data RW & Pengurus Lain ──
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
@@ -321,15 +446,130 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
     }
   }
 
-  if (loading) {
-    return <div className="p-8 text-center text-muted-foreground">Memuat data RW…</div>;
-  }
-
   return (
     <div>
       <AdminPageHeader title={`Edit Data ${namaRw || "RW"}`} />
 
-      <form onSubmit={handleSubmit} className="mx-auto max-w-3xl space-y-6">
+      <div className="mx-auto max-w-3xl space-y-6">
+        {/* ── FORM KHUSUS JABATAN KETUA RW ── */}
+        <form onSubmit={handleSubmitKetua} className="rounded-xl border-2 border-primary/30 bg-primary/5 p-5 shadow-sm space-y-4">
+          <div className="flex items-center justify-between border-b border-primary/20 pb-3">
+            <div>
+              <h3 className="font-heading text-base font-extrabold text-foreground">
+                👑 Jabatan Ketua RW (Perlu Persetujuan untuk Admin RW)
+              </h3>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Perubahan pada posisi Ketua RW memerlukan persetujuan Admin Kelurahan (Tier 1/2).
+              </p>
+            </div>
+            {userTier === 3 || userTier === 4 ? (
+              <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-bold text-orange-700 shrink-0">
+                ⏳ Perlu Approval Tier 1/2
+              </span>
+            ) : (
+              <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700 shrink-0">
+                ⚡ Direct Access
+              </span>
+            )}
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="ketuaNama" className="mb-1 block text-sm font-bold text-foreground">
+                Nama Ketua RW <span className="text-destructive">*</span>
+              </label>
+              <input
+                id="ketuaNama"
+                type="text"
+                value={ketuaNama}
+                onChange={(e) => setKetuaNama(e.target.value)}
+                placeholder="Nama lengkap Ketua RW"
+                className="w-full rounded-lg border border-border bg-card px-3.5 py-2.5 text-sm font-bold text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="pengusul" className="mb-1 block text-sm font-bold text-foreground">
+                Nama Pengusul / Pengaju <span className="text-destructive">*</span>
+              </label>
+              <input
+                id="pengusul"
+                type="text"
+                value={pengusul}
+                onChange={(e) => setPengusul(e.target.value)}
+                placeholder="Nama pengusul (cth: Pengurus RW 01)"
+                className="w-full rounded-lg border border-border bg-card px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+              />
+            </div>
+          </div>
+
+          {/* Upload Foto Ketua RW */}
+          <div className="space-y-2">
+            <label className="block text-sm font-bold text-foreground">
+              Foto Profile Ketua RW
+            </label>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*,.heic,.heif"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+
+            <div className="flex items-center gap-4">
+              <div
+                onClick={() => fileInputRef.current?.click()}
+                className="flex h-20 w-20 cursor-pointer flex-col items-center justify-center rounded-full border-2 border-dashed border-primary/40 bg-card hover:bg-primary/10 transition-colors shrink-0 overflow-hidden"
+              >
+                {ketuaFotoUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={ketuaFotoUrl} alt="Foto Ketua RW" className="h-full w-full object-cover" />
+                ) : (
+                  <span className="text-xs font-bold text-primary text-center px-1">Upload Foto</span>
+                )}
+              </div>
+              <div className="text-xs space-y-1">
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="rounded-md bg-primary/10 px-3 py-1.5 font-bold text-primary hover:bg-primary hover:text-white transition-colors"
+                >
+                  {ketuaFotoUrl ? "Ganti Foto Ketua" : "Upload Pasfoto Ketua RW"}
+                </button>
+                {uploadingKetuaFoto && <p className="font-bold text-primary">Mengunggah foto…</p>}
+                <p className="text-muted-foreground">Format WebP, JPG, PNG (otomatis dikompresi)</p>
+              </div>
+            </div>
+          </div>
+
+          {ketuaSuccessMsg && (
+            <div className="rounded-lg border border-emerald-300 bg-emerald-50 p-3 text-xs font-bold text-emerald-800">
+              {ketuaSuccessMsg}
+            </div>
+          )}
+          {ketuaErrorMsg && (
+            <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-xs font-semibold text-destructive">
+              {ketuaErrorMsg}
+            </div>
+          )}
+
+          <div className="flex justify-end pt-2">
+            <button
+              type="submit"
+              disabled={submittingKetua || uploadingKetuaFoto}
+              className="rounded-lg bg-primary px-5 py-2 text-xs font-bold text-white shadow-xs hover:bg-primary/90 disabled:opacity-50"
+            >
+              {submittingKetua
+                ? "Memproses…"
+                : userTier === 3 || userTier === 4
+                ? "Ajukan Perubahan Ketua RW"
+                : "Simpan Perubahan Ketua RW"}
+            </button>
+          </div>
+        </form>
+
+        {/* ── FORM DATA RW & PENGURUS LAIN (DIRECT SAVE) ── */}
+        <form onSubmit={handleSubmit} className="space-y-6">
         <div className="rounded-xl border border-border bg-card p-4 sm:p-6 shadow-sm space-y-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
@@ -694,12 +934,21 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
           <button
             type="submit"
             disabled={submitting}
-            className="rounded-lg bg-primary px-5 py-2 text-xs font-bold text-white shadow-xs hover:bg-primary/90 disabled:opacity-50"
+            className="rounded-lg bg-emerald-600 px-5 py-2 text-xs font-bold text-white shadow-xs hover:bg-emerald-700 disabled:opacity-50"
           >
-            {submitting ? "Menyimpan…" : "Simpan Perubahan RW"}
+            {submitting ? "Menyimpan…" : "Simpan Data RW & Pengurus Lain"}
           </button>
         </div>
       </form>
+      </div>
+
+      {/* Crop Modal untuk Foto Ketua RW */}
+      <ImageCropperModal
+        isOpen={cropperOpen}
+        imageSrc={rawImage}
+        onClose={() => setCropperOpen(false)}
+        onCropComplete={handleCropComplete}
+      />
     </div>
   );
 }

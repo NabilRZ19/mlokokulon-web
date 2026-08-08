@@ -50,6 +50,8 @@ async function assembleRwSingle(row: typeof rwTable.$inferSelect): Promise<Rw> {
     cakupan_dusun: row.cakupanDusun,
     jumlah_rt: row.jumlahRt,
     is_kampung_kb: row.isKampungKb,
+    ketua_nama: row.ketuaNama ?? undefined,
+    ketua_foto_url: row.ketuaFotoUrl ?? undefined,
     deskripsi_singkat: row.deskripsiSingkat ?? undefined,
     struktur_pengurus: pengurus.map((p) => ({
       nama: p.nama,
@@ -99,6 +101,8 @@ export async function getRwList(): Promise<Rw[]> {
       cakupan_dusun: row.cakupanDusun,
       jumlah_rt: row.jumlahRt,
       is_kampung_kb: row.isKampungKb,
+      ketua_nama: row.ketuaNama ?? undefined,
+      ketua_foto_url: row.ketuaFotoUrl ?? undefined,
       deskripsi_singkat: row.deskripsiSingkat ?? undefined,
       struktur_pengurus: pengurusMap.get(row.id) ?? [],
       statistik: { jumlah_kk: row.jumlahKk, jumlah_jiwa: row.jumlahJiwa },
@@ -149,12 +153,20 @@ async function assembleBeritaSingle(row: typeof beritaTable.$inferSelect): Promi
     penulis: row.penulis,
     created_by: row.createdBy,
     foto_tambahan: foto.map((f) => f.url),
+    status: (row.status ?? "published") as Berita["status"],
+    reviewer_note: row.reviewerNote ?? undefined,
+    submitted_by_tier: row.submittedByTier ?? undefined,
+    pengusul: row.pengusul ?? undefined,
   };
 }
 
-export async function getBeritaList(): Promise<Berita[]> {
+export async function getBeritaList(onlyPublished = true): Promise<Berita[]> {
   try {
-    const rows = await db.select().from(beritaTable).orderBy(desc(beritaTable.tanggal));
+    const query = db.select().from(beritaTable);
+    const rows = onlyPublished
+      ? await query.where(eq(beritaTable.status, "published")).orderBy(desc(beritaTable.tanggal))
+      : await query.orderBy(desc(beritaTable.tanggal));
+
     if (rows.length === 0) return [];
 
     const beritaIds = rows.map((r) => r.id);
@@ -191,6 +203,10 @@ export async function getBeritaList(): Promise<Berita[]> {
       penulis: row.penulis,
       created_by: row.createdBy,
       foto_tambahan: fotoMap.get(row.id) ?? [],
+      status: (row.status ?? "published") as Berita["status"],
+      reviewer_note: row.reviewerNote ?? undefined,
+      submitted_by_tier: row.submittedByTier ?? undefined,
+      pengusul: row.pengusul ?? undefined,
     }));
   } catch (err) {
     console.error("[queries] Error getBeritaList:", err);
@@ -198,11 +214,15 @@ export async function getBeritaList(): Promise<Berita[]> {
   }
 }
 
-export async function getBeritaBySlug(slug: string): Promise<Berita | null> {
+export async function getBeritaBySlug(slug: string, allowUnpublished = false): Promise<Berita | null> {
   try {
     const rows = await db.select().from(beritaTable).where(eq(beritaTable.slug, slug)).limit(1);
     if (rows.length === 0) return null;
-    return assembleBeritaSingle(rows[0]);
+    const berita = await assembleBeritaSingle(rows[0]);
+    if (!allowUnpublished && berita.status && berita.status !== "published") {
+      return null;
+    }
+    return berita;
   } catch (err) {
     console.error(`[queries] Error getBeritaBySlug for ${slug}:`, err);
     return null;
@@ -235,12 +255,21 @@ async function assembleUmkmSingle(row: typeof umkmTable.$inferSelect): Promise<U
     lokasi: row.lokasi ?? undefined,
     foto_urls: foto.map((f) => f.url),
     foto_utama_url: row.fotoUtamaUrl,
+    status: (row.status ?? "published") as Umkm["status"],
+    created_by: row.createdBy ?? undefined,
+    reviewer_note: row.reviewerNote ?? undefined,
+    submitted_by_tier: row.submittedByTier ?? undefined,
+    pengusul: row.pengusul ?? undefined,
   };
 }
 
-export async function getUmkmList(): Promise<Umkm[]> {
+export async function getUmkmList(onlyPublished = true): Promise<Umkm[]> {
   try {
-    const rows = await db.select().from(umkmTable).orderBy(asc(umkmTable.nama));
+    const query = db.select().from(umkmTable);
+    const rows = onlyPublished
+      ? await query.where(eq(umkmTable.status, "published")).orderBy(asc(umkmTable.nama))
+      : await query.orderBy(asc(umkmTable.nama));
+
     if (rows.length === 0) return [];
 
     const umkmIds = rows.map((r) => r.id);
@@ -283,6 +312,11 @@ export async function getUmkmList(): Promise<Umkm[]> {
       lokasi: row.lokasi ?? undefined,
       foto_urls: fotoMap.get(row.id) ?? [],
       foto_utama_url: row.fotoUtamaUrl,
+      status: (row.status ?? "published") as Umkm["status"],
+      created_by: row.createdBy ?? undefined,
+      reviewer_note: row.reviewerNote ?? undefined,
+      submitted_by_tier: row.submittedByTier ?? undefined,
+      pengusul: row.pengusul ?? undefined,
     }));
   } catch (err) {
     console.error("[queries] Error getUmkmList:", err);
@@ -290,20 +324,28 @@ export async function getUmkmList(): Promise<Umkm[]> {
   }
 }
 
-export async function getUmkmBySlug(slug: string): Promise<Umkm | null> {
+export async function getUmkmBySlug(slug: string, allowUnpublished = false): Promise<Umkm | null> {
   try {
     const rows = await db.select().from(umkmTable).where(eq(umkmTable.slug, slug)).limit(1);
     if (rows.length === 0) return null;
-    return assembleUmkmSingle(rows[0]);
+    const umkm = await assembleUmkmSingle(rows[0]);
+    if (!allowUnpublished && umkm.status && umkm.status !== "published") {
+      return null;
+    }
+    return umkm;
   } catch (err) {
     console.error(`[queries] Error getUmkmBySlug for ${slug}:`, err);
     return null;
   }
 }
 
-export async function getGaleriList(): Promise<Galeri[]> {
+export async function getGaleriList(onlyPublished = true): Promise<Galeri[]> {
   try {
-    const rows = await db.select().from(galeriTable).orderBy(asc(galeriTable.judul));
+    const query = db.select().from(galeriTable);
+    const rows = onlyPublished
+      ? await query.where(eq(galeriTable.status, "published")).orderBy(asc(galeriTable.judul))
+      : await query.orderBy(asc(galeriTable.judul));
+
     return rows.map((r) => ({
       id: r.id,
       judul: r.judul,
@@ -311,6 +353,11 @@ export async function getGaleriList(): Promise<Galeri[]> {
       url_media: r.urlMedia,
       kategori: r.kategori ?? undefined,
       sumber_berita_id: r.sumberBeritaId ?? undefined,
+      status: (r.status ?? "published") as Galeri["status"],
+      created_by: r.createdBy ?? undefined,
+      reviewer_note: r.reviewerNote ?? undefined,
+      submitted_by_tier: r.submittedByTier ?? undefined,
+      pengusul: r.pengusul ?? undefined,
     }));
   } catch (err) {
     console.error("[queries] Error getGaleriList:", err);

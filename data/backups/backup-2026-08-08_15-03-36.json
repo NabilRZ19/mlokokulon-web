@@ -1,0 +1,1516 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-08-08T15:03:36.251Z",
+  "counts": {
+    "strukturKelurahan": 6,
+    "rw": 10,
+    "rwPengurus": 54,
+    "berita": 4,
+    "beritaFotoTambahan": 14,
+    "galeri": 11,
+    "umkm": 22,
+    "umkmProdukUnggulan": 26,
+    "umkmFoto": 10,
+    "adminUsers": 3,
+    "layanan": 4
+  },
+  "tables": {
+    "strukturKelurahan": [
+      {
+        "id": "struktur-47afe1b4",
+        "nama": "Dwi Astuti, S.Pd.",
+        "jabatan": "Kasi Tata Pemerintahan dan Pelayanan Umum",
+        "fotoUrl": "/api/media/mlokokulon/struktur/798df2c2-29cc-44c0-b0c4-05e1a0e2dc90.webp",
+        "urutan": 3
+      },
+      {
+        "id": "struktur-4efaff52",
+        "nama": "Dwi Astuti, S.Pd.",
+        "jabatan": "PLT Sekretaris Lurah",
+        "fotoUrl": "/api/media/mlokokulon/struktur/bbb559f5-7466-4d89-bf48-aa3717635d07.webp",
+        "urutan": 2
+      },
+      {
+        "id": "struktur-5aa370cd",
+        "nama": "Siswadi",
+        "jabatan": "Staff Pengadministrasi Perkantoran",
+        "fotoUrl": "/api/media/mlokokulon/struktur/85ed40b9-ab56-46c1-a2d5-636aeb96d91c.webp",
+        "urutan": 5
+      },
+      {
+        "id": "struktur-ad6c9127",
+        "nama": "Sulasno, S.E.",
+        "jabatan": "Lurah",
+        "fotoUrl": "/api/media/mlokokulon/struktur/cfdef3a5-513f-4ce1-942a-96feb464cf2c.webp",
+        "urutan": 1
+      },
+      {
+        "id": "struktur-bac2a883",
+        "nama": "Yulis Triyatno, S.T.",
+        "jabatan": "Kasi Pemberdayaan dan Kesejahteraan Rakyat",
+        "fotoUrl": "/api/media/mlokokulon/struktur/9d20e376-1d25-44cd-80d3-ed02c8ec49b7.webp",
+        "urutan": 3
+      },
+      {
+        "id": "struktur-ea1b62f4",
+        "nama": "Tarni",
+        "jabatan": "Staff Operator Layanan Operasional",
+        "fotoUrl": "/api/media/mlokokulon/struktur/3aeba5f7-aa36-48f3-9706-39d839840bc5.webp",
+        "urutan": 5
+      }
+    ],
+    "rw": [
+      {
+        "id": "rw-01",
+        "namaRw": "RW 01 - Bulurejo",
+        "cakupanDusun": "Bulurejo",
+        "jumlahRt": 2,
+        "isKampungKb": false,
+        "deskripsiSingkat": "Lingkungan Bulurejo merupakan wilayah administratif RW 1 di Kelurahan Mlokomanis Kulon. Wilayah ini didominasi oleh kawasan permukiman dan lahan pertanian yang menjadi bagian dari karakteristik penggunaan lahan di Kelurahan Mlokomanis Kulon. Secara administratif, Lingkungan Bulurejo berbatasan dengan Lingkungan Soko Lor di sebelah utara, Kelurahan Mlokomanis Wetan di sebelah timur, Lingkungan Soko Kidul di sebelah selatan, serta Lingkungan Pencil di sebelah barat.",
+        "potensi": "Data belum diberikan oleh pihak terkait",
+        "jumlahKk": 121,
+        "jumlahJiwa": 369,
+        "cakupanWilayahGeojson": null
+      },
+      {
+        "id": "rw-02",
+        "namaRw": "RW 02 - Pocung",
+        "cakupanDusun": "Pocung",
+        "jumlahRt": 2,
+        "isKampungKb": false,
+        "deskripsiSingkat": "Lingkungan Pocung merupakan wilayah administratif RW 2 di Kelurahan Mlokomanis Kulon. Wilayah ini didominasi oleh kawasan permukiman dan lahan pertanian yang menjadi bagian dari karakteristik penggunaan lahan di Kelurahan Mlokomanis Kulon. Secara administratif, Lingkungan Pocung berbatasan dengan Lingkungan Bon Agung di sebelah utara, Lingkungan Soko Kidul di sebelah timur, Kelurahan Ngadirojo Lor di sebelah selatan, serta Kelurahan Ngadirojo Lor di sebelah barat.",
+        "potensi": "Data belum diberikan oleh pihak terkait",
+        "jumlahKk": 119,
+        "jumlahJiwa": 470,
+        "cakupanWilayahGeojson": null
+      },
+      {
+        "id": "rw-03",
+        "namaRw": "RW 03 - Bonagung",
+        "cakupanDusun": "Bonagung",
+        "jumlahRt": 2,
+        "isKampungKb": false,
+        "deskripsiSingkat": "Lingkungan Bon Agung merupakan wilayah administratif RW 3 di Kelurahan Mlokomanis Kulon. Wilayah ini didominasi oleh kawasan permukiman dan lahan pertanian yang menjadi bagian dari karakteristik penggunaan lahan di Kelurahan Mlokomanis Kulon. Secara administratif, Lingkungan Bon Agung berbatasan dengan Lingkungan Tempuran di sebelah utara, Lingkungan Soko Kidul di sebelah timur, Lingkungan Pocung di sebelah selatan, serta Kelurahan Ngadirojo Lor di sebelah barat.",
+        "potensi": "Data belum diberikan oleh pihak terkait",
+        "jumlahKk": 130,
+        "jumlahJiwa": 362,
+        "cakupanWilayahGeojson": null
+      },
+      {
+        "id": "rw-04",
+        "namaRw": "RW 04 - Tempuran",
+        "cakupanDusun": "Tempuran",
+        "jumlahRt": 2,
+        "isKampungKb": false,
+        "deskripsiSingkat": "Lingkungan Tempuran merupakan wilayah administratif RW 4 di Kelurahan Mlokomanis Kulon. Wilayah ini didominasi oleh kawasan permukiman dan lahan pertanian yang menjadi bagian dari karakteristik penggunaan lahan di Kelurahan Mlokomanis Kulon. Secara administratif, Lingkungan Tempuran berbatasan dengan Lingkungan Pencil di sebelah utara, Lingkungan Bon Agung di sebelah selatan, Lingkungan Soko Kidul di sebelah timur, serta Kelurahan Ngadirojo Lor di sebelah barat.",
+        "potensi": "Akademi Voli + Akademi Bola",
+        "jumlahKk": 90,
+        "jumlahJiwa": 263,
+        "cakupanWilayahGeojson": null
+      },
+      {
+        "id": "rw-05",
+        "namaRw": "RW 05 - Pencil",
+        "cakupanDusun": "Pencil",
+        "jumlahRt": 2,
+        "isKampungKb": true,
+        "deskripsiSingkat": "Lingkungan Pencil merupakan wilayah administratif RW 5 di Kelurahan Mlokomanis Kulon. Wilayah ini didominasi oleh kawasan permukiman dan lahan pertanian yang menjadi bagian dari karakteristik penggunaan lahan di Kelurahan Mlokomanis Kulon. Selain menjadi kawasan permukiman masyarakat, Lingkungan Pencil juga merupakan lokasi Kantor Kelurahan Mlokomanis Kulon yang menjadi pusat penyelenggaraan pemerintahan dan pelayanan kepada masyarakat. Secara administratif, Lingkungan Pencil berbatasan dengan Lingkungan Jaten di sebelah utara, Lingkungan Soko Lor dan Lingkungan Bulurejo di sebelah timur, Lingkungan Tempuran di sebelah selatan, serta Kelurahan Ngadirojo Lor di sebelah barat.",
+        "potensi": "Kampung KB",
+        "jumlahKk": 105,
+        "jumlahJiwa": 316,
+        "cakupanWilayahGeojson": null
+      },
+      {
+        "id": "rw-06",
+        "namaRw": "RW 06 - Jaten",
+        "cakupanDusun": "Jaten",
+        "jumlahRt": 2,
+        "isKampungKb": false,
+        "deskripsiSingkat": "Lingkungan Jaten merupakan wilayah administratif RW 6 di Kelurahan Mlokomanis Kulon. Wilayah ini didominasi oleh kawasan permukiman dan lahan pertanian yang menjadi bagian dari karakteristik penggunaan lahan di Kelurahan Mlokomanis Kulon. Secara administratif, Lingkungan Jaten berbatasan dengan Kelurahan Kasihan di sebelah utara, Lingkungan Pondok di sebelah timur, Lingkungan Pencil di sebelah selatan, serta Kelurahan Ngadirojo Lor di sebelah barat.",
+        "potensi": "Data belum diberikan oleh pihak terkait",
+        "jumlahKk": 90,
+        "jumlahJiwa": 351,
+        "cakupanWilayahGeojson": null
+      },
+      {
+        "id": "rw-07",
+        "namaRw": "RW 07 - Pondok",
+        "cakupanDusun": "Pondok",
+        "jumlahRt": 2,
+        "isKampungKb": false,
+        "deskripsiSingkat": "Lingkungan Pondok merupakan wilayah administratif RW 7 di Kelurahan Mlokomanis Kulon. Wilayah ini didominasi oleh kawasan permukiman dan lahan pertanian yang menjadi bagian dari karakteristik penggunaan lahan di Kelurahan Mlokomanis Kulon. Secara administratif, Lingkungan Pondok berbatasan dengan Kelurahan Kasihan di sebelah utara, Lingkungan Ngasinan di sebelah timur, Lingkungan Soko Lor di sebelah selatan, serta Lingkungan Jaten di sebelah barat.",
+        "potensi": "Data belum diberikan oleh pihak terkait",
+        "jumlahKk": 121,
+        "jumlahJiwa": 369,
+        "cakupanWilayahGeojson": null
+      },
+      {
+        "id": "rw-08",
+        "namaRw": "RW 08 - Ngasinan",
+        "cakupanDusun": "Ngasinan",
+        "jumlahRt": 2,
+        "isKampungKb": false,
+        "deskripsiSingkat": "Lingkungan Pondok merupakan wilayah administratif RW 7 di Kelurahan Mlokomanis Kulon. Wilayah ini didominasi oleh kawasan permukiman dan lahan pertanian yang menjadi bagian dari karakteristik penggunaan lahan di Kelurahan Mlokomanis Kulon. Secara administratif, Lingkungan Pondok berbatasan dengan Kelurahan Kasihan di sebelah utara, Lingkungan Ngasinan di sebelah timur, Lingkungan Soko Lor di sebelah selatan, serta Lingkungan Jaten di sebelah barat.",
+        "potensi": "Data belum diberikan oleh pihak terkait",
+        "jumlahKk": 121,
+        "jumlahJiwa": 441,
+        "cakupanWilayahGeojson": null
+      },
+      {
+        "id": "rw-09",
+        "namaRw": "RW 09 - Soko Lor",
+        "cakupanDusun": "Soko Lor",
+        "jumlahRt": 2,
+        "isKampungKb": false,
+        "deskripsiSingkat": "Lingkungan Soko Lor merupakan wilayah administratif RW 9 di Kelurahan Mlokomanis Kulon. Wilayah ini didominasi oleh kawasan permukiman dan lahan pertanian yang menjadi bagian dari karakteristik penggunaan lahan di Kelurahan Mlokomanis Kulon. Secara administratif, Lingkungan Soko Lor berbatasan dengan Lingkungan Pondok di sebelah utara, Lingkungan Ngasinan di sebelah timur, Lingkungan Bulurejo di sebelah selatan, serta Lingkungan Pencil di sebelah barat.",
+        "potensi": "Data belum diberikan oleh pihak terkait",
+        "jumlahKk": 108,
+        "jumlahJiwa": 274,
+        "cakupanWilayahGeojson": null
+      },
+      {
+        "id": "rw-10",
+        "namaRw": "RW 10 - Soko Kidul",
+        "cakupanDusun": "Soko Kidul",
+        "jumlahRt": 3,
+        "isKampungKb": false,
+        "deskripsiSingkat": "Lingkungan Soko Kidul merupakan wilayah administratif RW 10 di Kelurahan Mlokomanis Kulon. Wilayah ini didominasi oleh kawasan permukiman dan lahan pertanian yang menjadi bagian dari karakteristik penggunaan lahan di Kelurahan Mlokomanis Kulon. Secara administratif, Lingkungan Soko Kidul berbatasan dengan Lingkungan Soko Lor dan Lingkungan Bulurejo di sebelah utara, Kelurahan Mlokomanis Wetan di sebelah timur, Kelurahan Ngadirojo Kidul di sebelah selatan, serta Lingkungan Bon Agung dan Lingkungan Tempuran di sebelah barat.",
+        "potensi": "Data belum diberikan oleh pihak terkait",
+        "jumlahKk": 122,
+        "jumlahJiwa": 368,
+        "cakupanWilayahGeojson": null
+      }
+    ],
+    "rwPengurus": [
+      {
+        "id": 437,
+        "rwId": "rw-02",
+        "nama": "Untung",
+        "jabatan": "Ketua RW 02",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 438,
+        "rwId": "rw-02",
+        "nama": "Ismadi",
+        "jabatan": "Sekretaris RW 02",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 439,
+        "rwId": "rw-02",
+        "nama": "Slamet",
+        "jabatan": "Bendahara RW 02",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 440,
+        "rwId": "rw-03",
+        "nama": "Widodo",
+        "jabatan": "Ketua RW 03",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 441,
+        "rwId": "rw-03",
+        "nama": "Narti",
+        "jabatan": "Sekretaris RW 03",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 442,
+        "rwId": "rw-03",
+        "nama": "Drs. Sutarno",
+        "jabatan": "Bendahara RW 03",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 443,
+        "rwId": "rw-03",
+        "nama": "Untung",
+        "jabatan": "Ketua RT 01",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 444,
+        "rwId": "rw-03",
+        "nama": "Katinem",
+        "jabatan": "Sekretaris RT 01",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 445,
+        "rwId": "rw-03",
+        "nama": "Warni",
+        "jabatan": "Bendahara RT 01",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 446,
+        "rwId": "rw-03",
+        "nama": "Sunardi",
+        "jabatan": "Ketua RT 02",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 447,
+        "rwId": "rw-03",
+        "nama": "Marsudi",
+        "jabatan": "Sekretaris RT 02",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 448,
+        "rwId": "rw-03",
+        "nama": "Jalu Asmoro",
+        "jabatan": "Bendahara RT 02",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 449,
+        "rwId": "rw-03",
+        "nama": "Usman Catur",
+        "jabatan": "Ketua Karang Taruna Bakti Remaja Link Bonagung",
+        "kategori": "organisasi",
+        "organisasi": "Karang Taruna",
+        "icon": "users"
+      },
+      {
+        "id": 450,
+        "rwId": "rw-03",
+        "nama": "Marsudi",
+        "jabatan": "Sekretaris Karang Taruna Bakti Remaja Link Bonagung",
+        "kategori": "organisasi",
+        "organisasi": "Karang Taruna",
+        "icon": "users"
+      },
+      {
+        "id": 451,
+        "rwId": "rw-03",
+        "nama": "Yekti Utami",
+        "jabatan": "Bendahara Karang Taruna Bakti Remaja Link Bonagung",
+        "kategori": "organisasi",
+        "organisasi": "Karang Taruna",
+        "icon": "users"
+      },
+      {
+        "id": 452,
+        "rwId": "rw-04",
+        "nama": "Suwandi",
+        "jabatan": "Ketua RW 04",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 453,
+        "rwId": "rw-04",
+        "nama": "Minut Sumarsih",
+        "jabatan": "Sekretaris RW 04",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 454,
+        "rwId": "rw-04",
+        "nama": "Syukur Rahmadi",
+        "jabatan": "Bendahara RW 04",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 455,
+        "rwId": "rw-04",
+        "nama": "Slamet",
+        "jabatan": "Ketua RT 01",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 456,
+        "rwId": "rw-04",
+        "nama": "Syukur Rahmadi",
+        "jabatan": "Sekretaris RT 01",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 457,
+        "rwId": "rw-04",
+        "nama": "Lilik Tri Kurniawan",
+        "jabatan": "Bendahara RT 01",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 458,
+        "rwId": "rw-04",
+        "nama": "Katino",
+        "jabatan": "Ketua RT 02",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 459,
+        "rwId": "rw-04",
+        "nama": "Puji Hastuti",
+        "jabatan": "Sekretaris RT 02",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 460,
+        "rwId": "rw-04",
+        "nama": "Katino",
+        "jabatan": "Bendahara RT 02",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 461,
+        "rwId": "rw-04",
+        "nama": "Suwandi",
+        "jabatan": "Ketua Kelompok Tani Pendowo",
+        "kategori": "organisasi",
+        "organisasi": "Kelompok Tani",
+        "icon": "users"
+      },
+      {
+        "id": 462,
+        "rwId": "rw-04",
+        "nama": "Puji Hastuti",
+        "jabatan": "Sekretaris Kelompok Tani Pendowo",
+        "kategori": "organisasi",
+        "organisasi": "Kelompok Tani",
+        "icon": "users"
+      },
+      {
+        "id": 463,
+        "rwId": "rw-04",
+        "nama": "Taman",
+        "jabatan": "Bendahara Kelompok Tani Pendowo",
+        "kategori": "organisasi",
+        "organisasi": "Kelompok Tani",
+        "icon": "users"
+      },
+      {
+        "id": 464,
+        "rwId": "rw-04",
+        "nama": "Mustofa",
+        "jabatan": "Ketua Karang Taruna REDHOSIN",
+        "kategori": "organisasi",
+        "organisasi": "Karang Taruna",
+        "icon": "users"
+      },
+      {
+        "id": 465,
+        "rwId": "rw-04",
+        "nama": "Rudi",
+        "jabatan": "Wakil Karang Taruna REDHOSIN",
+        "kategori": "organisasi",
+        "organisasi": "Karang Taruna",
+        "icon": "users"
+      },
+      {
+        "id": 466,
+        "rwId": "rw-04",
+        "nama": "Putri Amilus & Dwi Waluyo",
+        "jabatan": "Sekretaris Karang Taruna REDHOSIN",
+        "kategori": "organisasi",
+        "organisasi": "Karang Taruna",
+        "icon": "users"
+      },
+      {
+        "id": 467,
+        "rwId": "rw-04",
+        "nama": "Erni",
+        "jabatan": "Bendahara Karang Taruna REDHOSIN",
+        "kategori": "organisasi",
+        "organisasi": "Karang Taruna",
+        "icon": "users"
+      },
+      {
+        "id": 468,
+        "rwId": "rw-05",
+        "nama": "Mujiono, S.Pd.I., M.Pd.I.",
+        "jabatan": "Ketua RW 05",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 469,
+        "rwId": "rw-05",
+        "nama": "Sri Mulato",
+        "jabatan": "Sekretaris RW 05",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 470,
+        "rwId": "rw-05",
+        "nama": "Nanang Adi Saputro, S.Pd.",
+        "jabatan": "Bendahara RW 05",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 471,
+        "rwId": "rw-05",
+        "nama": "Yatno",
+        "jabatan": "Ketua RT 01",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 472,
+        "rwId": "rw-05",
+        "nama": "Marlan",
+        "jabatan": "Sekretaris RT 01",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 473,
+        "rwId": "rw-05",
+        "nama": "Slamet",
+        "jabatan": "Bendahara RT 01",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 474,
+        "rwId": "rw-05",
+        "nama": "Sutrisno",
+        "jabatan": "Ketua RT 02",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 475,
+        "rwId": "rw-05",
+        "nama": "Wawan",
+        "jabatan": "Sekretaris RT 02",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 476,
+        "rwId": "rw-05",
+        "nama": "Triyanto",
+        "jabatan": "Bendahara RT 02",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 477,
+        "rwId": "rw-06",
+        "nama": "Lissawitri",
+        "jabatan": "Ketua RW 06",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 478,
+        "rwId": "rw-06",
+        "nama": "Kardi",
+        "jabatan": "Ketua RT 01",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 479,
+        "rwId": "rw-06",
+        "nama": "Nur Diansyah",
+        "jabatan": "Ketua RT 02",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 482,
+        "rwId": "rw-08",
+        "nama": "Suman",
+        "jabatan": "Ketua RW Ngasinan",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 483,
+        "rwId": "rw-08",
+        "nama": "Parmanto",
+        "jabatan": "Sekretaris RW Ngasinan",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 484,
+        "rwId": "rw-08",
+        "nama": "Suparno",
+        "jabatan": "Bendahara RW Ngasinan",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 485,
+        "rwId": "rw-09",
+        "nama": "Sulardi",
+        "jabatan": "Ketua RW 09",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 486,
+        "rwId": "rw-09",
+        "nama": "Muhajir",
+        "jabatan": "Sekretaris RW 09",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 487,
+        "rwId": "rw-09",
+        "nama": "Warijo",
+        "jabatan": "Bendahara RW 09",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 488,
+        "rwId": "rw-09",
+        "nama": "Tukiman",
+        "jabatan": "Ketua RT 01",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 489,
+        "rwId": "rw-09",
+        "nama": "Aref Samsudin",
+        "jabatan": "Ketua RT 02",
+        "kategori": "rt",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 495,
+        "rwId": "rw-01",
+        "nama": "SUMAN",
+        "jabatan": "Ketua RW",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 496,
+        "rwId": "rw-10",
+        "nama": "Sukasno",
+        "jabatan": "Ketua RW",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      },
+      {
+        "id": 497,
+        "rwId": "rw-07",
+        "nama": "SARTANTO",
+        "jabatan": "Ketua RW",
+        "kategori": "rw",
+        "organisasi": null,
+        "icon": "users"
+      }
+    ],
+    "berita": [
+      {
+        "id": "berita-40fec16c",
+        "judul": "Kelurahan Mlokomanis Kulon Gelar Rapat Koordinasi PORLING 2026, Tim KKN UNS Kelompok 268 Turut Diperkenalkan",
+        "slug": "kelurahan-mlokomanis-kulon-gelar-rapat-koordinasi-porling-2026-tim-kkn-uns-kelompok-268-turut-diperkenalkan-fec16c",
+        "isi": "Wonogiri, 7 Juli 2026 – Pemerintah Kelurahan Mlokomanis Kulon menggelar rapat koordinasi sekaligus arisan tingkat kelurahan pada Selasa (7/7) malam. Kegiatan yang dihadiri oleh Lurah Mlokomanis Kulon beserta seluruh Ketua RW ini membahas persiapan pelaksanaan Pekan Olahraga Lingkungan (PORLING) 2026 yang akan diselenggarakan di lingkungan RW Pocung.\n\nDalam rapat tersebut, dibahas berbagai persiapan teknis pelaksanaan PORLING, mulai dari kesiapan lokasi, koordinasi antarwilayah, hingga pembagian tugas dalam mendukung kelancaran kegiatan. Berdasarkan hasil rapat, PORLING 2026 dijadwalkan mulai berlangsung pada 21 Juli 2026. Kegiatan tahunan ini diharapkan menjadi ajang untuk mempererat silaturahmi, memperkuat kekompakan antarwarga, serta meningkatkan semangat sportivitas di lingkungan Kelurahan Mlokomanis Kulon.\n\nSelain membahas agenda PORLING, Pemerintah Kelurahan Mlokomanis Kulon juga memperkenalkan Tim KKN Universitas Sebelas Maret (UNS) Kelompok 268 kepada seluruh Ketua RW yang hadir. Perkenalan tersebut menjadi langkah awal membangun sinergi antara mahasiswa KKN dengan pemerintah kelurahan dan masyarakat selama masa pengabdian.\n\nDalam kesempatan tersebut, pemerintah kelurahan menyambut baik kehadiran Tim KKN UNS Kelompok 268 serta mempersilakan mahasiswa untuk berpartisipasi dalam berbagai kegiatan kemasyarakatan di Kelurahan Mlokomanis Kulon. Salah satu kegiatan yang akan didukung oleh tim KKN adalah pelaksanaan PORLING 2026, sebagai bentuk kolaborasi antara mahasiswa dan masyarakat dalam menyukseskan agenda tahunan kelurahan.\n\nMelalui koordinasi yang telah dilakukan sejak awal masa KKN, diharapkan terjalin kerja sama yang baik antara pemerintah kelurahan, perangkat wilayah, masyarakat, dan Tim KKN UNS Kelompok 268 sehingga berbagai program maupun kegiatan kemasyarakatan dapat berjalan dengan lancar dan memberikan manfaat bagi seluruh warga.",
+        "tanggal": "2026-07-09",
+        "kategori": "kegiatan",
+        "cakupan": "kelurahan",
+        "rwId": null,
+        "rwNama": null,
+        "gambarCoverUrl": "/api/media/mlokokulon/berita/8c7d068e-9935-44ec-811e-f35065343777.webp",
+        "videoUrl": null,
+        "videoTitle": null,
+        "penulis": "Humas Tim KKN UNS 268 Mlokomanis Kulon",
+        "createdBy": "1"
+      },
+      {
+        "id": "berita-960d7293",
+        "judul": "RW 5 (Pencil) Raih Juara PORLING Voli Kelurahan Mlokomanis Kulon 2026",
+        "slug": "rw-5-pencil-raih-juara-porling-voli-kelurahan-mlokomanis-kulon-2026-0d7293",
+        "isi": "Wonogiri, 25 Juli 2026 – Pekan Olahraga Lingkungan (PORLING) cabang olahraga bola voli Kelurahan Mlokomanis Kulon resmi ditutup pada Sabtu (25/7) melalui pertandingan final yang berlangsung di lapangan voli RW Pocung. Kegiatan yang telah dimulai sejak 21 Juli 2026 tersebut diikuti oleh perwakilan RW se-Kelurahan Mlokomanis Kulon sebagai ajang mempererat kebersamaan, sportivitas, dan silaturahmi antarwarga.\n\nPartai final mempertemukan RW 5 (Pencil) dengan RW Tempuran. Setelah melalui pertandingan yang berlangsung kompetitif, RW 5 (Pencil) berhasil keluar sebagai juara PORLING Voli Kelurahan Mlokomanis Kulon 2026, sementara RW Tempuran meraih posisi runner-up.\n\nAntusiasme masyarakat terlihat sepanjang rangkaian pertandingan. Warga dari berbagai RW memadati area pertandingan untuk memberikan dukungan kepada tim masing-masing, sehingga menciptakan suasana yang meriah sekaligus memperkuat semangat kebersamaan di lingkungan Kelurahan Mlokomanis Kulon.\n\nTim KKN Universitas Sebelas Maret (UNS) Kelompok 268 turut berpartisipasi dalam mendukung kelancaran pelaksanaan PORLING 2026. Mahasiswa KKN membantu panitia dan pemerintah kelurahan dalam berbagai kebutuhan teknis selama kegiatan berlangsung sebagai bentuk kolaborasi dan pengabdian kepada masyarakat.\n\nLurah beserta panitia PORLING menyampaikan apresiasi kepada seluruh peserta, panitia, dan masyarakat yang telah berkontribusi menyukseskan kegiatan ini. Melalui PORLING 2026, diharapkan semangat sportivitas, gotong royong, dan kebersamaan antarwarga terus terjaga serta menjadi agenda yang mampu mempererat hubungan sosial di Kelurahan Mlokomanis Kulon.\n\nSelamat kepada RW 5 (Pencil) atas keberhasilannya meraih gelar juara PORLING Voli Kelurahan Mlokomanis Kulon 2026, serta kepada RW Tempuran yang berhasil menjadi runner-up. Semoga prestasi dan semangat yang ditunjukkan seluruh peserta dapat menjadi motivasi untuk terus memperkuat persaudaraan melalui olahraga.",
+        "tanggal": "2026-07-26",
+        "kategori": "berita",
+        "cakupan": "kelurahan",
+        "rwId": null,
+        "rwNama": null,
+        "gambarCoverUrl": "/api/media/mlokokulon/berita/82624080-69a1-429d-8b54-2215cc2d4584.webp",
+        "videoUrl": null,
+        "videoTitle": null,
+        "penulis": "Humas Tim KKN UNS 268 Mlokomanis Kulon",
+        "createdBy": "1"
+      },
+      {
+        "id": "berita-a67fbd75",
+        "judul": "Tim KKN UNS Kelompok 268 Gandeng Dinas Perdagangan dan KUKM Wonogiri Gelar Sosialisasi Digitalisasi UMKM di Kelurahan Mlokomanis Kulon",
+        "slug": "tim-kkn-uns-kelompok-268-gandeng-dinas-umkm-wonogiri-gelar-sosialisasi-digitalisasi-umkm-di-kelurahan-mlokomanis-kulon-7fbd75",
+        "isi": "Wonogiri, 29 Juli 2026 – Tim KKN Universitas Sebelas Maret (UNS) Kelompok 268 menyelenggarakan kegiatan Sosialisasi Digitalisasi UMKM di Kelurahan Mlokomanis Kulon pada Rabu (29/7). Kegiatan ini menghadirkan Kepala Bidang UMKM Dinas Koperasi, Usaha Kecil dan Menengah Kabupaten Wonogiri, Dwi Rahayuningsih, sebagai narasumber untuk memberikan edukasi mengenai pentingnya transformasi digital dalam pengembangan usaha mikro.\nKegiatan ini merupakan salah satu program kerja Tim KKN UNS Kelompok 268 yang bertujuan meningkatkan kapasitas pelaku UMKM melalui pemanfaatan teknologi digital. Dalam pemaparannya, Dwi Rahayuningsih menyampaikan berbagai strategi pengembangan usaha, pentingnya adaptasi terhadap perkembangan teknologi, serta pemanfaatan platform digital sebagai sarana memperluas jangkauan pemasaran produk UMKM.\nSelain sesi sosialisasi, peserta juga mengikuti pelatihan pembuatan QRIS sebagai metode pembayaran digital serta pendampingan geotagging Google Maps agar lokasi usaha lebih mudah ditemukan oleh masyarakat maupun calon konsumen. Melalui pendampingan tersebut, para pelaku UMKM berhasil memiliki QRIS untuk mendukung transaksi non-tunai sekaligus mendaftarkan lokasi usahanya ke Google Maps sebagai upaya meningkatkan visibilitas usaha di era digital.\nSebagai tindak lanjut, Tim KKN UNS Kelompok 268 juga melakukan pendataan profil UMKM yang meliputi informasi usaha, produk, dokumentasi, serta kontak pelaku usaha. Data tersebut akan diintegrasikan ke dalam katalog digital UMKM pada website resmi Kelurahan Mlokomanis Kulon yang tengah dikembangkan oleh tim KKN sebagai media promosi dan pusat informasi kelurahan.\nMelalui kolaborasi antara Tim KKN UNS Kelompok 268, Dinas Koperasi, Usaha Kecil dan Menengah Kabupaten Wonogiri, serta Pemerintah Kelurahan Mlokomanis Kulon, diharapkan para pelaku UMKM mampu memanfaatkan teknologi digital secara optimal sehingga dapat meningkatkan daya saing, memperluas akses pasar, dan mendukung pertumbuhan ekonomi masyarakat secara berkelanjutan.",
+        "tanggal": "2026-07-29",
+        "kategori": "berita",
+        "cakupan": "kelurahan",
+        "rwId": null,
+        "rwNama": null,
+        "gambarCoverUrl": "/api/media/mlokokulon/berita/7c549ea9-1cfe-49c8-85d3-b3ab916432c2.webp",
+        "videoUrl": null,
+        "videoTitle": null,
+        "penulis": "Humas Tim KKN UNS 268 Mlokomanis Kulon",
+        "createdBy": "1"
+      },
+      {
+        "id": "berita-b90d4a5b",
+        "judul": "Tim KKN UNS Kelompok 268 Resmi Diterjunkan di Kelurahan Mlokomanis Kulon, Usung Program Digitalisasi Kelurahan dan Penguatan UMKM",
+        "slug": "tim-kkn-uns-kelompok-268-resmi-diterjunkan-di-kelurahan-mlokomanis-kulon-usung-program-digitalisasi-kelurahan-dan-penguatan-umkm-0d4a5b",
+        "isi": "Wonogiri, 7 Juli 2026 – Universitas Sebelas Maret (UNS) secara resmi menerjunkan mahasiswa peserta Kuliah Kerja Nyata (KKN) Periode Juli–Agustus 2026 pada Selasa (7/7). Salah satu kelompok yang diterjunkan adalah KKN UNS Kelompok 268 yang akan melaksanakan pengabdian masyarakat di Kelurahan Mlokomanis Kulon, Kecamatan Ngadirojo, Kabupaten Wonogiri selama 45 hari.\n\nKKN UNS Periode Juli–Agustus 2026 mengusung tema \"Penguatan Kapasitas Masyarakat Berbasis Sustainable Development Goals (SDGs) sebagai Upaya Mewujudkan Kemandirian Desa.\" Sejalan dengan tema tersebut, KKN UNS Kelompok 268 mengangkat program bertajuk \"Strategi Pemberdayaan Masyarakat melalui Penguatan Digitalisasi Kelurahan dan UMKM serta Pemanfaatan Sumber Daya Lokal Berkelanjutan dalam Mendukung Kelurahan Mlokomanis Kulon Menuju Kelurahan Mandiri.\"\n\nSelama pelaksanaan KKN, Kelompok 268 akan melaksanakan berbagai program pemberdayaan masyarakat yang berfokus pada penguatan digitalisasi kelurahan melalui pengembangan website resmi, penyusunan profil kelurahan digital, serta pengembangan e-katalog UMKM. Selain itu, tim juga akan menyelenggarakan berbagai kegiatan pendampingan bagi pelaku UMKM, pelatihan pemanfaatan teknologi digital, pemberdayaan potensi pertanian lokal, hingga edukasi bagi masyarakat dan siswa sekolah dasar sebagai bagian dari upaya mendukung pembangunan kelurahan yang berkelanjutan.\n\nSebagai langkah awal pelaksanaan KKN, Tim KKN UNS Kelompok 268 melakukan koordinasi dengan Pemerintah Kelurahan Mlokomanis Kulon serta bersilaturahmi dengan seluruh Ketua RW di wilayah kelurahan. Kegiatan tersebut menjadi bagian dari proses pengenalan wilayah sekaligus pemetaan kebutuhan masyarakat sebagai dasar penyusunan dan pelaksanaan program kerja. Sinergi antara mahasiswa, pemerintah kelurahan, perangkat wilayah, dan masyarakat diharapkan mampu mendukung keberhasilan pelaksanaan KKN selama masa pengabdian.\n\nMelalui semangat kolaborasi dan pengabdian kepada masyarakat, Tim KKN UNS Kelompok 268 berkomitmen menghadirkan program-program yang inovatif, aplikatif, dan berkelanjutan sehingga mampu memberikan manfaat nyata bagi masyarakat serta mendukung terwujudnya Kelurahan Mlokomanis Kulon yang mandiri melalui penguatan digitalisasi dan pemberdayaan UMKM.",
+        "tanggal": "2026-07-08",
+        "kategori": "berita",
+        "cakupan": "kelurahan",
+        "rwId": null,
+        "rwNama": null,
+        "gambarCoverUrl": "/api/media/mlokokulon/berita/365f586f-5041-4e29-bdc1-a676bcb43080.webp",
+        "videoUrl": null,
+        "videoTitle": null,
+        "penulis": "Humas Tim KKN UNS 268 Mlokomanis Kulon",
+        "createdBy": "1"
+      }
+    ],
+    "beritaFotoTambahan": [
+      {
+        "id": 37,
+        "beritaId": "berita-b90d4a5b",
+        "url": "/api/media/mlokokulon/berita/efc118e6-5065-4e35-a62c-b2609b5f213c.webp"
+      },
+      {
+        "id": 38,
+        "beritaId": "berita-b90d4a5b",
+        "url": "/api/media/mlokokulon/berita/b7715ec5-4ebb-413c-a9d1-93424b066247.webp"
+      },
+      {
+        "id": 39,
+        "beritaId": "berita-b90d4a5b",
+        "url": "/api/media/mlokokulon/berita/3fa8a36a-de07-4031-8516-d43983cb9adc.webp"
+      },
+      {
+        "id": 40,
+        "beritaId": "berita-b90d4a5b",
+        "url": "/api/media/mlokokulon/berita/8ac6fee9-b84c-4590-8fa6-8da8dda3d709.webp"
+      },
+      {
+        "id": 41,
+        "beritaId": "berita-40fec16c",
+        "url": "/api/media/mlokokulon/berita/34507538-ddd2-48c4-b492-6facb3cb6f5c.webp"
+      },
+      {
+        "id": 42,
+        "beritaId": "berita-40fec16c",
+        "url": "/api/media/mlokokulon/berita/6d7e8f30-0664-4bce-9aad-dda022c1af62.webp"
+      },
+      {
+        "id": 43,
+        "beritaId": "berita-40fec16c",
+        "url": "/api/media/mlokokulon/berita/482353d0-1834-4c0a-bdc7-95efb91087a8.webp"
+      },
+      {
+        "id": 44,
+        "beritaId": "berita-960d7293",
+        "url": "/api/media/mlokokulon/berita/107bbf42-868e-4c4f-bc76-069d508723ff.webp"
+      },
+      {
+        "id": 45,
+        "beritaId": "berita-960d7293",
+        "url": "/api/media/mlokokulon/berita/bd8963c8-fb9c-40a1-89b5-98bda33e5206.webp"
+      },
+      {
+        "id": 46,
+        "beritaId": "berita-960d7293",
+        "url": "/api/media/mlokokulon/berita/d7e0b073-e67f-4fe3-ad62-ed9c82071f79.webp"
+      },
+      {
+        "id": 59,
+        "beritaId": "berita-a67fbd75",
+        "url": "/api/media/mlokokulon/berita/a0c15762-3aba-4c6e-afee-af5e9c871fcb.webp"
+      },
+      {
+        "id": 60,
+        "beritaId": "berita-a67fbd75",
+        "url": "/api/media/mlokokulon/berita/bdf6db9e-57f4-4ed6-afc5-1b9b3556edb9.webp"
+      },
+      {
+        "id": 61,
+        "beritaId": "berita-a67fbd75",
+        "url": "/api/media/mlokokulon/berita/2edd8e28-b236-4594-8414-dbd55a90b6db.webp"
+      },
+      {
+        "id": 62,
+        "beritaId": "berita-a67fbd75",
+        "url": "/api/media/mlokokulon/berita/b2fbc26b-9e5b-4ffd-bb4a-95f8bf6e0e0c.webp"
+      }
+    ],
+    "galeri": [
+      {
+        "id": "galeri-03c9284a",
+        "judul": "Tim KKN UNS Kelompok 268 bersama Dosen Pembimbing Lapangan (DPL) usai penerjunan di Kantor Kecamatan Ngadirojo.",
+        "tipe": "foto",
+        "urlMedia": "/api/media/mlokokulon/berita/3fa8a36a-de07-4031-8516-d43983cb9adc.webp",
+        "kategori": "berita",
+        "sumberBeritaId": "berita-b90d4a5b"
+      },
+      {
+        "id": "galeri-3094783e",
+        "judul": "Tim KKN UNS Kelompok 268 Gandeng Dinas UMKM Wonogiri Gelar Sosialisasi Digitalisasi UMKM di Kelurahan Mlokomanis Kulon",
+        "tipe": "foto",
+        "urlMedia": "/api/media/mlokokulon/berita/a0c15762-3aba-4c6e-afee-af5e9c871fcb.webp",
+        "kategori": "berita",
+        "sumberBeritaId": "berita-a67fbd75"
+      },
+      {
+        "id": "galeri-30d545f3",
+        "judul": "RW 5 (Pencil) Raih Juara PORLING Voli Kelurahan Mlokomanis Kulon 2026",
+        "tipe": "foto",
+        "urlMedia": "/api/media/mlokokulon/berita/107bbf42-868e-4c4f-bc76-069d508723ff.webp",
+        "kategori": "berita",
+        "sumberBeritaId": "berita-960d7293"
+      },
+      {
+        "id": "galeri-6756ee90",
+        "judul": "Tim KKN UNS Kelompok 268 Gandeng Dinas UMKM Wonogiri Gelar Sosialisasi Digitalisasi UMKM di Kelurahan Mlokomanis Kulon",
+        "tipe": "foto",
+        "urlMedia": "/api/media/mlokokulon/berita/2edd8e28-b236-4594-8414-dbd55a90b6db.webp",
+        "kategori": "berita",
+        "sumberBeritaId": "berita-a67fbd75"
+      },
+      {
+        "id": "galeri-78a23596",
+        "judul": "Tim KKN UNS Kelompok 268 Gandeng Dinas UMKM Wonogiri Gelar Sosialisasi Digitalisasi UMKM di Kelurahan Mlokomanis Kulon",
+        "tipe": "foto",
+        "urlMedia": "/api/media/mlokokulon/berita/bdf6db9e-57f4-4ed6-afc5-1b9b3556edb9.webp",
+        "kategori": "berita",
+        "sumberBeritaId": "berita-a67fbd75"
+      },
+      {
+        "id": "galeri-98b8eefa",
+        "judul": "Tim KKN UNS Kelompok 268 bersilaturahmi dengan Ketua RW 9 (Soko Lor) sebagai bagian dari rangkaian awal pelaksanaan KKN.",
+        "tipe": "foto",
+        "urlMedia": "/api/media/mlokokulon/berita/8ac6fee9-b84c-4590-8fa6-8da8dda3d709.webp",
+        "kategori": "berita",
+        "sumberBeritaId": "berita-b90d4a5b"
+      },
+      {
+        "id": "galeri-9ff8cf7e",
+        "judul": "Tim KKN UNS Kelompok 268 bersilaturahmi dengan Ketua RW 4 (Tempuran) sebagai bagian dari rangkaian awal pelaksanaan KKN.",
+        "tipe": "foto",
+        "urlMedia": "/api/media/mlokokulon/berita/b7715ec5-4ebb-413c-a9d1-93424b066247.webp",
+        "kategori": "berita",
+        "sumberBeritaId": "berita-b90d4a5b"
+      },
+      {
+        "id": "galeri-d02223f3",
+        "judul": "RW 5 (Pencil) Raih Juara PORLING Voli Kelurahan Mlokomanis Kulon 2026",
+        "tipe": "foto",
+        "urlMedia": "/api/media/mlokokulon/berita/d7e0b073-e67f-4fe3-ad62-ed9c82071f79.webp",
+        "kategori": "berita",
+        "sumberBeritaId": "berita-960d7293"
+      },
+      {
+        "id": "galeri-d352a0cf",
+        "judul": "Tim KKN UNS Kelompok 268 bersilaturahmi dengan Ketua RW 5 (Pencil) sebagai bagian dari rangkaian awal pelaksanaan KKN.",
+        "tipe": "foto",
+        "urlMedia": "/api/media/mlokokulon/berita/efc118e6-5065-4e35-a62c-b2609b5f213c.webp",
+        "kategori": "berita",
+        "sumberBeritaId": "berita-b90d4a5b"
+      },
+      {
+        "id": "galeri-e69bb53e",
+        "judul": "Tim KKN UNS Kelompok 268 Gandeng Dinas UMKM Wonogiri Gelar Sosialisasi Digitalisasi UMKM di Kelurahan Mlokomanis Kulon",
+        "tipe": "foto",
+        "urlMedia": "/api/media/mlokokulon/berita/b2fbc26b-9e5b-4ffd-bb4a-95f8bf6e0e0c.webp",
+        "kategori": "berita",
+        "sumberBeritaId": "berita-a67fbd75"
+      },
+      {
+        "id": "galeri-f612e9e4",
+        "judul": "RW 5 (Pencil) Raih Juara PORLING Voli Kelurahan Mlokomanis Kulon 2026",
+        "tipe": "foto",
+        "urlMedia": "/api/media/mlokokulon/berita/bd8963c8-fb9c-40a1-89b5-98bda33e5206.webp",
+        "kategori": "berita",
+        "sumberBeritaId": "berita-960d7293"
+      }
+    ],
+    "umkm": [
+      {
+        "id": "umkm-01",
+        "nama": "Warung Umi",
+        "slug": "warung-umi",
+        "kategori": "Kedai Makanan Ringan",
+        "deskripsi": "Warung yang menyediakan berbagai macam minuman segar dan es dengan pilihan rasa yang beragam, cocok untuk dinikmati sehari-hari.",
+        "linkGmaps": "",
+        "kontak": "085293038494",
+        "jamOperasional": "Setiap Hari, 06.00 - 21.00",
+        "lokasi": "Jaten RT 02/RW 06",
+        "fotoUtamaUrl": null
+      },
+      {
+        "id": "umkm-02",
+        "nama": "Warung Bu Sri Ekawati",
+        "slug": "warung-bu-sri-ekawati",
+        "kategori": "Warung Kelontong",
+        "deskripsi": "Toko kelontong yang menyediakan berbagai kebutuhan sehari-hari masyarakat, mulai dari bahan makanan, minuman, kebutuhan rumah tangga, hingga berbagai keperluan lainnya.",
+        "linkGmaps": "",
+        "kontak": "085293283326",
+        "jamOperasional": "Setiap Hari, 06.00 - 21.00",
+        "lokasi": "Ngasinan",
+        "fotoUtamaUrl": null
+      },
+      {
+        "id": "umkm-03",
+        "nama": "Tempe Mbak Rantini",
+        "slug": "tempe-mbak-rantini",
+        "kategori": "Industri Kecil Menengah",
+        "deskripsi": "Usaha produksi tempe yang mengolah kedelai menjadi tempe dengan proses produksi secara langsung.",
+        "linkGmaps": "https://maps.app.goo.gl/HYKsrNi5owkAPTgH7",
+        "kontak": "085295133364",
+        "jamOperasional": "07.00 - 15.00 WIB",
+        "lokasi": "Ngasinan RT 01/RW 08",
+        "fotoUtamaUrl": "/api/media/mlokokulon/umkm/275337e2-83d8-416c-b681-aca431227207.webp"
+      },
+      {
+        "id": "umkm-04",
+        "nama": "Warung Bu Hartanti",
+        "slug": "warung-bu-hartanti",
+        "kategori": "Warung Kelontong",
+        "deskripsi": "Toko kelontong yang menyediakan berbagai kebutuhan sehari-hari masyarakat, mulai dari bahan makanan, minuman, kebutuhan rumah tangga, hingga berbagai keperluan lainnya.",
+        "linkGmaps": "https://maps.app.goo.gl/D9HoN7gQWmViHkrj6",
+        "kontak": "082137271821",
+        "jamOperasional": "Setiap Hari, 06.00 - 17.30",
+        "lokasi": "Bulurejo RT 02/RW 01",
+        "fotoUtamaUrl": null
+      },
+      {
+        "id": "umkm-05",
+        "nama": "Toko Pakan Burung Pak Ramadhan",
+        "slug": "toko-pakan-burung-pak-ramadhan",
+        "kategori": "Toko Pakan Burung",
+        "deskripsi": "Toko yang menyediakan berbagai macam kebutuhan pakan burung, mulai dari aneka jenis pakan, biji-bijian, hingga perlengkapan pendukung untuk perawatan burung.",
+        "linkGmaps": "https://maps.app.goo.gl/VRzw9v7heLzsfzhY6",
+        "kontak": "08814143992",
+        "jamOperasional": "07.00 - 18.00 WIB",
+        "lokasi": "Bulurejo RT 01/RW 01",
+        "fotoUtamaUrl": "/api/media/mlokokulon/umkm/3721794e-40dc-45fe-9bb0-8a7c33ebe42f.webp"
+      },
+      {
+        "id": "umkm-06",
+        "nama": "Bakmi Bu Parni",
+        "slug": "bakmi-bu-parni",
+        "kategori": "Industri Kecil Menengah",
+        "deskripsi": "Usaha produksi bakmi pentil khas Wonogiri yang dibuat dari bahan dasar pati ketela atau tepung tapioka. Diolah secara tradisional dengan tekstur yang kenyal dan cita rasa gurih.",
+        "linkGmaps": "https://maps.app.goo.gl/Hab5ZqA1sMPTLf398",
+        "kontak": "085727354180",
+        "jamOperasional": "15.00 - 18.00 WIB",
+        "lokasi": "Pocung RT 01/RW 02",
+        "fotoUtamaUrl": "/api/media/mlokokulon/umkm/ac209596-5217-4e27-81bf-1b05a60bec33.webp"
+      },
+      {
+        "id": "umkm-07",
+        "nama": "Warung Bu Pitriyatni",
+        "slug": "warung-bu-pitriyatni",
+        "kategori": "Warung Kelontong",
+        "deskripsi": "Toko kelontong yang menyediakan berbagai kebutuhan sehari-hari masyarakat, mulai dari bahan makanan, minuman, kebutuhan rumah tangga, hingga berbagai keperluan lainnya.",
+        "linkGmaps": "https://maps.app.goo.gl/wbhcCNvSxkGVk6Rw8",
+        "kontak": "085227992440",
+        "jamOperasional": "Setiap Hari, 07.00 - 21.00",
+        "lokasi": "Bulurejo RT 02/RW 01",
+        "fotoUtamaUrl": null
+      },
+      {
+        "id": "umkm-08",
+        "nama": "Kambing Pak Sarino",
+        "slug": "kambing-pak-sarino",
+        "kategori": "Peternakan",
+        "deskripsi": "Usaha peternakan kambing yang memelihara dan mengembangkan kambing untuk memenuhi kebutuhan masyarakat. Kambing dirawat dan dipelihara secara rutin dengan memperhatikan kebutuhan pakan dan kesehatan ternak.",
+        "linkGmaps": "https://maps.app.goo.gl/EfDiiYugAXFeD87x6",
+        "kontak": "081341289413",
+        "jamOperasional": "06.00 - 16.00 WIB",
+        "lokasi": "Jaten",
+        "fotoUtamaUrl": "/api/media/mlokokulon/umkm/be22d0c3-75bd-4aad-abba-2654ef7d77b6.webp"
+      },
+      {
+        "id": "umkm-09",
+        "nama": "Toko Santoso",
+        "slug": "toko-santoso",
+        "kategori": "Warung Kelontong",
+        "deskripsi": "Toko kelontong yang menyediakan berbagai kebutuhan sehari-hari masyarakat, mulai dari bahan makanan, minuman, kebutuhan rumah tangga, hingga berbagai keperluan lainnya.",
+        "linkGmaps": "https://maps.app.goo.gl/g1pfsSHsSsnXwgsbA",
+        "kontak": "081392608023",
+        "jamOperasional": "Setiap Hari, 06.00 - 20.00",
+        "lokasi": "Jaten RT 01/RW 06",
+        "fotoUtamaUrl": null
+      },
+      {
+        "id": "umkm-10",
+        "nama": "Warung Lek Untung",
+        "slug": "warung-lek-untung",
+        "kategori": "Warung Kelontong",
+        "deskripsi": "Toko kelontong yang menyediakan berbagai kebutuhan sehari-hari masyarakat, mulai dari bahan makanan, minuman, kebutuhan rumah tangga, hingga berbagai keperluan lainnya.",
+        "linkGmaps": "https://maps.app.goo.gl/XBg5VBo2u5UK7zW78",
+        "kontak": "088220269651",
+        "jamOperasional": "Setiap Hari, 07.00 - 20.00",
+        "lokasi": "Bonagung RT 02/RW 03",
+        "fotoUtamaUrl": null
+      },
+      {
+        "id": "umkm-11",
+        "nama": "Toko Kelontong Indah",
+        "slug": "toko-kelontong-indah",
+        "kategori": "Warung Kelontong",
+        "deskripsi": "Toko kelontong yang menyediakan berbagai kebutuhan sehari-hari masyarakat, mulai dari bahan makanan, minuman, kebutuhan rumah tangga, hingga berbagai keperluan lainnya.",
+        "linkGmaps": "https://maps.app.goo.gl/Gx1YxQB9AACaDUf4A",
+        "kontak": "085792190085",
+        "jamOperasional": "Setiap Hari, 06.00 - 22.00",
+        "lokasi": "Bonagung",
+        "fotoUtamaUrl": null
+      },
+      {
+        "id": "umkm-12",
+        "nama": "Sembako Darsi",
+        "slug": "sembako-darsi",
+        "kategori": "Warung Kelontong",
+        "deskripsi": "Toko kelontong yang menyediakan berbagai kebutuhan sehari-hari masyarakat, mulai dari bahan makanan, minuman, kebutuhan rumah tangga, hingga berbagai keperluan lainnya.",
+        "linkGmaps": "https://maps.app.goo.gl/xj9tcHsRneFTV72c7",
+        "kontak": "081370883978",
+        "jamOperasional": "09.00 - 21.00 WIB",
+        "lokasi": "Pocung RT 01/RW 02",
+        "fotoUtamaUrl": "/api/media/mlokokulon/umkm/3eb2cd5e-e10b-4a50-a544-6719c980608a.webp"
+      },
+      {
+        "id": "umkm-13",
+        "nama": "Warung Vita",
+        "slug": "warung-vita",
+        "kategori": "Warung Kelontong",
+        "deskripsi": "Toko kelontong yang menyediakan berbagai kebutuhan sehari-hari masyarakat, mulai dari bahan makanan, minuman, kebutuhan rumah tangga, hingga berbagai keperluan lainnya.",
+        "linkGmaps": "https://maps.app.goo.gl/nLa6U3nznZqDu8q47",
+        "kontak": "085326620356",
+        "jamOperasional": "Setiap Hari, 06.00 - 21.00",
+        "lokasi": "Bulurejo RT 02/RW 01",
+        "fotoUtamaUrl": null
+      },
+      {
+        "id": "umkm-14",
+        "nama": "Mbak Retno Snack",
+        "slug": "mbak-retno-snack",
+        "kategori": "Industri Kecil Menengah",
+        "deskripsi": "Usaha produksi aneka makanan dan jajanan, seperti sosis ayam, putu ayu, agar-agar, serta berbagai macam snack lainnya yang dibuat untuk memenuhi kebutuhan dan selera masyarakat.",
+        "linkGmaps": "https://maps.app.goo.gl/LPKhAjjLe24cbdPj7",
+        "kontak": "08568982237",
+        "jamOperasional": "07.00 - 19.00 WIB",
+        "lokasi": "Soko Kidul RT 02/RW 10",
+        "fotoUtamaUrl": "/api/media/mlokokulon/umkm/2801e2bd-9039-4327-bfc4-c6845ec0d9c4.webp"
+      },
+      {
+        "id": "umkm-15",
+        "nama": "Warkop dan Kelontong Si Om",
+        "slug": "warkop-dan-kelontong-si-om",
+        "kategori": "Warung Kelontong",
+        "deskripsi": "Toko kelontong yang menyediakan berbagai kebutuhan sehari-hari masyarakat, mulai dari bahan makanan, minuman, kebutuhan rumah tangga, hingga berbagai keperluan lainnya.",
+        "linkGmaps": "https://maps.app.goo.gl/ibChR76o9VuModvy7",
+        "kontak": "087762396810",
+        "jamOperasional": "Setiap Hari, 07.00 - 20.00",
+        "lokasi": "Pocung RT 01/RW 02",
+        "fotoUtamaUrl": null
+      },
+      {
+        "id": "umkm-16",
+        "nama": "Toko Sukardi",
+        "slug": "toko-sukardi",
+        "kategori": "Warung Kelontong",
+        "deskripsi": "Toko kelontong yang menyediakan berbagai kebutuhan sehari-hari masyarakat, mulai dari bahan makanan, minuman, kebutuhan rumah tangga, hingga berbagai keperluan lainnya.",
+        "linkGmaps": "https://maps.app.goo.gl/rULU9WkH232ffuam6",
+        "kontak": "085791077268",
+        "jamOperasional": "Setiap Hari, 08.00 - 18.00",
+        "lokasi": "Bonagung RT 01/RW 03",
+        "fotoUtamaUrl": null
+      },
+      {
+        "id": "umkm-17",
+        "nama": "Warung Mbah Painah",
+        "slug": "warung-mbah-painah",
+        "kategori": "Warung Kelontong",
+        "deskripsi": "Toko kelontong yang menyediakan berbagai kebutuhan sehari-hari masyarakat, mulai dari bahan makanan, minuman, kebutuhan rumah tangga, hingga berbagai keperluan lainnya.",
+        "linkGmaps": "https://maps.app.goo.gl/A1W3uyn4GZWeNRDz6",
+        "kontak": "085775217577",
+        "jamOperasional": "Setiap Hari, 05.00 - 18.00",
+        "lokasi": "Ngasinan RT 02/RW 08",
+        "fotoUtamaUrl": null
+      },
+      {
+        "id": "umkm-18",
+        "nama": "Kelontong Mbah Gareng",
+        "slug": "kelontong-mbah-gareng",
+        "kategori": "Warung Kelontong",
+        "deskripsi": "Toko kelontong yang menyediakan berbagai kebutuhan sehari-hari masyarakat, mulai dari bahan makanan, minuman, kebutuhan rumah tangga, hingga berbagai keperluan lainnya.",
+        "linkGmaps": "https://maps.app.goo.gl/MVghvdAhDLM6K9Zw6",
+        "kontak": "081381331746",
+        "jamOperasional": "06.00 - 20.00 WIB",
+        "lokasi": "Bonagung",
+        "fotoUtamaUrl": "/api/media/mlokokulon/umkm/a0d2d409-7a81-47eb-a939-00462737b234.webp"
+      },
+      {
+        "id": "umkm-19",
+        "nama": "Warung Niky Seblak",
+        "slug": "warung-niky-seblak",
+        "kategori": "Kedai Makanan Ringan",
+        "deskripsi": "Warung yang menyediakan berbagai macam seblak dengan pilihan isian dan cita rasa yang beragam, serta aneka jajanan lainnya.",
+        "linkGmaps": "https://maps.app.goo.gl/y64QEAUwVJX461dt6",
+        "kontak": "081310070239",
+        "jamOperasional": "Setiap Hari, 08.00 - 17.00",
+        "lokasi": "Pondok RT 02/RW 07",
+        "fotoUtamaUrl": null
+      },
+      {
+        "id": "umkm-20",
+        "nama": "Agung Tech",
+        "slug": "agung-tech",
+        "kategori": "Konter HP",
+        "deskripsi": "Konter HP yang menyediakan berbagai kebutuhan telepon seluler, seperti pulsa, paket data, kartu perdana, serta berbagai aksesoris HP.",
+        "linkGmaps": "https://maps.app.goo.gl/AU1dGfjEMpa31fLP8",
+        "kontak": "085728831682",
+        "jamOperasional": "07.30 - 20.00 WIB",
+        "lokasi": "Ngasinan RT 02/RW 08",
+        "fotoUtamaUrl": "/api/media/mlokokulon/umkm/4a9cb107-2e47-4146-8f3a-a35ff2f22d73.webp"
+      },
+      {
+        "id": "umkm-21",
+        "nama": "Toko Kelontong Mas Mar",
+        "slug": "toko-kelontong-mas-mar",
+        "kategori": "Warung Kelontong",
+        "deskripsi": "Toko kelontong yang menyediakan berbagai kebutuhan sehari-hari masyarakat, mulai dari bahan makanan, minuman, kebutuhan rumah tangga, hingga berbagai keperluan lainnya.",
+        "linkGmaps": "https://maps.app.goo.gl/J32fAafGLYA1aSTw6",
+        "kontak": "085728228001",
+        "jamOperasional": "Setiap Hari, 06.00 - 21.00",
+        "lokasi": "Pondok RT 02/RW 07",
+        "fotoUtamaUrl": null
+      },
+      {
+        "id": "umkm-22",
+        "nama": "Toko Gas Pak Sutarto",
+        "slug": "toko-gas-pak-sutarto",
+        "kategori": "Warung Kelontong",
+        "deskripsi": "Toko yang menyediakan berbagai kebutuhan gas untuk keperluan rumah tangga, seperti tabung LPG dan kebutuhan terkait lainnya.",
+        "linkGmaps": "https://maps.app.goo.gl/SitSDMLqiQkLnDph9",
+        "kontak": "085600625467",
+        "jamOperasional": "Setiap Hari, 06.00 - 18.00",
+        "lokasi": "Bulurejo RT 01/RW 01",
+        "fotoUtamaUrl": null
+      }
+    ],
+    "umkmProdukUnggulan": [
+      {
+        "id": 124,
+        "umkmId": "umkm-01",
+        "produk": "Minuman Segar & Es Beragam Rasa",
+        "fotoUrl": null
+      },
+      {
+        "id": 125,
+        "umkmId": "umkm-02",
+        "produk": "Bahan Makanan & Sembako",
+        "fotoUrl": null
+      },
+      {
+        "id": 126,
+        "umkmId": "umkm-02",
+        "produk": "Kebutuhan Rumah Tangga",
+        "fotoUrl": null
+      },
+      {
+        "id": 128,
+        "umkmId": "umkm-04",
+        "produk": "Bahan Makanan & Sembako",
+        "fotoUrl": null
+      },
+      {
+        "id": 132,
+        "umkmId": "umkm-07",
+        "produk": "Sembako & Kebutuhan Rumah Tangga",
+        "fotoUrl": null
+      },
+      {
+        "id": 134,
+        "umkmId": "umkm-09",
+        "produk": "Sembako & Kebutuhan Harian",
+        "fotoUrl": null
+      },
+      {
+        "id": 135,
+        "umkmId": "umkm-10",
+        "produk": "Sembako & Kebutuhan Sehari-hari",
+        "fotoUrl": null
+      },
+      {
+        "id": 136,
+        "umkmId": "umkm-11",
+        "produk": "Barang Kelontong & Sembako",
+        "fotoUrl": null
+      },
+      {
+        "id": 138,
+        "umkmId": "umkm-13",
+        "produk": "Kebutuhan Warga & Sembako",
+        "fotoUrl": null
+      },
+      {
+        "id": 141,
+        "umkmId": "umkm-15",
+        "produk": "Kopi Warkop & Sembako",
+        "fotoUrl": null
+      },
+      {
+        "id": 142,
+        "umkmId": "umkm-16",
+        "produk": "Sembako & Keperluan Harian",
+        "fotoUrl": null
+      },
+      {
+        "id": 143,
+        "umkmId": "umkm-17",
+        "produk": "Sembako & Kebutuhan Dapur",
+        "fotoUrl": null
+      },
+      {
+        "id": 145,
+        "umkmId": "umkm-19",
+        "produk": "Seblak Isian Komplit & Aneka Jajanan",
+        "fotoUrl": null
+      },
+      {
+        "id": 148,
+        "umkmId": "umkm-21",
+        "produk": "Sembako & Kelontong Rumah Tangga",
+        "fotoUrl": null
+      },
+      {
+        "id": 149,
+        "umkmId": "umkm-22",
+        "produk": "Tabung Gas LPG Rumah Tangga",
+        "fotoUrl": null
+      },
+      {
+        "id": 150,
+        "umkmId": "umkm-20",
+        "produk": "Pulsa & Paket Data",
+        "fotoUrl": null
+      },
+      {
+        "id": 151,
+        "umkmId": "umkm-20",
+        "produk": "Kartu Perdana & Aksesoris HP",
+        "fotoUrl": null
+      },
+      {
+        "id": 152,
+        "umkmId": "umkm-06",
+        "produk": "Bakmi Pentil Khas Wonogiri",
+        "fotoUrl": null
+      },
+      {
+        "id": 153,
+        "umkmId": "umkm-18",
+        "produk": "Barang Kelontong & Sembako",
+        "fotoUrl": null
+      },
+      {
+        "id": 154,
+        "umkmId": "umkm-14",
+        "produk": "Sosis Ayam & Putu Ayu",
+        "fotoUrl": null
+      },
+      {
+        "id": 155,
+        "umkmId": "umkm-14",
+        "produk": "Agar-agar & Aneka Snack Jajanan",
+        "fotoUrl": null
+      },
+      {
+        "id": 156,
+        "umkmId": "umkm-08",
+        "produk": "Kambing Potong & Ternak Quality",
+        "fotoUrl": null
+      },
+      {
+        "id": 157,
+        "umkmId": "umkm-12",
+        "produk": "Bahan Pangan Sembako",
+        "fotoUrl": null
+      },
+      {
+        "id": 158,
+        "umkmId": "umkm-03",
+        "produk": "Tempe Kedelai Olahan Langsung",
+        "fotoUrl": null
+      },
+      {
+        "id": 161,
+        "umkmId": "umkm-05",
+        "produk": "Pakan Burung & Biji-bijian",
+        "fotoUrl": null
+      },
+      {
+        "id": 162,
+        "umkmId": "umkm-05",
+        "produk": "Perlengkapan Perawatan Burung",
+        "fotoUrl": null
+      }
+    ],
+    "umkmFoto": [
+      {
+        "id": 6,
+        "umkmId": "umkm-20",
+        "url": "/api/media/mlokokulon/media/03dab5c3-c6ad-438f-97c2-e341c8c0ea43.webp"
+      },
+      {
+        "id": 7,
+        "umkmId": "umkm-06",
+        "url": "/api/media/mlokokulon/media/e4cd1c60-679d-4eb6-a86a-fe5c3aa0a8ea.webp"
+      },
+      {
+        "id": 8,
+        "umkmId": "umkm-18",
+        "url": "/api/media/mlokokulon/media/c86d3e03-b60d-4654-b74b-553356fcb251.webp"
+      },
+      {
+        "id": 9,
+        "umkmId": "umkm-14",
+        "url": "/api/media/mlokokulon/media/3cdc6e73-a470-4684-bd40-9043e0953386.webp"
+      },
+      {
+        "id": 10,
+        "umkmId": "umkm-08",
+        "url": "/api/media/mlokokulon/media/6b25ac58-0f4e-4f7f-a86c-cd6d79b9c458.webp"
+      },
+      {
+        "id": 11,
+        "umkmId": "umkm-12",
+        "url": "/api/media/mlokokulon/media/62607100-1a8c-41a2-be53-079bfb906ccb.webp"
+      },
+      {
+        "id": 12,
+        "umkmId": "umkm-03",
+        "url": "/api/media/mlokokulon/media/780524dc-7fff-40b5-9327-e37fd792069b.webp"
+      },
+      {
+        "id": 13,
+        "umkmId": "umkm-03",
+        "url": "/api/media/mlokokulon/media/255baa0e-cf8d-4b46-968d-db1560758e2e.webp"
+      },
+      {
+        "id": 14,
+        "umkmId": "umkm-03",
+        "url": "/api/media/mlokokulon/media/426fc086-5b46-40f6-92b3-6d18cc072022.webp"
+      },
+      {
+        "id": 16,
+        "umkmId": "umkm-05",
+        "url": "/api/media/mlokokulon/media/3a85e383-bb82-48aa-9550-0b223cf9b7b5.webp"
+      }
+    ],
+    "adminUsers": [
+      {
+        "id": 1,
+        "nama": "Super Admin",
+        "email": "superadmin@mlokokulon-ngadirojo.com",
+        "passwordHash": "$2b$10$4Gh/X3asN6MGItj8BEUqpegWk/vJhzNGk5na6t4l5KNv7tYMV6Nt.",
+        "tier": 1,
+        "createdBy": null,
+        "updatedAt": "2026-08-03T13:48:19.000Z",
+        "lastLogin": null
+      },
+      {
+        "id": 3,
+        "nama": "admin test tier 2",
+        "email": "tier2@kel-mlokomaniskulon.com",
+        "passwordHash": "$2b$12$sG7.Hm1lAveM.QQCFZtUMOc6LFUmuWcQftqf.e25DjpD9v7RT7es6",
+        "tier": 2,
+        "createdBy": 1,
+        "updatedAt": "2026-08-06T17:07:26.000Z",
+        "lastLogin": null
+      },
+      {
+        "id": 4,
+        "nama": "admin test tier 3",
+        "email": "tier3@kel-mlokomaniskulon.com",
+        "passwordHash": "$2b$12$82ovrV1c3m7zCkAuy7MjBec3YG5gSHE1PfwZFzSMDNbGeYoZoFYqa",
+        "tier": 3,
+        "createdBy": 1,
+        "updatedAt": "2026-08-07T10:49:16.000Z",
+        "lastLogin": null
+      }
+    ],
+    "layanan": [
+      {
+        "id": "akta-kelahiran-3in1",
+        "nama": "Akta Kelahiran, KK, dan KIA (Pelayanan 3 in 1)",
+        "kategori": "Administrasi Kependudukan",
+        "deskripsi": "Pengurusan penerbitan Kutipan Akta Kelahiran sekaligus pembaruan Kartu Keluarga (KK) dan penerbitan Kartu Identitas Anak (KIA) baru.",
+        "persyaratan": [
+          "Surat Keterangan Kelahiran dari Kelurahan/Desa dan Surat Kelahiran dari Dokter/Bidan Penolong.",
+          "Foto copy Surat Nikah / Akta Perkawinan Orang Tua.",
+          "Asli Kartu Keluarga (KK) Orang Tua (yang akan dicantumkan nama anak).",
+          "Foto copy KTP Orang Tua.",
+          "Foto copy KTP 2 (dua) orang Saksi."
+        ],
+        "prosedur": [
+          "Mengisi formulir di Kelurahan",
+          "Verifikasi berkas oleh petugas",
+          "Penerbitan dokumen di Disdukcapil"
+        ],
+        "waktuProses": "1 Hari Kerja",
+        "biaya": "Gratis (Rp 0)",
+        "kontakPenanggungJawab": "Kantor Kelurahan / Hotline",
+        "urutan": 1,
+        "createdAt": "2026-08-02T05:46:08.000Z",
+        "updatedAt": "2026-08-02T05:46:08.000Z"
+      },
+      {
+        "id": "akta-kematian-3in1",
+        "nama": "Akta Kematian, KK, dan KTP-el (Pelayanan 3 in 1)",
+        "kategori": "Administrasi Kependudukan",
+        "deskripsi": "Pengurusan Akta Kematian sekaligus pembaruan status anggota keluarga pada Kartu Keluarga (KK) dan penyesuaian status KTP-el.",
+        "persyaratan": [
+          "Surat Keterangan Kematian dari Rumah Sakit.",
+          "Surat Kematian dari Desa/Kelurahan.",
+          "Asli Kartu Keluarga (KK) dan KTP yang meninggal dunia.",
+          "Kutipan Akta Kelahiran yang bersangkutan.",
+          "Foto copy KTP 2 (dua) orang Saksi (berusia 21 tahun ke atas).",
+          "Bagi Warga Keturunan: Melampirkan Surat Bukti Kewarganegaraan RI & Surat Bukti Ganti Nama (bila ada).",
+          "Bagi WNA: Melampirkan foto copy Pasport / Dokumen Imigrasi & STMD dari POLRI."
+        ],
+        "prosedur": [
+          "Mengisi formulir di Kelurahan",
+          "Verifikasi berkas oleh petugas",
+          "Penerbitan dokumen di Disdukcapil"
+        ],
+        "waktuProses": "1 Hari Kerja",
+        "biaya": "Gratis (Rp 0)",
+        "kontakPenanggungJawab": "Kantor Kelurahan / Hotline",
+        "urutan": 2,
+        "createdAt": "2026-08-02T05:46:08.000Z",
+        "updatedAt": "2026-08-02T05:46:08.000Z"
+      },
+      {
+        "id": "akta-perkawinan-3in1",
+        "nama": "Akta Perkawinan, KK, dan KTP-el (Pelayanan 3 in 1)",
+        "kategori": "Administrasi Kependudukan",
+        "deskripsi": "Pengurusan Akta Perkawinan (Non-Muslim) sekaligus pembaruan status Kartu Keluarga (KK) dan perubahan status perkawinan pada KTP-el.",
+        "persyaratan": [
+          "Surat Keterangan dari Desa/Kelurahan diketahui Camat.",
+          "Bukti Pemberkatan / Pengesahan Perkawinan dari Pemuka Agama masing-masing.",
+          "Kutipan Akta Kelahiran Calon Mempelai.",
+          "Asli KTP calon mempelai dan Kartu Keluarga (KK).",
+          "Akta Perceraian / Akta Kematian bagi calon suami/istri yang pernah kawin.",
+          "Izin Orang Tua bagi calon mempelai berumur kurang dari 21 tahun.",
+          "Izin Pengadilan Negeri bagi calon mempelai pria < 19 tahun atau wanita < 16 tahun.",
+          "Pas foto berdampingan ukuran 4 x 6 cm (berwarna) sebanyak 4 lembar.",
+          "Surat Izin dari Komandan/Kepala bagi anggota TNI/POLRI.",
+          "Surat Dispensasi dari Camat jika mendaftar kurang dari 10 hari kerja.",
+          "Dua orang saksi yang memenuhi persyaratan."
+        ],
+        "prosedur": [
+          "Mengisi formulir di Kelurahan",
+          "Verifikasi berkas oleh petugas",
+          "Penerbitan dokumen di Disdukcapil"
+        ],
+        "waktuProses": "1 Hari Kerja",
+        "biaya": "Gratis (Rp 0)",
+        "kontakPenanggungJawab": "Kantor Kelurahan / Hotline",
+        "urutan": 3,
+        "createdAt": "2026-08-02T05:46:08.000Z",
+        "updatedAt": "2026-08-02T05:46:08.000Z"
+      },
+      {
+        "id": "pelayanan-akta-online",
+        "nama": "Pelayanan Akta & Administrasi Kependudukan Online",
+        "kategori": "Administrasi Kependudukan",
+        "deskripsi": "Panduan pengurusan dokumen kependudukan secara mandiri via portal resmi Disdukcapil Kabupaten Wonogiri.",
+        "persyaratan": [
+          "Akses website resmi Disdukcapil Wonogiri (dukcapil.wonogirikab.go.id/layananonline).",
+          "Buat akun pendaftaran dengan nomor HP, NIK, password, dan captcha.",
+          "Verifikasi akun melalui kode aktivasi SMS.",
+          "Pilih jenis permohonan layanan (misal: Akta Kelahiran / Kematian / KK).",
+          "Unggah (upload) dokumen persyaratan & Surat Tanggung Jawab Mutlak (SPTJM).",
+          "Cek status pendaftaran online dan unduh/ambil dokumen setelah selesai diproses."
+        ],
+        "prosedur": [
+          "Mengisi formulir di Kelurahan",
+          "Verifikasi berkas oleh petugas",
+          "Penerbitan dokumen di Disdukcapil"
+        ],
+        "waktuProses": "1 Hari Kerja",
+        "biaya": "Gratis (Rp 0)",
+        "kontakPenanggungJawab": "Disdukcapil Wonogiri / Online",
+        "urutan": 4,
+        "createdAt": "2026-08-02T05:46:08.000Z",
+        "updatedAt": "2026-08-02T05:46:08.000Z"
+      }
+    ]
+  }
+}

@@ -5,6 +5,7 @@ import { galeri as galeriTable } from "@/lib/db/schema";
 import { getGaleriList } from "@/lib/queries";
 import { getSession } from "@/lib/session";
 import { isValidEnum, isValidString, isValidUrl } from "@/lib/validate";
+import { needsApproval } from "@/lib/auth-policy";
 
 export async function GET() {
   const session = await getSession();
@@ -12,7 +13,7 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const items = await getGaleriList();
+  const items = await getGaleriList(false);
   return NextResponse.json(items);
 }
 
@@ -24,7 +25,7 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { judul, tipe, url_media, kategori } = body;
+    const { judul, tipe, url_media, kategori, pengusul = "" } = body;
 
     if (
       !isValidString(judul, 3, 255) ||
@@ -35,6 +36,7 @@ export async function POST(request: Request) {
     }
 
     const id = `galeri-${randomUUID().slice(0, 8)}`;
+    const status = needsApproval(session.tier) ? "pending" : "published";
 
     await db.insert(galeriTable).values({
       id,
@@ -42,6 +44,10 @@ export async function POST(request: Request) {
       tipe,
       urlMedia: url_media,
       kategori: kategori || null,
+      status,
+      createdBy: String(session.id),
+      submittedByTier: session.tier,
+      pengusul: typeof pengusul === "string" && pengusul.trim() ? pengusul.trim() : null,
     });
 
     return NextResponse.json({ id }, { status: 201 });

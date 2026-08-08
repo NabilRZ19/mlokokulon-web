@@ -8,6 +8,14 @@ import { BeritaBadge } from "@/components/berita/BeritaBadge";
 import { Badge } from "@/components/ui/Badge";
 import type { Berita } from "@/lib/types";
 
+// Status badge styling
+const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
+  published: { label: "Published", className: "bg-emerald-100 text-emerald-700" },
+  pending: { label: "Menunggu Persetujuan", className: "bg-orange-100 text-orange-700" },
+  rejected: { label: "Ditolak", className: "bg-destructive/10 text-destructive" },
+  draft: { label: "Draft", className: "bg-muted text-muted-foreground" },
+};
+
 const KATEGORI_LABEL: Record<string, string> = {
   pengumuman: "Pengumuman",
   kegiatan: "Kegiatan",
@@ -20,6 +28,8 @@ export default function AdminBeritaPage() {
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [pendingCount, setPendingCount] = useState(0);
+  const [userTier, setUserTier] = useState<number | null>(null);
 
   async function fetchBerita() {
     setLoading(true);
@@ -27,18 +37,25 @@ export default function AdminBeritaPage() {
     try {
       const res = await fetch("/api/admin/berita");
       if (!res.ok) {
-        // Fallback or read response
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || "Gagal memuat berita.");
       }
       const data = await res.json();
       setBeritaList(data);
+      // Hitung pending untuk badge
+      const pending = data.filter((b: Berita) => b.status === "pending").length;
+      setPendingCount(pending);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Terjadi kesalahan.");
     } finally {
       setLoading(false);
     }
   }
+
+  // Deteksi tier via session endpoint
+  useEffect(() => {
+    fetch("/api/admin/session").then((r) => r.json()).then((d) => setUserTier(d?.tier ?? null)).catch(() => null);
+  }, []);
 
   useEffect(() => {
     fetchBerita();
@@ -85,6 +102,27 @@ export default function AdminBeritaPage() {
         </div>
       )}
 
+      {/* Banner Persetujuan — hanya Tier 1 & 2 */}
+      {(userTier === 1 || userTier === 2) && pendingCount > 0 && (
+        <div className="mb-4 flex items-center justify-between gap-3 rounded-xl border border-orange-200 bg-orange-50 px-4 py-3">
+          <div className="flex items-center gap-2.5">
+            <span className="text-xl">⏳</span>
+            <div>
+              <p className="text-sm font-bold text-orange-900">
+                {pendingCount} berita menunggu persetujuan Anda
+              </p>
+              <p className="text-xs text-orange-700">Diajukan oleh Admin RW atau Admin Kampung KB</p>
+            </div>
+          </div>
+          <Link
+            href="/admin/persetujuan/berita"
+            className="shrink-0 rounded-lg bg-orange-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-orange-700 transition-colors"
+          >
+            Review Sekarang
+          </Link>
+        </div>
+      )}
+
       {/* Mobile Card List (< md) */}
       <div className="space-y-3 md:hidden">
         {loading ? (
@@ -104,6 +142,22 @@ export default function AdminBeritaPage() {
                 </h3>
                 <BeritaBadge kategori={b.kategori} />
               </div>
+
+              {/* Status badge */}
+              {b.status && b.status !== "published" && (
+                <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-bold ${
+                  STATUS_CONFIG[b.status]?.className ?? "bg-muted text-muted-foreground"
+                }`}>
+                  {STATUS_CONFIG[b.status]?.label ?? b.status}
+                </span>
+              )}
+
+              {/* Catatan penolakan */}
+              {b.status === "rejected" && b.reviewer_note && (
+                <p className="text-xs text-destructive border border-destructive/20 rounded-lg px-3 py-2 bg-destructive/5">
+                  <strong>Catatan:</strong> {b.reviewer_note}
+                </p>
+              )}
 
               <div className="flex flex-wrap items-center justify-between text-xs text-muted-foreground pt-1 border-t border-border/50">
                 <span>{b.cakupan === "kelurahan" ? "Kelurahan" : b.rw_nama || "RW"}</span>
@@ -152,6 +206,7 @@ export default function AdminBeritaPage() {
               <th className="px-4 py-3">Judul Artikel / Informasi</th>
               <th className="px-4 py-3">Kategori Berita</th>
               <th className="px-4 py-3">Cakupan Wilayah</th>
+              <th className="px-4 py-3">Status</th>
               <th className="px-4 py-3">Tanggal Terbit</th>
               <th className="px-4 py-3 text-right">Aksi</th>
             </tr>
@@ -171,15 +226,30 @@ export default function AdminBeritaPage() {
               </tr>
             ) : (
               beritaList.map((b) => (
-                <tr key={b.id} className="hover:bg-muted/30 transition-colors">
-                  <td className="px-4 py-3 font-medium text-foreground max-w-md truncate">
-                    {b.judul}
+                <tr key={b.id} className={`hover:bg-muted/30 transition-colors ${
+                  b.status === "pending" ? "bg-orange-50/50" :
+                  b.status === "rejected" ? "bg-destructive/5" : ""
+                }`}>
+                  <td className="px-4 py-3 max-w-md">
+                    <div className="font-medium text-foreground truncate">{b.judul}</div>
+                    {b.status === "rejected" && b.reviewer_note && (
+                      <div className="text-xs text-destructive mt-0.5 truncate">Catatan: {b.reviewer_note}</div>
+                    )}
                   </td>
                   <td className="px-4 py-3">
                     <BeritaBadge kategori={b.kategori} />
                   </td>
                   <td className="px-4 py-3 text-muted-foreground">
                     {b.cakupan === "kelurahan" ? "Kelurahan" : b.rw_nama || "RW"}
+                  </td>
+                  <td className="px-4 py-3">
+                    {b.status && (
+                      <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-bold ${
+                        STATUS_CONFIG[b.status ?? "published"]?.className ?? "bg-muted text-muted-foreground"
+                      }`}>
+                        {STATUS_CONFIG[b.status ?? "published"]?.label ?? b.status}
+                      </span>
+                    )}
                   </td>
                   <td className="px-4 py-3 text-muted-foreground">
                     {new Date(b.tanggal).toLocaleDateString("id-ID", {

@@ -9,7 +9,10 @@
     "lint": "eslint",
     "db:push": "drizzle-kit push",
     "db:seed": "tsx scripts/seed.ts",
-    "db:create-admin": "tsx scripts/create-admin.ts"
+    "db:create-admin": "tsx scripts/create-admin.ts",
+    "db:backup": "tsx scripts/backup-db.ts",
+    "db:restore": "tsx scripts/restore-db.ts",
+    "db:seed-backup": "tsx scripts/restore-db.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1090.0",

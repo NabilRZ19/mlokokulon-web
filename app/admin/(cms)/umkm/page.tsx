@@ -11,6 +11,8 @@ export default function AdminUmkmPage() {
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [pendingCount, setPendingCount] = useState(0);
+  const [userTier, setUserTier] = useState<number | null>(null);
 
   async function fetchUmkm() {
     setLoading(true);
@@ -20,12 +22,18 @@ export default function AdminUmkmPage() {
       if (!res.ok) throw new Error("Gagal memuat UMKM.");
       const data = await res.json();
       setUmkmList(data);
+      const pending = data.filter((u: Umkm) => u.status === "pending").length;
+      setPendingCount(pending);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Terjadi kesalahan.");
     } finally {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    fetch("/api/admin/session").then((r) => r.json()).then((d) => setUserTier(d?.tier ?? null)).catch(() => null);
+  }, []);
 
   useEffect(() => {
     fetchUmkm();
@@ -66,6 +74,27 @@ export default function AdminUmkmPage() {
       {error && (
         <div className="mb-4 rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive font-medium">
           {error}
+        </div>
+      )}
+
+      {/* Banner Persetujuan — hanya Tier 1 & 2 */}
+      {(userTier === 1 || userTier === 2) && pendingCount > 0 && (
+        <div className="mb-4 flex items-center justify-between gap-3 rounded-xl border border-orange-200 bg-orange-50 px-4 py-3">
+          <div className="flex items-center gap-2.5">
+            <span className="text-xl">⏳</span>
+            <div>
+              <p className="text-sm font-bold text-orange-900">
+                {pendingCount} profil UMKM menunggu persetujuan Anda
+              </p>
+              <p className="text-xs text-orange-700">Diajukan oleh Admin RW atau Admin Kampung KB</p>
+            </div>
+          </div>
+          <Link
+            href="/admin/persetujuan/umkm"
+            className="shrink-0 rounded-lg bg-orange-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-orange-700 transition-colors"
+          >
+            Review Sekarang
+          </Link>
         </div>
       )}
 
@@ -133,6 +162,7 @@ export default function AdminUmkmPage() {
               <th className="px-4 py-3">Nama Usaha</th>
               <th className="px-4 py-3">Kategori Usaha</th>
               <th className="px-4 py-3">Kontak / WA</th>
+              <th className="px-4 py-3">Status</th>
               <th className="px-4 py-3">Jam Operasional</th>
               <th className="px-4 py-3 text-right">Aksi</th>
             </tr>
@@ -159,6 +189,16 @@ export default function AdminUmkmPage() {
                   </td>
                   <td className="px-4 py-3 font-semibold text-foreground">
                     Kontak: <strong className="font-extrabold">{u.kontak}</strong>
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-bold ${
+                      u.status === "published" ? "bg-emerald-100 text-emerald-700" :
+                      u.status === "pending" ? "bg-orange-100 text-orange-700" :
+                      u.status === "rejected" ? "bg-destructive/10 text-destructive" :
+                      "bg-muted text-muted-foreground"
+                    }`}>
+                      {u.status === "pending" ? "Menunggu" : u.status === "rejected" ? "Ditolak" : "Published"}
+                    </span>
                   </td>
                   <td className="px-4 py-3 font-medium text-foreground">
                     Jam: <strong className="font-bold">{u.jam_operasional}</strong>

@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { InfoLinkButton } from "@/components/admin/InfoLinkButton";
+import { ApprovalNoticeBanner } from "@/components/admin/ApprovalNoticeBanner";
 import { compressImage } from "@/lib/image-compression";
 import { scrollToFirstError } from "@/lib/form-scroll";
 
@@ -103,6 +104,8 @@ export default function TambahGaleriPage() {
   return (
     <div>
       <AdminPageHeader title="Upload Media Galeri" />
+
+      <ApprovalNoticeBanner contentType="media galeri" />
 
       <form onSubmit={handleSubmit} className="mx-auto max-w-2xl space-y-6">
         <div className="rounded-xl border border-border bg-card p-4 sm:p-6 shadow-sm space-y-5">

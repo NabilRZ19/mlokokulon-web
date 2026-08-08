@@ -10,7 +10,7 @@ export function TambahUserForm({ actorTier }: { actorTier: number }) {
   const [nama, setNama] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [tier, setTier] = useState<1 | 2 | 3>(2);
+  const [tier, setTier] = useState<1 | 2 | 3 | 4>(2);
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -111,7 +111,7 @@ export function TambahUserForm({ actorTier }: { actorTier: number }) {
             <select
               id="tier"
               value={tier}
-              onChange={(e) => setTier(Number(e.target.value) as 1 | 2 | 3)}
+              onChange={(e) => setTier(Number(e.target.value) as 1 | 2 | 3 | 4)}
               className="w-full rounded-lg border border-border bg-card px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
             >
               {actorTier === 1 && (
@@ -119,6 +119,7 @@ export function TambahUserForm({ actorTier }: { actorTier: number }) {
               )}
               <option value={2}>Tier 2: Admin Kelurahan (CRUD Berita, Galeri, UMKM, Struktur)</option>
               <option value={3}>Tier 3: Admin RW (CRUD Berita, Galeri, UMKM, Edit Wilayah RW)</option>
+              <option value={4}>Tier 4: Admin Kampung KB (Kelola Kampung KB, Berita, Galeri, UMKM, Wilayah)</option>
             </select>
             {actorTier !== 1 && (
               <p className="mt-1 text-[11px] text-muted-foreground">

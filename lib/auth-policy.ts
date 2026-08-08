@@ -4,7 +4,8 @@
  * Tier hierarchy:
  *   1 = Super Admin (Kelurahan) — akses penuh
  *   2 = Admin Kelurahan         — kelola konten kelurahan, tidak bisa kelola user
- *   3 = Admin RW                — kelola konten RW-nya sendiri
+ *   3 = Admin RW                — kelola konten RW-nya sendiri, perlu approval Tier 1/2
+ *   4 = Admin Kampung KB        — setara Tier 3 + speciality kelola Kampung KB, perlu approval
  *
  * Gunakan fungsi-fungsi ini di route handler untuk cek otorisasi tier.
  * Jangan tersebar logika tier di masing-masing route.
@@ -29,24 +30,42 @@ export const canAssignTier = (actorTier: number, targetTier: number) =>
 
 /**
  * Tier 1 & 2: kelola struktur organisasi kelurahan.
- * Tier 3 (Admin RW) tidak relevan dengan struktur kelurahan.
+ * Tier 3 & 4 (Admin RW / Kampung KB) tidak relevan dengan struktur kelurahan.
  */
 export const canManageStruktur = (tier: number) => tier === 1 || tier === 2;
 
 /**
- * Tier 1 & 3: kelola data wilayah RW.
+ * Tier 1, 3 & 4: kelola data wilayah RW.
  * Tier 1 = super admin bisa edit semua RW.
- * Tier 3 = admin RW bisa edit data RW-nya sendiri.
+ * Tier 3 = admin RW bisa edit data RW-nya sendiri (selain Ketua RW yang perlu approval).
+ * Tier 4 = admin Kampung KB bisa edit data wilayah RW-nya.
  * Tier 2 = admin kelurahan tidak mengelola wilayah RW secara langsung.
  */
-export const canManageWilayah = (tier: number) => tier === 1 || tier === 3;
+export const canManageWilayah = (tier: number) => tier === 1 || tier === 3 || tier === 4;
 
 /**
- * Semua tier: bisa membuat/edit/hapus konten publik (berita, galeri, UMKM, potensi).
- * Meski semua tier diizinkan, fungsi ini tetap diekspor untuk konsistensi
- * dan kemudahan audit/perubahan di masa depan.
+ * Semua tier: bisa membuat/edit/hapus konten publik (berita, galeri, UMKM, layanan).
+ * Tier 3 & 4: konten yang dibuat perlu approval dari Tier 1 atau 2 sebelum published.
  */
 export const canManageContent = (_tier: number) => true;
+
+/**
+ * Tier 1 & 2 & 4: kelola halaman Kampung KB.
+ * Tier 4 (Admin Kampung KB) adalah specialty tier untuk mengelola Kampung KB.
+ */
+export const canManageKampungKb = (tier: number) => tier === 1 || tier === 2 || tier === 4;
+
+/**
+ * Apakah konten yang dibuat oleh tier ini perlu approval?
+ * Tier 3 (Admin RW) dan Tier 4 (Admin Kampung KB) perlu approval dari Tier 1/2.
+ */
+export const needsApproval = (tier: number) => tier === 3 || tier === 4;
+
+/**
+ * Apakah tier ini bisa menyetujui/menolak konten?
+ * Hanya Tier 1 (Super Admin) dan Tier 2 (Admin Kelurahan) yang bisa approve.
+ */
+export const canApproveContent = (tier: number) => tier === 1 || tier === 2;
 
 // ── Response helpers ──────────────────────────────────────────────────────────
 

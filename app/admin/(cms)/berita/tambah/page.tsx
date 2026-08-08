@@ -4,6 +4,7 @@ import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { InfoLinkButton } from "@/components/admin/InfoLinkButton";
+import { ApprovalNoticeBanner } from "@/components/admin/ApprovalNoticeBanner";
 import { compressImage } from "@/lib/image-compression";
 import { scrollToFirstError } from "@/lib/form-scroll";
 
@@ -495,6 +496,7 @@ export default function TambahBeritaPage() {
         video_url: videoUrl.trim() || undefined,
         video_title: videoTitle.trim() || undefined,
         penulis,
+        pengusul: penulis.trim() || "Admin",
         foto_tambahan: fotoList
           .filter((f) => f.uploadedUrl)
           .slice(0, MAX_FOTO_TAMBAHAN)
@@ -535,6 +537,8 @@ export default function TambahBeritaPage() {
   return (
     <div>
       <AdminPageHeader title="Tambah Berita" />
+
+      <ApprovalNoticeBanner contentType="berita" />
 
       <form onSubmit={handleSubmit} noValidate className="mx-auto max-w-3xl space-y-8">
 

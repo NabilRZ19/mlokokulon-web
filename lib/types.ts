@@ -1,3 +1,5 @@
+export type ContentStatus = "draft" | "pending" | "published" | "rejected";
+
 export interface StrukturKelurahan {
   id: string;
   nama: string;
@@ -26,11 +28,28 @@ export interface Rw {
   cakupan_dusun: string;
   jumlah_rt: number;
   is_kampung_kb: boolean;
+  ketua_nama?: string;
+  ketua_foto_url?: string;
   deskripsi_singkat?: string;
   struktur_pengurus: RwPengurus[];
   statistik: RwStatistik;
   potensi: string;
   cakupan_wilayah_geojson?: string;
+}
+
+export interface RwKetuaPengajuan {
+  id: number;
+  rw_id: string;
+  rw_nama?: string;
+  diajukan_oleh_id: number;
+  diajukan_oleh_nama: string;
+  pengusul: string;
+  ketua_nama_baru: string;
+  ketua_foto_url_baru?: string;
+  status: "pending" | "approved" | "rejected";
+  reviewer_note?: string;
+  created_at: string;
+  reviewed_at?: string;
 }
 
 export interface KampungKbPokja {
@@ -76,6 +95,11 @@ export interface Berita {
   penulis: string;
   created_by: string;
   foto_tambahan: string[];
+  // Approval workflow
+  status?: ContentStatus;
+  reviewer_note?: string;
+  submitted_by_tier?: number;
+  pengusul?: string;
 }
 
 export type GaleriTipe = "foto" | "video";
@@ -88,6 +112,12 @@ export interface Galeri {
   kategori?: string;
   // Diisi kalau foto ini di-link dari form Berita (bukan upload manual langsung ke Galeri).
   sumber_berita_id?: string;
+  // Approval workflow
+  status?: ContentStatus;
+  created_by?: string;
+  reviewer_note?: string;
+  submitted_by_tier?: number;
+  pengusul?: string;
 }
 
 export interface UmkmProdukUnggulan {
@@ -108,14 +138,22 @@ export interface Umkm {
   lokasi?: string | null;
   foto_urls: string[];
   foto_utama_url: string | null;
+  // Approval workflow
+  status?: ContentStatus;
+  created_by?: string;
+  reviewer_note?: string;
+  submitted_by_tier?: number;
+  pengusul?: string;
 }
 
-export type AdminTier = 1 | 2 | 3;
+/** Tier 4 = Admin Kampung KB (setara Tier 3 dengan speciality Kampung KB) */
+export type AdminTier = 1 | 2 | 3 | 4;
 
 export interface AdminUser {
   uid: string;
   nama: string;
   tier: AdminTier;
+  rw_id?: string;
   created_by: string;
 }
 

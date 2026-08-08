@@ -12,6 +12,8 @@ import {
   varchar,
 } from "drizzle-orm/mysql-core";
 
+export type ContentStatus = "draft" | "pending" | "published" | "rejected";
+
 // ID varchar (bukan auto-increment) buat entity yang sudah punya id string di lib/seed-data.ts
 // ("rw-01", "berita-01", dst) — supaya seed data tidak perlu diubah, cuma cara nulisnya ke DB.
 
@@ -31,6 +33,8 @@ export const rw = mysqlTable("rw", {
   cakupanDusun: varchar("cakupan_dusun", { length: 255 }).notNull(),
   jumlahRt: int("jumlah_rt").notNull(),
   isKampungKb: boolean("is_kampung_kb").notNull().default(false),
+  ketuaNama: varchar("ketua_nama", { length: 255 }),
+  ketuaFotoUrl: varchar("ketua_foto_url", { length: 512 }),
   deskripsiSingkat: text("deskripsi_singkat"),
   potensi: text("potensi").notNull(),
   jumlahKk: int("jumlah_kk").notNull(),
@@ -38,6 +42,24 @@ export const rw = mysqlTable("rw", {
   cakupanWilayahGeojson: text("cakupan_wilayah_geojson"),
 }, (table) => [
   index("rw_nama_rw_idx").on(table.namaRw),
+]);
+
+// Tabel pengajuan perubahan Ketua RW oleh Tier 3/4 — memerlukan persetujuan Tier 1/2
+export const rwKetuaPengajuan = mysqlTable("rw_ketua_pengajuan", {
+  id: int("id").primaryKey().autoincrement(),
+  rwId: varchar("rw_id", { length: 64 }).notNull().references(() => rw.id, { onDelete: "cascade" }),
+  diajukanOlehId: int("diajukan_oleh_id").notNull(),
+  diajukanOlehNama: varchar("diajukan_oleh_nama", { length: 255 }).notNull(),
+  pengusul: varchar("pengusul", { length: 255 }).notNull(),
+  ketuaNamaBaru: varchar("ketua_nama_baru", { length: 255 }).notNull(),
+  ketuaFotoUrlBaru: varchar("ketua_foto_url_baru", { length: 512 }),
+  status: mysqlEnum("status", ["pending", "approved", "rejected"]).notNull().default("pending"),
+  reviewerNote: text("reviewer_note"),
+  createdAt: timestamp("created_at").defaultNow(),
+  reviewedAt: timestamp("reviewed_at"),
+}, (table) => [
+  index("rw_ketua_pengajuan_rw_id_idx").on(table.rwId),
+  index("rw_ketua_pengajuan_status_idx").on(table.status),
 ]);
 
 // Child table — struktur_pengurus[] di lib/types.ts
@@ -71,9 +93,15 @@ export const berita = mysqlTable("berita", {
   videoTitle: varchar("video_title", { length: 255 }),
   penulis: varchar("penulis", { length: 255 }).notNull(),
   createdBy: varchar("created_by", { length: 64 }).notNull(),
+  // Approval workflow — default 'published' agar data lama tetap tampil
+  status: mysqlEnum("status", ["draft", "pending", "published", "rejected"]).notNull().default("published"),
+  reviewerNote: text("reviewer_note"),
+  submittedByTier: tinyint("submitted_by_tier"),
+  pengusul: varchar("pengusul", { length: 255 }),
 }, (table) => [
   index("berita_tanggal_idx").on(table.tanggal),
   index("berita_rw_id_idx").on(table.rwId),
+  index("berita_status_idx").on(table.status),
 ]);
 
 // Child table — foto_tambahan[] di lib/types.ts
@@ -99,9 +127,16 @@ export const galeri = mysqlTable("galeri", {
   sumberBeritaId: varchar("sumber_berita_id", { length: 64 }).references(() => berita.id, {
     onDelete: "set null",
   }),
+  // Approval workflow
+  status: mysqlEnum("status", ["draft", "pending", "published", "rejected"]).notNull().default("published"),
+  createdBy: varchar("created_by", { length: 64 }),
+  reviewerNote: text("reviewer_note"),
+  submittedByTier: tinyint("submitted_by_tier"),
+  pengusul: varchar("pengusul", { length: 255 }),
 }, (table) => [
   index("galeri_judul_idx").on(table.judul),
   index("galeri_sumber_berita_id_idx").on(table.sumberBeritaId),
+  index("galeri_status_idx").on(table.status),
 ]);
 
 export const umkm = mysqlTable("umkm", {
@@ -115,8 +150,15 @@ export const umkm = mysqlTable("umkm", {
   jamOperasional: varchar("jam_operasional", { length: 100 }).notNull(),
   lokasi: varchar("lokasi", { length: 255 }),
   fotoUtamaUrl: varchar("foto_utama_url", { length: 512 }),
+  // Approval workflow
+  status: mysqlEnum("status", ["draft", "pending", "published", "rejected"]).notNull().default("published"),
+  createdBy: varchar("created_by", { length: 64 }),
+  reviewerNote: text("reviewer_note"),
+  submittedByTier: tinyint("submitted_by_tier"),
+  pengusul: varchar("pengusul", { length: 255 }),
 }, (table) => [
   index("umkm_nama_idx").on(table.nama),
+  index("umkm_status_idx").on(table.status),
 ]);
 
 // Child table — produk_unggulan[] di lib/types.ts
@@ -148,6 +190,7 @@ export const adminUsers = mysqlTable("admin_users", {
   email: varchar("email", { length: 255 }).notNull().unique(),
   passwordHash: varchar("password_hash", { length: 255 }).notNull(),
   tier: tinyint("tier").notNull(),
+  rwId: varchar("rw_id", { length: 64 }), // diisi untuk Tier 3 & Tier 4
   createdBy: int("created_by"),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
   lastLogin: timestamp("last_login"),

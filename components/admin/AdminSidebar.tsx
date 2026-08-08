@@ -24,24 +24,60 @@ interface NavItem {
   label: string;
   icon: React.ComponentType<{ className?: string }>;
   canAccess?: (tier: number) => boolean;
+  /** Kunci untuk badge pending — hanya tampil jika Tier 1 atau 2 */
+  pendingKey?: "berita" | "galeri" | "umkm" | "wilayah";
+}
+
+interface PendingCounts {
+  berita: number;
+  galeri: number;
+  umkm: number;
+  wilayah: number;
 }
 
 const navItems: NavItem[] = [
   { href: "/admin/dashboard", label: "Dashboard", icon: DashboardIcon },
-  { href: "/admin/berita", label: "Berita", icon: NewspaperIcon },
-  { href: "/admin/galeri", label: "Galeri", icon: ImageIcon },
-  { href: "/admin/layanan", label: "Layanan Kelurahan", icon: LayananIcon },
-  { href: "/admin/umkm", label: "UMKM", icon: StoreIcon },
-  { href: "/admin/kampung-kb", label: "Pengaturan Kampung KB", icon: KampungKbIcon },
-  { href: "/admin/wilayah", label: "Wilayah (RW)", icon: MapPinIcon, canAccess: (t) => t === 1 || t === 3 },
-  { href: "/admin/pengaturan", label: "Struktur Kelurahan", icon: SettingsIcon, canAccess: (t) => t === 1 || t === 2 },
-  { href: "/admin/users", label: "Kelola Admin", icon: UserCogIcon, canAccess: (t) => t === 1 || t === 2 },
+  { href: "/admin/berita", label: "Berita", icon: NewspaperIcon, pendingKey: "berita" },
+  { href: "/admin/galeri", label: "Galeri", icon: ImageIcon, pendingKey: "galeri" },
+  {
+    href: "/admin/layanan",
+    label: "Layanan Kelurahan",
+    icon: LayananIcon,
+    canAccess: (t) => t === 1 || t === 2,
+  },
+  { href: "/admin/umkm", label: "UMKM", icon: StoreIcon, pendingKey: "umkm" },
+  {
+    href: "/admin/kampung-kb",
+    label: "Pengaturan Kampung KB",
+    icon: KampungKbIcon,
+    canAccess: (t) => t === 1 || t === 2 || t === 4,
+  },
+  {
+    href: "/admin/wilayah",
+    label: "Wilayah (RW)",
+    icon: MapPinIcon,
+    canAccess: (t) => t === 1 || t === 3 || t === 4,
+    pendingKey: "wilayah",
+  },
+  {
+    href: "/admin/pengaturan",
+    label: "Struktur Kelurahan",
+    icon: SettingsIcon,
+    canAccess: (t) => t === 1 || t === 2,
+  },
+  {
+    href: "/admin/users",
+    label: "Kelola Admin",
+    icon: UserCogIcon,
+    canAccess: (t) => t === 1 || t === 2,
+  },
 ];
 
 const TIER_LABEL: Record<number, string> = {
   1: "Tier 1: Super Admin",
   2: "Tier 2: Admin Kelurahan",
   3: "Tier 3: Admin RW",
+  4: "Tier 4: Admin Kampung KB",
 };
 
 function getInitials(nama: string): string {
@@ -53,11 +89,44 @@ export function AdminSidebar({ session }: { session: SessionPayload }) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [pendingCounts, setPendingCounts] = useState<PendingCounts>({
+    berita: 0,
+    galeri: 0,
+    umkm: 0,
+    wilayah: 0,
+  });
 
   // Otomatis tutup drawer saat pindah halaman di mobile
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
+
+  // Fetch pending counts hanya untuk Tier 1 & 2 via 1 endpoint cepat
+  useEffect(() => {
+    if (session.tier !== 1 && session.tier !== 2) return;
+
+    let isMounted = true;
+    async function fetchPendingCounts() {
+      try {
+        const res = await fetch("/api/admin/persetujuan/counts");
+        if (res.ok && isMounted) {
+          const data = await res.json();
+          setPendingCounts(data);
+        }
+      } catch {
+        // ignore — badge pending tidak kritis
+      }
+    }
+
+    fetchPendingCounts();
+    const interval = setInterval(fetchPendingCounts, 60000);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, [session.tier]);
+
+  const canSeeBadge = session.tier === 1 || session.tier === 2;
 
   async function handleLogout() {
     await fetch("/api/admin/logout", { method: "POST" });
@@ -115,16 +184,29 @@ export function AdminSidebar({ session }: { session: SessionPayload }) {
           .map((item) => {
             const active = pathname?.startsWith(item.href);
             const Icon = item.icon;
+            const pendingCount = canSeeBadge && item.pendingKey
+              ? pendingCounts[item.pendingKey]
+              : 0;
+
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 rounded-md px-3 py-2 transition-colors ${
+                className={`flex items-center justify-between rounded-md px-3 py-2 transition-colors ${
                   active ? "bg-primary text-white font-semibold" : "text-foreground hover:bg-muted"
                 }`}
               >
-                <Icon className="h-4 w-4" />
-                {item.label}
+                <div className="flex items-center gap-3">
+                  <Icon className="h-4 w-4" />
+                  {item.label}
+                </div>
+                {pendingCount > 0 && (
+                  <span className={`flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold ${
+                    active ? "bg-white text-primary" : "bg-orange-500 text-white"
+                  }`}>
+                    {pendingCount > 99 ? "99+" : pendingCount}
+                  </span>
+                )}
               </Link>
             );
           })}
@@ -137,7 +219,7 @@ export function AdminSidebar({ session }: { session: SessionPayload }) {
           </span>
           <div className="min-w-0">
             <p className="truncate text-sm font-medium text-foreground">{session.nama}</p>
-            <p className="truncate text-xs text-muted-foreground">{TIER_LABEL[session.tier]}</p>
+            <p className="truncate text-xs text-muted-foreground">{TIER_LABEL[session.tier] ?? `Tier ${session.tier}`}</p>
           </div>
         </div>
 
@@ -191,8 +273,16 @@ export function AdminSidebar({ session }: { session: SessionPayload }) {
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
             </svg>
           </Link>
-          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 font-heading text-xs font-bold text-primary">
-            {getInitials(session.nama)}
+          <div className="relative">
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 font-heading text-xs font-bold text-primary">
+              {getInitials(session.nama)}
+            </div>
+            {/* Mini badge total pending di mobile */}
+            {canSeeBadge && (pendingCounts.berita + pendingCounts.galeri + pendingCounts.umkm + pendingCounts.wilayah) > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-orange-500 px-1 text-[9px] font-bold text-white">
+                {Math.min(pendingCounts.berita + pendingCounts.galeri + pendingCounts.umkm + pendingCounts.wilayah, 99)}
+              </span>
+            )}
           </div>
         </div>
       </header>

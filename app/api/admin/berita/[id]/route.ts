@@ -10,6 +10,7 @@ import {
 import { getSession } from "@/lib/session";
 import { isValidDateStr, isValidEnum, isValidString, isValidUrl } from "@/lib/validate";
 import { handleApiError } from "@/lib/api-error";
+import { needsApproval } from "@/lib/auth-policy";
 
 const MAX_FOTO_TAMBAHAN = 4;
 
@@ -59,6 +60,9 @@ export async function GET(
       video_title: row.videoTitle ?? "",
       penulis: row.penulis,
       foto_tambahan: foto.map((f) => f.url),
+      status: row.status ?? "published",
+      reviewer_note: row.reviewerNote ?? "",
+      pengusul: row.pengusul ?? "",
     });
   } catch (err) {
     return handleApiError("api/admin/berita/[id] GET", err, "Gagal mengambil data berita");
@@ -93,6 +97,7 @@ export async function PUT(
       video_url,
       video_title,
       penulis,
+      pengusul = "",
       foto_tambahan = [],
       galeri_foto = [],
     } = body;
@@ -114,6 +119,9 @@ export async function PUT(
     const sanitizedVideoUrl = typeof video_url === "string" && video_url.trim().length > 0 ? video_url.trim() : null;
     const sanitizedVideoTitle = typeof video_title === "string" && video_title.trim().length > 0 ? video_title.trim() : null;
 
+    // Edit oleh Tier 3/4: reset status ke pending (perlu review ulang)
+    const newStatus = needsApproval(session.tier) ? "pending" : "published";
+
     await db
       .update(beritaTable)
       .set({
@@ -128,6 +136,9 @@ export async function PUT(
         videoUrl: sanitizedVideoUrl,
         videoTitle: sanitizedVideoTitle,
         penulis,
+        status: newStatus,
+        submittedByTier: session.tier,
+        pengusul: typeof pengusul === "string" && pengusul.trim() ? pengusul.trim() : null,
       })
       .where(eq(beritaTable.id, id));
 

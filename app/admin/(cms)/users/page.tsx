@@ -10,13 +10,14 @@ interface AdminUser {
   id: number;
   nama: string;
   email: string;
-  tier: 1 | 2 | 3;
+  tier: 1 | 2 | 3 | 4;
 }
 
 const TIER_LABEL: Record<number, string> = {
   1: "Tier 1: Super Admin",
   2: "Tier 2: Admin Kelurahan",
   3: "Tier 3: Admin RW",
+  4: "Tier 4: Admin Kampung KB",
 };
 
 export default function AdminUsersPage() {

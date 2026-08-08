@@ -12,6 +12,8 @@ export default function AdminGaleriPage() {
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [pendingCount, setPendingCount] = useState(0);
+  const [userTier, setUserTier] = useState<number | null>(null);
 
   async function fetchGaleri() {
     setLoading(true);
@@ -21,12 +23,18 @@ export default function AdminGaleriPage() {
       if (!res.ok) throw new Error("Gagal memuat galeri.");
       const data = await res.json();
       setItems(data);
+      const pending = data.filter((g: Galeri) => g.status === "pending").length;
+      setPendingCount(pending);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Terjadi kesalahan.");
     } finally {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    fetch("/api/admin/session").then((r) => r.json()).then((d) => setUserTier(d?.tier ?? null)).catch(() => null);
+  }, []);
 
   useEffect(() => {
     fetchGaleri();
@@ -67,6 +75,27 @@ export default function AdminGaleriPage() {
       {error && (
         <div className="mb-4 rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive font-medium">
           {error}
+        </div>
+      )}
+
+      {/* Banner Persetujuan — hanya Tier 1 & 2 */}
+      {(userTier === 1 || userTier === 2) && pendingCount > 0 && (
+        <div className="mb-4 flex items-center justify-between gap-3 rounded-xl border border-orange-200 bg-orange-50 px-4 py-3">
+          <div className="flex items-center gap-2.5">
+            <span className="text-xl">⏳</span>
+            <div>
+              <p className="text-sm font-bold text-orange-900">
+                {pendingCount} item galeri menunggu persetujuan Anda
+              </p>
+              <p className="text-xs text-orange-700">Diajukan oleh Admin RW atau Admin Kampung KB</p>
+            </div>
+          </div>
+          <Link
+            href="/admin/persetujuan/galeri"
+            className="shrink-0 rounded-lg bg-orange-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-orange-700 transition-colors"
+          >
+            Review Sekarang
+          </Link>
         </div>
       )}
 
@@ -133,6 +162,7 @@ export default function AdminGaleriPage() {
               <th className="px-4 py-3 font-semibold">Judul</th>
               <th className="px-4 py-3 font-semibold">Tipe</th>
               <th className="px-4 py-3 font-semibold">Kategori</th>
+              <th className="px-4 py-3 font-semibold">Status</th>
               <th className="px-4 py-3 font-semibold">Sumber</th>
               <th className="px-4 py-3 font-semibold text-right">Aksi</th>
             </tr>
@@ -175,6 +205,16 @@ export default function AdminGaleriPage() {
                   </td>
                   <td className="px-4 py-3 text-muted-foreground">
                     {g.kategori || "Umum"}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-bold ${
+                      g.status === "published" ? "bg-emerald-100 text-emerald-700" :
+                      g.status === "pending" ? "bg-orange-100 text-orange-700" :
+                      g.status === "rejected" ? "bg-destructive/10 text-destructive" :
+                      "bg-muted text-muted-foreground"
+                    }`}>
+                      {g.status === "pending" ? "Menunggu" : g.status === "rejected" ? "Ditolak" : "Published"}
+                    </span>
                   </td>
                   <td className="px-4 py-3 text-xs text-muted-foreground">
                     {g.sumber_berita_id ? "Ditantang dari Berita" : "Upload Manual"}

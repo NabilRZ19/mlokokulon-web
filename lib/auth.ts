@@ -16,7 +16,8 @@ const secret = new TextEncoder().encode(rawSecret || "fallback-secret-for-develo
 export interface SessionPayload {
   id: number;
   nama: string;
-  tier: 1 | 2 | 3;
+  tier: 1 | 2 | 3 | 4;
+  rw_id?: string; // diisi untuk Tier 3 & Tier 4
 }
 
 export const SESSION_COOKIE_NAME = "admin_session";

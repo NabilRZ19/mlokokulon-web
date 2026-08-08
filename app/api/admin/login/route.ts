@@ -84,7 +84,8 @@ export async function POST(request: Request) {
   const token = await createSessionToken({
     id: user.id,
     nama: user.nama,
-    tier: user.tier as 1 | 2 | 3,
+    tier: user.tier as 1 | 2 | 3 | 4,
+    rw_id: user.rwId ?? undefined,
   });
 
   const cookieStore = await cookies();

@@ -5,6 +5,7 @@ import { umkm as umkmTable, umkmFoto, umkmProdukUnggulan } from "@/lib/db/schema
 import { getUmkmList } from "@/lib/queries";
 import { getSession } from "@/lib/session";
 import { isValidString, isValidUrl } from "@/lib/validate";
+import { needsApproval } from "@/lib/auth-policy";
 
 function makeSlug(nama: string): string {
   return nama
@@ -21,7 +22,7 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const items = await getUmkmList();
+  const items = await getUmkmList(false);
   return NextResponse.json(items);
 }
 
@@ -44,6 +45,7 @@ export async function POST(request: Request) {
       produk_unggulan = [],
       foto_urls = [],
       foto_utama_url = null,
+      pengusul = "",
     } = body;
 
     if (
@@ -59,6 +61,7 @@ export async function POST(request: Request) {
 
     const id = `umkm-${randomUUID().slice(0, 8)}`;
     const slug = `${makeSlug(nama)}-${id.slice(-6)}`;
+    const status = needsApproval(session.tier) ? "pending" : "published";
 
     await db.insert(umkmTable).values({
       id,
@@ -71,6 +74,10 @@ export async function POST(request: Request) {
       jamOperasional: jam_operasional,
       lokasi: lokasi || null,
       fotoUtamaUrl: foto_utama_url || null,
+      status,
+      createdBy: String(session.id),
+      submittedByTier: session.tier,
+      pengusul: typeof pengusul === "string" && pengusul.trim() ? pengusul.trim() : null,
     });
 
     if (Array.isArray(produk_unggulan) && produk_unggulan.length > 0) {

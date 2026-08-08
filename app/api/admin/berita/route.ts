@@ -6,6 +6,7 @@ import { getBeritaList } from "@/lib/queries";
 import { getSession } from "@/lib/session";
 import { isValidDateStr, isValidEnum, isValidString, isValidUrl } from "@/lib/validate";
 import { handleApiError } from "@/lib/api-error";
+import { needsApproval } from "@/lib/auth-policy";
 
 // Sesuai aturan bisnis: 1 berita = maks 1 foto headline + maks 4 foto tambahan
 const MAX_FOTO_TAMBAHAN = 4;
@@ -25,7 +26,7 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const items = await getBeritaList();
+  const items = await getBeritaList(false);
   return NextResponse.json(items);
 }
 
@@ -49,6 +50,7 @@ export async function POST(request: Request) {
       video_url,
       video_title,
       penulis,
+      pengusul = "",
       foto_tambahan = [],
       galeri_foto = [],
     } = body;
@@ -74,6 +76,9 @@ export async function POST(request: Request) {
     const sanitizedVideoUrl = typeof video_url === "string" && video_url.trim().length > 0 ? video_url.trim() : null;
     const sanitizedVideoTitle = typeof video_title === "string" && video_title.trim().length > 0 ? video_title.trim() : null;
 
+    // Status: Tier 3 & 4 perlu approval, Tier 1 & 2 langsung published
+    const status = needsApproval(session.tier) ? "pending" : "published";
+
     await db.insert(beritaTable).values({
       id,
       judul,
@@ -89,6 +94,9 @@ export async function POST(request: Request) {
       videoTitle: sanitizedVideoTitle,
       penulis,
       createdBy: String(session.id),
+      status,
+      submittedByTier: session.tier,
+      pengusul: typeof pengusul === "string" && pengusul.trim() ? pengusul.trim() : null,
     });
 
     const fotoTambahanLimited: string[] = (foto_tambahan as string[]).slice(0, MAX_FOTO_TAMBAHAN);
