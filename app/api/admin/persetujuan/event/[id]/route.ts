@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { event as eventTable } from "@/lib/db/schema";
@@ -68,6 +69,10 @@ export async function PATCH(
       .update(eventTable)
       .set({ status: newStatus, reviewerNote: note.trim() || null })
       .where(eq(eventTable.id, id));
+
+    revalidatePath("/", "layout");
+    revalidatePath("/");
+    revalidatePath("/event");
 
     return NextResponse.json({ success: true, status: newStatus });
   } catch (err) {

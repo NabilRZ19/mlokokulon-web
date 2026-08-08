@@ -5,6 +5,9 @@ import { EventHero } from "@/components/event/EventHero";
 import { EventList } from "@/components/event/EventList";
 import { Reveal } from "@/components/ui/Reveal";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: `Event & Agenda Mendatang | ${SITE_NAME}`,
   description: "Jadwal kegiatan, agenda kerja, musyawarah, dan acara mendatang di Kelurahan Mlokomanis Kulon.",

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { desc } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { pengumuman as pengumumanTable } from "@/lib/db/schema";
@@ -79,6 +80,10 @@ export async function POST(request: Request) {
       submittedByTier: session?.tier ?? 1,
       createdBy: String(session?.id ?? "admin"),
     });
+
+    revalidatePath("/", "layout");
+    revalidatePath("/");
+    revalidatePath("/pengumuman");
 
     return NextResponse.json({ success: true, id, status: initialStatus }, { status: 201 });
   } catch (err) {

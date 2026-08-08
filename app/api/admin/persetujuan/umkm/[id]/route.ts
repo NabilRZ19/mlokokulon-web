@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import {
@@ -91,6 +92,10 @@ export async function PATCH(
       .update(umkmTable)
       .set({ status: newStatus, reviewerNote: note.trim() || null })
       .where(eq(umkmTable.id, id));
+
+    revalidatePath("/", "layout");
+    revalidatePath("/");
+    revalidatePath("/umkm");
 
     return NextResponse.json({ success: true, status: newStatus });
   } catch (err) {

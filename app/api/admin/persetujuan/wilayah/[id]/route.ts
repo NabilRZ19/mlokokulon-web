@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { rw as rwTable, rwKetuaPengajuan } from "@/lib/db/schema";
@@ -106,6 +107,10 @@ export async function PATCH(
         })
         .where(eq(rwTable.id, pengajuan.rwId));
     }
+
+    revalidatePath("/", "layout");
+    revalidatePath("/");
+    revalidatePath("/wilayah");
 
     return NextResponse.json({ success: true, status: newStatus });
   } catch (err) {

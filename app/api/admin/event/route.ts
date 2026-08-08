@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { asc } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { event as eventTable } from "@/lib/db/schema";
@@ -94,6 +95,10 @@ export async function POST(request: Request) {
       submittedByTier: session?.tier ?? 1,
       createdBy: String(session?.id ?? "admin"),
     });
+
+    revalidatePath("/", "layout");
+    revalidatePath("/");
+    revalidatePath("/event");
 
     return NextResponse.json({ success: true, id, status: initialStatus }, { status: 201 });
   } catch (err) {

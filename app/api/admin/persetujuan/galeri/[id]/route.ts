@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { galeri as galeriTable } from "@/lib/db/schema";
@@ -76,6 +77,10 @@ export async function PATCH(
       .update(galeriTable)
       .set({ status: newStatus, reviewerNote: note.trim() || null })
       .where(eq(galeriTable.id, id));
+
+    revalidatePath("/", "layout");
+    revalidatePath("/");
+    revalidatePath("/galeri");
 
     return NextResponse.json({ success: true, status: newStatus });
   } catch (err) {

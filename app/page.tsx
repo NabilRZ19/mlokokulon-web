@@ -13,7 +13,8 @@ import { getBeritaList, getEventList, getGaleriList, getPengumumanList } from "@
 import { kelurahanProfileData as p } from "@/lib/seed-data";
 import { SITE_NAME, pageOpenGraph } from "@/lib/seo";
 
-export const revalidate = 3600; // ISR 1 jam
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 // Foto kantor kelurahan di MinIO
 const heroFotoUrl = getPublicImageUrl("media/kantorkelurahan.png");

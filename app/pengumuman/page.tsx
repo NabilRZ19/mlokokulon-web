@@ -5,6 +5,9 @@ import { PengumumanHero } from "@/components/pengumuman/PengumumanHero";
 import { PengumumanList } from "@/components/pengumuman/PengumumanList";
 import { Reveal } from "@/components/ui/Reveal";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: `Pengumuman Resmi | ${SITE_NAME}`,
   description: "Pengumuman resmi dan informasi penting Kelurahan Mlokomanis Kulon untuk seluruh warga dan lembaga masyarakat.",
