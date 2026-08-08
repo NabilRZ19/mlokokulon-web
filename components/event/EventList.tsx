@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { CalendarIcon, MapPinIcon } from "@/components/admin/icons";
 import { getPublicImageUrl } from "@/lib/image-url";
 import type { EventItem } from "@/lib/types";
 
@@ -192,12 +193,14 @@ export function EventList({ list }: { list: EventItem[] }) {
                       {item.deskripsi}
                     </p>
 
-                    <div className="rounded-xl border border-border/80 bg-muted/40 p-2.5 space-y-1 text-xs">
-                      <p className="font-bold text-foreground flex items-center gap-1">
-                        📍 <span className="line-clamp-1">{item.lokasi}</span>
+                    <div className="rounded-xl border border-border/80 bg-muted/40 p-2.5 space-y-1.5 text-xs">
+                      <p className="font-bold text-foreground flex items-center gap-1.5">
+                        <MapPinIcon className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                        <span className="line-clamp-1">{item.lokasi}</span>
                       </p>
-                      <p className="text-[11px] text-muted-foreground">
-                        🗓️ {formatEventRange(item.tanggal_mulai, item.tanggal_selesai)}
+                      <p className="text-[11px] text-muted-foreground flex items-center gap-1.5">
+                        <CalendarIcon className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                        <span>{formatEventRange(item.tanggal_mulai, item.tanggal_selesai)}</span>
                       </p>
                     </div>
                   </div>

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
+import { CalendarIcon, TargetIcon, UserIcon } from "@/components/admin/icons";
 import { getPublicImageUrl } from "@/lib/image-url";
 import type { PengumumanItem } from "@/lib/types";
 
@@ -13,6 +14,11 @@ export default function CmsPengumumanPage() {
   const [sortOrder, setSortOrder] = useState<"newest" | "oldest" | "title-asc" | "title-desc">("newest");
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [userTier, setUserTier] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch("/api/admin/session").then((r) => r.json()).then((d) => setUserTier(d?.tier ?? null)).catch(() => null);
+  }, []);
 
   async function fetchList() {
     setLoading(true);
@@ -32,6 +38,10 @@ export default function CmsPengumumanPage() {
   useEffect(() => {
     fetchList();
   }, []);
+
+  const pendingCount = useMemo(() => {
+    return data.filter((item) => item.status === "pending").length;
+  }, [data]);
 
   const filteredAndSorted = useMemo(() => {
     let result = [...data];
@@ -84,6 +94,31 @@ export default function CmsPengumumanPage() {
         }
       />
 
+      {/* Banner Persetujuan — hanya Tier 1 & 2 */}
+      {(userTier === 1 || userTier === 2) && pendingCount > 0 && (
+        <div className="flex items-center justify-between gap-3 rounded-2xl border border-orange-200 bg-orange-50 p-4 shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-700 border border-orange-200">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-xs sm:text-sm font-bold text-orange-900">
+                {pendingCount} Pengumuman Menunggu Persetujuan Anda
+              </p>
+              <p className="text-[11px] text-orange-700">Diajukan oleh Admin RW atau Admin Kelurahan</p>
+            </div>
+          </div>
+          <Link
+            href="/admin/persetujuan/pengumuman"
+            className="shrink-0 rounded-xl bg-orange-600 px-3.5 py-2 text-xs font-bold text-white hover:bg-orange-700 transition-colors shadow-xs"
+          >
+            Review &amp; Setujui →
+          </Link>
+        </div>
+      )}
+
       {/* Filter Bar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-2xl border border-border bg-card p-4 shadow-2xs">
         <input
@@ -126,8 +161,9 @@ export default function CmsPengumumanPage() {
             >
               <div className="space-y-1.5 min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-bold text-emerald-900 border border-emerald-300">
-                    🎯 Target: {item.target_pengumuman}
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-bold text-emerald-900 border border-emerald-300">
+                    <TargetIcon className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                    <span>Target: {item.target_pengumuman}</span>
                   </span>
                   <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold border ${
                     item.status === "published"
@@ -140,9 +176,17 @@ export default function CmsPengumumanPage() {
                   </span>
                 </div>
                 <h3 className="font-heading text-base font-bold text-foreground leading-snug">{item.judul}</h3>
-                <p className="text-xs text-muted-foreground">
-                  📅 Tanggal: {new Date(item.tanggal).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })} • Penulis: {item.penulis}
-                </p>
+                <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground pt-0.5">
+                  <span className="inline-flex items-center gap-1">
+                    <CalendarIcon className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                    <span>Tanggal: {new Date(item.tanggal).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</span>
+                  </span>
+                  <span>•</span>
+                  <span className="inline-flex items-center gap-1">
+                    <UserIcon className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                    <span>Penulis: {item.penulis}</span>
+                  </span>
+                </div>
               </div>
 
               <div className="flex items-center gap-2 self-end sm:self-center shrink-0">

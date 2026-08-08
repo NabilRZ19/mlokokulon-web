@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CalendarIcon, TargetIcon } from "@/components/admin/icons";
 import { getPublicImageUrl } from "@/lib/image-url";
 import { getPengumumanBySlug } from "@/lib/queries";
 import { SITE_NAME } from "@/lib/seo";
@@ -44,12 +45,14 @@ export default async function DetailPengumumanPage({
 
         <div className="rounded-3xl border border-border bg-card p-6 sm:p-10 shadow-md space-y-6">
           <div className="space-y-4 border-b border-border pb-6">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-3.5 py-1 text-xs font-bold text-emerald-900 border border-emerald-300">
-                🎯 Target Pengumuman: {item.target_pengumuman}
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3.5 py-1 text-xs font-bold text-emerald-900 border border-emerald-300">
+                <TargetIcon className="h-3.5 w-3.5 text-emerald-700 shrink-0" />
+                <span>Target: {item.target_pengumuman}</span>
               </span>
-              <span className="text-xs font-bold text-muted-foreground">
-                📅 Tanggal: {new Date(item.tanggal).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}
+              <span className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground">
+                <CalendarIcon className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                <span>Tanggal: {new Date(item.tanggal).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</span>
               </span>
             </div>
 

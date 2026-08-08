@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CalendarIcon, MapPinIcon } from "@/components/admin/icons";
 import { getPublicImageUrl } from "@/lib/image-url";
 import { getEventBySlug } from "@/lib/queries";
 import { SITE_NAME } from "@/lib/seo";
@@ -70,8 +71,9 @@ export default async function DetailEventPage({
 
         <div className="rounded-3xl border border-border bg-card p-6 sm:p-10 shadow-md space-y-6">
           <div className="space-y-4 border-b border-border pb-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300/80 bg-emerald-100/80 px-3.5 py-1 text-xs font-bold text-emerald-900">
-              <span>📅 Agenda Event Kelurahan</span>
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-300/80 bg-emerald-100/80 px-3.5 py-1 text-xs font-bold text-emerald-900">
+              <CalendarIcon className="h-3.5 w-3.5 text-emerald-800 shrink-0" />
+              <span>Agenda Event Kelurahan</span>
             </div>
 
             <h1 className="font-heading text-2xl sm:text-4xl font-extrabold text-foreground leading-tight">
@@ -81,13 +83,19 @@ export default async function DetailEventPage({
             {/* Quick Specs Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-2">
               <div className="rounded-2xl border border-emerald-200 bg-emerald-50/50 p-4 space-y-1">
-                <span className="text-emerald-800 font-bold block text-[11px]">🗓️ Tanggal &amp; Waktu Pelaksanaan:</span>
-                <strong className="text-foreground block text-sm">{formatFullDateRange(item.tanggal_mulai, item.tanggal_selesai)}</strong>
+                <span className="text-emerald-800 font-bold flex items-center gap-1.5 text-[11px]">
+                  <CalendarIcon className="h-3.5 w-3.5 text-emerald-700 shrink-0" />
+                  <span>Tanggal &amp; Waktu Pelaksanaan:</span>
+                </span>
+                <strong className="text-foreground block text-sm pt-0.5">{formatFullDateRange(item.tanggal_mulai, item.tanggal_selesai)}</strong>
                 <span className="text-muted-foreground block text-xs">Pukul: {item.jam_mulai}</span>
               </div>
               <div className="rounded-2xl border border-border bg-muted/40 p-4 space-y-1">
-                <span className="text-muted-foreground font-bold block text-[11px]">📍 Lokasi / Tempat:</span>
-                <strong className="text-foreground block text-sm">{item.lokasi}</strong>
+                <span className="text-muted-foreground font-bold flex items-center gap-1.5 text-[11px]">
+                  <MapPinIcon className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                  <span>Lokasi / Tempat:</span>
+                </span>
+                <strong className="text-foreground block text-sm pt-0.5">{item.lokasi}</strong>
                 <span className="text-muted-foreground block text-xs">Panitia: {item.penulis}</span>
               </div>
             </div>

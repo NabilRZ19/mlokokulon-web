@@ -1,4 +1,4 @@
-"use client";
+import { TargetIcon } from "@/components/admin/icons";
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
@@ -173,8 +173,9 @@ export function PengumumanList({ list }: { list: PengumumanItem[] }) {
                   {/* Content Section */}
                   <div className="flex-1 space-y-3 w-full">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-3 py-0.5 text-xs font-bold text-emerald-900 border border-emerald-300 shadow-2xs">
-                        🎯 Target: {item.target_pengumuman}
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-0.5 text-xs font-bold text-emerald-900 border border-emerald-300 shadow-2xs">
+                        <TargetIcon className="h-3.5 w-3.5 text-emerald-700 shrink-0" />
+                        <span>Target: {item.target_pengumuman}</span>
                       </span>
                       <span className="text-xs text-muted-foreground font-medium">
                         • Ditayangkan: {formatFullDate(item.tanggal)}
