@@ -576,14 +576,28 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
                         <span className="text-[10px] font-bold text-primary text-center px-1">Upload</span>
                       )}
                     </div>
-                    <div className="text-xs space-y-1">
-                      <button
-                        type="button"
-                        onClick={() => fileInputRef.current?.click()}
-                        className="rounded-lg bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors"
-                      >
-                        {ketuaFotoUrl ? "Ganti Pasfoto Ketua" : "Upload Pasfoto Ketua RW"}
-                      </button>
+                    <div className="text-xs space-y-1.5">
+                      <div className="flex items-center flex-wrap gap-2">
+                        <button
+                          type="button"
+                          onClick={() => fileInputRef.current?.click()}
+                          className="rounded-lg bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors"
+                        >
+                          {ketuaFotoUrl ? "Ganti Pasfoto Ketua" : "Upload Pasfoto Ketua RW"}
+                        </button>
+                        {ketuaFotoUrl && (
+                          <button
+                            type="button"
+                            onClick={() => setKetuaFotoUrl(null)}
+                            className="inline-flex items-center gap-1 rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/10 transition-colors"
+                          >
+                            <svg className="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            Hapus Foto
+                          </button>
+                        )}
+                      </div>
                       {uploadingKetuaFoto && <p className="text-[11px] font-bold text-primary">Mengunggah foto…</p>}
                       <p className="text-muted-foreground text-[10px]">Format WebP, JPG, PNG (otomatis dikompresi)</p>
                     </div>
