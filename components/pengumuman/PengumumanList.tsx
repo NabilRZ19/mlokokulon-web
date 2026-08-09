@@ -98,16 +98,16 @@ export function PengumumanList({ list }: { list: PengumumanItem[] }) {
 
           {/* Filters Dropdown */}
           <div className="flex flex-wrap items-center gap-3">
-            {/* Filter Target Pengumuman */}
+            {/* Filter Kepada (Target Pengumuman) */}
             {uniqueTargets.length > 0 && (
               <div className="flex items-center gap-2">
-                <label className="text-xs font-bold text-muted-foreground whitespace-nowrap">Target:</label>
+                <label className="text-xs font-bold text-muted-foreground whitespace-nowrap">Kepada:</label>
                 <select
                   value={targetFilter}
                   onChange={(e) => setTargetFilter(e.target.value)}
                   className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold text-foreground focus:border-primary focus:outline-hidden"
                 >
-                  <option value="semua">Semua Target Warga</option>
+                  <option value="semua">Semua Warga</option>
                   {uniqueTargets.map((t) => (
                     <option key={t} value={t}>
                       {t}
@@ -151,63 +151,63 @@ export function PengumumanList({ list }: { list: PengumumanItem[] }) {
             const { day, month, year } = getDateComponents(item.tanggal);
 
             return (
-              <article
+              <Link
                 key={item.id}
-                className="overflow-hidden rounded-2xl border border-border bg-card p-5 sm:p-6 shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary/40 group"
+                href={`/pengumuman/${item.slug}`}
+                className="block group"
               >
-                <div className="flex flex-col md:flex-row items-start gap-5 sm:gap-6">
-                  {/* Badge Tanggal Menonjol */}
-                  <div className="flex shrink-0 items-center md:flex-col justify-center rounded-2xl border border-primary/30 bg-primary/10 p-3 text-center min-w-[90px] sm:min-w-[100px] w-full md:w-auto gap-3 md:gap-0 shadow-2xs">
-                    <span className="font-heading text-3xl sm:text-4xl font-extrabold text-primary leading-none">
-                      {day}
-                    </span>
-                    <div className="flex md:flex-col items-center gap-1 md:gap-0">
-                      <span className="text-xs font-extrabold uppercase tracking-wider text-primary">
-                        {month}
+                <article
+                  className="overflow-hidden rounded-2xl border border-border bg-card p-5 sm:p-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:border-primary/50"
+                >
+                  <div className="flex flex-col md:flex-row items-start gap-5 sm:gap-6">
+                    {/* Badge Tanggal Menonjol */}
+                    <div className="flex shrink-0 items-center md:flex-col justify-center rounded-2xl border border-primary/30 bg-primary/10 p-3 text-center min-w-[90px] sm:min-w-[100px] w-full md:w-auto gap-3 md:gap-0 shadow-2xs">
+                      <span className="font-heading text-3xl sm:text-4xl font-extrabold text-primary leading-none">
+                        {day}
                       </span>
-                      <span className="text-[11px] font-bold text-muted-foreground">
-                        {year}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Content Section */}
-                  <div className="flex-1 space-y-3 w-full">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-0.5 text-xs font-bold text-emerald-900 border border-emerald-300 shadow-2xs">
-                        <TargetIcon className="h-3.5 w-3.5 text-emerald-700 shrink-0" />
-                        <span>Target: {item.target_pengumuman}</span>
-                      </span>
-                      <span className="text-xs text-muted-foreground font-medium">
-                        • Ditayangkan: {formatFullDate(item.tanggal)}
-                      </span>
+                      <div className="flex md:flex-col items-center gap-1 md:gap-0">
+                        <span className="text-xs font-extrabold uppercase tracking-wider text-primary">
+                          {month}
+                        </span>
+                        <span className="text-[11px] font-bold text-muted-foreground">
+                          {year}
+                        </span>
+                      </div>
                     </div>
 
-                    <h2 className="font-heading text-lg sm:text-xl font-bold text-foreground group-hover:text-primary transition-colors leading-snug">
-                      <Link href={`/pengumuman/${item.slug}`}>
+                    {/* Content Section */}
+                    <div className="flex-1 space-y-3 w-full">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-0.5 text-xs font-bold text-emerald-900 border border-emerald-300 shadow-2xs">
+                          <TargetIcon className="h-3.5 w-3.5 text-emerald-700 shrink-0" />
+                          <span>Kepada: {item.target_pengumuman}</span>
+                        </span>
+                        <span className="text-xs text-muted-foreground font-medium">
+                          • Ditayangkan: {formatFullDate(item.tanggal)}
+                        </span>
+                      </div>
+
+                      <h2 className="font-heading text-lg sm:text-xl font-bold text-foreground group-hover:text-primary transition-colors leading-snug">
                         {item.judul}
-                      </Link>
-                    </h2>
+                      </h2>
 
-                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-3">
-                      {item.isi}
-                    </p>
+                      <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-3">
+                        {item.isi}
+                      </p>
 
-                    <div className="pt-2 flex items-center justify-between border-t border-border/60 text-xs">
-                      <span className="text-muted-foreground font-medium">
-                        Oleh: <strong className="text-foreground">{item.penulis}</strong>
-                      </span>
-                      <Link
-                        href={`/pengumuman/${item.slug}`}
-                        className="font-bold text-primary hover:underline inline-flex items-center gap-1"
-                      >
-                        <span>Baca Selengkapnya</span>
-                        <span>→</span>
-                      </Link>
+                      <div className="pt-2 flex items-center justify-between border-t border-border/60 text-xs">
+                        <span className="text-muted-foreground font-medium">
+                          Oleh: <strong className="text-foreground">{item.penulis}</strong>
+                        </span>
+                        <span className="font-bold text-primary group-hover:underline inline-flex items-center gap-1">
+                          <span>Baca Selengkapnya</span>
+                          <span>→</span>
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </article>
+                </article>
+              </Link>
             );
           })}
         </div>

@@ -129,7 +129,7 @@ export default function PersetujuanPengumumanPage() {
                       <span>Menunggu Persetujuan</span>
                     </span>
                     <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-bold text-emerald-900 border border-emerald-300">
-                      Target: {item.target_pengumuman}
+                      Kepada: {item.target_pengumuman}
                     </span>
                   </div>
                   <h3 className="font-heading text-base font-bold text-foreground leading-snug">{item.judul}</h3>
@@ -151,7 +151,7 @@ export default function PersetujuanPengumumanPage() {
                   <div><span className="text-muted-foreground">Pengusul:</span> <strong>{item.pengusul || item.penulis || "-"}</strong></div>
                   <div><span className="text-muted-foreground">Penulis:</span> {item.penulis}</div>
                   <div><span className="text-muted-foreground">Tier Admin:</span> {TIER_LABEL[item.submitted_by_tier ?? 3] ?? "-"}</div>
-                  <div><span className="text-muted-foreground">Target Warga:</span> {item.target_pengumuman}</div>
+                  <div><span className="text-muted-foreground">Kepada:</span> {item.target_pengumuman}</div>
                   <div><span className="text-muted-foreground">Tanggal Terbit:</span> {new Date(item.tanggal).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</div>
                 </div>
               </div>

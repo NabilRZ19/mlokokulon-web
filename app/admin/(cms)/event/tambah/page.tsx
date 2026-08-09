@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { ApprovalNoticeBanner } from "@/components/admin/ApprovalNoticeBanner";
-import { ImageCropperModal } from "@/components/admin/ImageCropperModal";
 import { compressImage } from "@/lib/image-compression";
 
 export default function TambahEventPage() {
@@ -18,17 +17,15 @@ export default function TambahEventPage() {
   const [deskripsi, setDeskripsi] = useState("");
   const [tanggalMulai, setTanggalMulai] = useState(new Date().toISOString().split("T")[0]);
   const [tanggalSelesai, setTanggalSelesai] = useState("");
-  const [jamMulai, setJamMulai] = useState("08:00 WIB - Selesai");
-  const [lokasi, setLokasi] = useState("Pendopo Kelurahan Mlokomanis Kulon");
+  const [jamMulai, setJamMulai] = useState("08:00 WIB");
+  const [lokasi, setLokasi] = useState("Pendopo Kelurahan");
   const [penulis, setPenulis] = useState("");
-  
-  // Cover / Thumbnail Upload State
+
+  // Cover / Thumbnail Upload State (Direct Upload)
   const [gambarCoverUrl, setGambarCoverUrl] = useState<string | null>(null);
   const [coverPreview, setCoverPreview] = useState<string | null>(null);
   const [coverUploading, setCoverUploading] = useState(false);
   const [coverError, setCoverError] = useState<string | null>(null);
-  const [rawImage, setRawImage] = useState<string | null>(null);
-  const [cropperOpen, setCropperOpen] = useState(false);
   const coverInputRef = useRef<HTMLInputElement>(null);
 
   const [submitting, setSubmitting] = useState(false);
@@ -41,7 +38,7 @@ export default function TambahEventPage() {
         if (res.ok) {
           const json = await res.json();
           setSession(json);
-          setPenulis(json.nama || "Panitia Kegiatan");
+          setPenulis(json.nama || "Seksi Kelurahan");
         }
       } catch {
         // ignore
@@ -61,38 +58,34 @@ export default function TambahEventPage() {
     );
   }
 
-  // Cover Image Handling & Crop
-  function handleCoverFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+  // Direct Cover File Upload Handling
+  async function handleCoverFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const selected = e.target.files?.[0];
     if (!selected) return;
-    const rawUrl = URL.createObjectURL(selected);
-    setRawImage(rawUrl);
-    setCropperOpen(true);
-    if (e.target) e.target.value = "";
-  }
 
-  async function handleCropComplete(croppedBlob: Blob, previewUrl: string) {
-    setCoverPreview(previewUrl);
+    const localUrl = URL.createObjectURL(selected);
+    setCoverPreview(localUrl);
     setCoverUploading(true);
     setCoverError(null);
 
     try {
-      const file = new File([croppedBlob], "cover-event.webp", { type: "image/webp" });
-      const compressed = await compressImage(file);
+      const compressed = await compressImage(selected);
 
       const fd = new FormData();
       fd.append("file", compressed, compressed.name);
       fd.append("folder", "event");
 
       const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
-      if (!res.ok) throw new Error("Upload foto event gagal.");
+      if (!res.ok) throw new Error("Upload foto poster event gagal.");
 
       const data = await res.json();
       setGambarCoverUrl(data.url);
     } catch (err) {
       setCoverError(err instanceof Error ? err.message : "Upload gagal.");
+      setCoverPreview(null);
     } finally {
       setCoverUploading(false);
+      if (e.target) e.target.value = "";
     }
   }
 
@@ -144,7 +137,7 @@ export default function TambahEventPage() {
     <div className="space-y-6 max-w-4xl">
       <AdminPageHeader
         title="Buat Agenda Event Baru"
-        description="Kelola dan buat agenda kegiatan kemasyarakatan."
+        description="Kelola dan publikasikan kegiatan atau event mendatang di kelurahan."
         actions={
           <Link
             href="/admin/event"
@@ -167,23 +160,56 @@ export default function TambahEventPage() {
         {/* ── Section 1: Informasi Utama Event ── */}
         <section className="rounded-2xl border border-border bg-card p-6 shadow-sm space-y-4">
           <div className="border-b border-border pb-3">
-            <h2 className="font-heading text-base font-bold text-foreground">1. Informasi Utama Agenda Event</h2>
-            <p className="text-xs text-muted-foreground mt-0.5">Judul kegiatan, jadwal tanggal, lokasi, dan penyelenggara.</p>
+            <h2 className="font-heading text-base font-bold text-foreground">1. Informasi Utama Event</h2>
+            <p className="text-xs text-muted-foreground mt-0.5">Judul kegiatan, tempat/lokasi, dan penyelenggara.</p>
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-foreground block">Judul Agenda Event *</label>
+            <label className="text-xs font-bold text-foreground block">Judul Event / Kegiatan *</label>
             <input
               type="text"
               required
               value={judul}
               onChange={(e) => handleJudulChange(e.target.value)}
-              placeholder="Contoh: Posyandu Balita &amp; Posbindu PTM Serentak"
+              placeholder="Contoh: Jalan Sehat Bersama Warga Kelurahan Mlokomanis Kulon"
               className="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-xs text-foreground focus:ring-2 focus:ring-emerald-500/50"
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-foreground block">Lokasi Pelaksanaan *</label>
+              <input
+                type="text"
+                required
+                value={lokasi}
+                onChange={(e) => setLokasi(e.target.value)}
+                placeholder="Contoh: Pendopo Kelurahan Mlokomanis Kulon"
+                className="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-xs text-foreground focus:ring-2 focus:ring-emerald-500/50"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-foreground block">Panitia / Penyelenggara *</label>
+              <input
+                type="text"
+                required
+                value={penulis}
+                onChange={(e) => setPenulis(e.target.value)}
+                className="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-xs text-foreground focus:ring-2 focus:ring-emerald-500/50"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* ── Section 2: Waktu Pelaksanaan Event ── */}
+        <section className="rounded-2xl border border-border bg-card p-6 shadow-sm space-y-4">
+          <div className="border-b border-border pb-3">
+            <h2 className="font-heading text-base font-bold text-foreground">2. Waktu Pelaksanaan Event</h2>
+            <p className="text-xs text-muted-foreground mt-0.5">Tanggal mulai, tanggal selesai, dan jam acara.</p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-foreground block">Tanggal Mulai *</label>
               <input
@@ -196,7 +222,7 @@ export default function TambahEventPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-foreground block">Tanggal Selesai (Opsional jika 1 hari)</label>
+              <label className="text-xs font-bold text-foreground block">Tanggal Selesai (Opsional)</label>
               <input
                 type="date"
                 value={tanggalSelesai}
@@ -204,9 +230,7 @@ export default function TambahEventPage() {
                 className="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-xs text-foreground focus:ring-2 focus:ring-emerald-500/50"
               />
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-foreground block">Jam Pelaksanaan *</label>
               <input
@@ -214,42 +238,19 @@ export default function TambahEventPage() {
                 required
                 value={jamMulai}
                 onChange={(e) => setJamMulai(e.target.value)}
-                placeholder="Contoh: 08:00 WIB - 12:00 WIB"
+                placeholder="Contoh: 08:00 WIB - Selesai"
                 className="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-xs text-foreground focus:ring-2 focus:ring-emerald-500/50"
               />
             </div>
-
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold text-foreground block">Lokasi / Tempat Pelaksanaan *</label>
-              <input
-                type="text"
-                required
-                value={lokasi}
-                onChange={(e) => setLokasi(e.target.value)}
-                placeholder="Contoh: Balai RW 05 Pencil"
-                className="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-xs text-foreground focus:ring-2 focus:ring-emerald-500/50"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-foreground block">Panitia / Penyelenggara *</label>
-            <input
-              type="text"
-              required
-              value={penulis}
-              onChange={(e) => setPenulis(e.target.value)}
-              className="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-xs text-foreground focus:ring-2 focus:ring-emerald-500/50"
-            />
           </div>
         </section>
 
-        {/* ── Section 2: Foto Headline / Cover Event ── */}
+        {/* ── Section 3: Poster / Flyer Event (Direct Upload) ── */}
         <section className="rounded-2xl border border-border bg-card p-6 shadow-sm space-y-4">
           <div className="border-b border-border pb-3 flex items-center justify-between">
             <div>
-              <h2 className="font-heading text-base font-bold text-foreground">2. Foto Cover / Flyer Event</h2>
-              <p className="text-xs text-muted-foreground mt-0.5">Unggah poster, flyer, atau dokumentasi tempat kegiatan.</p>
+              <h2 className="font-heading text-base font-bold text-foreground">3. Poster / Flyer Utama Event</h2>
+              <p className="text-xs text-muted-foreground mt-0.5">Unggah foto banner atau poster resmi kegiatan (Direct Upload &amp; Otomatis Kompresi).</p>
             </div>
             <span className="text-xs font-bold text-muted-foreground">(Opsional)</span>
           </div>
@@ -268,7 +269,7 @@ export default function TambahEventPage() {
               <img src={coverPreview} alt="Preview Cover" className="max-h-72 w-full object-contain rounded-xl bg-black/5" />
               {coverUploading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/60 text-xs font-bold text-white backdrop-blur-xs">
-                  Mengompres &amp; mengunggah gambar...
+                  Mengompres &amp; mengunggah gambar secara langsung...
                 </div>
               )}
               <div className="mt-3 flex items-center gap-2">
@@ -277,41 +278,41 @@ export default function TambahEventPage() {
                   onClick={() => coverInputRef.current?.click()}
                   className="rounded-xl bg-emerald-600/10 px-4 py-2 text-xs font-bold text-emerald-700 hover:bg-emerald-600/20 transition-colors"
                 >
-                  Ganti Foto
+                  Ganti Poster
                 </button>
                 <button
                   type="button"
                   onClick={handleRemoveCover}
                   className="rounded-xl bg-destructive/10 px-4 py-2 text-xs font-bold text-destructive hover:bg-destructive/20 transition-colors"
                 >
-                  Hapus Foto
+                  Hapus Poster
                 </button>
               </div>
             </div>
           ) : (
             <div
               onClick={() => coverInputRef.current?.click()}
-              className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border p-8 text-center hover:border-emerald-500/50 hover:bg-emerald-500/5 transition-all"
+              className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border p-8 text-center hover:border-emerald-500/50 hover:bg-emerald-50/20 transition-all"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 mb-2">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 mb-2">
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <rect x="3.5" y="4.5" width="17" height="15" rx="1.5" />
                   <circle cx="8.5" cy="9.5" r="1.5" />
                   <path d="m5 17 4.5-5 3 3.5L16 11l4 5" />
                 </svg>
               </div>
-              <span className="text-xs font-bold text-emerald-700">+ Klik / Tarik Foto Cover / Poster Event di Sini</span>
-              <span className="text-[11px] text-muted-foreground mt-1">Format WebP, JPG, PNG (Otomatis Potong &amp; Kompres WebP)</span>
+              <span className="text-xs font-bold text-emerald-700">+ Klik / Pilih Poster Event (Direct Upload)</span>
+              <span className="text-[11px] text-muted-foreground mt-1">Format WebP, JPG, PNG (Otomatis Kompresi WebP)</span>
             </div>
           )}
           {coverError && <p className="text-xs text-destructive font-semibold">{coverError}</p>}
         </section>
 
-        {/* ── Section 3: Deskripsi & Rincian Agenda ── */}
+        {/* ── Section 4: Deskripsi & Rincian Agenda ── */}
         <section className="rounded-2xl border border-border bg-card p-6 shadow-sm space-y-4">
           <div className="border-b border-border pb-3">
-            <h2 className="font-heading text-base font-bold text-foreground">3. Deskripsi &amp; Agenda Acara</h2>
-            <p className="text-xs text-muted-foreground mt-0.5">Tuliskan deskripsi lengkap, persyaratan kehadiran, atau susunan acara.</p>
+            <h2 className="font-heading text-base font-bold text-foreground">4. Deskripsi &amp; Rincian Agenda</h2>
+            <p className="text-xs text-muted-foreground mt-0.5">Tuliskan rincian susunan acara, syarat keikutsertaan, atau imbauan bagi warga.</p>
           </div>
 
           <div className="space-y-1.5">
@@ -320,7 +321,7 @@ export default function TambahEventPage() {
               rows={8}
               value={deskripsi}
               onChange={(e) => setDeskripsi(e.target.value)}
-              placeholder="Tuliskan gambaran acara, susunan agenda, dan informasi penunjang..."
+              placeholder="Tuliskan rincian agenda acara..."
               className="w-full rounded-xl border border-border bg-background p-4 text-xs text-foreground focus:ring-2 focus:ring-emerald-500/50 font-sans leading-relaxed"
             />
           </div>
@@ -343,13 +344,6 @@ export default function TambahEventPage() {
           </button>
         </div>
       </form>
-
-      <ImageCropperModal
-        isOpen={cropperOpen}
-        imageSrc={rawImage}
-        onClose={() => setCropperOpen(false)}
-        onCropComplete={handleCropComplete}
-      />
     </div>
   );
 }

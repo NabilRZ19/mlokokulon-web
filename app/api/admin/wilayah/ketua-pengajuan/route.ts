@@ -25,15 +25,15 @@ export async function POST(request: Request) {
     if (!ketua_nama_baru || typeof ketua_nama_baru !== "string" || !ketua_nama_baru.trim()) {
       return NextResponse.json({ error: "Nama Ketua RW baru wajib diisi" }, { status: 400 });
     }
-    if (!pengusul || typeof pengusul !== "string" || !pengusul.trim()) {
-      return NextResponse.json({ error: "Nama pengusul wajib diisi" }, { status: 400 });
-    }
+    const finalPengusul = (pengusul && typeof pengusul === "string" && pengusul.trim())
+      ? pengusul.trim()
+      : session!.nama;
 
     await db.insert(rwKetuaPengajuan).values({
       rwId: rw_id,
       diajukanOlehId: session!.id,
       diajukanOlehNama: session!.nama,
-      pengusul: pengusul.trim(),
+      pengusul: finalPengusul,
       ketuaNamaBaru: ketua_nama_baru.trim(),
       ketuaFotoUrlBaru: typeof ketua_foto_url_baru === "string" && ketua_foto_url_baru.trim()
         ? ketua_foto_url_baru.trim()

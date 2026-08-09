@@ -163,7 +163,7 @@ export default function CmsPengumumanPage() {
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-bold text-emerald-900 border border-emerald-300">
                     <TargetIcon className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                    <span>Target: {item.target_pengumuman}</span>
+                    <span>Kepada: {item.target_pengumuman}</span>
                   </span>
                   <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold border ${
                     item.status === "published"

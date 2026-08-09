@@ -50,10 +50,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Password harus mengombinasikan huruf dan angka" }, { status: 400 });
     }
 
-    // Validasi nilai tier — hanya 1, 2, atau 3 yang valid
+    // Validasi nilai tier — 1, 2, 3, atau 4 yang valid
     const tierNum = Number(tier);
-    if (![1, 2, 3].includes(tierNum)) {
-      return NextResponse.json({ error: "Nilai tier tidak valid (harus 1, 2, atau 3)" }, { status: 400 });
+    if (![1, 2, 3, 4].includes(tierNum)) {
+      return NextResponse.json({ error: "Nilai tier tidak valid (harus 1, 2, 3, atau 4)" }, { status: 400 });
     }
 
     // Hanya Tier 1 yang boleh membuat akun Tier 1 (cegah Tier 2 bikin Super Admin baru)

@@ -136,7 +136,7 @@ export default function PreviewPengumumanApprovalPage({
               <div className="flex flex-wrap items-center gap-3">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3.5 py-1 text-xs font-bold text-emerald-900 border border-emerald-300">
                   <TargetIcon className="h-3.5 w-3.5 text-emerald-700 shrink-0" />
-                  <span>Target: {data.target_pengumuman}</span>
+                  <span>Kepada: {data.target_pengumuman}</span>
                 </span>
                 <span className="inline-flex items-center gap-1 text-xs font-bold text-muted-foreground">
                   <CalendarIcon className="h-3.5 w-3.5 text-muted-foreground shrink-0" />

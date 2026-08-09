@@ -76,8 +76,8 @@ export async function PUT(
     }
 
     const tierNum = Number(tier);
-    if (![1, 2, 3].includes(tierNum)) {
-      return NextResponse.json({ error: "Nilai tier tidak valid (harus 1, 2, atau 3)" }, { status: 400 });
+    if (![1, 2, 3, 4].includes(tierNum)) {
+      return NextResponse.json({ error: "Nilai tier tidak valid (harus 1, 2, 3, atau 4)" }, { status: 400 });
     }
 
     // Ambil tier target saat ini — cegah Tier 2 mengedit/ambil-alih akun Tier 1
