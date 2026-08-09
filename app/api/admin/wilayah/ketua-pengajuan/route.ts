@@ -7,8 +7,9 @@ import { canManageWilayah, requireTier } from "@/lib/auth-policy";
 import { handleApiError } from "@/lib/api-error";
 
 /**
- * POST: Tier 3/4 mengajukan perubahan Ketua RW untuk RW tertentu.
- * Disimpan ke tabel rw_ketua_pengajuan dengan status 'pending'.
+ * POST: Tier 3/4 mengajukan seluruh perubahan data RW (termasuk Ketua RW).
+ * Seluruh payload disimpan sebagai JSON snapshot ke tabel rw_ketua_pengajuan.
+ * Akan diterapkan ke DB hanya setelah disetujui oleh Tier 1/2.
  */
 export async function POST(request: Request) {
   const session = await getSession();
@@ -17,7 +18,7 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { rw_id, pengusul, ketua_nama_baru, ketua_foto_url_baru } = body;
+    const { rw_id, pengusul, ketua_nama_baru, ketua_foto_url_baru, payload_json } = body;
 
     if (!rw_id || typeof rw_id !== "string") {
       return NextResponse.json({ error: "ID RW wajib diisi" }, { status: 400 });
@@ -25,9 +26,11 @@ export async function POST(request: Request) {
     if (!ketua_nama_baru || typeof ketua_nama_baru !== "string" || !ketua_nama_baru.trim()) {
       return NextResponse.json({ error: "Nama Ketua RW baru wajib diisi" }, { status: 400 });
     }
-    const finalPengusul = (pengusul && typeof pengusul === "string" && pengusul.trim())
-      ? pengusul.trim()
-      : session!.nama;
+
+    const finalPengusul =
+      pengusul && typeof pengusul === "string" && pengusul.trim()
+        ? pengusul.trim()
+        : session!.nama;
 
     await db.insert(rwKetuaPengajuan).values({
       rwId: rw_id,
@@ -35,19 +38,26 @@ export async function POST(request: Request) {
       diajukanOlehNama: session!.nama,
       pengusul: finalPengusul,
       ketuaNamaBaru: ketua_nama_baru.trim(),
-      ketuaFotoUrlBaru: typeof ketua_foto_url_baru === "string" && ketua_foto_url_baru.trim()
-        ? ketua_foto_url_baru.trim()
-        : null,
+      ketuaFotoUrlBaru:
+        typeof ketua_foto_url_baru === "string" && ketua_foto_url_baru.trim()
+          ? ketua_foto_url_baru.trim()
+          : null,
+      payloadJson:
+        payload_json && typeof payload_json === "string" ? payload_json : null,
       status: "pending",
     });
 
     return NextResponse.json({ success: true }, { status: 201 });
   } catch (err) {
-    return handleApiError("api/admin/wilayah/ketua-pengajuan POST", err, "Gagal mengajukan perubahan Ketua RW");
+    return handleApiError(
+      "api/admin/wilayah/ketua-pengajuan POST",
+      err,
+      "Gagal mengajukan perubahan data RW"
+    );
   }
 }
 
-/** GET: Ambil semua pengajuan yang pernah dibuat (untuk history) */
+/** GET: Ambil semua pengajuan (untuk history/riwayat) */
 export async function GET(request: Request) {
   const session = await getSession();
   const deny = requireTier(session, canManageWilayah, [1, 3, 4]);
@@ -75,12 +85,17 @@ export async function GET(request: Request) {
         pengusul: r.pengusul,
         ketua_nama_baru: r.ketuaNamaBaru,
         ketua_foto_url_baru: r.ketuaFotoUrlBaru,
+        payload_json: r.payloadJson,
         status: r.status,
         reviewer_note: r.reviewerNote,
         created_at: r.createdAt,
       }))
     );
   } catch (err) {
-    return handleApiError("api/admin/wilayah/ketua-pengajuan GET", err, "Gagal mengambil riwayat pengajuan");
+    return handleApiError(
+      "api/admin/wilayah/ketua-pengajuan GET",
+      err,
+      "Gagal mengambil riwayat pengajuan"
+    );
   }
 }

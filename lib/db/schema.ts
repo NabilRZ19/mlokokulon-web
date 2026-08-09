@@ -53,6 +53,8 @@ export const rwKetuaPengajuan = mysqlTable("rw_ketua_pengajuan", {
   pengusul: varchar("pengusul", { length: 255 }).notNull(),
   ketuaNamaBaru: varchar("ketua_nama_baru", { length: 255 }).notNull(),
   ketuaFotoUrlBaru: varchar("ketua_foto_url_baru", { length: 512 }),
+  // Seluruh snapshot payload perubahan data RW dari Tier 3/4 (JSON string)
+  payloadJson: text("payload_json"),
   status: mysqlEnum("status", ["pending", "approved", "rejected"]).notNull().default("pending"),
   reviewerNote: text("reviewer_note"),
   createdAt: timestamp("created_at").defaultNow(),

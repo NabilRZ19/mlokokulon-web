@@ -193,18 +193,13 @@ export function StrukturClientView({
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             {rwList.map((rw) => {
-              const ketuaRw = rw.struktur_pengurus?.find(
-                (p) =>
-                  p.jabatan.toLowerCase().includes("ketua rw") ||
-                  p.jabatan.toLowerCase().includes("ketua")
-              );
-
               // Ambil kode RW & Dusun dengan aman dari "RW 01 - Bulurejo"
               const parts = rw.nama_rw.split("-").map((s) => s.trim());
               const rwCode = parts[0] || rw.nama_rw;
               const dusunName = parts[1] || rw.cakupan_dusun;
-              const hasPhoto = Boolean((ketuaRw as any)?.foto_url);
-              const fotoUrl = hasPhoto ? getPublicImageUrl((ketuaRw as any).foto_url) : null;
+              // Gunakan kolom rw.ketua_nama & rw.ketua_foto_url langsung — sinkron dengan approval
+              const ketuaNamaRw = rw.ketua_nama || null;
+              const fotoUrl = rw.ketua_foto_url ? getPublicImageUrl(rw.ketua_foto_url) : null;
 
               return (
                 <div
@@ -226,7 +221,7 @@ export function StrukturClientView({
                       /* eslint-disable-next-line @next/next/no-img-element */
                       <img
                         src={fotoUrl}
-                        alt={ketuaRw?.nama || rwCode}
+                        alt={ketuaNamaRw || rwCode}
                         className="h-full w-full rounded-full object-cover"
                       />
                     ) : (
@@ -241,7 +236,7 @@ export function StrukturClientView({
 
                   <div className="w-full space-y-1">
                     <p className="font-heading text-sm font-extrabold text-foreground line-clamp-2 leading-tight">
-                      {ketuaRw ? ketuaRw.nama : "Data belum diberikan oleh pihak terkait"}
+                      {ketuaNamaRw || "Data belum diberikan oleh pihak terkait"}
                     </p>
                     <p className="text-[11px] font-bold text-primary">
                       Ketua {rwCode}

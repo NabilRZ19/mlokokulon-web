@@ -285,7 +285,7 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
     }
   }
 
-  // ── Submit Form Data RW & Pengurus (Dengan Approval untuk Tier 3/4) ──
+  // ── Submit Form Data RW & Pengurus ──
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
@@ -295,9 +295,10 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
     if (!namaRw.trim()) errorIds.push("namaRw");
     if (!cakupanDusun.trim()) errorIds.push("cakupanDusun");
     if (!jumlahRt) errorIds.push("jumlahRt");
+    if (!ketuaNama.trim()) errorIds.push("ketuaNama");
 
     if (errorIds.length > 0) {
-      setError("Nama RW, Cakupan Dusun, dan Jumlah RT wajib diisi.");
+      setError("Nama RW, Cakupan Dusun, Jumlah RT, dan Nama Ketua RW wajib diisi.");
       scrollToFirstError(errorIds);
       return;
     }
@@ -305,91 +306,72 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
     setSubmitting(true);
 
     try {
-      // Jika Tier 3/4 mengedit Ketua RW, buat pengajuan perubahan ke rw_ketua_pengajuan
-      if ((userTier === 3 || userTier === 4) && ketuaNama.trim()) {
-        await fetch("/api/admin/wilayah/ketua-pengajuan", {
+      // Gabungkan struktur_pengurus
+      const combinedPengurus: PengurusItem[] = [];
+
+      rwCoreList.forEach((p) => {
+        if (p.nama.trim()) {
+          combinedPengurus.push({ nama: p.nama.trim(), jabatan: p.jabatan.trim() || "Pengurus RW", kategori: "rw" });
+        }
+      });
+      rtPengurusList.forEach((p) => {
+        if (p.nama.trim()) {
+          combinedPengurus.push({ nama: p.nama.trim(), jabatan: p.jabatan.trim() || "Pengurus RT", kategori: "rt" });
+        }
+      });
+      orgBlocks.forEach((block) => {
+        const orgName = block.namaOrganisasi.trim() || "Organisasi Kemasyarakatan";
+        block.pengurus.forEach((p) => {
+          if (p.nama.trim()) {
+            combinedPengurus.push({ nama: p.nama.trim(), jabatan: p.jabatan.trim() || "Pengurus", kategori: "organisasi", organisasi: orgName, icon: block.icon || "users" });
+          }
+        });
+      });
+
+      const fullPayload = {
+        nama_rw: namaRw.trim(),
+        cakupan_dusun: cakupanDusun.trim(),
+        jumlah_rt: Number(jumlahRt),
+        is_kampung_kb: isKampungKb,
+        ketua_nama: ketuaNama.trim(),
+        ketua_foto_url: ketuaFotoUrl ?? null,
+        deskripsi_singkat: deskripsiSingkat,
+        potensi,
+        statistik: { jumlah_kk: Number(jumlahKk), jumlah_jiwa: Number(jumlahJiwa) },
+        struktur_pengurus: combinedPengurus,
+      };
+
+      if (userTier === 3 || userTier === 4) {
+        // Tier 3/4: Semua perubahan wajib melalui jalur approval
+        const res = await fetch("/api/admin/wilayah/ketua-pengajuan", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             rw_id: id,
             pengusul: userName || "Admin RW",
             ketua_nama_baru: ketuaNama.trim(),
-            ketua_foto_url_baru: ketuaFotoUrl,
+            ketua_foto_url_baru: ketuaFotoUrl ?? null,
+            payload_json: JSON.stringify(fullPayload),
           }),
-        }).catch(() => null);
-      }
-
-      // Gabungkan struktur_pengurus untuk dikirim ke API & DB
-      const combinedPengurus: PengurusItem[] = [];
-
-      // 1. RW Core (Sekretaris, Bendahara, dll)
-      rwCoreList.forEach((p) => {
-        if (p.nama.trim()) {
-          combinedPengurus.push({
-            nama: p.nama.trim(),
-            jabatan: p.jabatan.trim() || "Pengurus RW",
-            kategori: "rw",
-          });
-        }
-      });
-
-      // 2. Pengurus RT
-      rtPengurusList.forEach((p) => {
-        if (p.nama.trim()) {
-          combinedPengurus.push({
-            nama: p.nama.trim(),
-            jabatan: p.jabatan.trim() || "Pengurus RT",
-            kategori: "rt",
-          });
-        }
-      });
-
-      // 3. Organisasi Tambahan
-      orgBlocks.forEach((block) => {
-        const orgName = block.namaOrganisasi.trim() || "Organisasi Kemasyarakatan";
-        block.pengurus.forEach((p) => {
-          if (p.nama.trim()) {
-            combinedPengurus.push({
-              nama: p.nama.trim(),
-              jabatan: p.jabatan.trim() || "Pengurus",
-              kategori: "organisasi",
-              organisasi: orgName,
-              icon: block.icon || "users",
-            });
-          }
         });
-      });
-
-      const payload = {
-        nama_rw: namaRw,
-        cakupan_dusun: cakupanDusun,
-        jumlah_rt: Number(jumlahRt),
-        is_kampung_kb: isKampungKb,
-        ketua_nama: userTier === 1 || userTier === 2 ? ketuaNama.trim() : undefined,
-        ketua_foto_url: userTier === 1 || userTier === 2 ? ketuaFotoUrl : undefined,
-        deskripsi_singkat: deskripsiSingkat,
-        potensi,
-        statistik: {
-          jumlah_kk: Number(jumlahKk),
-          jumlah_jiwa: Number(jumlahJiwa),
-        },
-        struktur_pengurus: combinedPengurus,
-      };
-
-      const res = await fetch(`/api/admin/wilayah/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "Gagal memperbarui data RW.");
-      }
-
-      if (userTier === 3 || userTier === 4) {
-        setSuccessMsg("✓ Perubahan data Wilayah & Ketua RW berhasil diajukan dan menunggu persetujuan Admin Kelurahan (Tier 1/2).");
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.error || "Gagal mengajukan perubahan data RW.");
+        }
+        setSuccessMsg(
+          "✓ Seluruh perubahan data RW (statistik, pengurus, dan Ketua RW) telah diajukan dan menunggu persetujuan Admin Kelurahan (Tier 1/2)."
+        );
       } else {
+        // Tier 1: Simpan langsung ke DB
+        const res = await fetch(`/api/admin/wilayah/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(fullPayload),
+        });
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.error || "Gagal memperbarui data RW.");
+        }
         router.push("/admin/wilayah");
         router.refresh();
       }
@@ -543,15 +525,9 @@ export default function EditWilayahPage({ params }: { params: Promise<{ id: stri
                     Ketua RW, Sekretaris RW, Bendahara RW, dan jajaran pengurus inti wilayah.
                   </p>
                 </div>
-                {userTier === 3 || userTier === 4 ? (
-                  <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-bold text-orange-800 border border-orange-300 shrink-0">
-                    Perlu Approval Tier 1/2
-                  </span>
-                ) : (
-                  <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800 border border-emerald-300 shrink-0">
-                    Direct Access
-                  </span>
-                )}
+                <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-bold text-orange-800 border border-orange-300 shrink-0">
+                  Perlu Approval Tier 1/2
+                </span>
               </div>
 
               {/* Sub-Form Jabatan Ketua RW */}
