@@ -12,15 +12,33 @@ export default function AdminWilayahPage() {
   const [rwList, setRwList] = useState<Rw[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [userTier, setUserTier] = useState<number | null>(null);
+  const [pendingCount, setPendingCount] = useState<number>(0);
+
+  useEffect(() => {
+    fetch("/api/admin/session")
+      .then((r) => r.json())
+      .then((d) => setUserTier(d?.tier ?? null))
+      .catch(() => null);
+  }, []);
 
   async function fetchWilayah() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/admin/wilayah");
-      if (!res.ok) throw new Error("Gagal memuat data wilayah RW.");
-      const data = await res.json();
-      setRwList(data);
+      const [rwRes, countsRes] = await Promise.all([
+        fetch("/api/admin/wilayah"),
+        fetch("/api/admin/persetujuan/counts"),
+      ]);
+
+      if (!rwRes.ok) throw new Error("Gagal memuat data wilayah RW.");
+      const rwData = await rwRes.json();
+      setRwList(rwData);
+
+      if (countsRes.ok) {
+        const counts = await countsRes.json();
+        setPendingCount(counts.wilayah ?? 0);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Terjadi kesalahan.");
     } finally {
@@ -33,15 +51,40 @@ export default function AdminWilayahPage() {
   }, []);
 
   return (
-    <div>
+    <div className="space-y-6">
       <AdminPageHeader title="Wilayah Administratif (RW)" actions={<RefreshButton onClick={fetchWilayah} />} />
 
-      <p className="mb-4 text-xs text-muted-foreground font-medium">
-        Tier 1 &amp; Tier 3. Pilih RW dari daftar di bawah ini untuk memperbarui data statistik, potensi, maupun susunan pengurus RW.
+      {/* Banner Persetujuan — hanya Tier 1 & 2 */}
+      {(userTier === 1 || userTier === 2) && pendingCount > 0 && (
+        <div className="flex items-center justify-between gap-3 rounded-2xl border border-orange-200 bg-orange-50 p-4 shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-700 border border-orange-200">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-xs sm:text-sm font-bold text-orange-900">
+                {pendingCount} Pengajuan Perubahan Wilayah / Ketua RW Menunggu Persetujuan Anda
+              </p>
+              <p className="text-[11px] text-orange-700">Diajukan oleh Admin RW</p>
+            </div>
+          </div>
+          <Link
+            href="/admin/persetujuan/wilayah"
+            className="shrink-0 rounded-xl bg-orange-600 px-3.5 py-2 text-xs font-bold text-white hover:bg-orange-700 transition-colors shadow-xs"
+          >
+            Review &amp; Setujui →
+          </Link>
+        </div>
+      )}
+
+      <p className="text-xs text-muted-foreground font-medium">
+        Pilih RW dari daftar di bawah ini untuk memperbarui data statistik, potensi, maupun susunan pengurus RW.
       </p>
 
       {error && (
-        <div className="mb-4 rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive font-medium">
+        <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive font-medium">
           {error}
         </div>
       )}

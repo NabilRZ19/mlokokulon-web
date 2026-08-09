@@ -47,21 +47,23 @@ export function PengumumanDetailView({ item }: { item: PengumumanItem }) {
           {coverUrl && (
             <div
               onClick={() => setLightboxOpen(true)}
-              className="group relative cursor-pointer overflow-hidden rounded-2xl border border-border max-h-[420px] w-full bg-muted shadow-sm transition-all hover:opacity-95"
+              className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-muted cursor-pointer group"
+              title="Klik untuk memperbesar foto"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={coverUrl}
                 alt={item.judul}
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-102"
+                style={{ maxHeight: "460px" }}
               />
-              <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <span className="rounded-xl bg-card/90 px-4 py-2 text-xs font-bold text-foreground shadow-md backdrop-blur-xs flex items-center gap-1.5">
-                  <svg className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+              {/* Sleek Minimalist Hover Overlay (Samakan dengan Berita) */}
+              <div className="absolute inset-0 flex items-center justify-center bg-black/25 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-xs shadow-md transition-transform duration-200 group-hover:scale-110">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-5 w-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
                   </svg>
-                  <span>Klik untuk perbesar foto</span>
-                </span>
+                </div>
               </div>
             </div>
           )}
