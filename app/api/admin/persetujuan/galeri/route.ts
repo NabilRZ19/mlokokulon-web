@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { galeri as galeriTable } from "@/lib/db/schema";
 import { getSession } from "@/lib/session";
@@ -15,7 +15,7 @@ export async function GET() {
     const rows = await db
       .select()
       .from(galeriTable)
-      .where(eq(galeriTable.status, "pending"));
+      .where(and(eq(galeriTable.status, "pending"), isNull(galeriTable.sumberBeritaId)));
 
     return NextResponse.json(
       rows.map((r) => ({

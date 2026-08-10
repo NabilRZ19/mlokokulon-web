@@ -4,6 +4,7 @@ import { use, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { InfoLinkButton } from "@/components/admin/InfoLinkButton";
+import { ImageCropperModal } from "@/components/admin/ImageCropperModal";
 import { compressImage } from "@/lib/image-compression";
 import { scrollToFirstError } from "@/lib/form-scroll";
 import { getPublicImageUrl } from "@/lib/image-url";
@@ -18,6 +19,8 @@ export default function EditGaleriPage({ params }: { params: Promise<{ id: strin
   const [kategori, setKategori] = useState("umum");
 
   const [preview, setPreview] = useState<string | null>(null);
+  const [rawImage, setRawImage] = useState<string | null>(null);
+  const [cropperOpen, setCropperOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -46,15 +49,23 @@ export default function EditGaleriPage({ params }: { params: Promise<{ id: strin
     fetchData();
   }, [id]);
 
-  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+    const rawUrl = URL.createObjectURL(file);
+    setRawImage(rawUrl);
+    setCropperOpen(true);
+    if (e.target) e.target.value = "";
+  }
 
+  async function handleCropComplete(croppedBlob: Blob, previewUrl: string) {
+    setPreview(previewUrl);
     setUploading(true);
+    setError(null);
     try {
-      const compressed = await compressImage(file);
+      const croppedFile = new File([croppedBlob], "galeri.webp", { type: "image/webp" });
       const fd = new FormData();
-      fd.append("file", compressed, compressed.name);
+      fd.append("file", croppedFile, croppedFile.name);
       fd.append("folder", "galeri");
       const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
       if (!res.ok) throw new Error("Upload gagal.");
@@ -65,7 +76,6 @@ export default function EditGaleriPage({ params }: { params: Promise<{ id: strin
       setError(err instanceof Error ? err.message : "Upload gagal.");
     } finally {
       setUploading(false);
-      if (e.target) e.target.value = "";
     }
   }
 
@@ -247,6 +257,16 @@ export default function EditGaleriPage({ params }: { params: Promise<{ id: strin
           </button>
         </div>
       </form>
+
+      <ImageCropperModal
+        isOpen={cropperOpen}
+        imageSrc={rawImage}
+        mode="cover"
+        defaultRatio="4:3"
+        allowedRatios={["16:9", "4:3", "3:2", "1:1"]}
+        onClose={() => setCropperOpen(false)}
+        onCropComplete={handleCropComplete}
+      />
     </div>
   );
 }

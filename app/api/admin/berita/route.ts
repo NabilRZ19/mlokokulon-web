@@ -117,6 +117,10 @@ export async function POST(request: Request) {
           urlMedia: f.url,
           kategori: kategori,
           sumberBeritaId: id,
+          status: status as "pending" | "published",
+          submittedByTier: session.tier,
+          pengusul: typeof pengusul === "string" && pengusul.trim() ? pengusul.trim() : session.nama || null,
+          createdBy: String(session.id),
         }))
       );
     }

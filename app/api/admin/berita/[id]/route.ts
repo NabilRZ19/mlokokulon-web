@@ -164,9 +164,19 @@ export async function PUT(
           urlMedia: f.url,
           kategori: kategori,
           sumberBeritaId: id,
+          status: newStatus as "pending" | "published",
+          submittedByTier: session.tier,
+          pengusul: typeof pengusul === "string" && pengusul.trim() ? pengusul.trim() : session.nama || null,
+          createdBy: String(session.id),
         }))
       );
     }
+
+    // Update status foto galeri yang sudah terhubung dengan berita ini
+    await db
+      .update(galeriTable)
+      .set({ status: newStatus as "pending" | "published" })
+      .where(eq(galeriTable.sumberBeritaId, id));
 
     revalidatePath("/");
     revalidatePath("/berita");

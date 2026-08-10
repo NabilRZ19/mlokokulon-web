@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/db/client";
-import { berita as beritaTable, beritaFotoTambahan as beritaFotoTambahanTable } from "@/lib/db/schema";
+import { berita as beritaTable, beritaFotoTambahan as beritaFotoTambahanTable, galeri as galeriTable } from "@/lib/db/schema";
 import { getSession } from "@/lib/session";
 import { canApproveContent, requireTier } from "@/lib/auth-policy";
 import { revalidatePath } from "next/cache";
@@ -97,8 +97,18 @@ export async function PATCH(
       })
       .where(eq(beritaTable.id, id));
 
+    // Update status foto galeri yang di-link dari berita ini secara otomatis (terbit bersama berita)
+    await db
+      .update(galeriTable)
+      .set({
+        status: newStatus,
+        reviewerNote: note.trim() || null,
+      })
+      .where(eq(galeriTable.sumberBeritaId, id));
+
     revalidatePath("/");
     revalidatePath("/berita");
+    revalidatePath("/galeri");
 
     return NextResponse.json({ success: true, status: newStatus });
   } catch (err) {

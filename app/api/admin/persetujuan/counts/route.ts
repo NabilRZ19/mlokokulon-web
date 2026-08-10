@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { count, eq } from "drizzle-orm";
+import { and, count, eq, isNull } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import {
   berita as beritaTable,
@@ -23,7 +23,7 @@ export async function GET() {
       db.select({ value: count() }).from(pengumumanTable).where(eq(pengumumanTable.status, "pending")),
       db.select({ value: count() }).from(beritaTable).where(eq(beritaTable.status, "pending")),
       db.select({ value: count() }).from(eventTable).where(eq(eventTable.status, "pending")),
-      db.select({ value: count() }).from(galeriTable).where(eq(galeriTable.status, "pending")),
+      db.select({ value: count() }).from(galeriTable).where(and(eq(galeriTable.status, "pending"), isNull(galeriTable.sumberBeritaId))),
       db.select({ value: count() }).from(umkmTable).where(eq(umkmTable.status, "pending")),
       db.select({ value: count() }).from(rwKetuaPengajuan).where(eq(rwKetuaPengajuan.status, "pending")),
     ]);
