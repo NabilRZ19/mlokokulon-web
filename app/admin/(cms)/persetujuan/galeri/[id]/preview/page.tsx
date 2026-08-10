@@ -144,25 +144,42 @@ export default function PreviewGaleriPage({
             </div>
           </div>
 
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-md space-y-4 max-w-2xl mx-auto">
-            <div className="flex items-center justify-between gap-2">
+          <div className="rounded-2xl border border-border bg-card p-4 sm:p-6 shadow-md space-y-4 max-w-2xl mx-auto">
+            <div className="flex items-center gap-2">
               <span className={`rounded-full px-3 py-1 text-xs font-bold ${
                 data.tipe === "foto" ? "bg-blue-100 text-blue-800" : "bg-purple-100 text-purple-800"
               }`}>
-                {data.tipe === "foto" ? "Media Foto" : "Media Video"}
+                {data.tipe === "foto" ? "📷 Foto" : "🎬 Video"}
               </span>
-            </div>
-
-            <h2 className="font-heading text-lg font-bold text-foreground">{data.judul}</h2>
-
-            <div className="overflow-hidden rounded-2xl border border-border bg-muted">
-              {data.tipe === "video" ? (
-                <video src={getPublicImageUrl(data.url_media)} controls className="w-full max-h-[450px] object-cover bg-black" />
-              ) : (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={getPublicImageUrl(data.url_media)} alt={data.judul} className="w-full max-h-[450px] object-contain bg-black/90" />
+              {data.kategori && (
+                <span className="rounded-full bg-muted px-3 py-1 text-xs font-bold text-muted-foreground capitalize">
+                  {data.kategori}
+                </span>
               )}
             </div>
+
+            <h2 className="font-heading text-lg font-bold text-foreground leading-snug">{data.judul}</h2>
+
+            {data.tipe === "video" ? (
+              <div className="overflow-hidden rounded-2xl border border-border bg-black">
+                <video
+                  src={getPublicImageUrl(data.url_media)}
+                  controls
+                  className="w-full h-auto max-h-[360px]"
+                />
+              </div>
+            ) : (
+              <div className="overflow-hidden rounded-2xl border border-border bg-muted">
+                <div className="relative w-full" style={{ paddingBottom: "66.67%" }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={getPublicImageUrl(data.url_media)}
+                    alt={data.judul}
+                    className="absolute inset-0 h-full w-full object-contain bg-black/5"
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

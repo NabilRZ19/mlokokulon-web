@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { KampungKbIcon } from "@/components/ui/icons";
+import { getPublicImageUrl } from "@/lib/image-url";
 import type { Rw } from "@/lib/types";
 
 interface WilayahListProps {
@@ -249,15 +250,15 @@ export function WilayahList({ rwList }: WilayahListProps) {
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filteredList.map((rw) => {
-            const ketua = rw.struktur_pengurus?.find((p) =>
-              p.jabatan.toLowerCase().includes("ketua rw") || p.jabatan.toLowerCase().includes("ketua")
-            );
+            // Gunakan rw.ketua_nama & rw.ketua_foto_url langsung — sinkron dengan approval
+            const ketuaNama = rw.ketua_nama || null;
+            const fotoUrl = rw.ketua_foto_url ? getPublicImageUrl(rw.ketua_foto_url) : null;
 
             return (
               <Link
                 key={rw.id}
                 href={`/wilayah/${rw.id}`}
-                className="group flex flex-col justify-between rounded-xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md"
+                className="group flex flex-col justify-between rounded-xl border border-border bg-card p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md"
               >
                 <div className="space-y-4">
                   {/* Card Header */}
@@ -281,17 +282,28 @@ export function WilayahList({ rwList }: WilayahListProps) {
                     )}
                   </div>
 
-                  {/* Ketua RW Highlight Preview (jika ada) */}
-                  {ketua ? (
-                    <div className="rounded-lg border border-border/80 bg-muted/40 p-3">
-                      <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                        {ketua.jabatan}
-                      </p>
-                      <p className="font-heading text-sm font-bold text-foreground mt-0.5">
-                        {ketua.nama}
+                  {/* Ketua RW */}
+                  <div className="flex items-center gap-3 rounded-lg border border-border/80 bg-muted/40 px-3.5 py-3">
+                    <div className="h-9 w-9 shrink-0 rounded-full overflow-hidden border border-primary/20 bg-primary/10">
+                      {fotoUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={fotoUrl} alt={ketuaNama || "Ketua RW"} className="h-full w-full object-cover" />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="h-4 w-4 text-primary/40">
+                            <circle cx="12" cy="8" r="4" />
+                            <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" />
+                          </svg>
+                        </div>
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Ketua RW</p>
+                      <p className="font-heading text-sm font-bold text-foreground truncate mt-0.5">
+                        {ketuaNama || <span className="text-muted-foreground font-normal italic">Belum diisi</span>}
                       </p>
                     </div>
-                  ) : null}
+                  </div>
 
                   {/* Sub-Statistik Grid */}
                   <div className="grid grid-cols-3 gap-2 border-t border-border/60 pt-3 text-center">
@@ -315,7 +327,7 @@ export function WilayahList({ rwList }: WilayahListProps) {
                 </div>
 
                 {/* Footer Action */}
-                <div className="mt-5 border-t border-border/60 pt-3.5 flex items-center justify-between text-xs font-semibold text-primary group-hover:underline">
+                <div className="mt-4 border-t border-border/60 pt-3.5 flex items-center justify-between text-xs font-semibold text-primary group-hover:underline">
                   <span>Lihat Detail RW &amp; Pengurus</span>
                   <span>→</span>
                 </div>

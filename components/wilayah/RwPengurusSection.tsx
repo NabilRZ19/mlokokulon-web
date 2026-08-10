@@ -1,9 +1,14 @@
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
+import { getPublicImageUrl } from "@/lib/image-url";
 import type { RwPengurus } from "@/lib/types";
 
 interface RwPengurusSectionProps {
   pengurusList: RwPengurus[];
+  /** Nama Ketua RW dari kolom rw.ketua_nama (sinkron dengan sistem approval) */
+  ketuaNama?: string | null;
+  /** URL foto Ketua RW dari kolom rw.ketua_foto_url */
+  ketuaFotoUrl?: string | null;
 }
 
 // ─── Inline SVG Icons ────────────────────────────────────────────────────────
@@ -176,9 +181,18 @@ function renderOrgIcon(iconKey?: string) {
   }
 }
 
-export function RwPengurusSection({ pengurusList }: RwPengurusSectionProps) {
+export function RwPengurusSection({ pengurusList, ketuaNama, ketuaFotoUrl }: RwPengurusSectionProps) {
+  // Gunakan ketuaNama dari props (rw.ketua_nama) — sinkron dengan approval
+  // Fallback: cari dari struktur_pengurus jika prop tidak diberikan
+  const resolvedKetuaNama = ketuaNama ||
+    pengurusList?.find((p) => p.jabatan.toLowerCase().includes("ketua"))?.nama ||
+    null;
+  const resolvedFotoUrl = ketuaFotoUrl ? getPublicImageUrl(ketuaFotoUrl) : null;
+
   if (!pengurusList || pengurusList.length === 0) {
-    return <p className="text-sm text-muted-foreground">Data pengurus belum tersedia.</p>;
+    if (!resolvedKetuaNama) {
+      return <p className="text-sm text-muted-foreground">Data pengurus belum tersedia.</p>;
+    }
   }
 
   // 1. Organisasi Tambahan (kategori === "organisasi" atau memiliki nama organisasi / kata kunci khusus)
@@ -239,13 +253,15 @@ export function RwPengurusSection({ pengurusList }: RwPengurusSectionProps) {
     rtMap.set(rtKey, current);
   });
 
-  // 3. Inti RW (Ketua RW, Sekretaris RW, Bendahara RW)
+  // 3. Inti RW (Sekretaris RW, Bendahara RW — Ketua RW dibaca dari prop ketuaNama)
   const rwCoreList = pengurusList.filter(
     (p) => !orgItems.includes(p) && !rtList.includes(p)
   );
 
-  const ketuaRw = rwCoreList.find((p) => p.jabatan.toLowerCase().includes("ketua"));
-  const otherRwCore = rwCoreList.filter((p) => p !== ketuaRw);
+  // Filter: tidak tampilkan entry "Ketua RW" dari struktur_pengurus karena sudah di-override
+  const otherRwCore = rwCoreList.filter(
+    (p) => !p.jabatan.toLowerCase().includes("ketua rw") && !p.jabatan.toLowerCase().includes("ketua")
+  );
 
   return (
     <div className="space-y-8">
@@ -262,21 +278,28 @@ export function RwPengurusSection({ pengurusList }: RwPengurusSectionProps) {
         </div>
 
         <div className="mt-5 space-y-4">
-          {/* Highlight Utama: Ketua RW */}
-          {ketuaRw ? (
+          {/* Highlight Utama: Ketua RW — dari rw.ketua_nama (sinkron approval) */}
+          {resolvedKetuaNama ? (
             <div className="relative overflow-hidden rounded-xl border border-primary/30 bg-gradient-to-r from-primary/10 via-primary/5 to-background p-5 shadow-sm">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-3.5">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary font-heading text-lg font-bold text-white shadow">
-                    {ketuaRw.nama.charAt(0)}
+                  <div className="h-12 w-12 shrink-0 rounded-full overflow-hidden border-2 border-primary/30 bg-primary/10 shadow">
+                    {resolvedFotoUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={resolvedFotoUrl} alt={resolvedKetuaNama} className="h-full w-full object-cover" />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center bg-primary font-heading text-lg font-bold text-white">
+                        {resolvedKetuaNama.charAt(0)}
+                      </div>
+                    )}
                   </div>
                   <div>
                     <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-primary">
                       <IconBadgeCheck />
-                      {ketuaRw.jabatan}
+                      Ketua RW
                     </span>
                     <h4 className="font-heading text-xl font-extrabold text-foreground mt-0.5">
-                      {ketuaRw.nama}
+                      {resolvedKetuaNama}
                     </h4>
                   </div>
                 </div>

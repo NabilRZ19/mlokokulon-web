@@ -175,17 +175,19 @@ export default function PreviewUmkmPage({
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Foto Utama & Foto Usaha */}
               <div className="lg:col-span-5 space-y-3">
-                <div className="overflow-hidden rounded-2xl border border-border aspect-[4/3] bg-muted">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={getPublicImageUrl(data.foto_utama_url || data.foto_urls[0] || "/images/placeholder.jpg")}
-                    alt={data.nama}
-                    className="h-full w-full object-cover"
-                  />
+                <div className="overflow-hidden rounded-2xl border border-border bg-muted">
+                  <div className="relative w-full" style={{ paddingBottom: "75%" }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={getPublicImageUrl(data.foto_utama_url || data.foto_urls[0] || "/images/placeholder.jpg")}
+                      alt={data.nama}
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                  </div>
                 </div>
                 {data.foto_urls.length > 0 && (
                   <div className="grid grid-cols-3 gap-2">
-                    {data.foto_urls.map((url, idx) => (
+                    {data.foto_urls.slice(0, 6).map((url, idx) => (
                       <div key={idx} className="aspect-square rounded-xl overflow-hidden border border-border bg-muted">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={getPublicImageUrl(url)} alt={`Foto ${idx + 1}`} className="h-full w-full object-cover" />
@@ -219,9 +221,15 @@ export default function PreviewUmkmPage({
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {data.produk_unggulan.map((p, idx) => (
                         <div key={idx} className="flex items-center gap-3 rounded-xl border border-border bg-muted/20 p-2.5">
-                          {p.foto_url && (
+                          {p.foto_url ? (
                             // eslint-disable-next-line @next/next/no-img-element
-                            <img src={getPublicImageUrl(p.foto_url)} alt={p.produk} className="h-10 w-10 rounded-lg object-cover border border-border shrink-0" />
+                            <img src={getPublicImageUrl(p.foto_url)} alt={p.produk} className="h-12 w-12 rounded-lg object-cover border border-border shrink-0" />
+                          ) : (
+                            <div className="h-12 w-12 rounded-lg border border-border bg-muted shrink-0 flex items-center justify-center text-muted-foreground">
+                              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                              </svg>
+                            </div>
                           )}
                           <span className="text-xs font-bold text-foreground">{p.produk}</span>
                         </div>

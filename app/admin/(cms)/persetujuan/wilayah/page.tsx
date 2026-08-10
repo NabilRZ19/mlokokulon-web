@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { RefreshButton } from "@/components/admin/RefreshButton";
 import { ApprovalModal } from "@/components/admin/ApprovalModal";
+import { getPublicImageUrl } from "@/lib/image-url";
 
 interface PendingWilayah {
   id: number;
@@ -118,15 +119,21 @@ export default function PersetujuanWilayahPage() {
       ) : (
         <div className="space-y-4">
           {list.map((item) => (
-            <div key={item.id} className="rounded-2xl border border-orange-200 bg-orange-50/30 p-4 sm:p-5 shadow-xs space-y-4">
-              <div className="flex flex-col sm:flex-row items-start gap-4">
-                {/* Foto Baru */}
-                {item.ketua_foto_url_baru && (
-                  <div className="h-20 w-20 shrink-0 rounded-2xl border-2 border-orange-300 bg-muted overflow-hidden shadow-2xs">
+              <div key={item.id} className="rounded-2xl border border-orange-200 bg-orange-50/30 p-4 sm:p-5 shadow-xs space-y-4">
+                <div className="flex flex-col sm:flex-row items-start gap-4">
+                  {/* Foto Baru */}
+                  <div className="h-16 w-16 shrink-0 rounded-xl border-2 border-orange-300 bg-muted overflow-hidden shadow-2xs">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={item.ketua_foto_url_baru} alt="Foto Ketua Baru" className="h-full w-full object-cover" />
+                    {item.ketua_foto_url_baru ? (
+                      <img src={getPublicImageUrl(item.ketua_foto_url_baru)} alt="Foto Ketua Baru" className="h-full w-full object-cover" />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center">
+                        <svg className="h-7 w-7 text-muted-foreground/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                        </svg>
+                      </div>
+                    )}
                   </div>
-                )}
                 <div className="flex-1 min-w-0 space-y-1.5">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="inline-flex items-center gap-1 rounded-full bg-orange-100 px-2.5 py-0.5 text-[11px] font-bold text-orange-800 border border-orange-200">

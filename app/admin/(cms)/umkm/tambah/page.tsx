@@ -7,6 +7,7 @@ import { InfoLinkButton } from "@/components/admin/InfoLinkButton";
 import { ApprovalNoticeBanner } from "@/components/admin/ApprovalNoticeBanner";
 import { compressImage } from "@/lib/image-compression";
 import { scrollToFirstError } from "@/lib/form-scroll";
+import { ImageCropperModal } from "@/components/admin/ImageCropperModal";
 
 export default function TambahUmkmPage() {
   const router = useRouter();
@@ -29,6 +30,9 @@ export default function TambahUmkmPage() {
   const [fotoList, setFotoList] = useState<{ url: string; file?: File; uploading?: boolean }[]>([]);
   const [fotoUtama, setFotoUtama] = useState<{ url: string } | null>(null);
   const [fotoUtamaUploading, setFotoUtamaUploading] = useState(false);
+  const [rawFotoUtamaImage, setRawFotoUtamaImage] = useState<string | null>(null);
+  const [fotoUtamaCropperOpen, setFotoUtamaCropperOpen] = useState(false);
+  const [fotoUtamaPreview, setFotoUtamaPreview] = useState<string | null>(null);
 
   const [uploadingGlobal, setUploadingGlobal] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -74,19 +78,33 @@ export default function TambahUmkmPage() {
     return data.url as string;
   }
 
-  async function handleFotoUtamaChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  function handleFotoUtamaChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const selected = e.target.files?.[0];
+    if (!selected) return;
+    const rawUrl = URL.createObjectURL(selected);
+    setRawFotoUtamaImage(rawUrl);
+    setFotoUtamaCropperOpen(true);
+    if (e.target) e.target.value = "";
+  }
 
+  async function handleFotoUtamaCropComplete(croppedBlob: Blob, previewUrl: string) {
+    setFotoUtamaPreview(previewUrl);
     setFotoUtamaUploading(true);
+    setError(null);
     try {
-      const url = await uploadOneFile(file);
-      setFotoUtama({ url });
-    } catch {
-      setError("Gagal mengupload foto utama.");
+      const croppedFile = new File([croppedBlob], "cover.webp", { type: "image/webp" });
+      const fd = new FormData();
+      fd.append("file", croppedFile, croppedFile.name);
+      fd.append("folder", "umkm");
+      const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+      if (!res.ok) throw new Error("Upload foto utama gagal.");
+      const data = await res.json();
+      setFotoUtama({ url: data.url });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Upload gagal.");
+      setFotoUtamaPreview(null);
     } finally {
       setFotoUtamaUploading(false);
-      if (e.target) e.target.value = "";
     }
   }
 
@@ -456,13 +474,16 @@ export default function TambahUmkmPage() {
               onChange={handleFotoUtamaChange}
             />
 
-            {fotoUtama ? (
+            {fotoUtama || fotoUtamaPreview ? (
               <div className="relative aspect-video w-full max-w-xs overflow-hidden rounded-lg border border-border">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={fotoUtama.url} alt="Foto utama UMKM" className="h-full w-full object-cover" />
+                <img src={fotoUtamaPreview || fotoUtama?.url} alt="Foto utama UMKM" className="h-full w-full object-cover" />
                 <button
                   type="button"
-                  onClick={() => setFotoUtama(null)}
+                  onClick={() => {
+                    setFotoUtama(null);
+                    setFotoUtamaPreview(null);
+                  }}
                   className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-destructive text-white text-xs font-bold shadow-xs hover:bg-destructive/90"
                 >
                   ×
@@ -474,7 +495,7 @@ export default function TambahUmkmPage() {
                 className="flex max-w-xs cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-border py-6 hover:border-primary/50 hover:bg-primary/5 transition-colors"
               >
                 <p className="text-xs font-semibold text-muted-foreground">
-                  {fotoUtamaUploading ? "Mengupload…" : "Klik di sini untuk upload foto utama"}
+                  {fotoUtamaUploading ? "Mengupload…" : "Pilih foto lalu sesuaikan crop area"}
                 </p>
               </div>
             )}
@@ -561,6 +582,16 @@ export default function TambahUmkmPage() {
           </button>
         </div>
       </form>
+
+      <ImageCropperModal
+        isOpen={fotoUtamaCropperOpen}
+        imageSrc={rawFotoUtamaImage}
+        mode="cover"
+        defaultRatio="16:9"
+        allowedRatios={["16:9", "4:3", "3:2", "1:1"]}
+        onClose={() => setFotoUtamaCropperOpen(false)}
+        onCropComplete={handleFotoUtamaCropComplete}
+      />
     </div>
   );
 }

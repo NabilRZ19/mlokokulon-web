@@ -57,7 +57,7 @@ export async function POST(request: Request) {
   }
 
   // Validasi format email sederhana
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!/^[^\s@]+@[^\s@]+$/.test(email)) {
     return NextResponse.json({ error: "Format email tidak valid" }, { status: 400 });
   }
 

@@ -97,7 +97,11 @@ export default async function RwDetailPage({ params }: { params: Promise<{ rwId:
           </Card>
 
           {/* Struktur Pengurus RW, RT & Organisasi Utama */}
-          <RwPengurusSection pengurusList={rw.struktur_pengurus} />
+          <RwPengurusSection
+            pengurusList={rw.struktur_pengurus}
+            ketuaNama={rw.ketua_nama}
+            ketuaFotoUrl={rw.ketua_foto_url}
+          />
 
           {/* Potensi RW */}
           <Card className="overflow-hidden border-emerald-200/80 bg-gradient-to-br from-emerald-50/40 via-card to-card p-6 sm:p-8 shadow-sm">

@@ -8,6 +8,7 @@ import { ApprovalNoticeBanner } from "@/components/admin/ApprovalNoticeBanner";
 import { compressImage } from "@/lib/image-compression";
 import { getPublicImageUrl } from "@/lib/image-url";
 import { scrollToFirstError } from "@/lib/form-scroll";
+import { ImageCropperModal } from "@/components/admin/ImageCropperModal";
 
 type Kategori = "pengumuman" | "kegiatan" | "pembangunan" | "berita" | "kampung-kb";
 type Cakupan = "kelurahan" | "rw";
@@ -215,6 +216,9 @@ export default function EditBeritaPage({ params }: { params: Promise<{ id: strin
   const [coverError, setCoverError] = useState<string | null>(null);
   const coverInputRef = useRef<HTMLInputElement>(null);
 
+  const [rawCoverImage, setRawCoverImage] = useState<string | null>(null);
+  const [cropperOpen, setCropperOpen] = useState(false);
+
   const [fotoList, setFotoList] = useState<FotoItem[]>([]);
   const [fotoLimitError, setFotoLimitError] = useState<string | null>(null);
   const fotoInputRef = useRef<HTMLInputElement>(null);
@@ -291,20 +295,31 @@ export default function EditBeritaPage({ params }: { params: Promise<{ id: strin
     if (coverInputRef.current) coverInputRef.current.value = "";
   }
 
-  async function handleCoverChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setCoverFile(file);
-    setCoverPreview(URL.createObjectURL(file));
-    setCoverUrl(null);
-    setCoverError(null);
+  function handleCoverChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const selected = e.target.files?.[0];
+    if (!selected) return;
+    const rawUrl = URL.createObjectURL(selected);
+    setRawCoverImage(rawUrl);
+    setCropperOpen(true);
+    if (e.target) e.target.value = "";
+  }
+
+  async function handleCoverCropComplete(croppedBlob: Blob, previewUrl: string) {
+    setCoverPreview(previewUrl);
     setCoverUploading(true);
+    setCoverError(null);
     try {
-      const url = await uploadFile(file);
-      setCoverUrl(url);
+      const croppedFile = new File([croppedBlob], "cover.webp", { type: "image/webp" });
+      const fd = new FormData();
+      fd.append("file", croppedFile, croppedFile.name);
+      fd.append("folder", "berita");
+      const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+      if (!res.ok) throw new Error("Upload foto cover gagal.");
+      const data = await res.json();
+      setCoverUrl(data.url);
     } catch (err) {
-      setCoverError("Upload foto headline gagal. Pastikan file berupa gambar valid.");
-      console.error("[berita/edit] Cover upload error:", err);
+      setCoverError(err instanceof Error ? err.message : "Upload gagal.");
+      setCoverPreview(null);
     } finally {
       setCoverUploading(false);
     }
@@ -659,7 +674,7 @@ export default function EditBeritaPage({ params }: { params: Promise<{ id: strin
                   className="flex w-full cursor-pointer flex-col items-center justify-center gap-3 p-8"
                 >
                   <p className="text-sm font-bold text-foreground">Pilih Foto Headline Utama</p>
-                  <p className="mt-0.5 text-xs text-muted-foreground">JPG, PNG, WebP, dikompresi otomatis</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">Pilih foto lalu sesuaikan crop area</p>
                 </div>
               )}
             </div>
@@ -892,6 +907,15 @@ export default function EditBeritaPage({ params }: { params: Promise<{ id: strin
             </button>
           </div>
         </div>
+        <ImageCropperModal
+          isOpen={cropperOpen}
+          imageSrc={rawCoverImage}
+          mode="cover"
+          defaultRatio="16:9"
+          allowedRatios={["16:9", "4:3", "3:2", "1:1"]}
+          onClose={() => setCropperOpen(false)}
+          onCropComplete={handleCoverCropComplete}
+        />
       </form>
     </div>
   );

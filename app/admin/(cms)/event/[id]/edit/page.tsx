@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { ApprovalNoticeBanner } from "@/components/admin/ApprovalNoticeBanner";
-import { compressImage } from "@/lib/image-compression";
+import { ImageCropperModal } from "@/components/admin/ImageCropperModal";
 import { getPublicImageUrl } from "@/lib/image-url";
 
 export default function EditEventPage({
@@ -34,6 +34,9 @@ export default function EditEventPage({
   const [coverUploading, setCoverUploading] = useState(false);
   const [coverError, setCoverError] = useState<string | null>(null);
   const coverInputRef = useRef<HTMLInputElement>(null);
+
+  const [rawCoverImage, setRawCoverImage] = useState<string | null>(null);
+  const [cropperOpen, setCropperOpen] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -88,33 +91,33 @@ export default function EditEventPage({
   }
 
   // Direct Cover File Upload Handling
-  async function handleCoverFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleCoverFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const selected = e.target.files?.[0];
     if (!selected) return;
+    const rawUrl = URL.createObjectURL(selected);
+    setRawCoverImage(rawUrl);
+    setCropperOpen(true);
+    if (e.target) e.target.value = "";
+  }
 
-    const localUrl = URL.createObjectURL(selected);
-    setCoverPreview(localUrl);
+  async function handleCoverCropComplete(croppedBlob: Blob, previewUrl: string) {
+    setCoverPreview(previewUrl);
     setCoverUploading(true);
     setCoverError(null);
-
     try {
-      const compressed = await compressImage(selected);
-
+      const croppedFile = new File([croppedBlob], "cover.webp", { type: "image/webp" });
       const fd = new FormData();
-      fd.append("file", compressed, compressed.name);
-      fd.append("folder", "event");
-
+      fd.append("file", croppedFile, croppedFile.name);
+      fd.append("folder", "event"); // IMPORTANT: keep original folder name (event, pengumuman, berita, umkm)
       const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
       if (!res.ok) throw new Error("Upload foto poster event gagal.");
-
       const data = await res.json();
-      setGambarCoverUrl(data.url);
+      setGambarCoverUrl(data.url); // or setCoverUrl for berita pages
     } catch (err) {
       setCoverError(err instanceof Error ? err.message : "Upload gagal.");
       setCoverPreview(null);
     } finally {
       setCoverUploading(false);
-      if (e.target) e.target.value = "";
     }
   }
 
@@ -284,7 +287,7 @@ export default function EditEventPage({
           <div className="border-b border-border pb-3 flex items-center justify-between">
             <div>
               <h2 className="font-heading text-base font-bold text-foreground">3. Poster / Flyer Utama Event</h2>
-              <p className="text-xs text-muted-foreground mt-0.5">Unggah foto banner atau poster resmi kegiatan (Direct Upload &amp; Otomatis Kompresi).</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Unggah foto banner atau poster resmi kegiatan (Pilih foto lalu sesuaikan crop area).</p>
             </div>
             <span className="text-xs font-bold text-muted-foreground">(Opsional)</span>
           </div>
@@ -303,7 +306,7 @@ export default function EditEventPage({
               <img src={coverPreview} alt="Preview Cover" className="max-h-72 w-full object-contain rounded-xl bg-black/5" />
               {coverUploading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/60 text-xs font-bold text-white backdrop-blur-xs">
-                  Mengompres &amp; mengunggah gambar secara langsung...
+                  Mengunggah gambar...
                 </div>
               )}
               <div className="mt-3 flex items-center gap-2">
@@ -335,8 +338,8 @@ export default function EditEventPage({
                   <path d="m5 17 4.5-5 3 3.5L16 11l4 5" />
                 </svg>
               </div>
-              <span className="text-xs font-bold text-emerald-700">+ Klik / Pilih Poster Event (Direct Upload)</span>
-              <span className="text-[11px] text-muted-foreground mt-1">Format WebP, JPG, PNG (Otomatis Kompresi WebP)</span>
+              <span className="text-xs font-bold text-emerald-700">+ Klik / Pilih Poster Event</span>
+              <span className="text-[11px] text-muted-foreground mt-1">Format WebP, JPG, PNG</span>
             </div>
           )}
           {coverError && <p className="text-xs text-destructive font-semibold">{coverError}</p>}
@@ -377,6 +380,16 @@ export default function EditEventPage({
           </button>
         </div>
       </form>
+
+      <ImageCropperModal
+        isOpen={cropperOpen}
+        imageSrc={rawCoverImage}
+        mode="cover"
+        defaultRatio="16:9"
+        allowedRatios={["16:9", "4:3", "3:2", "1:1"]}
+        onClose={() => setCropperOpen(false)}
+        onCropComplete={handleCoverCropComplete}
+      />
     </div>
   );
 }
