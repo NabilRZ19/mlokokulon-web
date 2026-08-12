@@ -143,70 +143,132 @@ export default function CmsEventPage() {
         </div>
       </div>
 
-      {loading ? (
-        <div className="rounded-2xl border border-border bg-card p-12 text-center text-sm text-muted-foreground">
-          Memuat daftar event…
-        </div>
-      ) : filteredAndSorted.length === 0 ? (
-        <div className="rounded-2xl border border-border bg-card p-12 text-center text-sm text-muted-foreground">
-          Belum ada agenda event.
-        </div>
-      ) : (
-        <div className="grid gap-4">
-          {filteredAndSorted.map((item) => (
-            <div
-              key={item.id}
-              className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-2xl border border-border bg-card p-5 shadow-2xs hover:shadow-xs transition-all"
-            >
-              <div className="space-y-1.5 min-w-0 flex-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-bold text-emerald-900 border border-emerald-300">
-                    <MapPinIcon className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                    <span>{item.lokasi}</span>
-                  </span>
-                  <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold border ${
-                    item.status === "published"
-                      ? "bg-emerald-50 text-emerald-800 border-emerald-200"
-                      : item.status === "pending"
-                      ? "bg-orange-100 text-orange-800 border-orange-200"
-                      : "bg-red-100 text-red-800 border-red-200"
-                  }`}>
-                    {item.status === "published" ? "Published" : item.status === "pending" ? "Menunggu Persetujuan" : "Ditolak"}
-                  </span>
-                </div>
-                <h3 className="font-heading text-base font-bold text-foreground leading-snug">{item.judul}</h3>
-                <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground pt-0.5">
-                  <span className="inline-flex items-center gap-1">
-                    <CalendarIcon className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                    <span>Tanggal: {item.tanggal_mulai} {item.tanggal_selesai && item.tanggal_selesai !== item.tanggal_mulai ? `s/d ${item.tanggal_selesai}` : ""}</span>
-                  </span>
-                  <span>•</span>
-                  <span className="inline-flex items-center gap-1">
-                    <ClockIcon className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                    <span>{item.jam_mulai}</span>
-                  </span>
-                </div>
+      {/* Mobile Card List (< md) */}
+      <div className="space-y-3 md:hidden">
+        {loading ? (
+          <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+            Memuat daftar event…
+          </div>
+        ) : filteredAndSorted.length === 0 ? (
+          <div className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+            Belum ada agenda event.
+          </div>
+        ) : (
+          filteredAndSorted.map((item) => (
+            <div key={item.id} className="rounded-xl border border-border bg-card p-4 space-y-3 shadow-xs">
+              <div className="flex items-start justify-between gap-2">
+                <h3 className="font-heading text-sm font-bold text-foreground line-clamp-2">{item.judul}</h3>
+                <span className={`shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-bold border ${
+                  item.status === "published"
+                    ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                    : item.status === "pending"
+                    ? "bg-orange-100 text-orange-800 border-orange-200"
+                    : "bg-red-100 text-red-800 border-red-200"
+                }`}>
+                  {item.status === "published" ? "Published" : item.status === "pending" ? "Menunggu Persetujuan" : "Ditolak"}
+                </span>
               </div>
 
-              <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
+              <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                <span className="font-semibold text-emerald-800">Lokasi: {item.lokasi}</span>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-between text-xs text-muted-foreground border-t border-border/50 pt-2">
+                <span>{item.tanggal_mulai} · {item.jam_mulai}</span>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-1 border-t border-border/50">
                 <Link
                   href={`/admin/event/${item.id}/edit`}
-                  className="rounded-lg border border-border bg-muted/50 px-3 py-1.5 text-xs font-bold text-foreground hover:bg-muted transition-colors"
+                  className="rounded-lg border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors shadow-2xs"
                 >
                   Edit
                 </Link>
                 <button
                   type="button"
                   onClick={() => setDeleteId(item.id)}
-                  className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 transition-colors"
+                  className="rounded-lg border border-destructive/30 bg-destructive/10 px-2.5 py-1 text-xs font-bold text-destructive hover:bg-destructive hover:text-white transition-colors shadow-2xs"
                 >
                   Hapus
                 </button>
               </div>
             </div>
-          ))}
-        </div>
-      )}
+          ))
+        )}
+      </div>
+
+      {/* Desktop Table View (>= md) */}
+      <div className="hidden md:block overflow-x-auto rounded-xl border border-border bg-card shadow-xs">
+        <table className="w-full text-left text-sm">
+          <thead className="border-b border-border bg-muted/50 text-muted-foreground font-bold uppercase text-xs tracking-wider">
+            <tr>
+              <th className="px-4 py-3">Nama Agenda Event</th>
+              <th className="px-4 py-3">Lokasi Acara</th>
+              <th className="px-4 py-3">Waktu &amp; Tanggal</th>
+              <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3 text-right">Aksi</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-border">
+            {loading ? (
+              <tr>
+                <td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">
+                  Memuat daftar event…
+                </td>
+              </tr>
+            ) : filteredAndSorted.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">
+                  Belum ada agenda event.
+                </td>
+              </tr>
+            ) : (
+              filteredAndSorted.map((item) => (
+                <tr key={item.id} className={`hover:bg-muted/30 transition-colors ${
+                  item.status === "pending" ? "bg-orange-50/50" :
+                  item.status === "rejected" ? "bg-destructive/5" : ""
+                }`}>
+                  <td className="px-4 py-3 font-medium text-foreground max-w-md">
+                    <div className="font-bold text-foreground truncate">{item.judul}</div>
+                  </td>
+                  <td className="px-4 py-3 font-semibold text-emerald-800">
+                    {item.lokasi}
+                  </td>
+                  <td className="px-4 py-3 text-muted-foreground font-medium">
+                    {item.tanggal_mulai} {item.tanggal_selesai && item.tanggal_selesai !== item.tanggal_mulai ? `s/d ${item.tanggal_selesai}` : ""} ({item.jam_mulai})
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-bold ${
+                      item.status === "published" ? "bg-emerald-100 text-emerald-700" :
+                      item.status === "pending" ? "bg-orange-100 text-orange-700" :
+                      "bg-destructive/10 text-destructive"
+                    }`}>
+                      {item.status === "published" ? "Published" : item.status === "pending" ? "Menunggu Persetujuan" : "Ditolak"}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <Link
+                        href={`/admin/event/${item.id}/edit`}
+                        className="rounded-lg border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors shadow-2xs"
+                      >
+                        Edit
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => setDeleteId(item.id)}
+                        className="rounded-lg border border-destructive/30 bg-destructive/10 px-2.5 py-1 text-xs font-bold text-destructive hover:bg-destructive hover:text-white transition-colors shadow-2xs"
+                      >
+                        Hapus
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
 
       {deleteId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">

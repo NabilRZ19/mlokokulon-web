@@ -206,17 +206,17 @@ export default function AdminBeritaPage() {
                 </span>
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-1">
+              <div className="flex items-center justify-end gap-2 pt-1 border-t border-border/50">
                 <Link
                   href={`/berita/${b.slug}`}
                   target="_blank"
-                  className="rounded-lg border border-border px-3 py-1.5 text-xs font-bold text-foreground hover:bg-muted"
+                  className="rounded-lg border border-border bg-card px-2.5 py-1 text-xs font-bold text-foreground hover:bg-muted transition-colors shadow-2xs"
                 >
                   Lihat ↗
                 </Link>
                 <Link
                   href={`/admin/berita/${b.id}/edit`}
-                  className="rounded-lg bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors"
+                  className="rounded-lg border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors shadow-2xs"
                 >
                   Edit
                 </Link>
@@ -224,7 +224,7 @@ export default function AdminBeritaPage() {
                   type="button"
                   onClick={() => handleDelete(b.id, b.judul)}
                   disabled={deletingId === b.id}
-                  className="rounded-lg bg-destructive/10 px-3 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 disabled:opacity-50"
+                  className="rounded-lg border border-destructive/30 bg-destructive/10 px-2.5 py-1 text-xs font-bold text-destructive hover:bg-destructive hover:text-white transition-colors disabled:opacity-50 shadow-2xs"
                 >
                   {deletingId === b.id ? "Hapus…" : "Hapus"}
                 </button>
@@ -295,17 +295,17 @@ export default function AdminBeritaPage() {
                     })}
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <div className="flex justify-end gap-3">
+                    <div className="flex items-center justify-end gap-2">
                       <Link
                         href={`/berita/${b.slug}`}
                         target="_blank"
-                        className="text-xs font-semibold text-muted-foreground hover:text-foreground"
+                        className="rounded-lg border border-border bg-card px-2.5 py-1 text-xs font-bold text-foreground hover:bg-muted transition-colors shadow-2xs"
                       >
-                        Lihat
+                        Lihat ↗
                       </Link>
                       <Link
                         href={`/admin/berita/${b.id}/edit`}
-                        className="text-xs font-semibold text-primary hover:underline"
+                        className="rounded-lg border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors shadow-2xs"
                       >
                         Edit
                       </Link>
@@ -313,7 +313,7 @@ export default function AdminBeritaPage() {
                         type="button"
                         onClick={() => handleDelete(b.id, b.judul)}
                         disabled={deletingId === b.id}
-                        className="text-xs font-semibold text-destructive hover:underline disabled:opacity-50"
+                        className="rounded-lg border border-destructive/30 bg-destructive/10 px-2.5 py-1 text-xs font-bold text-destructive hover:bg-destructive hover:text-white transition-colors disabled:opacity-50 shadow-2xs"
                       >
                         {deletingId === b.id ? "Hapus…" : "Hapus"}
                       </button>

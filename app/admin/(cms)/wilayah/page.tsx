@@ -122,10 +122,10 @@ export default function AdminWilayahPage() {
                 <span>Statistik: <strong className="text-foreground">{rw.statistik.jumlah_kk} KK / {rw.statistik.jumlah_jiwa} Jiwa</strong></span>
               </div>
 
-              <div className="flex items-center justify-end pt-1">
+              <div className="flex items-center justify-end pt-1 border-t border-border/50">
                 <Link
                   href={`/admin/wilayah/${rw.id}/edit`}
-                  className="rounded-lg bg-primary px-4 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-primary/90 transition-colors"
+                  className="rounded-lg border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors shadow-2xs"
                 >
                   Edit Data RW
                 </Link>
@@ -167,7 +167,7 @@ export default function AdminWilayahPage() {
                   <td className="px-4 py-3 font-bold text-foreground">{rw.nama_rw}</td>
                   <td className="px-4 py-3 font-semibold text-primary">{rw.cakupan_dusun}</td>
                   <td className="px-4 py-3 text-foreground">{rw.jumlah_rt} RT</td>
-                  <td className="px-4 py-3 text-muted-foreground">
+                  <td className="px-4 py-3 text-muted-foreground font-medium">
                     {rw.statistik.jumlah_kk} KK / {rw.statistik.jumlah_jiwa} Jiwa
                   </td>
                   <td className="px-4 py-3">
@@ -181,10 +181,10 @@ export default function AdminWilayahPage() {
                     )}
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <div className="flex justify-end">
+                    <div className="flex items-center justify-end">
                       <Link
                         href={`/admin/wilayah/${rw.id}/edit`}
-                        className="rounded-lg border border-primary/30 bg-primary/5 px-3 py-1 text-xs font-bold text-primary hover:bg-primary/10 transition-colors"
+                        className="rounded-lg border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors shadow-2xs"
                       >
                         Edit
                       </Link>

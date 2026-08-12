@@ -116,10 +116,10 @@ export default function AdminUsersPage() {
                 </Badge>
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-2 border-t border-border/50">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-border/50">
                 <Link
                   href={`/admin/users/${u.id}/edit`}
-                  className="rounded-lg bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors"
+                  className="rounded-lg border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors shadow-2xs"
                 >
                   Edit
                 </Link>
@@ -127,7 +127,7 @@ export default function AdminUsersPage() {
                   type="button"
                   onClick={() => handleDelete(u.id, u.nama)}
                   disabled={deletingId === u.id}
-                  className="rounded-lg bg-destructive/10 px-3 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 disabled:opacity-50"
+                  className="rounded-lg border border-destructive/30 bg-destructive/10 px-2.5 py-1 text-xs font-bold text-destructive hover:bg-destructive hover:text-white transition-colors disabled:opacity-50 shadow-2xs"
                 >
                   {deletingId === u.id ? "Hapus…" : "Hapus"}
                 </button>
@@ -140,12 +140,12 @@ export default function AdminUsersPage() {
       {/* Desktop Table View (>= md) */}
       <div className="hidden md:block overflow-x-auto rounded-xl border border-border bg-card shadow-xs">
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-border bg-muted/50 text-muted-foreground">
+          <thead className="border-b border-border bg-muted/50 text-muted-foreground font-bold uppercase text-xs tracking-wider">
             <tr>
-              <th className="px-4 py-3 font-semibold">Nama Admin</th>
-              <th className="px-4 py-3 font-semibold">Email</th>
-              <th className="px-4 py-3 font-semibold">Akses Tier</th>
-              <th className="px-4 py-3 font-semibold text-right">Aksi</th>
+              <th className="px-4 py-3">Nama Admin</th>
+              <th className="px-4 py-3">Email</th>
+              <th className="px-4 py-3">Akses Tier</th>
+              <th className="px-4 py-3 text-right">Aksi</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
@@ -164,7 +164,7 @@ export default function AdminUsersPage() {
             ) : (
               users.map((u) => (
                 <tr key={u.id} className="hover:bg-muted/30 transition-colors">
-                  <td className="px-4 py-3 font-medium text-foreground">{u.nama}</td>
+                  <td className="px-4 py-3 font-bold text-foreground">{u.nama}</td>
                   <td className="px-4 py-3 text-muted-foreground font-mono text-xs">{u.email}</td>
                   <td className="px-4 py-3">
                     <Badge variant={u.tier === 1 ? "accent" : "default"}>
@@ -172,10 +172,10 @@ export default function AdminUsersPage() {
                     </Badge>
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <div className="flex justify-end gap-3">
+                    <div className="flex items-center justify-end gap-2">
                       <Link
                         href={`/admin/users/${u.id}/edit`}
-                        className="text-xs font-semibold text-primary hover:underline"
+                        className="rounded-lg border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors shadow-2xs"
                       >
                         Edit
                       </Link>
@@ -183,7 +183,7 @@ export default function AdminUsersPage() {
                         type="button"
                         onClick={() => handleDelete(u.id, u.nama)}
                         disabled={deletingId === u.id}
-                        className="text-xs font-semibold text-destructive hover:underline disabled:opacity-50"
+                        className="rounded-lg border border-destructive/30 bg-destructive/10 px-2.5 py-1 text-xs font-bold text-destructive hover:bg-destructive hover:text-white transition-colors disabled:opacity-50 shadow-2xs"
                       >
                         {deletingId === u.id ? "Hapus…" : "Hapus"}
                       </button>

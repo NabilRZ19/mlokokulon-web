@@ -179,10 +179,10 @@ export default function AdminGaleriPage() {
                   <span>{g.kategori || "Umum"}</span>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 shrink-0">
                 <Link
                   href={`/admin/galeri/${g.id}/edit`}
-                  className="rounded-lg bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors shrink-0"
+                  className="rounded-lg border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors shadow-2xs shrink-0"
                 >
                   Edit
                 </Link>
@@ -190,7 +190,7 @@ export default function AdminGaleriPage() {
                   type="button"
                   onClick={() => handleDelete(g.id, g.judul)}
                   disabled={deletingId === g.id}
-                  className="rounded-lg bg-destructive/10 px-3 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 disabled:opacity-50 shrink-0"
+                  className="rounded-lg border border-destructive/30 bg-destructive/10 px-2.5 py-1 text-xs font-bold text-destructive hover:bg-destructive hover:text-white transition-colors disabled:opacity-50 shadow-2xs shrink-0"
                 >
                   {deletingId === g.id ? "…" : "Hapus"}
                 </button>
@@ -203,15 +203,15 @@ export default function AdminGaleriPage() {
       {/* Desktop Table View (>= md) */}
       <div className="hidden md:block overflow-x-auto rounded-xl border border-border bg-card shadow-xs">
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-border bg-muted/50 text-muted-foreground">
+          <thead className="border-b border-border bg-muted/50 text-muted-foreground font-bold uppercase text-xs tracking-wider">
             <tr>
-              <th className="px-4 py-3 font-semibold">Media</th>
-              <th className="px-4 py-3 font-semibold">Judul</th>
-              <th className="px-4 py-3 font-semibold">Tipe</th>
-              <th className="px-4 py-3 font-semibold">Kategori</th>
-              <th className="px-4 py-3 font-semibold">Status</th>
-              <th className="px-4 py-3 font-semibold">Sumber</th>
-              <th className="px-4 py-3 font-semibold text-right">Aksi</th>
+              <th className="px-4 py-3">Media</th>
+              <th className="px-4 py-3">Judul Media</th>
+              <th className="px-4 py-3">Tipe</th>
+              <th className="px-4 py-3">Kategori</th>
+              <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3">Sumber Media</th>
+              <th className="px-4 py-3 text-right">Aksi</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
@@ -250,7 +250,7 @@ export default function AdminGaleriPage() {
                   <td className="px-4 py-3 capitalize text-muted-foreground font-medium">
                     {g.tipe}
                   </td>
-                  <td className="px-4 py-3 text-muted-foreground">
+                  <td className="px-4 py-3 text-muted-foreground font-medium">
                     {g.kategori || "Umum"}
                   </td>
                   <td className="px-4 py-3">
@@ -263,14 +263,14 @@ export default function AdminGaleriPage() {
                       {g.status === "pending" ? "Menunggu" : g.status === "rejected" ? "Ditolak" : "Published"}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-xs text-muted-foreground">
+                  <td className="px-4 py-3 text-xs text-muted-foreground font-medium">
                     {g.sumber_berita_id ? "Ditantang dari Berita" : "Upload Manual"}
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <div className="flex justify-end gap-3">
+                    <div className="flex items-center justify-end gap-2">
                       <Link
                         href={`/admin/galeri/${g.id}/edit`}
-                        className="text-xs font-semibold text-primary hover:underline"
+                        className="rounded-lg border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors shadow-2xs"
                       >
                         Edit
                       </Link>
@@ -278,7 +278,7 @@ export default function AdminGaleriPage() {
                         type="button"
                         onClick={() => handleDelete(g.id, g.judul)}
                         disabled={deletingId === g.id}
-                        className="text-xs font-semibold text-destructive hover:underline disabled:opacity-50"
+                        className="rounded-lg border border-destructive/30 bg-destructive/10 px-2.5 py-1 text-xs font-bold text-destructive hover:bg-destructive hover:text-white transition-colors disabled:opacity-50 shadow-2xs"
                       >
                         {deletingId === g.id ? "Hapus…" : "Hapus"}
                       </button>

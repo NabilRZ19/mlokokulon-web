@@ -173,17 +173,17 @@ export default function AdminUmkmPage() {
                 <span>{u.jam_operasional}</span>
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-1">
+              <div className="flex items-center justify-end gap-2 pt-1 border-t border-border/50">
                 <Link
                   href={`/umkm/${u.slug}`}
                   target="_blank"
-                  className="rounded-lg border border-border px-3 py-1.5 text-xs font-bold text-foreground hover:bg-muted"
+                  className="rounded-lg border border-border bg-card px-2.5 py-1 text-xs font-bold text-foreground hover:bg-muted transition-colors shadow-2xs"
                 >
                   Lihat ↗
                 </Link>
                 <Link
                   href={`/admin/umkm/${u.id}/edit`}
-                  className="rounded-lg bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors"
+                  className="rounded-lg border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors shadow-2xs"
                 >
                   Edit
                 </Link>
@@ -191,7 +191,7 @@ export default function AdminUmkmPage() {
                   type="button"
                   onClick={() => handleDelete(u.id, u.nama)}
                   disabled={deletingId === u.id}
-                  className="rounded-lg bg-destructive/10 px-3 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 disabled:opacity-50"
+                  className="rounded-lg border border-destructive/30 bg-destructive/10 px-2.5 py-1 text-xs font-bold text-destructive hover:bg-destructive hover:text-white transition-colors disabled:opacity-50 shadow-2xs"
                 >
                   {deletingId === u.id ? "Hapus…" : "Hapus"}
                 </button>
@@ -232,10 +232,10 @@ export default function AdminUmkmPage() {
                 <tr key={u.id} className="hover:bg-muted/30 transition-colors">
                   <td className="px-4 py-3 font-bold text-foreground">{u.nama}</td>
                   <td className="px-4 py-3 font-semibold text-primary">
-                    Kategori: <strong className="font-extrabold">{u.kategori}</strong>
+                    {u.kategori}
                   </td>
                   <td className="px-4 py-3 font-semibold text-foreground">
-                    Kontak: <strong className="font-extrabold">{u.kontak}</strong>
+                    {u.kontak}
                   </td>
                   <td className="px-4 py-3">
                     <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-bold ${
@@ -248,20 +248,20 @@ export default function AdminUmkmPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3 font-medium text-foreground">
-                    Jam: <strong className="font-bold">{u.jam_operasional}</strong>
+                    {u.jam_operasional}
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <div className="flex justify-end gap-3">
+                    <div className="flex items-center justify-end gap-2">
                       <Link
                         href={`/umkm/${u.slug}`}
                         target="_blank"
-                        className="text-xs font-semibold text-muted-foreground hover:text-foreground"
+                        className="rounded-lg border border-border bg-card px-2.5 py-1 text-xs font-bold text-foreground hover:bg-muted transition-colors shadow-2xs"
                       >
-                        Lihat
+                        Lihat ↗
                       </Link>
                       <Link
                         href={`/admin/umkm/${u.id}/edit`}
-                        className="text-xs font-semibold text-primary hover:underline"
+                        className="rounded-lg border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors shadow-2xs"
                       >
                         Edit
                       </Link>
@@ -269,7 +269,7 @@ export default function AdminUmkmPage() {
                         type="button"
                         onClick={() => handleDelete(u.id, u.nama)}
                         disabled={deletingId === u.id}
-                        className="text-xs font-semibold text-destructive hover:underline disabled:opacity-50"
+                        className="rounded-lg border border-destructive/30 bg-destructive/10 px-2.5 py-1 text-xs font-bold text-destructive hover:bg-destructive hover:text-white transition-colors disabled:opacity-50 shadow-2xs"
                       >
                         {deletingId === u.id ? "Hapus…" : "Hapus"}
                       </button>

@@ -103,10 +103,10 @@ export default function AdminPengaturanPage() {
                 </span>
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-2 border-t border-border/50">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-border/50">
                 <Link
                   href={`/admin/pengaturan/${s.id}/edit`}
-                  className="rounded-lg bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors"
+                  className="rounded-lg border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors shadow-2xs"
                 >
                   Edit
                 </Link>
@@ -114,7 +114,7 @@ export default function AdminPengaturanPage() {
                   type="button"
                   onClick={() => handleDelete(s.id, s.nama)}
                   disabled={deletingId === s.id}
-                  className="rounded-lg bg-destructive/10 px-3 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 disabled:opacity-50"
+                  className="rounded-lg border border-destructive/30 bg-destructive/10 px-2.5 py-1 text-xs font-bold text-destructive hover:bg-destructive hover:text-white transition-colors disabled:opacity-50 shadow-2xs"
                 >
                   {deletingId === s.id ? "Hapus…" : "Hapus"}
                 </button>
@@ -164,10 +164,10 @@ export default function AdminPengaturanPage() {
                   <td className="px-4 py-3 font-medium text-muted-foreground">{s.jabatan}</td>
                   <td className="px-4 py-3 font-semibold text-primary">#{s.urutan}</td>
                   <td className="px-4 py-3 text-right">
-                    <div className="flex justify-end gap-3">
+                    <div className="flex items-center justify-end gap-2">
                       <Link
                         href={`/admin/pengaturan/${s.id}/edit`}
-                        className="text-xs font-semibold text-primary hover:underline"
+                        className="rounded-lg border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors shadow-2xs"
                       >
                         Edit
                       </Link>
@@ -175,7 +175,7 @@ export default function AdminPengaturanPage() {
                         type="button"
                         onClick={() => handleDelete(s.id, s.nama)}
                         disabled={deletingId === s.id}
-                        className="text-xs font-semibold text-destructive hover:underline disabled:opacity-50"
+                        className="rounded-lg border border-destructive/30 bg-destructive/10 px-2.5 py-1 text-xs font-bold text-destructive hover:bg-destructive hover:text-white transition-colors disabled:opacity-50 shadow-2xs"
                       >
                         {deletingId === s.id ? "Hapus…" : "Hapus"}
                       </button>

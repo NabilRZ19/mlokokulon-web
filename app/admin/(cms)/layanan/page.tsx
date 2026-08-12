@@ -145,7 +145,7 @@ export default function LayananAdminPage() {
               <div className="flex items-center justify-end gap-2 pt-2 border-t border-border/50">
                 <Link
                   href={`/admin/layanan/${item.id}/edit`}
-                  className="rounded-lg bg-primary/10 px-3.5 py-1.5 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors"
+                  className="rounded-lg border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors shadow-2xs"
                 >
                   Edit
                 </Link>
@@ -153,7 +153,7 @@ export default function LayananAdminPage() {
                   type="button"
                   onClick={() => handleDelete(item.id, item.nama)}
                   disabled={deletingId === item.id}
-                  className="rounded-lg bg-destructive/10 px-3.5 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 disabled:opacity-50"
+                  className="rounded-lg border border-destructive/30 bg-destructive/10 px-2.5 py-1 text-xs font-bold text-destructive hover:bg-destructive hover:text-white transition-colors disabled:opacity-50 shadow-2xs"
                 >
                   {deletingId === item.id ? "Hapus…" : "Hapus"}
                 </button>
@@ -229,7 +229,7 @@ export default function LayananAdminPage() {
                       <div className="flex items-center justify-end gap-2">
                         <Link
                           href={`/admin/layanan/${item.id}/edit`}
-                          className="rounded-lg border border-border px-3 py-1.5 text-xs font-semibold text-foreground hover:bg-muted"
+                          className="rounded-lg border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary hover:bg-primary hover:text-white transition-colors shadow-2xs"
                         >
                           Edit
                         </Link>
@@ -237,7 +237,7 @@ export default function LayananAdminPage() {
                           type="button"
                           disabled={deletingId === item.id}
                           onClick={() => handleDelete(item.id, item.nama)}
-                          className="rounded-lg bg-destructive/10 px-3 py-1.5 text-xs font-bold text-destructive hover:bg-destructive/20 disabled:opacity-50"
+                          className="rounded-lg border border-destructive/30 bg-destructive/10 px-2.5 py-1 text-xs font-bold text-destructive hover:bg-destructive hover:text-white transition-colors disabled:opacity-50 shadow-2xs"
                         >
                           {deletingId === item.id ? "..." : "Hapus"}
                         </button>
