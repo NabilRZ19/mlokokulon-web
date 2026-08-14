@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { ApprovalModal } from "@/components/admin/ApprovalModal";
 import { BeritaBadge } from "@/components/berita/BeritaBadge";
+import { ImageLightboxModal } from "@/components/ui/ImageLightboxModal";
 import { getPublicImageUrl } from "@/lib/image-url";
 
 interface PendingBeritaDetail {
@@ -51,6 +52,7 @@ export default function PreviewBeritaPage({
   const [modalOpen, setModalOpen] = useState(false);
   const [modalAction, setModalAction] = useState<"approve" | "reject">("approve");
   const [processing, setProcessing] = useState(false);
+  const [activeImage, setActiveImage] = useState<{ url: string; title: string } | null>(null);
 
   async function fetchDetail() {
     setLoading(true);
@@ -178,13 +180,32 @@ export default function PreviewBeritaPage({
 
             {/* Gambar Cover */}
             {data.gambar_cover_url && (
-              <div className="overflow-hidden rounded-2xl border border-border aspect-[16/9] max-h-[420px] w-full bg-muted">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={getPublicImageUrl(data.gambar_cover_url)}
-                  alt={data.judul}
-                  className="h-full w-full object-cover"
-                />
+              <div className="space-y-2">
+                <div
+                  onClick={() => setActiveImage({ url: getPublicImageUrl(data.gambar_cover_url), title: data.judul })}
+                  className="overflow-hidden rounded-2xl border border-border aspect-[16/9] max-h-[420px] w-full bg-muted cursor-pointer relative group"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={getPublicImageUrl(data.gambar_cover_url)}
+                    alt={data.judul}
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-102"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/25 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-xs shadow-md">
+                      🔍
+                    </div>
+                  </div>
+                </div>
+                <div className="flex justify-start">
+                  <button
+                    type="button"
+                    onClick={() => setActiveImage({ url: getPublicImageUrl(data.gambar_cover_url), title: data.judul })}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-bold text-foreground hover:bg-muted transition-colors shadow-2xs"
+                  >
+                    🔍 Lihat Foto Cover (Ukuran Penuh)
+                  </button>
+                </div>
               </div>
             )}
 
@@ -214,9 +235,24 @@ export default function PreviewBeritaPage({
                 <h3 className="font-heading text-sm font-bold text-foreground">Foto Dokumentasi Tambahan</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {data.foto_tambahan.map((url, idx) => (
-                    <div key={idx} className="aspect-[4/3] rounded-xl overflow-hidden border border-border bg-muted">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={getPublicImageUrl(url)} alt={`Foto tambahan ${idx + 1}`} className="h-full w-full object-cover" />
+                    <div key={idx} className="space-y-1.5">
+                      <div
+                        onClick={() => setActiveImage({ url: getPublicImageUrl(url), title: `Foto Tambahan #${idx + 1} — ${data.judul}` })}
+                        className="aspect-[4/3] rounded-xl overflow-hidden border border-border bg-muted cursor-pointer relative group"
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={getPublicImageUrl(url)} alt={`Foto tambahan ${idx + 1}`} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/25 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                          <span className="text-white text-xs font-bold bg-black/60 px-2.5 py-1 rounded-full">Perbesar 🔍</span>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setActiveImage({ url: getPublicImageUrl(url), title: `Foto Tambahan #${idx + 1} — ${data.judul}` })}
+                        className="w-full text-center rounded-lg border border-border bg-card py-1 text-[11px] font-bold text-foreground hover:bg-muted transition-colors"
+                      >
+                        Lihat Foto #{idx + 1} 🔍
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -266,6 +302,13 @@ export default function PreviewBeritaPage({
         onClose={() => setModalOpen(false)}
         onConfirm={handleConfirm}
         isLoading={processing}
+      />
+
+      <ImageLightboxModal
+        isOpen={!!activeImage}
+        src={activeImage?.url ?? null}
+        title={activeImage?.title}
+        onClose={() => setActiveImage(null)}
       />
     </div>
   );

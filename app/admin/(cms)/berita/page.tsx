@@ -171,7 +171,16 @@ export default function AdminBeritaPage() {
           </div>
         ) : (
           sortedBeritaList.map((b) => (
-            <div key={b.id} className="rounded-xl border border-border bg-card p-4 space-y-3 shadow-xs">
+            <div
+              key={b.id}
+              className={`rounded-2xl border p-4 space-y-3 shadow-xs transition-colors ${
+                b.status === "pending"
+                  ? "border-orange-200 bg-orange-50/30"
+                  : b.status === "rejected"
+                  ? "border-destructive/30 bg-destructive/5"
+                  : "border-border bg-card"
+              }`}
+            >
               <div className="flex items-start justify-between gap-2">
                 <h3 className="font-heading text-sm font-bold text-foreground line-clamp-2">
                   {b.judul}

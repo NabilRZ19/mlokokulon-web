@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export type CropRatio = "1:1" | "16:9" | "4:3" | "3:2" | "3:4" | "9:16";
+export type CropRatio = "1:1" | "16:9" | "4:3" | "3:2" | "3:4" | "9:16" | "original";
 
 interface RatioOption {
   value: CropRatio;
@@ -11,13 +11,14 @@ interface RatioOption {
   h: number;
 }
 
-const RATIO_OPTIONS: RatioOption[] = [
-  { value: "16:9", label: "16:9 Landscape", w: 16, h: 9 },
-  { value: "4:3",  label: "4:3 Standar",   w: 4,  h: 3 },
-  { value: "3:2",  label: "3:2 Foto",       w: 3,  h: 2 },
-  { value: "1:1",  label: "1:1 Persegi",    w: 1,  h: 1 },
-  { value: "3:4",  label: "3:4 Potret",     w: 3,  h: 4 },
-  { value: "9:16", label: "9:16 Vertikal",  w: 9,  h: 16 },
+const BASE_RATIO_OPTIONS: RatioOption[] = [
+  { value: "16:9",     label: "16:9 Landscape", w: 16, h: 9 },
+  { value: "4:3",      label: "4:3 Standar",   w: 4,  h: 3 },
+  { value: "3:2",      label: "3:2 Foto",       w: 3,  h: 2 },
+  { value: "1:1",      label: "1:1 Persegi",    w: 1,  h: 1 },
+  { value: "3:4",      label: "3:4 Potret",     w: 3,  h: 4 },
+  { value: "9:16",     label: "9:16 Vertikal",  w: 9,  h: 16 },
+  { value: "original", label: "Asli (Tanpa Crop)", w: 1, h: 1 },
 ];
 
 interface ImageCropperModalProps {
@@ -60,25 +61,26 @@ export function ImageCropperModal({
 
   const ratioOptions =
     mode === "avatar"
-      ? RATIO_OPTIONS.filter((r) => r.value === "1:1")
+      ? BASE_RATIO_OPTIONS.filter((r) => r.value === "1:1")
       : allowedRatios
-      ? RATIO_OPTIONS.filter((r) => allowedRatios.includes(r.value))
-      : RATIO_OPTIONS;
+      ? BASE_RATIO_OPTIONS.filter((r) => allowedRatios.includes(r.value))
+      : BASE_RATIO_OPTIONS;
 
-  const activeRatio =
-    mode === "avatar"
-      ? RATIO_OPTIONS.find((r) => r.value === "1:1")!
-      : RATIO_OPTIONS.find((r) => r.value === selectedRatio) ?? RATIO_OPTIONS[0];
+  // Calculate dynamic ratio dimensions (if original, use natural image dimensions)
+  const isOriginal = selectedRatio === "original";
+
+  const activeW = isOriginal ? (naturalDim.w || 16) : (BASE_RATIO_OPTIONS.find((r) => r.value === selectedRatio)?.w ?? 16);
+  const activeH = isOriginal ? (naturalDim.h || 9)  : (BASE_RATIO_OPTIONS.find((r) => r.value === selectedRatio)?.h ?? 9);
 
   // Viewport dimensions
   const vpW =
-    activeRatio.w >= activeRatio.h
+    activeW >= activeH
       ? BASE_VIEWPORT
-      : Math.round(BASE_VIEWPORT * (activeRatio.w / activeRatio.h));
+      : Math.round(BASE_VIEWPORT * (activeW / activeH));
   const vpH =
-    activeRatio.h >= activeRatio.w
+    activeH >= activeW
       ? BASE_VIEWPORT
-      : Math.round(BASE_VIEWPORT * (activeRatio.h / activeRatio.w));
+      : Math.round(BASE_VIEWPORT * (activeH / activeW));
 
   // Reset state when a new image is loaded or ratio changes
   useEffect(() => {
@@ -144,14 +146,20 @@ export function ImageCropperModal({
     let outW: number, outH: number;
     if (mode === "avatar") {
       outW = outH = Math.min(outputSize, 600);
+    } else if (isOriginal) {
+      const longestSide = Math.min(outputSize, 1920);
+      const maxOriginal = Math.max(naturalDim.w, naturalDim.h);
+      const scale = maxOriginal > longestSide ? longestSide / maxOriginal : 1;
+      outW = Math.round(naturalDim.w * scale);
+      outH = Math.round(naturalDim.h * scale);
     } else {
       const longestSide = Math.min(outputSize, 1920);
-      if (activeRatio.w >= activeRatio.h) {
+      if (activeW >= activeH) {
         outW = longestSide;
-        outH = Math.round(longestSide * (activeRatio.h / activeRatio.w));
+        outH = Math.round(longestSide * (activeH / activeW));
       } else {
         outH = longestSide;
-        outW = Math.round(longestSide * (activeRatio.w / activeRatio.h));
+        outW = Math.round(longestSide * (activeW / activeH));
       }
     }
 
@@ -313,6 +321,8 @@ export function ImageCropperModal({
             <p className="text-[11px] font-semibold text-muted-foreground text-center">
               {isRound
                 ? "Klik & tahan lalu geser untuk memposisikan wajah."
+                : isOriginal
+                ? "Foto menggunakan rasio skala asli (skala 1:1 tanpa crop)."
                 : "Geser gambar untuk menyesuaikan posisi dalam frame."}
             </p>
           </div>

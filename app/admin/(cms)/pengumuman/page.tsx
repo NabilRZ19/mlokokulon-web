@@ -156,7 +156,16 @@ export default function CmsPengumumanPage() {
           </div>
         ) : (
           filteredAndSorted.map((item) => (
-            <div key={item.id} className="rounded-xl border border-border bg-card p-4 space-y-3 shadow-xs">
+            <div
+              key={item.id}
+              className={`rounded-2xl border p-4 space-y-3 shadow-xs transition-colors ${
+                item.status === "pending"
+                  ? "border-orange-200 bg-orange-50/30"
+                  : item.status === "rejected"
+                  ? "border-destructive/30 bg-destructive/5"
+                  : "border-border bg-card"
+              }`}
+            >
               <div className="flex items-start justify-between gap-2">
                 <h3 className="font-heading text-sm font-bold text-foreground line-clamp-2">{item.judul}</h3>
                 <span className={`shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-bold border ${

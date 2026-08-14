@@ -147,7 +147,16 @@ export default function AdminGaleriPage() {
           </div>
         ) : (
           sortedItems.map((g) => (
-            <div key={g.id} className="flex items-center gap-3 rounded-xl border border-border bg-card p-3 shadow-xs">
+            <div
+              key={g.id}
+              className={`flex items-center gap-3 rounded-2xl border p-3 shadow-xs transition-colors ${
+                g.status === "pending"
+                  ? "border-orange-200 bg-orange-50/30"
+                  : g.status === "rejected"
+                  ? "border-destructive/30 bg-destructive/5"
+                  : "border-border bg-card"
+              }`}
+            >
               {g.tipe === "foto" ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -229,7 +238,16 @@ export default function AdminGaleriPage() {
               </tr>
             ) : (
               sortedItems.map((g) => (
-                <tr key={g.id} className="hover:bg-muted/30 transition-colors">
+                <tr
+                  key={g.id}
+                  className={`hover:bg-muted/30 transition-colors ${
+                    g.status === "pending"
+                      ? "bg-orange-50/50"
+                      : g.status === "rejected"
+                      ? "bg-destructive/5"
+                      : ""
+                  }`}
+                >
                   <td className="px-4 py-3">
                     {g.tipe === "foto" ? (
                       // eslint-disable-next-line @next/next/no-img-element

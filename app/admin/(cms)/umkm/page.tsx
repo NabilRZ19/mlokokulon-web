@@ -146,7 +146,16 @@ export default function AdminUmkmPage() {
           </div>
         ) : (
           sortedUmkmList.map((u) => (
-            <div key={u.id} className="rounded-xl border border-border bg-card p-4 space-y-3 shadow-xs">
+            <div
+              key={u.id}
+              className={`rounded-2xl border p-4 space-y-3 shadow-xs transition-colors ${
+                u.status === "pending"
+                  ? "border-orange-200 bg-orange-50/30"
+                  : u.status === "rejected"
+                  ? "border-destructive/30 bg-destructive/5"
+                  : "border-border bg-card"
+              }`}
+            >
               <div className="flex items-start justify-between gap-2">
                 <div>
                   <div className="flex items-center gap-1.5 flex-wrap">
@@ -229,7 +238,16 @@ export default function AdminUmkmPage() {
               </tr>
             ) : (
               sortedUmkmList.map((u) => (
-                <tr key={u.id} className="hover:bg-muted/30 transition-colors">
+                <tr
+                  key={u.id}
+                  className={`hover:bg-muted/30 transition-colors ${
+                    u.status === "pending"
+                      ? "bg-orange-50/50"
+                      : u.status === "rejected"
+                      ? "bg-destructive/5"
+                      : ""
+                  }`}
+                >
                   <td className="px-4 py-3 font-bold text-foreground">{u.nama}</td>
                   <td className="px-4 py-3 font-semibold text-primary">
                     {u.kategori}

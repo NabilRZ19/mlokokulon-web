@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { ApprovalModal } from "@/components/admin/ApprovalModal";
+import { ImageLightboxModal } from "@/components/ui/ImageLightboxModal";
 import { getPublicImageUrl } from "@/lib/image-url";
 
 interface PendingUmkmDetail {
@@ -48,6 +49,7 @@ export default function PreviewUmkmPage({
   const [modalOpen, setModalOpen] = useState(false);
   const [modalAction, setModalAction] = useState<"approve" | "reject">("approve");
   const [processing, setProcessing] = useState(false);
+  const [activeImage, setActiveImage] = useState<{ url: string; title: string } | null>(null);
 
   async function fetchDetail() {
     setLoading(true);
@@ -175,22 +177,44 @@ export default function PreviewUmkmPage({
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Foto Utama & Foto Usaha */}
               <div className="lg:col-span-5 space-y-3">
-                <div className="overflow-hidden rounded-2xl border border-border bg-muted">
-                  <div className="relative w-full" style={{ paddingBottom: "75%" }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={getPublicImageUrl(data.foto_utama_url || data.foto_urls[0] || "/images/placeholder.jpg")}
-                      alt={data.nama}
-                      className="absolute inset-0 h-full w-full object-cover"
-                    />
+                <div className="space-y-2">
+                  <div
+                    onClick={() => setActiveImage({ url: getPublicImageUrl(data.foto_utama_url || data.foto_urls[0] || "/images/placeholder.jpg"), title: data.nama })}
+                    className="overflow-hidden rounded-2xl border border-border bg-muted cursor-pointer relative group"
+                  >
+                    <div className="relative w-full" style={{ paddingBottom: "75%" }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={getPublicImageUrl(data.foto_utama_url || data.foto_urls[0] || "/images/placeholder.jpg")}
+                        alt={data.nama}
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-102"
+                      />
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/25 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                      <span className="text-white text-xs font-bold bg-black/60 px-3 py-1.5 rounded-full shadow-md">🔍 Perbesar Foto</span>
+                    </div>
                   </div>
+                  <button
+                    type="button"
+                    onClick={() => setActiveImage({ url: getPublicImageUrl(data.foto_utama_url || data.foto_urls[0] || "/images/placeholder.jpg"), title: data.nama })}
+                    className="w-full text-center rounded-lg border border-border bg-card py-1.5 text-xs font-bold text-foreground hover:bg-muted transition-colors shadow-2xs"
+                  >
+                    🔍 Lihat Foto Utama (Ukuran Penuh)
+                  </button>
                 </div>
                 {data.foto_urls.length > 0 && (
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-3 gap-2 pt-2">
                     {data.foto_urls.slice(0, 6).map((url, idx) => (
-                      <div key={idx} className="aspect-square rounded-xl overflow-hidden border border-border bg-muted">
+                      <div
+                        key={idx}
+                        onClick={() => setActiveImage({ url: getPublicImageUrl(url), title: `Foto Usaha #${idx + 1} — ${data.nama}` })}
+                        className="aspect-square rounded-xl overflow-hidden border border-border bg-muted cursor-pointer relative group"
+                      >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={getPublicImageUrl(url)} alt={`Foto ${idx + 1}`} className="h-full w-full object-cover" />
+                        <img src={getPublicImageUrl(url)} alt={`Foto ${idx + 1}`} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/25 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                          <span className="text-white text-[10px] font-bold bg-black/60 px-1.5 py-0.5 rounded">🔍</span>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -222,8 +246,13 @@ export default function PreviewUmkmPage({
                       {data.produk_unggulan.map((p, idx) => (
                         <div key={idx} className="flex items-center gap-3 rounded-xl border border-border bg-muted/20 p-2.5">
                           {p.foto_url ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img src={getPublicImageUrl(p.foto_url)} alt={p.produk} className="h-12 w-12 rounded-lg object-cover border border-border shrink-0" />
+                            <div
+                              onClick={() => setActiveImage({ url: getPublicImageUrl(p.foto_url!), title: `Produk Unggulan: ${p.produk} — ${data.nama}` })}
+                              className="h-12 w-12 rounded-lg overflow-hidden border border-border shrink-0 cursor-pointer relative group"
+                            >
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img src={getPublicImageUrl(p.foto_url)} alt={p.produk} className="h-full w-full object-cover" />
+                            </div>
                           ) : (
                             <div className="h-12 w-12 rounded-lg border border-border bg-muted shrink-0 flex items-center justify-center text-muted-foreground">
                               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -231,7 +260,18 @@ export default function PreviewUmkmPage({
                               </svg>
                             </div>
                           )}
-                          <span className="text-xs font-bold text-foreground">{p.produk}</span>
+                          <div className="min-w-0 flex-1">
+                            <span className="text-xs font-bold text-foreground block truncate">{p.produk}</span>
+                            {p.foto_url && (
+                              <button
+                                type="button"
+                                onClick={() => setActiveImage({ url: getPublicImageUrl(p.foto_url!), title: `Produk Unggulan: ${p.produk} — ${data.nama}` })}
+                                className="text-[10px] font-bold text-primary hover:underline"
+                              >
+                                Lihat Foto Produk 🔍
+                              </button>
+                            )}
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -282,6 +322,13 @@ export default function PreviewUmkmPage({
         onClose={() => setModalOpen(false)}
         onConfirm={handleConfirm}
         isLoading={processing}
+      />
+
+      <ImageLightboxModal
+        isOpen={!!activeImage}
+        src={activeImage?.url ?? null}
+        title={activeImage?.title}
+        onClose={() => setActiveImage(null)}
       />
     </div>
   );

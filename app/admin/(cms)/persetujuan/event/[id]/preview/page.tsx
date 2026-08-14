@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { ApprovalModal } from "@/components/admin/ApprovalModal";
 import { CalendarIcon, ClockIcon, MapPinIcon } from "@/components/admin/icons";
+import { ImageLightboxModal } from "@/components/ui/ImageLightboxModal";
 import { getPublicImageUrl } from "@/lib/image-url";
 import type { EventItem } from "@/lib/types";
 
@@ -29,6 +30,7 @@ export default function PreviewEventApprovalPage({
   const [modalOpen, setModalOpen] = useState(false);
   const [modalAction, setModalAction] = useState<"approve" | "reject">("approve");
   const [processing, setProcessing] = useState(false);
+  const [activeImage, setActiveImage] = useState<{ url: string; title: string } | null>(null);
 
   async function fetchDetail() {
     setLoading(true);
@@ -167,13 +169,30 @@ export default function PreviewEventApprovalPage({
 
             {/* Gambar Cover (jika ada) */}
             {data.gambar_cover_url && (
-              <div className="overflow-hidden rounded-2xl border border-border max-h-[420px] w-full bg-muted">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={getPublicImageUrl(data.gambar_cover_url)}
-                  alt={data.judul}
-                  className="h-full w-full object-cover"
-                />
+              <div className="space-y-2">
+                <div
+                  onClick={() => setActiveImage({ url: getPublicImageUrl(data.gambar_cover_url), title: data.judul })}
+                  className="overflow-hidden rounded-2xl border border-border max-h-[420px] w-full bg-muted cursor-pointer relative group"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={getPublicImageUrl(data.gambar_cover_url)}
+                    alt={data.judul}
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-102"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/25 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                    <span className="text-white text-xs font-bold bg-black/60 px-3 py-1.5 rounded-full shadow-md">🔍 Perbesar Foto</span>
+                  </div>
+                </div>
+                <div className="flex justify-start">
+                  <button
+                    type="button"
+                    onClick={() => setActiveImage({ url: getPublicImageUrl(data.gambar_cover_url), title: data.judul })}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-bold text-foreground hover:bg-muted transition-colors shadow-2xs"
+                  >
+                    🔍 Lihat Foto (Ukuran Penuh)
+                  </button>
+                </div>
               </div>
             )}
 
@@ -228,6 +247,13 @@ export default function PreviewEventApprovalPage({
         onClose={() => setModalOpen(false)}
         onConfirm={handleConfirm}
         isLoading={processing}
+      />
+
+      <ImageLightboxModal
+        isOpen={!!activeImage}
+        src={activeImage?.url ?? null}
+        title={activeImage?.title}
+        onClose={() => setActiveImage(null)}
       />
     </div>
   );

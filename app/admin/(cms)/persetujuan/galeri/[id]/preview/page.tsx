@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { ApprovalModal } from "@/components/admin/ApprovalModal";
+import { ImageLightboxModal } from "@/components/ui/ImageLightboxModal";
 import { getPublicImageUrl } from "@/lib/image-url";
 
 interface PendingGaleriDetail {
@@ -42,6 +43,7 @@ export default function PreviewGaleriPage({
   const [modalOpen, setModalOpen] = useState(false);
   const [modalAction, setModalAction] = useState<"approve" | "reject">("approve");
   const [processing, setProcessing] = useState(false);
+  const [activeImage, setActiveImage] = useState<{ url: string; title: string } | null>(null);
 
   async function fetchDetail() {
     setLoading(true);
@@ -169,14 +171,31 @@ export default function PreviewGaleriPage({
                 />
               </div>
             ) : (
-              <div className="overflow-hidden rounded-2xl border border-border bg-muted">
-                <div className="relative w-full" style={{ paddingBottom: "66.67%" }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={getPublicImageUrl(data.url_media)}
-                    alt={data.judul}
-                    className="absolute inset-0 h-full w-full object-contain bg-black/5"
-                  />
+              <div className="space-y-2">
+                <div
+                  onClick={() => setActiveImage({ url: getPublicImageUrl(data.url_media), title: data.judul })}
+                  className="overflow-hidden rounded-2xl border border-border bg-muted cursor-pointer relative group"
+                >
+                  <div className="relative w-full" style={{ paddingBottom: "66.67%" }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={getPublicImageUrl(data.url_media)}
+                      alt={data.judul}
+                      className="absolute inset-0 h-full w-full object-contain bg-black/5 transition-transform duration-300 group-hover:scale-102"
+                    />
+                  </div>
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/25 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                    <span className="text-white text-xs font-bold bg-black/60 px-3 py-1.5 rounded-full shadow-md">🔍 Perbesar Foto</span>
+                  </div>
+                </div>
+                <div className="flex justify-start">
+                  <button
+                    type="button"
+                    onClick={() => setActiveImage({ url: getPublicImageUrl(data.url_media), title: data.judul })}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-bold text-foreground hover:bg-muted transition-colors shadow-2xs"
+                  >
+                    🔍 Lihat Foto (Ukuran Penuh)
+                  </button>
                 </div>
               </div>
             )}
@@ -223,6 +242,13 @@ export default function PreviewGaleriPage({
         onClose={() => setModalOpen(false)}
         onConfirm={handleConfirm}
         isLoading={processing}
+      />
+
+      <ImageLightboxModal
+        isOpen={!!activeImage}
+        src={activeImage?.url ?? null}
+        title={activeImage?.title}
+        onClose={() => setActiveImage(null)}
       />
     </div>
   );

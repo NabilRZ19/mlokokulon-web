@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { ApprovalModal } from "@/components/admin/ApprovalModal";
+import { ImageLightboxModal } from "@/components/ui/ImageLightboxModal";
 import { getPublicImageUrl } from "@/lib/image-url";
 
 interface PengurusItem {
@@ -71,6 +72,7 @@ export default function PreviewWilayahPage({
   const [modalOpen, setModalOpen] = useState(false);
   const [modalAction, setModalAction] = useState<"approve" | "reject">("approve");
   const [processing, setProcessing] = useState(false);
+  const [activeImage, setActiveImage] = useState<{ url: string; title: string } | null>(null);
 
   async function fetchDetail() {
     setLoading(true);
@@ -206,10 +208,18 @@ export default function PreviewWilayahPage({
                   Ketua Saat Ini
                 </span>
                 <div className="flex items-center gap-4">
-                  <div className="h-16 w-16 shrink-0 rounded-xl border-2 border-border bg-muted overflow-hidden shadow-sm">
+                  <div
+                    onClick={() => data.ketua_foto_url_lama && setActiveImage({ url: getPublicImageUrl(data.ketua_foto_url_lama), title: `Ketua Saat Ini — ${data.ketua_nama_lama || data.rw_nama}` })}
+                    className={`h-16 w-16 shrink-0 rounded-xl border-2 border-border bg-muted overflow-hidden shadow-sm relative group ${data.ketua_foto_url_lama ? "cursor-pointer" : ""}`}
+                  >
                     {data.ketua_foto_url_lama ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={getPublicImageUrl(data.ketua_foto_url_lama)} alt="Foto Ketua Lama" className="h-full w-full object-cover" />
+                      <>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={getPublicImageUrl(data.ketua_foto_url_lama)} alt="Foto Ketua Lama" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/25 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                          <span className="text-white text-[10px] font-bold">🔍</span>
+                        </div>
+                      </>
                     ) : (
                       <div className="flex h-full w-full items-center justify-center">
                         <svg className="h-7 w-7 text-muted-foreground/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -221,6 +231,15 @@ export default function PreviewWilayahPage({
                   <div>
                     <p className="font-bold text-sm text-foreground">{data.ketua_nama_lama || "Belum Diisi"}</p>
                     <p className="text-xs text-muted-foreground">Ketua {data.rw_nama}</p>
+                    {data.ketua_foto_url_lama && (
+                      <button
+                        type="button"
+                        onClick={() => setActiveImage({ url: getPublicImageUrl(data.ketua_foto_url_lama!), title: `Ketua Saat Ini — ${data.ketua_nama_lama || data.rw_nama}` })}
+                        className="text-[10px] font-bold text-primary hover:underline mt-1 block"
+                      >
+                        Lihat Foto 🔍
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -231,10 +250,18 @@ export default function PreviewWilayahPage({
                   ✨ Ketua Baru Diajukan
                 </span>
                 <div className="flex items-center gap-4">
-                  <div className="h-16 w-16 shrink-0 rounded-xl border-2 border-primary bg-background overflow-hidden shadow-sm">
+                  <div
+                    onClick={() => data.ketua_foto_url_baru && setActiveImage({ url: getPublicImageUrl(data.ketua_foto_url_baru), title: `Ketua Baru Diajukan — ${data.ketua_nama_baru}` })}
+                    className={`h-16 w-16 shrink-0 rounded-xl border-2 border-primary bg-background overflow-hidden shadow-sm relative group ${data.ketua_foto_url_baru ? "cursor-pointer" : ""}`}
+                  >
                     {data.ketua_foto_url_baru ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={getPublicImageUrl(data.ketua_foto_url_baru)} alt="Foto Ketua Baru" className="h-full w-full object-cover" />
+                      <>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={getPublicImageUrl(data.ketua_foto_url_baru)} alt="Foto Ketua Baru" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/25 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                          <span className="text-white text-[10px] font-bold">🔍</span>
+                        </div>
+                      </>
                     ) : (
                       <div className="flex h-full w-full items-center justify-center">
                         <svg className="h-7 w-7 text-muted-foreground/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -246,6 +273,15 @@ export default function PreviewWilayahPage({
                   <div>
                     <p className="font-bold text-sm text-primary">{data.ketua_nama_baru}</p>
                     <p className="text-xs font-semibold text-foreground">Calon Ketua {data.rw_nama}</p>
+                    {data.ketua_foto_url_baru && (
+                      <button
+                        type="button"
+                        onClick={() => setActiveImage({ url: getPublicImageUrl(data.ketua_foto_url_baru!), title: `Ketua Baru Diajukan — ${data.ketua_nama_baru}` })}
+                        className="text-[10px] font-bold text-primary hover:underline mt-1 block"
+                      >
+                        Lihat Foto 🔍
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -419,6 +455,13 @@ export default function PreviewWilayahPage({
         onClose={() => setModalOpen(false)}
         onConfirm={handleConfirm}
         isLoading={processing}
+      />
+
+      <ImageLightboxModal
+        isOpen={!!activeImage}
+        src={activeImage?.url ?? null}
+        title={activeImage?.title}
+        onClose={() => setActiveImage(null)}
       />
     </div>
   );
