@@ -197,7 +197,10 @@ export default function PreviewBeritaPage({
                     </div>
                   </div>
                 </div>
-                <div className="flex justify-start">
+                <p className="text-[11px] font-medium text-muted-foreground text-center sm:hidden">
+                  Klik foto untuk melihat ukuran penuh
+                </p>
+                <div className="hidden sm:flex justify-start">
                   <button
                     type="button"
                     onClick={() => setActiveImage({ url: getPublicImageUrl(data.gambar_cover_url), title: data.judul })}

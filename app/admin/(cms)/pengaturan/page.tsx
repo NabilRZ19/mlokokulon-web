@@ -95,7 +95,11 @@ export default function AdminPengaturanPage() {
                   className="h-12 w-12 rounded-xl object-contain bg-muted border border-border shrink-0"
                 />
                 <div className="min-w-0 flex-1">
-                  <h3 className="font-heading text-sm font-bold text-foreground truncate">{s.nama}</h3>
+                  <h3 className="font-heading text-sm font-bold text-foreground truncate">
+                    <Link href={`/admin/pengaturan/${s.id}/edit`} className="hover:text-primary hover:underline transition-colors">
+                      {s.nama}
+                    </Link>
+                  </h3>
                   <p className="text-xs font-semibold text-primary mt-0.5">{s.jabatan}</p>
                 </div>
                 <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-bold text-primary">
@@ -160,7 +164,11 @@ export default function AdminPengaturanPage() {
                       className="h-10 w-10 rounded-full object-cover border border-border"
                     />
                   </td>
-                  <td className="px-4 py-3 font-bold text-foreground">{s.nama}</td>
+                  <td className="px-4 py-3 font-bold text-foreground">
+                    <Link href={`/admin/pengaturan/${s.id}/edit`} className="hover:text-primary hover:underline transition-colors">
+                      {s.nama}
+                    </Link>
+                  </td>
                   <td className="px-4 py-3 font-medium text-muted-foreground">{s.jabatan}</td>
                   <td className="px-4 py-3 font-semibold text-primary">#{s.urutan}</td>
                   <td className="px-4 py-3 text-right">

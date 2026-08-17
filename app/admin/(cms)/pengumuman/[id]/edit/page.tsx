@@ -349,7 +349,7 @@ export default function EditPengumumanPage({
         imageSrc={rawCoverImage}
         mode="cover"
         defaultRatio="16:9"
-        allowedRatios={["16:9", "4:3", "3:2", "1:1", "3:4", "9:16", "original"]}
+        allowedRatios={["original", "16:9", "4:3", "3:2", "1:1", "3:4", "9:16"]}
         onClose={() => setCropperOpen(false)}
         onCropComplete={handleCoverCropComplete}
       />

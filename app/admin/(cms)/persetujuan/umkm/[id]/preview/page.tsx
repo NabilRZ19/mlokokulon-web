@@ -194,13 +194,18 @@ export default function PreviewUmkmPage({
                       <span className="text-white text-xs font-bold bg-black/60 px-3 py-1.5 rounded-full shadow-md">🔍 Perbesar Foto</span>
                     </div>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => setActiveImage({ url: getPublicImageUrl(data.foto_utama_url || data.foto_urls[0] || "/images/placeholder.jpg"), title: data.nama })}
-                    className="w-full text-center rounded-lg border border-border bg-card py-1.5 text-xs font-bold text-foreground hover:bg-muted transition-colors shadow-2xs"
-                  >
-                    🔍 Lihat Foto Utama (Ukuran Penuh)
-                  </button>
+                  <p className="text-[11px] font-medium text-muted-foreground text-center sm:hidden">
+                    Klik foto untuk melihat ukuran penuh
+                  </p>
+                  <div className="hidden sm:flex justify-start">
+                    <button
+                      type="button"
+                      onClick={() => setActiveImage({ url: getPublicImageUrl(data.foto_utama_url || data.foto_urls[0] || "/images/placeholder.jpg"), title: data.nama })}
+                      className="w-full text-center rounded-lg border border-border bg-card py-1.5 text-xs font-bold text-foreground hover:bg-muted transition-colors shadow-2xs"
+                    >
+                      🔍 Lihat Foto Utama (Ukuran Penuh)
+                    </button>
+                  </div>
                 </div>
                 {data.foto_urls.length > 0 && (
                   <div className="grid grid-cols-3 gap-2 pt-2">

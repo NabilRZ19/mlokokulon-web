@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export type CropRatio = "1:1" | "16:9" | "4:3" | "3:2" | "3:4" | "9:16" | "original";
+export type CropRatio = "original" | "16:9" | "4:3" | "3:2" | "1:1" | "3:4" | "9:16";
 
 interface RatioOption {
   value: CropRatio;
@@ -12,13 +12,13 @@ interface RatioOption {
 }
 
 const BASE_RATIO_OPTIONS: RatioOption[] = [
+  { value: "original", label: "Asli (Tanpa Crop)", w: 1, h: 1 },
   { value: "16:9",     label: "16:9 Landscape", w: 16, h: 9 },
   { value: "4:3",      label: "4:3 Standar",   w: 4,  h: 3 },
   { value: "3:2",      label: "3:2 Foto",       w: 3,  h: 2 },
   { value: "1:1",      label: "1:1 Persegi",    w: 1,  h: 1 },
   { value: "3:4",      label: "3:4 Potret",     w: 3,  h: 4 },
   { value: "9:16",     label: "9:16 Vertikal",  w: 9,  h: 16 },
-  { value: "original", label: "Asli (Tanpa Crop)", w: 1, h: 1 },
 ];
 
 interface ImageCropperModalProps {
@@ -45,7 +45,7 @@ export function ImageCropperModal({
   onClose,
   onCropComplete,
   mode = "avatar",
-  defaultRatio = "16:9",
+  defaultRatio = "original",
   allowedRatios,
   outputSize = 1200,
 }: ImageCropperModalProps) {
@@ -233,26 +233,24 @@ export function ImageCropperModal({
         </div>
 
         <div className="p-5 space-y-4">
-          {/* Ratio Picker — only shown in cover mode */}
+          {/* Ratio Picker — dropdown for cover mode */}
           {!isRound && ratioOptions.length > 1 && (
-            <div className="space-y-2">
-              <p className="text-xs font-bold text-foreground">Pilih Rasio Crop</p>
-              <div className="flex flex-wrap gap-2">
+            <div className="space-y-1.5">
+              <label htmlFor="crop-ratio-select" className="text-xs font-bold text-foreground block">
+                Pilih Rasio Crop
+              </label>
+              <select
+                id="crop-ratio-select"
+                value={selectedRatio}
+                onChange={(e) => setSelectedRatio(e.target.value as CropRatio)}
+                className="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-xs font-bold text-foreground focus:border-primary focus:outline-hidden cursor-pointer shadow-2xs"
+              >
                 {ratioOptions.map((opt) => (
-                  <button
-                    key={opt.value}
-                    type="button"
-                    onClick={() => setSelectedRatio(opt.value)}
-                    className={`rounded-lg border px-3 py-1.5 text-xs font-bold transition-all ${
-                      selectedRatio === opt.value
-                        ? "border-primary bg-primary text-white shadow-sm"
-                        : "border-border bg-muted/50 text-foreground hover:border-primary/60 hover:bg-primary/10"
-                    }`}
-                  >
+                  <option key={opt.value} value={opt.value}>
                     {opt.label}
-                  </button>
+                  </option>
                 ))}
-              </div>
+              </select>
             </div>
           )}
 

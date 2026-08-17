@@ -125,7 +125,11 @@ export default function LayananAdminPage() {
             <div key={item.id} className="rounded-xl border border-border bg-card p-4 space-y-3 shadow-2xs">
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <h3 className="font-heading text-sm font-bold text-foreground">{item.nama}</h3>
+                  <h3 className="font-heading text-sm font-bold text-foreground">
+                    <Link href={`/admin/layanan/${item.id}/edit`} className="hover:text-primary hover:underline transition-colors">
+                      {item.nama}
+                    </Link>
+                  </h3>
                   <span className="inline-block mt-1 rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-bold text-primary">
                     {item.kategori}
                   </span>
@@ -200,7 +204,11 @@ export default function LayananAdminPage() {
                       {idx + 1}
                     </td>
                     <td className="px-5 py-4">
-                      <p className="font-heading font-extrabold text-foreground">{item.nama}</p>
+                      <p className="font-heading font-extrabold text-foreground">
+                        <Link href={`/admin/layanan/${item.id}/edit`} className="hover:text-primary hover:underline transition-colors">
+                          {item.nama}
+                        </Link>
+                      </p>
                       <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
                         <strong className="font-bold text-foreground">Deskripsi:</strong> {item.deskripsi}
                       </p>

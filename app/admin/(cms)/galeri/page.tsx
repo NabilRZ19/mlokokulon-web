@@ -171,7 +171,11 @@ export default function AdminGaleriPage() {
               )}
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  <h3 className="font-heading text-sm font-bold text-foreground truncate">{g.judul}</h3>
+                  <h3 className="font-heading text-sm font-bold text-foreground truncate">
+                    <Link href={`/admin/galeri/${g.id}/edit`} className="hover:text-primary hover:underline transition-colors">
+                      {g.judul}
+                    </Link>
+                  </h3>
                   <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold ${
                     g.status === "pending"
                       ? "bg-amber-100 text-amber-800 border border-amber-200"
@@ -263,7 +267,9 @@ export default function AdminGaleriPage() {
                     )}
                   </td>
                   <td className="px-4 py-3 font-bold text-foreground max-w-xs truncate">
-                    {g.judul}
+                    <Link href={`/admin/galeri/${g.id}/edit`} className="hover:text-primary hover:underline transition-colors">
+                      {g.judul}
+                    </Link>
                   </td>
                   <td className="px-4 py-3 capitalize text-muted-foreground font-medium">
                     {g.tipe}

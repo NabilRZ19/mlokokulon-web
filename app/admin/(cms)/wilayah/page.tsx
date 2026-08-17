@@ -104,7 +104,11 @@ export default function AdminWilayahPage() {
             <div key={rw.id} className="rounded-xl border border-border bg-card p-4 space-y-3 shadow-xs">
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <h3 className="font-heading text-sm font-bold text-foreground">{rw.nama_rw}</h3>
+                  <h3 className="font-heading text-sm font-bold text-foreground">
+                    <Link href={`/admin/wilayah/${rw.id}/edit`} className="hover:text-primary hover:underline transition-colors">
+                      {rw.nama_rw}
+                    </Link>
+                  </h3>
                   <p className="text-xs text-muted-foreground mt-0.5">Dusun {rw.cakupan_dusun}</p>
                 </div>
                 {rw.is_kampung_kb ? (
@@ -164,7 +168,11 @@ export default function AdminWilayahPage() {
             ) : (
               rwList.map((rw) => (
                 <tr key={rw.id} className="hover:bg-muted/30 transition-colors">
-                  <td className="px-4 py-3 font-bold text-foreground">{rw.nama_rw}</td>
+                  <td className="px-4 py-3 font-bold text-foreground">
+                    <Link href={`/admin/wilayah/${rw.id}/edit`} className="hover:text-primary hover:underline transition-colors">
+                      {rw.nama_rw}
+                    </Link>
+                  </td>
                   <td className="px-4 py-3 font-semibold text-primary">{rw.cakupan_dusun}</td>
                   <td className="px-4 py-3 text-foreground">{rw.jumlah_rt} RT</td>
                   <td className="px-4 py-3 text-muted-foreground font-medium">

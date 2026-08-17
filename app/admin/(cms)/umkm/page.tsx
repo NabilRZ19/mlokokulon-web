@@ -159,7 +159,11 @@ export default function AdminUmkmPage() {
               <div className="flex items-start justify-between gap-2">
                 <div>
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <h3 className="font-heading text-sm font-bold text-foreground">{u.nama}</h3>
+                    <h3 className="font-heading text-sm font-bold text-foreground">
+                      <Link href={`/admin/umkm/${u.id}/edit`} className="hover:text-primary hover:underline transition-colors">
+                        {u.nama}
+                      </Link>
+                    </h3>
                     <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold ${
                       u.status === "pending"
                         ? "bg-amber-100 text-amber-800 border border-amber-200"
@@ -248,7 +252,11 @@ export default function AdminUmkmPage() {
                       : ""
                   }`}
                 >
-                  <td className="px-4 py-3 font-bold text-foreground">{u.nama}</td>
+                  <td className="px-4 py-3 font-bold text-foreground">
+                    <Link href={`/admin/umkm/${u.id}/edit`} className="hover:text-primary hover:underline transition-colors">
+                      {u.nama}
+                    </Link>
+                  </td>
                   <td className="px-4 py-3 font-semibold text-primary">
                     {u.kategori}
                   </td>

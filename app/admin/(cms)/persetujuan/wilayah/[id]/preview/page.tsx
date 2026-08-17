@@ -232,13 +232,18 @@ export default function PreviewWilayahPage({
                     <p className="font-bold text-sm text-foreground">{data.ketua_nama_lama || "Belum Diisi"}</p>
                     <p className="text-xs text-muted-foreground">Ketua {data.rw_nama}</p>
                     {data.ketua_foto_url_lama && (
-                      <button
-                        type="button"
-                        onClick={() => setActiveImage({ url: getPublicImageUrl(data.ketua_foto_url_lama!), title: `Ketua Saat Ini — ${data.ketua_nama_lama || data.rw_nama}` })}
-                        className="text-[10px] font-bold text-primary hover:underline mt-1 block"
-                      >
-                        Lihat Foto 🔍
-                      </button>
+                      <>
+                        <p className="text-[10px] font-medium text-muted-foreground sm:hidden">
+                          Klik foto untuk memperbesar
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setActiveImage({ url: getPublicImageUrl(data.ketua_foto_url_lama!), title: `Ketua Saat Ini — ${data.ketua_nama_lama || data.rw_nama}` })}
+                          className="hidden sm:block text-[10px] font-bold text-primary hover:underline mt-1"
+                        >
+                          Lihat Foto 🔍
+                        </button>
+                      </>
                     )}
                   </div>
                 </div>
@@ -274,13 +279,18 @@ export default function PreviewWilayahPage({
                     <p className="font-bold text-sm text-primary">{data.ketua_nama_baru}</p>
                     <p className="text-xs font-semibold text-foreground">Calon Ketua {data.rw_nama}</p>
                     {data.ketua_foto_url_baru && (
-                      <button
-                        type="button"
-                        onClick={() => setActiveImage({ url: getPublicImageUrl(data.ketua_foto_url_baru!), title: `Ketua Baru Diajukan — ${data.ketua_nama_baru}` })}
-                        className="text-[10px] font-bold text-primary hover:underline mt-1 block"
-                      >
-                        Lihat Foto 🔍
-                      </button>
+                      <>
+                        <p className="text-[10px] font-medium text-muted-foreground sm:hidden">
+                          Klik foto untuk memperbesar
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setActiveImage({ url: getPublicImageUrl(data.ketua_foto_url_baru!), title: `Ketua Baru Diajukan — ${data.ketua_nama_baru}` })}
+                          className="hidden sm:block text-[10px] font-bold text-primary hover:underline mt-1"
+                        >
+                          Lihat Foto 🔍
+                        </button>
+                      </>
                     )}
                   </div>
                 </div>

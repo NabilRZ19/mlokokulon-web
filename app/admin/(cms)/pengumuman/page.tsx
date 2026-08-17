@@ -167,7 +167,11 @@ export default function CmsPengumumanPage() {
               }`}
             >
               <div className="flex items-start justify-between gap-2">
-                <h3 className="font-heading text-sm font-bold text-foreground line-clamp-2">{item.judul}</h3>
+                <h3 className="font-heading text-sm font-bold text-foreground line-clamp-2">
+                  <Link href={`/admin/pengumuman/${item.id}/edit`} className="hover:text-primary hover:underline transition-colors">
+                    {item.judul}
+                  </Link>
+                </h3>
                 <span className={`shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-bold border ${
                   item.status === "published"
                     ? "bg-emerald-50 text-emerald-800 border-emerald-200"
@@ -249,7 +253,11 @@ export default function CmsPengumumanPage() {
                   item.status === "rejected" ? "bg-destructive/5" : ""
                 }`}>
                   <td className="px-4 py-3 font-medium text-foreground max-w-md">
-                    <div className="font-bold text-foreground truncate">{item.judul}</div>
+                    <div className="font-bold text-foreground truncate">
+                      <Link href={`/admin/pengumuman/${item.id}/edit`} className="hover:text-primary hover:underline transition-colors">
+                        {item.judul}
+                      </Link>
+                    </div>
                   </td>
                   <td className="px-4 py-3 font-semibold text-emerald-800">
                     {item.target_pengumuman}

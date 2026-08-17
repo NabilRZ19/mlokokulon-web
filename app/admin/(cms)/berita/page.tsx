@@ -183,7 +183,9 @@ export default function AdminBeritaPage() {
             >
               <div className="flex items-start justify-between gap-2">
                 <h3 className="font-heading text-sm font-bold text-foreground line-clamp-2">
-                  {b.judul}
+                  <Link href={`/admin/berita/${b.id}/edit`} className="hover:text-primary hover:underline transition-colors">
+                    {b.judul}
+                  </Link>
                 </h3>
                 <BeritaBadge kategori={b.kategori} />
               </div>
@@ -276,7 +278,11 @@ export default function AdminBeritaPage() {
                   b.status === "rejected" ? "bg-destructive/5" : ""
                 }`}>
                   <td className="px-4 py-3 max-w-md">
-                    <div className="font-medium text-foreground truncate">{b.judul}</div>
+                    <div className="font-medium text-foreground truncate">
+                      <Link href={`/admin/berita/${b.id}/edit`} className="hover:text-primary hover:underline transition-colors font-bold">
+                        {b.judul}
+                      </Link>
+                    </div>
                     {b.status === "rejected" && b.reviewer_note && (
                       <div className="text-xs text-destructive mt-0.5 truncate">Catatan: {b.reviewer_note}</div>
                     )}

@@ -263,7 +263,7 @@ export default function EditGaleriPage({ params }: { params: Promise<{ id: strin
         imageSrc={rawImage}
         mode="cover"
         defaultRatio="4:3"
-        allowedRatios={["16:9", "4:3", "3:2", "1:1", "3:4", "9:16", "original"]}
+        allowedRatios={["original", "16:9", "4:3", "3:2", "1:1", "3:4", "9:16"]}
         onClose={() => setCropperOpen(false)}
         onCropComplete={handleCropComplete}
       />

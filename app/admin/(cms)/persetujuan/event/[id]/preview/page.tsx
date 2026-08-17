@@ -15,6 +15,21 @@ const TIER_LABEL: Record<number, string> = {
   4: "Tier 4 — Admin Kampung KB",
 };
 
+function formatIndonesianDate(dateStr?: string | null) {
+  if (!dateStr) return "";
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
+    return d.toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  } catch {
+    return dateStr;
+  }
+}
+
 export default function PreviewEventApprovalPage({
   params,
 }: {
@@ -75,6 +90,10 @@ export default function PreviewEventApprovalPage({
       setProcessing(false);
     }
   }
+
+  const startDateFormatted = formatIndonesianDate(data?.tanggal_mulai);
+  const endDateFormatted = formatIndonesianDate(data?.tanggal_selesai);
+  const showEndDate = endDateFormatted && endDateFormatted !== startDateFormatted;
 
   return (
     <div className="space-y-6 pb-20">
@@ -152,7 +171,7 @@ export default function PreviewEventApprovalPage({
                     <span>Tanggal &amp; Waktu Pelaksanaan:</span>
                   </span>
                   <strong className="text-foreground block text-sm pt-0.5">
-                    {data.tanggal_mulai} {data.tanggal_selesai && data.tanggal_selesai !== data.tanggal_mulai ? `s/d ${data.tanggal_selesai}` : ""}
+                    {startDateFormatted} {showEndDate ? `s/d ${endDateFormatted}` : ""}
                   </strong>
                   <span className="text-muted-foreground block text-xs">Pukul: {data.jam_mulai}</span>
                 </div>
@@ -184,7 +203,10 @@ export default function PreviewEventApprovalPage({
                     <span className="text-white text-xs font-bold bg-black/60 px-3 py-1.5 rounded-full shadow-md">🔍 Perbesar Foto</span>
                   </div>
                 </div>
-                <div className="flex justify-start">
+                <p className="text-[11px] font-medium text-muted-foreground text-center sm:hidden">
+                  Klik foto untuk melihat ukuran penuh
+                </p>
+                <div className="hidden sm:flex justify-start">
                   <button
                     type="button"
                     onClick={() => setActiveImage({ url: getPublicImageUrl(data.gambar_cover_url), title: data.judul })}

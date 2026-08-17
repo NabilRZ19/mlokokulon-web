@@ -108,7 +108,11 @@ export default function AdminUsersPage() {
             <div key={u.id} className="rounded-xl border border-border bg-card p-4 space-y-3 shadow-xs">
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <h3 className="font-heading text-sm font-bold text-foreground">{u.nama}</h3>
+                  <h3 className="font-heading text-sm font-bold text-foreground">
+                    <Link href={`/admin/users/${u.id}/edit`} className="hover:text-primary hover:underline transition-colors">
+                      {u.nama}
+                    </Link>
+                  </h3>
                   <p className="text-xs font-mono text-muted-foreground mt-0.5">{u.email}</p>
                 </div>
                 <Badge variant={u.tier === 1 ? "accent" : "default"}>
@@ -164,7 +168,11 @@ export default function AdminUsersPage() {
             ) : (
               users.map((u) => (
                 <tr key={u.id} className="hover:bg-muted/30 transition-colors">
-                  <td className="px-4 py-3 font-bold text-foreground">{u.nama}</td>
+                  <td className="px-4 py-3 font-bold text-foreground">
+                    <Link href={`/admin/users/${u.id}/edit`} className="hover:text-primary hover:underline transition-colors">
+                      {u.nama}
+                    </Link>
+                  </td>
                   <td className="px-4 py-3 text-muted-foreground font-mono text-xs">{u.email}</td>
                   <td className="px-4 py-3">
                     <Badge variant={u.tier === 1 ? "accent" : "default"}>
